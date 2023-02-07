@@ -133,6 +133,9 @@ character(len=128) :: tag = '$Name: ulm_201505 $'
 
 !#######################################################################
 
+ !$ser verbatim integer :: save_timestep
+ !$ser verbatim save_timestep = 1
+
  call fms_init()
  call mpp_init()
  initClock = mpp_clock_id( 'Initialization' )
@@ -152,12 +155,21 @@ character(len=128) :: tag = '$Name: ulm_201505 $'
  termClock = mpp_clock_id( 'Termination' )
  call mpp_clock_begin(mainClock) !begin main loop
 
+ !$ser init directory='./test_data' prefix='Generator' mpi_rank=mpi_rank unique_id=.true.
+ !$ser mode write
+ !$ser off
+
  do nc = 1, num_cpld_calls
 
     Time_atmos = Time_atmos + Time_step_atmos
 
     call update_atmos_model_dynamics (Atm)
 
+    !$ser verbatim if (nc == save_timestep) then
+      !$ ser on
+    !$ ser verbatim else
+      !$ser off
+    !$ser verbatim endif
     call update_atmos_radiation_physics (Atm)
 
     call update_atmos_model_state (Atm)
@@ -192,6 +204,7 @@ character(len=128) :: tag = '$Name: ulm_201505 $'
     call print_memuse_stats('after full step')
 
  enddo
+ !$ser cleanup
 
 !-----------------------------------------------------------------------
 
