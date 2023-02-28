@@ -3493,7 +3493,7 @@ module module_physics_driver
         !$ser data mp_edr=edr(:,levs:1:-1) mp_oer=oer(:,levs:1:-1) mp_rrr=rrr(:,levs:1:-1) mp_tvr=tvr(:,levs:1:-1) mp_pcs=pcs(:,levs:1:-1) mp_eds=eds(:,levs:1:-1) mp_oes=oes(:,levs:1:-1)
         !$ser data mp_rrs=rrs(:,levs:1:-1) mp_tvs=tvs(:,levs:1:-1) mp_pcg=pcg(:,levs:1:-1) mp_edg=edg(:,levs:1:-1) mp_oeg=oeg(:,levs:1:-1) mp_rrg=rrg(:,levs:1:-1) mp_tvg=tvg(:,levs:1:-1)
         !$ser data mp_prefluxw=prefluxw(:,levs:1:-1) mp_prefluxr=prefluxr(:,levs:1:-1) mp_prefluxi=prefluxi(:,levs:1:-1) mp_prefluxs=prefluxs(:,levs:1:-1)
-        !$ser data mp_prefluxg=preflux(:,levs:1:-1) mp_cond=cond0 mp_dep=dep0 mp_reevap=reevap0 mp_sub=sub0
+        !$ser data mp_prefluxg=prefluxg(:,levs:1:-1) mp_cond=cond0 mp_dep=dep0 mp_reevap=reevap0 mp_sub=sub0
         call gfdl_cld_mp_driver(Stateout%gq0(:,levs:1:-1,1), Stateout%gq0(:,levs:1:-1,Model%ntcw), &
                                 Stateout%gq0(:,levs:1:-1,Model%ntrw), Stateout%gq0(:,levs:1:-1,Model%ntiw), &
                                 Stateout%gq0(:,levs:1:-1,Model%ntsw), Stateout%gq0(:,levs:1:-1,Model%ntgl), &
@@ -3521,7 +3521,7 @@ module module_physics_driver
         !$ser data mp_edr=edr(:,levs:1:-1) mp_oer=oer(:,levs:1:-1) mp_rrr=rrr(:,levs:1:-1) mp_tvr=tvr(:,levs:1:-1) mp_pcs=pcs(:,levs:1:-1) mp_eds=eds(:,levs:1:-1) mp_oes=oes(:,levs:1:-1)
         !$ser data mp_rrs=rrs(:,levs:1:-1) mp_tvs=tvs(:,levs:1:-1) mp_pcg=pcg(:,levs:1:-1) mp_edg=edg(:,levs:1:-1) mp_oeg=oeg(:,levs:1:-1) mp_rrg=rrg(:,levs:1:-1) mp_tvg=tvg(:,levs:1:-1)
         !$ser data mp_prefluxw=prefluxw(:,levs:1:-1) mp_prefluxr=prefluxr(:,levs:1:-1) mp_prefluxi=prefluxi(:,levs:1:-1) mp_prefluxs=prefluxs(:,levs:1:-1)
-        !$ser data mp_prefluxg=preflux(:,levs:1:-1) mp_cond=cond0 mp_dep=dep0 mp_reevap=reevap0 mp_sub=sub0
+        !$ser data mp_prefluxg=prefluxg(:,levs:1:-1) mp_cond=cond0 mp_dep=dep0 mp_reevap=reevap0 mp_sub=sub0
         tem = dtp * con_p001 / con_day
         water0(:)   = water0(:)   * tem
         rain0(:)    = rain0(:)    * tem
