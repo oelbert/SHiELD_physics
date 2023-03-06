@@ -64,7 +64,7 @@ use  diag_manager_mod, only: diag_manager_init, diag_manager_end, &
 
 use data_override_mod, only: data_override_init
 
-
+!$ser verbatim use,intrinsic :: 
 implicit none
 
 !-----------------------------------------------------------------------
@@ -140,9 +140,7 @@ character(len=128) :: tag = '$Name: ulm_201505 $'
  !$ser verbatim save_timestep = 1
 
  !$ser verbatim integer :: mpi_rank,ier
- !$ser verbatim real :: bdt
  !$ser verbatim logical :: ser_on
- !$ser verbatim  call mpi_comm_rank(MPI_COMM_WORLD, mpi_rank,ier)
 
  call fms_init()
  call mpp_init()
@@ -163,6 +161,8 @@ character(len=128) :: tag = '$Name: ulm_201505 $'
  termClock = mpp_clock_id( 'Termination' )
  call mpp_clock_begin(mainClock) !begin main loop
 
+ 
+ !$ser verbatim  call mpi_comm_rank(MPI_COMM_WORLD, mpi_rank,ier)
  !$ser init directory='./test_data' prefix='Generator' mpi_rank=mpi_rank unique_id=.true.
  !$ser mode write
  !$ser off
@@ -174,8 +174,8 @@ character(len=128) :: tag = '$Name: ulm_201505 $'
     call update_atmos_model_dynamics (Atm)
 
     !$ser verbatim if (nc == save_timestep) then
-      !$ ser on
-    !$ ser verbatim else
+      !$ser on
+    !$ser verbatim else
       !$ser off
     !$ser verbatim endif
     call update_atmos_radiation_physics (Atm)
