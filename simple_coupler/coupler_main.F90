@@ -26,6 +26,9 @@ program coupler_main
 !
 !-----------------------------------------------------------------------
 
+!$ser verbatim use mpi
+!$ser verbatim use m_serialize, ONLY: fs_is_serialization_on
+
 use time_manager_mod,  only: time_type, set_calendar_type, set_time,    &
                              set_date, days_in_month, month_name,       &
                              operator(+), operator (<), operator (>),   &
@@ -135,6 +138,11 @@ character(len=128) :: tag = '$Name: ulm_201505 $'
 
  !$ser verbatim integer :: save_timestep
  !$ser verbatim save_timestep = 1
+
+ !$ser verbatim integer :: mpi_rank,ier
+ !$ser verbatim real :: bdt
+ !$ser verbatim logical :: ser_on
+ !$ser verbatim  call mpi_comm_rank(MPI_COMM_WORLD, mpi_rank,ier)
 
  call fms_init()
  call mpp_init()
