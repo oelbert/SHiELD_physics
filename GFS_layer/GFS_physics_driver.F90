@@ -1,5 +1,6 @@
 module module_physics_driver
-
+  !$ser verbatim use mpi
+  !$ser verbatim USE m_serialize, ONLY: fs_is_serialization_on
   use machine,               only: kind_phys
   use physcons,              only: con_cp, con_fvirt, con_g, con_rd, &
                                    con_rv, con_hvap, con_hfus,       &
@@ -582,6 +583,10 @@ module module_physics_driver
       integer, allocatable, dimension(:) :: clw_trac_idx
       real(kind=kind_phys), allocatable, dimension(:,:,:) :: dt3dt_initial, dq3dt_initial
       integer :: nwat
+      !$ser verbatim integer :: mpi_rank,ier
+      !$ser verbatim logical :: ser_on
+      !$ser verbatim  call mpi_comm_rank(MPI_COMM_WORLD, mpi_rank,ier)
+      !$ser verbatim print *, 'INFO: inside GFS_physics_driver'
 !
 !
 !===> ...  begin here

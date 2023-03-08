@@ -27,7 +27,6 @@ program coupler_main
 !-----------------------------------------------------------------------
 
 !$ser verbatim use mpi
-!$ser verbatim use m_serialize, ONLY: fs_is_serialization_on
 
 use time_manager_mod,  only: time_type, set_calendar_type, set_time,    &
                              set_date, days_in_month, month_name,       &
