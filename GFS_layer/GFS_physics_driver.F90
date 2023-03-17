@@ -3488,9 +3488,9 @@ module module_physics_driver
           delp (:,k) = del(:,levs-k+1)
           dz   (:,k) = (Statein%phii(:,levs-k+1)-Statein%phii(:,levs-k+2))/con_g
         enddo
-        !$ser savepoint Test1
-        !$ser data rank=mpi_rank
-        !$ser verbatim print *, 'INFO: serialize microphysics in'
+        !!$ser savepoint Test1
+        !!$ser data rank=mpi_rank
+        !!$ser verbatim print *, 'INFO: serialize microphysics in'
         !!$ser savepoint Microphysics3-In
         !!$ser data mp_qv=Stateout%gq0(:,levs:1:-1,1) mp_ql=Stateout%gq0(:,levs:1:-1,Model%ntcw) mp_qr=Stateout%gq0(:,levs:1:-1,Model%ntrw) mp_qi=Stateout%gq0(:,levs:1:-1,Model%ntiw)
         !!$ser data mp_qs=Stateout%gq0(:,levs:1:-1,Model%ntsw) mp_qg=Stateout%gq0(:,levs:1:-1,Model%ntgl) mp_qa=Stateout%gq0(:,levs:1:-1,Model%ntclamt) mp_qnl=qnl1(:,levs:1:-1)
