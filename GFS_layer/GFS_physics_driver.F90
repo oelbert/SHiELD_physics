@@ -3488,16 +3488,14 @@ module module_physics_driver
           delp (:,k) = del(:,levs-k+1)
           dz   (:,k) = (Statein%phii(:,levs-k+1)-Statein%phii(:,levs-k+2))/con_g
         enddo
-        !$ser savepoint Test1
-        !$ser data rank=mpi_rank
         !$ser verbatim print *, 'INFO: serialize microphysics in'
-        !!$ser savepoint Microphysics3-In
-        !!$ser data mp_qv=Stateout%gq0(:,levs:1:-1,1) mp_ql=Stateout%gq0(:,levs:1:-1,Model%ntcw) mp_qr=Stateout%gq0(:,levs:1:-1,Model%ntrw) mp_qi=Stateout%gq0(:,levs:1:-1,Model%ntiw)
-        !!$ser data mp_qs=Stateout%gq0(:,levs:1:-1,Model%ntsw) mp_qg=Stateout%gq0(:,levs:1:-1,Model%ntgl) mp_qa=Stateout%gq0(:,levs:1:-1,Model%ntclamt) mp_qnl=qnl1(:,levs:1:-1)
-        !!$ser data mp_qni=qni1(:,levs:1:-1) mp_pt=Stateout%gt0(:,levs:1:-1) mp_wa=w mp_ua=Stateout%gu0(:,levs:1:-1) mp_va=Stateout%gv0(:,levs:1:-1) mp_delz=dz mp_delp=delp
-        !!$ser data mp_gsize=gsize mp_dt=dtp mp_hs=hs mp_water=water0 mp_rain=rain0 mp_ice=ice0 mp_snow=snow0 mp_graupel=graupel0 mp_q_con=q_con(:,levs:1:-1) mp_cappa=cappa(:,levs:1:-1)
-        !!$ser data mp_te=te(:,levs:1:-1) mp_prefluxw=prefluxw(:,levs:1:-1) mp_prefluxr=prefluxr(:,levs:1:-1) mp_prefluxi=prefluxi(:,levs:1:-1) mp_prefluxs=prefluxs(:,levs:1:-1)
-        !!$ser data mp_prefluxg=prefluxg(:,levs:1:-1) mp_cond=cond0 mp_dep=dep0 mp_reevap=reevap0 mp_sub=sub0
+        !$ser savepoint Microphysics3-In
+        !$ser data mp_qv=Stateout%gq0(:,levs:1:-1,1) mp_ql=Stateout%gq0(:,levs:1:-1,Model%ntcw) mp_qr=Stateout%gq0(:,levs:1:-1,Model%ntrw) mp_qi=Stateout%gq0(:,levs:1:-1,Model%ntiw)
+        !$ser data mp_qs=Stateout%gq0(:,levs:1:-1,Model%ntsw) mp_qg=Stateout%gq0(:,levs:1:-1,Model%ntgl) mp_qa=Stateout%gq0(:,levs:1:-1,Model%ntclamt) mp_qnl=qnl1(:,levs:1:-1)
+        !$ser data mp_qni=qni1(:,levs:1:-1) mp_pt=Stateout%gt0(:,levs:1:-1) mp_wa=w mp_ua=Stateout%gu0(:,levs:1:-1) mp_va=Stateout%gv0(:,levs:1:-1) mp_delz=dz mp_delp=delp
+        !$ser data mp_gsize=gsize mp_dt=dtp mp_hs=hs mp_water=water0 mp_rain=rain0 mp_ice=ice0 mp_snow=snow0 mp_graupel=graupel0 mp_q_con=q_con(:,levs:1:-1) mp_cappa=cappa(:,levs:1:-1)
+        !$ser data mp_te=te(:,levs:1:-1) mp_prefluxw=prefluxw(:,levs:1:-1) mp_prefluxr=prefluxr(:,levs:1:-1) mp_prefluxi=prefluxi(:,levs:1:-1) mp_prefluxs=prefluxs(:,levs:1:-1)
+        !$ser data mp_prefluxg=prefluxg(:,levs:1:-1) mp_cond=cond0 mp_dep=dep0 mp_reevap=reevap0 mp_sub=sub0
         !$ser verbatim print *, 'INFO: calling microphysics'
         call gfdl_cld_mp_driver(Stateout%gq0(:,levs:1:-1,1), Stateout%gq0(:,levs:1:-1,Model%ntcw), &
                                 Stateout%gq0(:,levs:1:-1,Model%ntrw), Stateout%gq0(:,levs:1:-1,Model%ntiw), &
@@ -3517,17 +3515,17 @@ module module_physics_driver
                                 cond0, dep0, reevap0, sub0, .true., Model%do_inline_mp)
 
         !$ser verbatim print *, 'INFO: serialize microphysics out'
-        !!$ser savepoint Microphysics3-Out
-        !!$ser data mp_qv=Stateout%gq0(:,levs:1:-1,1) mp_ql=Stateout%gq0(:,levs:1:-1,Model%ntcw) mp_qr=Stateout%gq0(:,levs:1:-1,Model%ntrw) mp_qi=Stateout%gq0(:,levs:1:-1,Model%ntiw)
-        !!$ser data mp_qs=Stateout%gq0(:,levs:1:-1,Model%ntsw) mp_qg=Stateout%gq0(:,levs:1:-1,Model%ntgl) mp_qa=Stateout%gq0(:,levs:1:-1,Model%ntclamt)
-        !!$ser data mp_pt=Stateout%gt0(:,levs:1:-1) mp_wa=w mp_ua=Stateout%gu0(:,levs:1:-1) mp_va=Stateout%gv0(:,levs:1:-1) mp_delz=dz mp_delp=delp
-        !!$ser data mp_dt=dtp mp_water=water0 mp_rain=rain0 mp_ice=ice0 mp_snow=snow0 mp_graupel=graupel0 mp_q_con=q_con(:,levs:1:-1) mp_cappa=cappa(:,levs:1:-1)
-        !!$ser data mp_adj_vmr=adj_vmr(:,levs:1:-1) mp_te=te(:,levs:1:-1) mp_dte=dte mp_pcw=pcw(:,levs:1:-1) mp_edw=edw(:,levs:1:-1) mp_oew=oew(:,levs:1:-1) mp_rrw=rrw(:,levs:1:-1)
-        !!$ser data mp_tvw=tvw(:,levs:1:-1) mp_pci=pci(:,levs:1:-1) mp_edi=edi(:,levs:1:-1) mp_oei=oei(:,levs:1:-1) mp_rri=rri(:,levs:1:-1) mp_tvi=tvi(:,levs:1:-1) mp_pcr=pcr(:,levs:1:-1)
-        !!$ser data mp_edr=edr(:,levs:1:-1) mp_oer=oer(:,levs:1:-1) mp_rrr=rrr(:,levs:1:-1) mp_tvr=tvr(:,levs:1:-1) mp_pcs=pcs(:,levs:1:-1) mp_eds=eds(:,levs:1:-1) mp_oes=oes(:,levs:1:-1)
-        !!$ser data mp_rrs=rrs(:,levs:1:-1) mp_tvs=tvs(:,levs:1:-1) mp_pcg=pcg(:,levs:1:-1) mp_edg=edg(:,levs:1:-1) mp_oeg=oeg(:,levs:1:-1) mp_rrg=rrg(:,levs:1:-1) mp_tvg=tvg(:,levs:1:-1)
-        !!$ser data mp_prefluxw=prefluxw(:,levs:1:-1) mp_prefluxr=prefluxr(:,levs:1:-1) mp_prefluxi=prefluxi(:,levs:1:-1) mp_prefluxs=prefluxs(:,levs:1:-1)
-        !!$ser data mp_prefluxg=prefluxg(:,levs:1:-1) mp_cond=cond0 mp_dep=dep0 mp_reevap=reevap0 mp_sub=sub0
+        !$ser savepoint Microphysics3-Out
+        !$ser data mp_qv=Stateout%gq0(:,levs:1:-1,1) mp_ql=Stateout%gq0(:,levs:1:-1,Model%ntcw) mp_qr=Stateout%gq0(:,levs:1:-1,Model%ntrw) mp_qi=Stateout%gq0(:,levs:1:-1,Model%ntiw)
+        !$ser data mp_qs=Stateout%gq0(:,levs:1:-1,Model%ntsw) mp_qg=Stateout%gq0(:,levs:1:-1,Model%ntgl) mp_qa=Stateout%gq0(:,levs:1:-1,Model%ntclamt)
+        !$ser data mp_pt=Stateout%gt0(:,levs:1:-1) mp_wa=w mp_ua=Stateout%gu0(:,levs:1:-1) mp_va=Stateout%gv0(:,levs:1:-1) mp_delz=dz mp_delp=delp
+        !$ser data mp_dt=dtp mp_water=water0 mp_rain=rain0 mp_ice=ice0 mp_snow=snow0 mp_graupel=graupel0 mp_q_con=q_con(:,levs:1:-1) mp_cappa=cappa(:,levs:1:-1)
+        !$ser data mp_adj_vmr=adj_vmr(:,levs:1:-1) mp_te=te(:,levs:1:-1) mp_dte=dte mp_pcw=pcw(:,levs:1:-1) mp_edw=edw(:,levs:1:-1) mp_oew=oew(:,levs:1:-1) mp_rrw=rrw(:,levs:1:-1)
+        !$ser data mp_tvw=tvw(:,levs:1:-1) mp_pci=pci(:,levs:1:-1) mp_edi=edi(:,levs:1:-1) mp_oei=oei(:,levs:1:-1) mp_rri=rri(:,levs:1:-1) mp_tvi=tvi(:,levs:1:-1) mp_pcr=pcr(:,levs:1:-1)
+        !$ser data mp_edr=edr(:,levs:1:-1) mp_oer=oer(:,levs:1:-1) mp_rrr=rrr(:,levs:1:-1) mp_tvr=tvr(:,levs:1:-1) mp_pcs=pcs(:,levs:1:-1) mp_eds=eds(:,levs:1:-1) mp_oes=oes(:,levs:1:-1)
+        !$ser data mp_rrs=rrs(:,levs:1:-1) mp_tvs=tvs(:,levs:1:-1) mp_pcg=pcg(:,levs:1:-1) mp_edg=edg(:,levs:1:-1) mp_oeg=oeg(:,levs:1:-1) mp_rrg=rrg(:,levs:1:-1) mp_tvg=tvg(:,levs:1:-1)
+        !$ser data mp_prefluxw=prefluxw(:,levs:1:-1) mp_prefluxr=prefluxr(:,levs:1:-1) mp_prefluxi=prefluxi(:,levs:1:-1) mp_prefluxs=prefluxs(:,levs:1:-1)
+        !$ser data mp_prefluxg=prefluxg(:,levs:1:-1) mp_cond=cond0 mp_dep=dep0 mp_reevap=reevap0 mp_sub=sub0
         !$ser verbatim print *, 'INFO: end serialize microphysics'
         tem = dtp * con_p001 / con_day
         water0(:)   = water0(:)   * tem
