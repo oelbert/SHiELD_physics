@@ -3498,7 +3498,7 @@ module module_physics_driver
         !!$ser data mp_gsize=gsize mp_dt=dtp mp_hs=hs mp_water=water0 mp_rain=rain0 mp_ice=ice0 mp_snow=snow0 mp_graupel=graupel0 mp_q_con=q_con(:,levs:1:-1) mp_cappa=cappa(:,levs:1:-1)
         !!$ser data mp_te=te(:,levs:1:-1) mp_prefluxw=prefluxw(:,levs:1:-1) mp_prefluxr=prefluxr(:,levs:1:-1) mp_prefluxi=prefluxi(:,levs:1:-1) mp_prefluxs=prefluxs(:,levs:1:-1)
         !!$ser data mp_prefluxg=prefluxg(:,levs:1:-1) mp_cond=cond0 mp_dep=dep0 mp_reevap=reevap0 mp_sub=sub0
-        !$ser verbatim print *, 'INFO: calling microphysics'
+        !!$ser verbatim print *, 'INFO: calling microphysics'
         call gfdl_cld_mp_driver(Stateout%gq0(:,levs:1:-1,1), Stateout%gq0(:,levs:1:-1,Model%ntcw), &
                                 Stateout%gq0(:,levs:1:-1,Model%ntrw), Stateout%gq0(:,levs:1:-1,Model%ntiw), &
                                 Stateout%gq0(:,levs:1:-1,Model%ntsw), Stateout%gq0(:,levs:1:-1,Model%ntgl), &
@@ -3528,7 +3528,7 @@ module module_physics_driver
         !!$ser data mp_rrs=rrs(:,levs:1:-1) mp_tvs=tvs(:,levs:1:-1) mp_pcg=pcg(:,levs:1:-1) mp_edg=edg(:,levs:1:-1) mp_oeg=oeg(:,levs:1:-1) mp_rrg=rrg(:,levs:1:-1) mp_tvg=tvg(:,levs:1:-1)
         !!$ser data mp_prefluxw=prefluxw(:,levs:1:-1) mp_prefluxr=prefluxr(:,levs:1:-1) mp_prefluxi=prefluxi(:,levs:1:-1) mp_prefluxs=prefluxs(:,levs:1:-1)
         !!$ser data mp_prefluxg=prefluxg(:,levs:1:-1) mp_cond=cond0 mp_dep=dep0 mp_reevap=reevap0 mp_sub=sub0
-        !$ser verbatim print *, 'INFO: end serialize microphysics'
+        !!$ser verbatim print *, 'INFO: end serialize microphysics'
         tem = dtp * con_p001 / con_day
         water0(:)   = water0(:)   * tem
         rain0(:)    = rain0(:)    * tem

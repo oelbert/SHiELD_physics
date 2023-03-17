@@ -64,6 +64,7 @@ use  diag_manager_mod, only: diag_manager_init, diag_manager_end, &
 use data_override_mod, only: data_override_init
 
 !$ser verbatim use,intrinsic :: ISO_Fortran_env
+!$ser verbatim USE m_serialize, ONLY: fs_is_serialization_on
 implicit none
 
 !-----------------------------------------------------------------------
