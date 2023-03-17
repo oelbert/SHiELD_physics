@@ -167,6 +167,13 @@ character(len=128) :: tag = '$Name: ulm_201505 $'
  !$ser mode write
  !$ser off
 
+ !$ser on
+ !$ser verbatim print *, 'INFO: serialize test'
+ !$ser savepoint Test1
+ !$ser data rank=mpi_rank
+ !$ser verbatim print *, 'INFO: serialize test pass?'
+ !$ser off
+
  do nc = 1, num_cpld_calls
 
     Time_atmos = Time_atmos + Time_step_atmos
@@ -178,10 +185,6 @@ character(len=128) :: tag = '$Name: ulm_201505 $'
     !$ser verbatim else
       !$ser off
     !$ser verbatim endif
-    !$ser verbatim print *, 'INFO: serialize test'
-    !$ser savepoint Test1
-    !$ser data rank=mpi_rank
-    !$ser verbatim print *, 'INFO: serialize test pass?'
     call update_atmos_radiation_physics (Atm)
 
     call update_atmos_model_state (Atm)
