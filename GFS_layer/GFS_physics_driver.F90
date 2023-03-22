@@ -3526,7 +3526,7 @@ module module_physics_driver
         !$ser verbatim mp_prefluxg(:,1,:)=prefluxg(:,levs:1:-1)
         !$ser verbatim mp_cond(:,1,1)=cond0
         !$ser verbatim mp_dep(:,1,1)=dep0
-        !$ser verbatim mp_reevep(:,1,1)=reevap0
+        !$ser verbatim mp_reevap(:,1,1)=reevap0
         !$ser verbatim mp_sub(:,1,1)=sub0
         !$ser verbatim print *, 'INFO: serialize microphysics in'
         !$ser savepoint Microphysics3-In
@@ -3611,7 +3611,7 @@ module module_physics_driver
         !$ser verbatim mp_prefluxg(:,1,:)=prefluxg(:,levs:1:-1)
         !$ser verbatim mp_cond(:,1,1)=cond0
         !$ser verbatim mp_dep(:,1,1)=dep0
-        !$ser verbatim mp_reevep(:,1,1)=reevap0
+        !$ser verbatim mp_reevap(:,1,1)=reevap0
         !$ser verbatim mp_sub(:,1,1)=sub0
 
         !$ser verbatim print *, 'INFO: serialize microphysics out'
