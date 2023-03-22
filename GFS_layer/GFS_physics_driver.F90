@@ -3503,19 +3503,19 @@ module module_physics_driver
         !$ser verbatim mp_qa(:,1,:)=Stateout%gq0(:,levs:1:-1,Model%ntclamt)
         !$ser verbatim mp_qnl(:,1,:)=qnl1(:,levs:1:-1)
         !$ser verbatim mp_qni(:,1,:)=qni1(:,levs:1:-1)
-        !$ser verbatim mp_pt(:,1,)=Stateout%gt0(:,levs:1:-1)
+        !$ser verbatim mp_pt(:,1,:)=Stateout%gt0(:,levs:1:-1)
         !$ser verbatim mp_wa(:,1,:)=w
         !$ser verbatim mp_ua(:,1,:)=Stateout%gu0(:,levs:1:-1)
         !$ser verbatim mp_va(:,1,:)=Stateout%gv0(:,levs:1:-1)
         !$ser verbatim mp_delz(:,1,:)=dz
         !$ser verbatim mp_delp(:,1,:)=delp
-        !$ser verbatim mp_gsize(:,1,:)=gsize
-        !$ser verbatim mp_hs(:,1,:)=hs
-        !$ser verbatim mp_water(:,1.:)=water0
-        !$ser verbatim mp_rain(:,1,:)=rain0
-        !$ser verbatim mp_ice(:,1,:)=ice0
-        !$ser verbatim mp_snow(:,1,:)=snow0
-        !$ser verbatim mp_graupel(:,1,:)=graupel0
+        !$ser verbatim mp_gsize(:,1,1)=gsize
+        !$ser verbatim mp_hs(:,1,1)=hs
+        !$ser verbatim mp_water(:,1,1)=water0
+        !$ser verbatim mp_rain(:,1,1)=rain0
+        !$ser verbatim mp_ice(:,1,1)=ice0
+        !$ser verbatim mp_snow(:,1,1)=snow0
+        !$ser verbatim mp_graupel(:,1,1)=graupel0
         !$ser verbatim mp_q_con(:,1,:)=q_con(:,levs:1:-1)
         !$ser verbatim mp_cappa(:,1,:)=cappa(:,levs:1:-1)
         !$ser verbatim mp_te(:,1,:)=te(:,levs:1:-1)
@@ -3524,17 +3524,17 @@ module module_physics_driver
         !$ser verbatim mp_prefluxi(:,1,:)=prefluxi(:,levs:1:-1)
         !$ser verbatim mp_prefluxs(:,1,:)=prefluxs(:,levs:1:-1)
         !$ser verbatim mp_prefluxg(:,1,:)=prefluxg(:,levs:1:-1)
-        !$ser verbatim mp_cond(:,1,:)=cond0
-        !$ser verbatim mp_dep(:,1,:)=dep0
-        !$ser verbatim mp_reevep(:,1,:)=reevap0
-        !$ser verbatim mp_sub(:,1,:)=sub0
+        !$ser verbatim mp_cond(:,1,1)=cond0
+        !$ser verbatim mp_dep(:,1,1)=dep0
+        !$ser verbatim mp_reevep(:,1,1)=reevap0
+        !$ser verbatim mp_sub(:,1,1)=sub0
         !$ser verbatim print *, 'INFO: serialize microphysics in'
         !$ser savepoint Microphysics3-In
         !$ser data mp_qv=mp_qv mp_ql=mp_ql mp_qr=mp_qr mp_qi=mp_qi
         !$ser data mp_qs=mp_qs mp_qg=mp_qg mp_qa=mp_qa mp_qnl=mp_qnl
         !$ser data mp_qni=mp_qni mp_pt=mp_pt mp_wa=mp_wa mp_ua=mp_ua mp_va=mp_va mp_delz=mp_delz mp_delp=mp_delp
         !$ser data mp_gsize=mp_gsize mp_dt=dtp mp_hs=mp_hs mp_water=mp_water mp_rain=mp_rain mp_ice=mp_ice mp_snow=mp_snow mp_graupel=mp_graupel mp_q_con=mp_q_con mp_cappa=mp_cappa
-        !$ser data mp_te=mp_te mp_prefluxw=mp_prefulxw mp_prefluxr=mp_prefluxr mp_prefluxi=mp_prefluxi mp_prefluxs=mp_prefluxs
+        !$ser data mp_te=mp_te mp_prefluxw=mp_prefluxw mp_prefluxr=mp_prefluxr mp_prefluxi=mp_prefluxi mp_prefluxs=mp_prefluxs
         !$ser data mp_prefluxg=mp_prefluxg mp_cond=mp_cond mp_dep=mp_dep mp_reevap=mp_reevap mp_sub=mp_sub
         !$ser verbatim print *, 'INFO: calling microphysics'
         call gfdl_cld_mp_driver(Stateout%gq0(:,levs:1:-1,1), Stateout%gq0(:,levs:1:-1,Model%ntcw), &
@@ -3563,22 +3563,22 @@ module module_physics_driver
         !$ser verbatim mp_qg(:,1,:)=Stateout%gq0(:,levs:1:-1,Model%ntgl)
         !$ser verbatim mp_ql(:,1,:)=Stateout%gq0(:,levs:1:-1,Model%ntcw)
         !$ser verbatim mp_qa(:,1,:)=Stateout%gq0(:,levs:1:-1,Model%ntclamt)
-        !$ser verbatim mp_pt(:,1,)=Stateout%gt0(:,levs:1:-1)
+        !$ser verbatim mp_pt(:,1,:)=Stateout%gt0(:,levs:1:-1)
         !$ser verbatim mp_wa(:,1,:)=w
         !$ser verbatim mp_ua(:,1,:)=Stateout%gu0(:,levs:1:-1)
         !$ser verbatim mp_va(:,1,:)=Stateout%gv0(:,levs:1:-1)
         !$ser verbatim mp_delz(:,1,:)=dz
         !$ser verbatim mp_delp(:,1,:)=delp
-        !$ser verbatim mp_water(:,1.:)=water0
-        !$ser verbatim mp_rain(:,1,:)=rain0
-        !$ser verbatim mp_ice(:,1,:)=ice0
-        !$ser verbatim mp_snow(:,1,:)=snow0
-        !$ser verbatim mp_graupel(:,1,:)=graupel0
+        !$ser verbatim mp_water(:,1,1)=water0
+        !$ser verbatim mp_rain(:,1,1)=rain0
+        !$ser verbatim mp_ice(:,1,1)=ice0
+        !$ser verbatim mp_snow(:,1,1)=snow0
+        !$ser verbatim mp_graupel(:,1,1)=graupel0
         !$ser verbatim mp_q_con(:,1,:)=q_con(:,levs:1:-1)
         !$ser verbatim mp_cappa(:,1,:)=cappa(:,levs:1:-1)
         !$ser verbatim mp_adj_vmr(:,1,:)=adj_vmr(:,levs:1:-1)
         !$ser verbatim mp_te(:,1,:)=te(:,levs:1:-1)
-        !$ser verbatim mp_dte(:,1,:)=dte
+        !$ser verbatim mp_dte(:,1,1)=dte
         !$ser verbatim mp_pcw(:,1,:)=pcw(:,levs:1:-1)
         !$ser verbatim mp_edw(:,1,:)=edw(:,levs:1:-1)
         !$ser verbatim mp_oew(:,1,:)=oew(:,levs:1:-1)
@@ -3609,10 +3609,10 @@ module module_physics_driver
         !$ser verbatim mp_prefluxi(:,1,:)=prefluxi(:,levs:1:-1)
         !$ser verbatim mp_prefluxs(:,1,:)=prefluxs(:,levs:1:-1)
         !$ser verbatim mp_prefluxg(:,1,:)=prefluxg(:,levs:1:-1)
-        !$ser verbatim mp_cond(:,1,:)=cond0
-        !$ser verbatim mp_dep(:,1,:)=dep0
-        !$ser verbatim mp_reevep(:,1,:)=reevap0
-        !$ser verbatim mp_sub(:,1,:)=sub0
+        !$ser verbatim mp_cond(:,1,1)=cond0
+        !$ser verbatim mp_dep(:,1,1)=dep0
+        !$ser verbatim mp_reevep(:,1,1)=reevap0
+        !$ser verbatim mp_sub(:,1,1)=sub0
 
         !$ser verbatim print *, 'INFO: serialize microphysics out'
         !$ser savepoint Microphysics3-Out
