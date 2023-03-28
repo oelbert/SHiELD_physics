@@ -3535,7 +3535,7 @@ module module_physics_driver
         !$ser data mp_qni=mp_qni mp_pt=mp_pt mp_wa=mp_wa mp_ua=mp_ua mp_va=mp_va mp_delz=mp_delz mp_delp=mp_delp
         !$ser data mp_gsize=mp_gsize mp_dt=dtp mp_hs=mp_hs mp_water=mp_water mp_rain=mp_rain mp_ice=mp_ice mp_snow=mp_snow mp_graupel=mp_graupel mp_q_con=mp_q_con mp_cappa=mp_cappa
         !$ser data mp_te=mp_te mp_prefluxw=mp_prefluxw mp_prefluxr=mp_prefluxr mp_prefluxi=mp_prefluxi mp_prefluxs=mp_prefluxs
-        !$ser data mp_prefluxg=mp_prefluxg mp_cond=mp_cond mp_dep=mp_dep mp_reevap=mp_reevap mp_sub=mp_sub
+        !$ser data mp_prefluxg=mp_prefluxg mp_cond=mp_cond mp_dep=mp_dep mp_reevap=mp_reevap mp_sub=mp_sub mp_hydro=.false. mp_consv_te=.false. mp_last_step=.true mp_inline=Model%do_inline_mp
         !$ser verbatim print *, 'INFO: calling microphysics'
         call gfdl_cld_mp_driver(Stateout%gq0(:,levs:1:-1,1), Stateout%gq0(:,levs:1:-1,Model%ntcw), &
                                 Stateout%gq0(:,levs:1:-1,Model%ntrw), Stateout%gq0(:,levs:1:-1,Model%ntiw), &
