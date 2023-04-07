@@ -3500,7 +3500,6 @@ module module_physics_driver
         !$ser verbatim mp_qi(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntiw)
         !$ser verbatim mp_qs(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntsw)
         !$ser verbatim mp_qg(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntgl)
-        !$ser verbatim mp_ql(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntcw)
         !$ser verbatim mp_qa(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntclamt)
         !$ser verbatim mp_qnl(:,:)=qnl1(:,levs:1:-1)
         !$ser verbatim mp_qni(:,:)=qni1(:,levs:1:-1)
