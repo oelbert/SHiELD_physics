@@ -1854,16 +1854,16 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     enddo ! i loop
 
     !$ser savepoint NegAdjP-In
-    !$ser data ne_qv=ne_qv ne_ql=ne_ql ne_qr=ne_qr ne_qi=ne_qi ne_pt=ne_pt ne_delp=ne_delp ne_cond=ne_cond
+    !$ser data ne_qv=ne_qv ne_ql=ne_ql ne_qr=ne_qr ne_qi=ne_qi ne_qs=ne_qs ne_qg=ne_qg ne_pt=ne_pt ne_delp=ne_delp ne_cond=ne_cond convt=convt
     
     !$ser savepoint CloudFrac-In
-    !$ser data cf_qv=cf_qv cf_ql=cf_ql cf_qr=cf_qr cf_qi=cf_qi cf_pt=cf_pt cf_qa=cf_qa cf_den=cf_den cf_pz=cf_pz cf_h_var=cf_h_var cf_gsize=cf_gsize
+    !$ser data cf_qv=cf_qv cf_ql=cf_ql cf_qr=cf_qr cf_qi=cf_qi cf_qs=cf_qs cf_qg=cf_qg cf_pt=cf_pt cf_qa=cf_qa cf_den=cf_den cf_pz=cf_pz cf_h_var=cf_h_var cf_gsize=cf_gsize
     
     !$ser savepoint MPFull-In
     !$ser data mpf_qv=mpf_qv mpf_ql=mpf_ql mpf_qr=mpf_qr mpf_qi=mpf_qi mpf_qs=mpf_qs mpf_qg=mpf_qg mpf_pt=mpf_pt mpf_delp=mpf_delp mpf_delz=mpf_delz
     !$ser data mpf_u=mpf_u mpf_v=mpf_v mpf_w=mpf_w mpf_den=mpf_den mpf_denfac=mpf_denfac mpf_ccn=mpf_ccn mpf_cin=mpf_cin mpf_pfw=mpf_pfw mpf_pfr=mpf_pfr
-    !$ser data mpf_pfi=mpf_pfi mpf_pfs=mpf_pfs mpf_pfg=mpf_pfg mpf_h_var=mpf_h_var mpf_rh_adj=mpf_rh_adj mpf_rh_rain=mpf_rh_rain mpf_dte=mpf_dte mpf_water=mpf_water
-    !$ser data mpf_rain=mpf_rain mpf_ice=mpf_ice mpf_snow=mpf_snow mpf_graupel=mpf_graupel mpf_cond=mpf_cond mpf_dep=mpf_dep mpf_sub=mpf_sub mpf_evap=mpf_evap
+    !$ser data mpf_pfi=mpf_pfi mpf_pfs=mpf_pfs mpf_pfg=mpf_pfg mpf_h_var=mpf_h_var mpf_rh_adj=mpf_rh_adj mpf_dte=mpf_dte mpf_water=mpf_water
+    !$ser data mpf_rain=mpf_rain mpf_ice=mpf_ice mpf_snow=mpf_snow mpf_graupel=mpf_graupel mpf_cond=mpf_cond mpf_dep=mpf_dep mpf_sub=mpf_sub mpf_evap=mpf_evap convt=convt dt=dts
 
     !$ser savepoint Sedimentation-In
     !$ser data sd_qv=mpf_qv sd_ql=mpf_ql sd_qr=mpf_qr sd_qi=mpf_qi sd_qs=mpf_qs sd_qg=mpf_qg sd_delp=mpf_delp sd_delz=mpf_delz sd_den=mpf_den sd_denfac=mpf_denfac
@@ -1884,7 +1884,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
 
     !$ser savepoint NegAdjP-Out
-    !$ser data ne_qv=ne_qv_o ne_ql=ne_ql_o ne_qr=ne_qr_o ne_qi=ne_qi_o ne_pt=ne_pt_o ne_delp=ne_delp_o ne_cond=ne_cond_o
+    !$ser data ne_qv=ne_qv_o ne_ql=ne_ql_o ne_qr=ne_qr_o ne_qi=ne_qi_o ne_qs=ne_qs_o ne_qg=ne_qg_o ne_pt=ne_pt_o ne_delp=ne_delp_o ne_cond=ne_cond_o
      
     !$ser savepoint CloudFrac-Out
     !$ser data cf_qa=cf_qa_o
