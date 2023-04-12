@@ -1489,9 +1489,9 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
                 u, v, w, den, denfac, ccn, cin, dts, rh_adj, rh_rain, h_var, dte (i), &
                 water (i), rain (i), ice (i), snow (i), graupel (i), prefluxw (i, :), &
                 prefluxr (i, :), prefluxi (i, :), prefluxs (i, :), prefluxg (i, :), &
-!$ser verbatim sd_qv (i), sd_ql (i), sd_qr (i), sd_qi (i), sd_qs (i), sd_qg (i), sd_u (i), sd_v (i), sd_w (i),&
-!$ser verbatim sd_w1 (i), sd_r1 (i), sd_i1 (i), sd_s1 (i), sd_g1 (i), sd_dte (i), sd_vtw (i), sd_vtr (i),&
-!$ser verbatim sd_vti (i), sd_vts (i), sd_vtg (i), sd_pfw (i), sd_pfr (i), sd_pfi (i), sd_pfs (i), sd_pfg (i), sd_tz (i),&
+!$ser verbatim sd_qv (i, :), sd_ql (i, :), sd_qr (i, :), sd_qi (i, :), sd_qs (i, :), sd_qg (i, :), sd_u (i, :), sd_v (i, :), sd_w (i, :),&
+!$ser verbatim sd_w1 (i), sd_r1 (i), sd_i1 (i), sd_s1 (i), sd_g1 (i), sd_dte (i), sd_vtw (i, :), sd_vtr (i, :),&
+!$ser verbatim sd_vti (i, :), sd_vts (i, :), sd_vtg (i, :), sd_pfw (i, :), sd_pfr (i, :), sd_pfi (i, :), sd_pfs (i, :), sd_pfg (i, :), sd_tz (i, :),&
                 condensation (i), deposition (i), evaporation (i), sublimation (i), convt)
             
             !$ser verbatim mpf_qv_o(i,:)=qvz(:)
@@ -2073,13 +2073,11 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
             !$ser verbatim sd_v=v
             !$ser verbatim sd_w=w
             !$ser verbatim sd_vtw=vtw
-            !$ser verbatim sd_vtl=vtl
             !$ser verbatim sd_vtr=vtr
             !$ser verbatim sd_vti=vti
             !$ser verbatim sd_vts=vts
             !$ser verbatim sd_vtg=vtg
             !$ser verbatim sd_pfw=pfw
-            !$ser verbatim sd_pfl=pfl
             !$ser verbatim sd_pfr=pfr
             !$ser verbatim sd_pfi=pfi
             !$ser verbatim sd_pfs=pfs
