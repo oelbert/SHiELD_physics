@@ -1489,9 +1489,9 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
                 u, v, w, den, denfac, ccn, cin, dts, rh_adj, rh_rain, h_var, dte (i), &
                 water (i), rain (i), ice (i), snow (i), graupel (i), prefluxw (i, :), &
                 prefluxr (i, :), prefluxi (i, :), prefluxs (i, :), prefluxg (i, :), &
-!$ser verbatim sd_qv (i), sd_ql (i), sd_qr (i), sd_qi (i), sd_qs (i), sd_qg (i), sd_u (i), sd_v (i), sd_w (i), &
-!$ser verbatim sd_w1 (i), sd_r1 (i), sd_i1 (i), sd_s1 (i), sd_g1 (i), sd_dte (i), sd_vtw (i), sd_vtr (i), &
-!$ser verbatim sd_vti (i), sd_vts (i), sd_vtg (i), sd_pfw (i), sd_pfr (i), sd_pfi (i), sd_pfs (i), sd_pfg (i), sd_tz (i), &
+!$ser verbatim sd_qv (i), sd_ql (i), sd_qr (i), sd_qi (i), sd_qs (i), sd_qg (i), sd_u (i), sd_v (i), sd_w (i),&
+!$ser verbatim sd_w1 (i), sd_r1 (i), sd_i1 (i), sd_s1 (i), sd_g1 (i), sd_dte (i), sd_vtw (i), sd_vtr (i),&
+!$ser verbatim sd_vti (i), sd_vts (i), sd_vtg (i), sd_pfw (i), sd_pfr (i), sd_pfi (i), sd_pfs (i), sd_pfg (i), sd_tz (i),&
                 condensation (i), deposition (i), evaporation (i), sublimation (i), convt)
             
             !$ser verbatim mpf_qv_o(i,:)=qvz(:)
@@ -2007,9 +2007,9 @@ end subroutine neg_adj
 subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w, &
         den, denfac, ccn, cin, dts, rh_adj, rh_rain, h_var, dte, water, rain, ice, &
         snow, graupel, prefluxw, prefluxr, prefluxi, prefluxs, prefluxg, &
-!$ser verbatim sd_qv, sd_ql, sd_qr, sd_qi, sd_qs, sd_qg, sd_u, sd_v, sd_w, &
-!$ser verbatim sd_w1, sd_r1, sd_i1, sd_s1, sd_g1, sd_dte, sd_vtw, sd_vtr, &
-!$ser verbatim sd_vti, sd_vts, sd_vtg, sd_pfw, sd_pfr, sd_pfi, sd_pfs, sd_pfg, sd_tz, &
+!$ser verbatim sd_qv, sd_ql, sd_qr, sd_qi, sd_qs, sd_qg, sd_u, sd_v, sd_w,&
+!$ser verbatim sd_w1, sd_r1, sd_i1, sd_s1, sd_g1, sd_dte, sd_vtw, sd_vtr,&
+!$ser verbatim sd_vti, sd_vts, sd_vtg, sd_pfw, sd_pfr, sd_pfi, sd_pfs, sd_pfg, sd_tz,&
         condensation, deposition, evaporation, sublimation, convt)
     
     implicit none
@@ -2063,34 +2063,34 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
             u, v, w, den, denfac, dte)
         
         !$ser verbatim if (n .eq. 1) then
-            !$ser verbatim sd_qv(:) = qv(:)
-            !$ser verbatim sd_ql(:) = ql(:)
-            !$ser verbatim sd_qr(:) = qr(:)
-            !$ser verbatim sd_qi(:) = qi(:)
-            !$ser verbatim sd_qs(:) = qs(:)
-            !$ser verbatim sd_qg(:) = qg(:)
-            !$ser verbatim sd_u(:) = u(:)
-            !$ser verbatim sd_v(:) = v(:)
-            !$ser verbatim sd_w(:) = w(:)
-            !$ser verbatim sd_vtw(:) = vtw(:)
-            !$ser verbatim sd_vtl(:) = vtl(:)
-            !$ser verbatim sd_vtr(:) = vtr(:)
-            !$ser verbatim sd_vti(:) = vti(:)
-            !$ser verbatim sd_vts(:) = vts(:)
-            !$ser verbatim sd_vtg(:) = vtg(:)
-            !$ser verbatim sd_pfw(:) = pfw(:)
-            !$ser verbatim sd_pfl(:) = pfl(:)
-            !$ser verbatim sd_pfr(:) = pfr(:)
-            !$ser verbatim sd_pfi(:) = pfi(:)
-            !$ser verbatim sd_pfs(:) = pfs(:)
-            !$ser verbatim sd_pfg(:) = pfg(:)
-            !$ser verbatim sd_tz(:) = tz(:)
-            !$ser verbatim sd_w1 = w1
-            !$ser verbatim sd_r1 = r1
-            !$ser verbatim sd_i1 = i1
-            !$ser verbatim sd_s1 = s1
-            !$ser verbatim sd_g1 = g1
-            !$ser verbatim sd_dte = dte
+            !$ser verbatim sd_qv=qv
+            !$ser verbatim sd_ql=ql
+            !$ser verbatim sd_qr=qr
+            !$ser verbatim sd_qi=qi
+            !$ser verbatim sd_qs=qs
+            !$ser verbatim sd_qg=qg
+            !$ser verbatim sd_u=u
+            !$ser verbatim sd_v=v
+            !$ser verbatim sd_w=w
+            !$ser verbatim sd_vtw=vtw
+            !$ser verbatim sd_vtl=vtl
+            !$ser verbatim sd_vtr=vtr
+            !$ser verbatim sd_vti=vti
+            !$ser verbatim sd_vts=vts
+            !$ser verbatim sd_vtg=vtg
+            !$ser verbatim sd_pfw=pfw
+            !$ser verbatim sd_pfl=pfl
+            !$ser verbatim sd_pfr=pfr
+            !$ser verbatim sd_pfi=pfi
+            !$ser verbatim sd_pfs=pfs
+            !$ser verbatim sd_pfg=pfg
+            !$ser verbatim sd_tz=tz
+            !$ser verbatim sd_w1=w1
+            !$ser verbatim sd_r1=r1
+            !$ser verbatim sd_i1=i1
+            !$ser verbatim sd_s1=s1
+            !$ser verbatim sd_g1=g1
+            !$ser verbatim sd_dte=dte
 
         water = water + w1 * convt
         rain = rain + r1 * convt
