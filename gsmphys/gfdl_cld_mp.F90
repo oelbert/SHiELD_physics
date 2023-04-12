@@ -1497,7 +1497,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 !$ser verbatim sd_vti (i, :), sd_vts (i, :), sd_vtg (i, :), sd_pfw (i, :), sd_pfr (i, :), sd_pfi (i, :), sd_pfs (i, :), sd_pfg (i, :), sd_tz (i, :),&
 !$ser verbatim wr_qv (i, :), wr_ql (i, :), wr_qr (i, :), wr_qi (i, :), wr_qs (i, :), wr_qg (i, :), wr_ccn (i, :), wr_tz (i, :), wr_reevap (i),&
 !$ser verbatim ic_qv (i, :), ic_ql (i, :), ic_qr (i, :), ic_qi (i, :), ic_qs (i, :), ic_qg (i, :), ic_tz (i, :), sz_tz (i, :),&
-!$ser verbatim sz_qv (i, :), sz_ql (i, :), sz_qr (i, :), sz_qi (i, :), sz_qs (i, :), sz_qg (i, :), sz_tz (i, :), sz_ccn (i, :), sz_cin (i, :),&
+!$ser verbatim sz_qv (i, :), sz_ql (i, :), sz_qr (i, :), sz_qi (i, :), sz_qs (i, :), sz_qg (i, :), sz_ccn (i, :), sz_cin (i, :),&
 !$ser verbatim sz_cond (i), sz_dep (i), sz_reevap (i), sz_sub (i),&
                 condensation (i), deposition (i), evaporation (i), sublimation (i), convt)
             
@@ -2041,7 +2041,7 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
 !$ser verbatim sd_vti, sd_vts, sd_vtg, sd_pfw, sd_pfr, sd_pfi, sd_pfs, sd_pfg, sd_tz,&
 !$ser verbatim wr_qv, wr_ql, wr_qr, wr_qi, wr_qs, wr_qg, wr_ccn, wr_tz, wr_reevap,&
 !$ser verbatim ic_qv, ic_ql, ic_qr, ic_qi, ic_qs, ic_qg, ic_tz, sz_tz,&
-!$ser verbatim sz_qv, sz_ql, sz_qr, sz_qi, sz_qs, sz_qg, sz_tz, sz_ccn, sz_cin,&
+!$ser verbatim sz_qv, sz_ql, sz_qr, sz_qi, sz_qs, sz_qg, sz_ccn, sz_cin,&
 !$ser verbatim sz_cond, sz_dep, sz_reevap, sz_sub,&
         condensation, deposition, evaporation, sublimation, convt)
     
