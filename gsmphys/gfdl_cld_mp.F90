@@ -2091,6 +2091,7 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
             !$ser verbatim sd_s1=s1
             !$ser verbatim sd_g1=g1
             !$ser verbatim sd_dte=dte
+        !$ser verbatim endif
 
         water = water + w1 * convt
         rain = rain + r1 * convt
