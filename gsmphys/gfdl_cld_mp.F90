@@ -1215,6 +1215,9 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim real (kind = r8), dimension (is:ie) :: mpf_h_var, mpf_rh_adj, mpf_rh_rain, mpf_dte, mpf_water, mpf_rain, mpf_ice, mpf_snow, mpf_graupel, mpf_cond, mpf_dep, mpf_sub, mpf_evap
     !$ser verbatim real (kind = r8), dimension (is:ie) :: mpf_h_var_o, mpf_rh_adj_o, mpf_dte_o, mpf_water_o, mpf_rain_o, mpf_ice_o, mpf_snow_o, mpf_graupel_o, mpf_cond_o, mpf_dep_o, mpf_sub_o, mpf_evap_o
     !$ser verbatim real (kind = r8), dimension (is:ie) :: sd_w1, sd_r1, sd_i1, sd_s1, sd_g1, sd_dte, wr_reevap, sz_cond, sz_dep, sz_reevap, sz_sub
+    
+    !$ser verbatim real (kind = r8), dimension (is:ie) :: zerobuff_2d
+
     !$ser verbatim real (kind = r8), dimension (is:ie, ks:ke) :: ne_qv, ne_ql, ne_qr, ne_qi, ne_qs, ne_qg, ne_pt, ne_delp
     !$ser verbatim real (kind = r8), dimension (is:ie, ks:ke) :: ne_qv_o, ne_ql_o, ne_qr_o, ne_qi_o, ne_qs_o, ne_qg_o, ne_pt_o, ne_delp_o
     !$ser verbatim real (kind = r8), dimension (is:ie, ks:ke) :: cf_qv, cf_ql, cf_qr, cf_qi, cf_qs, cf_qg, cf_qa, cf_qa_o, cf_pt, cf_den, cf_pz
@@ -1225,10 +1228,14 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim real (kind = r8), dimension (is:ie, ks:ke) :: ic_qv, ic_ql, ic_qr, ic_qi, ic_qs, ic_qg, ic_tz
     !$ser verbatim real (kind = r8), dimension (is:ie, ks:ke) :: sz_qv, sz_ql, sz_qr, sz_qi, sz_qs, sz_qg, sz_ccn, sz_cin, sz_tz
 
+    !$ser verbatim real (kind = r8), dimension (is:ie, ks:ke) :: zerobuff_3d
+
     !$ser verbatim integer :: mpi_rank,ier
     !$ser verbatim logical :: ser_on
     !$ser verbatim  call mpi_comm_rank(MPI_COMM_WORLD, mpi_rank,ier)
     !$ser verbatim print *, 'INFO: inside mp_driver'
+    !$ser verbatim zerobuff_3d = 0.0
+    !$ser verbatim zerobuff_2d = 0.0
 
     ! -----------------------------------------------------------------------
     ! time steps
@@ -1867,19 +1874,21 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser savepoint Sedimentation-In
     !$ser data sd_qv=mpf_qv sd_ql=mpf_ql sd_qr=mpf_qr sd_qi=mpf_qi sd_qs=mpf_qs sd_qg=mpf_qg sd_delp=mpf_delp sd_delz=mpf_delz sd_den=mpf_den sd_denfac=mpf_denfac
-    !$ser data sd_pt=mpf_pt sd_u=mpf_u sd_v=mpf_v sd_w=mpf_w sd_dte=mpf_dte
+    !$ser data sd_pt=mpf_pt sd_u=mpf_u sd_v=mpf_v sd_w=mpf_w sd_dte=mpf_dte convt=convt dt=dts sd_pfw=mpf_pfw sd_pfr=mpf_pfr sd_pfi=mpf_pfi sd_pfs=mpf_pfs sd_pfg=mpf_pfg
+    !$ser data sd_vtw=zerobuff_3d sd_vtr=zerobuff_3d sd_vti=zerobuff_3d sd_vts=zerobuff_3d sd_vtg=zerobuff_3d sd_w1=zerobuff_2d sd_r1=zerobuff_2d sd_i1=zerobuff_2d 
+    !$ser data sd_s1=zerobuff_2d sd_g1=zerobuff_2d
 
     !$ser savepoint WarmRain-In
-    !$ser data wr_delp=mpf_delp wr_delz=mpf_delp wr_tz=sd_tz wr_qv=sd_qv wr_ql=sd_ql wr_qr=sd_qr wr_qi=sd_qi wr_qs=sd_qs wr_qg=sd_qg wr_den=mpf_den
-    !$ser data wr_denfac=mpf_denfac wr_vtw=sd_vtw wr_vtr=sd_vtr wr_ccn=mpf_ccn wr_rh_rain=mpf_rh_rain wr_h_var=mpf_h_var
+    !$ser data wr_delp=mpf_delp wr_delz=mpf_delp wr_pt=sd_tz wr_qv=sd_qv wr_ql=sd_ql wr_qr=sd_qr wr_qi=sd_qi wr_qs=sd_qs wr_qg=sd_qg wr_den=mpf_den
+    !$ser data wr_denfac=mpf_denfac wr_vtw=sd_vtw wr_vtr=sd_vtr wr_ccn=mpf_ccn wr_h_var=mpf_h_var dt=dts wr_reevap=zerobuff_2d
 
     !$ser savepoint IceCloud-In
-    !$ser data ic_tz=wr_tz ic_qv=wr_qv ic_ql=wr_ql ic_qr=wr_qr ic_qi=wr_qi ic_qs=wr_qs ic_qg=wr_qg ic_den=mpf_den ic_denfac=mpf_denfac ic_vtw=sd_vtw
-    !$ser data ic_vtr=sd_vtr ic_vti=sd_vti ic_vts=sd_vts ic_vtg=sd_vtg ic_h_var=mpf_h_var 
+    !$ser data ic_pt=wr_tz ic_qv=wr_qv ic_ql=wr_ql ic_qr=wr_qr ic_qi=wr_qi ic_qs=wr_qs ic_qg=wr_qg ic_den=mpf_den ic_denfac=mpf_denfac ic_vtw=sd_vtw
+    !$ser data ic_vtr=sd_vtr ic_vti=sd_vti ic_vts=sd_vts ic_vtg=sd_vtg ic_h_var=mpf_h_var dt=dts
 
     !$ser savepoint SubgridZProc-In
-    !$ser data sz_den=mpf_den sz_denfac=mpf_denfac sz_rh_adj=mpf_rh_adj sz_tz=ic_tz sz_qv=ic_qv sz_ql=ic_ql sz_qr=ic_qr sz_qi=ic_qi sz_qs=ic_qs sz_qg=ic_qg
-    !$ser data sz_ccn=wr_ccn sz_cin=mpf_cin
+    !$ser data sz_den=mpf_den sz_denfac=mpf_denfac sz_rh_adj=mpf_rh_adj sz_pt=ic_tz sz_qv=ic_qv sz_ql=ic_ql sz_qr=ic_qr sz_qi=ic_qi sz_qs=ic_qs sz_qg=ic_qg
+    !$ser data sz_ccn=wr_ccn sz_cin=mpf_cin dt=dts sz_delp=mpf_delp sz_cond=zerobuff_2d sz_dep=zerobuff_2d sz_reevap=zerobuff_2d sz_sub=zerobuff_2d
 
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
 
@@ -1897,16 +1906,16 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser savepoint Sedimentation-Out
     !$ser data sd_qv=sd_qv sd_ql=sd_ql sd_qr=sd_qr sd_qi=sd_qi sd_qs=sd_qs sd_qg=sd_qg sd_u=sd_u sd_v=sd_v sd_w=sd_w sd_vtw=sd_vtw sd_vtr=sd_vtr sd_vti=sd_vti sd_vts=sd_vts
-    !$ser data sd_vtg=sd_vtg sd_pfw=sd_pfw sd_pfr=sd_pfr sd_pfi=sd_pfi sd_pfs=sd_pfs sd_pfg=sd_pfg sd_tz=sd_tz sd_w1=sd_w1 sd_r1=sd_r1 sd_i1=sd_i1 sd_s1=sd_s1 sd_g1=sd_g1 sd_dte=sd_dte
+    !$ser data sd_vtg=sd_vtg sd_pfw=sd_pfw sd_pfr=sd_pfr sd_pfi=sd_pfi sd_pfs=sd_pfs sd_pfg=sd_pfg sd_pt=sd_tz sd_w1=sd_w1 sd_r1=sd_r1 sd_i1=sd_i1 sd_s1=sd_s1 sd_g1=sd_g1 sd_dte=sd_dte
 
     !$ser savepoint WarmRain-Out
-    !$ser data wr_qv=wr_qv wr_ql=wr_ql wr_qr=wr_qr wr_qi=wr_qi wr_qs=wr_qs wr_qg=wr_qg wr_cc=wr_ccn wr_tz=wr_tz wr_reevap=wr_reevap
+    !$ser data wr_qv=wr_qv wr_ql=wr_ql wr_qr=wr_qr wr_qi=wr_qi wr_qs=wr_qs wr_qg=wr_qg wr_ccn=wr_ccn wr_pt=wr_tz wr_reevap=wr_reevap
 
     !$ser savepoint IceCloud-Out
-    !$ser data ic_qv=ic_qv ic_ql=ic_ql ic_qr=ic_qr ic_qi=ic_qi ic_qs=ic_qs ic_qg=ic_qg ic_tz=ic_tz
+    !$ser data ic_qv=ic_qv ic_ql=ic_ql ic_qr=ic_qr ic_qi=ic_qi ic_qs=ic_qs ic_qg=ic_qg ic_pt=ic_tz
 
     !$ser savepoint SubgridZProc-Out
-    !$ser data sz_qv=sz_qv sz_ql=sz_ql sz_qr=sz_qr sz_qi=sz_qi sz_qs=sz_qs sz_qg=sz_qg sz_ccn=sz_ccn sz_cin=sz_cin sz_tz=sz_tz
+    !$ser data sz_qv=sz_qv sz_ql=sz_ql sz_qr=sz_qr sz_qi=sz_qi sz_qs=sz_qs sz_qg=sz_qg sz_ccn=sz_ccn sz_cin=sz_cin sz_pt=sz_tz
     !$ser data sz_cond=sz_cond sz_dep=sz_dep sz_reevap=sz_reevap sz_sub=sz_sub
 
 end subroutine mpdrv
