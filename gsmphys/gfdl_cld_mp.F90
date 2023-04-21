@@ -1879,7 +1879,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data sd_s1=zerobuff_2d sd_g1=zerobuff_2d
 
     !$ser savepoint WarmRain-In
-    !$ser data wr_delp=mpf_delp wr_delz=mpf_delp wr_pt=sd_tz wr_qv=sd_qv wr_ql=sd_ql wr_qr=sd_qr wr_qi=sd_qi wr_qs=sd_qs wr_qg=sd_qg wr_den=mpf_den
+    !$ser data wr_delp=mpf_delp wr_pt=sd_tz wr_qv=sd_qv wr_ql=sd_ql wr_qr=sd_qr wr_qi=sd_qi wr_qs=sd_qs wr_qg=sd_qg wr_den=mpf_den
     !$ser data wr_denfac=mpf_denfac wr_vtw=sd_vtw wr_vtr=sd_vtr wr_ccn=mpf_ccn wr_h_var=mpf_h_var dt=dts wr_reevap=zerobuff_2d
 
     !$ser savepoint IceCloud-In
