@@ -1933,7 +1933,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser savepoint TerminalFall-In
     !$ser data tf_pt=tfo_pt tf_qv=tfo_qv tf_ql=tfo_ql tf_qr=tfo_qr tf_qi=tfo_qi tf_qs=tfo_qs tf_qg=tfo_qg
-    !$ser data tf_ua=tfo_u tf_uv=tfo_v tf_wa=tfo_w tf_pfi=tfo_pfi tf_i1=tfo_i1 tf_dte=tfo_dte
+    !$ser data tf_ua=tfo_u tf_va=tfo_v tf_wa=tfo_w tf_pfi=tfo_pfi tf_i1=tfo_i1 tf_dte=tfo_dte
 
 end subroutine mpdrv
 
@@ -2407,8 +2407,6 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
 !$ser verbatim tfo_qv, tfo_ql, tfo_qr, tfo_qi, tfo_qs, tfo_qg, tfo_u, tfo_v, tfo_w, tfi_i1, tfo_i1,&
 !$ser verbatim tf_ze, tf_zt, tfi_dte, tfo_dte, tfi_pt, tfi_pfi, tfo_pt, tfo_pfi,&
         u, v, w, den, denfac, dte)
- 
-    !$ser verbatim real (kind = r8), intent (inout), dimension (ks:ke) :: tfi_pt, tfi_pfi, tfo_pt, tfo_pfi
 
     implicit none
 
