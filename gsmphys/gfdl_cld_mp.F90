@@ -1931,7 +1931,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data sz_qv=sz_qv sz_ql=sz_ql sz_qr=sz_qr sz_qi=sz_qi sz_qs=sz_qs sz_qg=sz_qg sz_ccn=sz_ccn sz_cin=sz_cin sz_pt=sz_tz
     !$ser data sz_cond=sz_cond sz_dep=sz_dep sz_reevap=sz_reevap sz_sub=sz_sub
 
-    !$ser savepoint TerminalFall-In
+    !$ser savepoint TerminalFall-Out
     !$ser data tf_pt=tfo_pt tf_qv=tfo_qv tf_ql=tfo_ql tf_qr=tfo_qr tf_qi=tfo_qi tf_qs=tfo_qs tf_qg=tfo_qg
     !$ser data tf_ua=tfo_u tf_va=tfo_v tf_wa=tfo_w tf_pfi=tfo_pfi tf_i1=tfo_i1 tf_dte=tfo_dte
 
