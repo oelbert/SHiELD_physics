@@ -1901,7 +1901,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser savepoint TerminalFall-In
     !$ser data tf_dp=mpf_delp tf_dz=mpf_delz tf_vt=tf_vt tf_ze=tf_ze tf_zt=tf_zt tf_pt=tfi_pt tf_qv=tfi_qv tf_ql=tfi_ql tf_qr=tfi_qr tf_qi=tfi_qi tf_qs=tfi_qs tf_qg=tfi_qg
-    !$ser data tf_ua=tfi_u tf_uv=tfi_v tf_wa=tfi_w tf_pfi=tfi_pfi tf_i1=tfi_i1 tf_dte=tfi_dte
+    !$ser data tf_ua=tfi_u tf_uv=tfi_v tf_wa=tfi_w tf_pfi=tfi_pfi tf_i1=tfi_i1 tf_dte=tfi_dte dt=dts
 
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
 
