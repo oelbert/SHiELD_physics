@@ -2835,6 +2835,7 @@ subroutine terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     character (len = 2), intent (in) :: qflag
     
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg, u, v, w
+    !$ser verbatim real, intent (out), dimension (ks:ke + 1) :: tf_ze, tf_zt
     
     real, intent (inout) :: x1
     
