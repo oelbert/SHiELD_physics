@@ -1903,6 +1903,9 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data tf_dp=mpf_delp tf_dz=mpf_delz tf_vt=tf_vt tf_ze=tf_ze tf_zt=tf_zt tf_pt=tfi_pt tf_qv=tfi_qv tf_ql=tfi_ql tf_qr=tfi_qr tf_qi=tfi_qi tf_qs=tfi_qs tf_qg=tfi_qg
     !$ser data tf_ua=tfi_u tf_va=tfi_v tf_wa=tfi_w tf_pfi=tfi_pfi tf_i1=tfi_i1 tf_dte=tfi_dte dt=dts
 
+    !$ser savepoint ZeZt-In
+    !$ser data zz_dz=mpf_delz zz_vt=tf_vt zz_zs=zerobuff_2d zz_ze=zerobuff_3d zz_zt=zerobuff_3d dt=dts
+
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
 
     !$ser savepoint NegAdjP-Out
@@ -1934,6 +1937,9 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser savepoint TerminalFall-Out
     !$ser data tf_pt=tfo_pt tf_qv=tfo_qv tf_ql=tfo_ql tf_qr=tfo_qr tf_qi=tfo_qi tf_qs=tfo_qs tf_qg=tfo_qg
     !$ser data tf_ua=tfo_u tf_va=tfo_v tf_wa=tfo_w tf_pfi=tfo_pfi tf_i1=tfo_i1 tf_dte=tfo_dte
+
+    !$ser savepoint ZeZt-Out
+    !$ser data zz_ze=tf_ze zz_zt=tf_zt
 
 end subroutine mpdrv
 
