@@ -1234,13 +1234,14 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser verbatim real (kind = r8), dimension (is:ie, ks:ke) :: zerobuff_3d
 
-    !$ser verbatim real (kind = r8), dimension (is:ie, ks:ke + 1) :: tf_ze, tf_zt
+    !$ser verbatim real (kind = r8), dimension (is:ie, ks:ke + 1) :: tf_ze, tf_zt, zerobuff1_3d
 
     !$ser verbatim integer :: mpi_rank,ier
     !$ser verbatim logical :: ser_on
     !$ser verbatim  call mpi_comm_rank(MPI_COMM_WORLD, mpi_rank,ier)
     !$ser verbatim print *, 'INFO: inside mp_driver'
     !$ser verbatim zerobuff_3d = 0.0
+    !$ser verbatim zerobuff1_3d = 0.0
     !$ser verbatim zerobuff_2d = 0.0
 
     ! -----------------------------------------------------------------------
@@ -1904,7 +1905,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data tf_ua=tfi_u tf_va=tfi_v tf_wa=tfi_w tf_pfi=tfi_pfi tf_i1=tfi_i1 tf_dte=tfi_dte dt=dts
 
     !$ser savepoint ZeZt-In
-    !$ser data zz_dz=mpf_delz zz_vt=tf_vt zz_zs=zerobuff_2d zz_ze=zerobuff_3d zz_zt=zerobuff_3d dt=dts
+    !$ser data zz_dz=mpf_delz zz_vt=tf_vt zz_zs=zerobuff_2d zz_ze=zerobuff1_3d zz_zt=zerobuff1_3d dt=dts
 
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
 
