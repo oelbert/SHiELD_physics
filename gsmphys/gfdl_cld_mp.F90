@@ -1217,7 +1217,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim real (kind = r8), dimension (is:ie) :: sd_w1, sd_r1, sd_i1, sd_s1, sd_g1, sd_dte, wr_reevap, sz_cond, sz_dep, sz_reevap, sz_sub
     !$ser verbatim real (kind = r8), dimension (is:ie) :: tfi_i1, tfo_i1, tfi_dte, tfo_dte, sf_nf
 
-    !$ser verbatim real (kind = r8), dimension (is:ie) :: zerobuff_2d
+    !$ser verbatim real (kind = r8), dimension (is:ie) :: zerobuff_2d, onebuff_2d
 
     !$ser verbatim real (kind = r8), dimension (is:ie, ks:ke) :: ne_qv, ne_ql, ne_qr, ne_qi, ne_qs, ne_qg, ne_pt, ne_delp
     !$ser verbatim real (kind = r8), dimension (is:ie, ks:ke) :: ne_qv_o, ne_ql_o, ne_qr_o, ne_qi_o, ne_qs_o, ne_qg_o, ne_pt_o, ne_delp_o
@@ -1243,6 +1243,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim zerobuff_3d = 0.0
     !$ser verbatim zerobuff1_3d = 0.0
     !$ser verbatim zerobuff_2d = 0.0
+    !$ser verbatim onebuff_2d = 1.0
 
     ! -----------------------------------------------------------------------
     ! time steps
@@ -1908,7 +1909,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data zz_dz=mpf_delz zz_vt=tf_vt zz_zs=zerobuff_2d zz_ze=zerobuff1_3d zz_zt=zerobuff1_3d dt=dts
 
     !$ser savepoint StartFall-In
-    !$ser data sf_dm=zerobuff_3d sf_e1=zerobuff_3d sf_nf=zerobuff_2d sf_qf=tfi_qi sf_qv=tfi_qv sf_ql=tfi_ql sf_qr=tfi_qr sf_qi=tfi_qi sf_qs=tfi_qs sf_qg=tfi_qg
+    !$ser data sf_dm=zerobuff_3d sf_e1=zerobuff_3d sf_nf=onebuff_2d sf_qf=tfi_qi sf_qv=tfi_qv sf_ql=tfi_ql sf_qr=tfi_qr sf_qi=tfi_qi sf_qs=tfi_qs sf_qg=tfi_qg
     !$ser data sf_delp=mpf_delp sf_pt=tfi_pt
 
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
