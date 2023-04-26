@@ -2109,10 +2109,10 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
     !$ser verbatim real, intent (out), dimension (ks:ke) :: wr_qv, wr_ql, wr_qr, wr_qi, wr_qs, wr_qg, wr_ccn
     !$ser verbatim real, intent (out), dimension (ks:ke) :: ic_qv, ic_ql, ic_qr, ic_qi, ic_qs, ic_qg
     !$ser verbatim real, intent (out), dimension (ks:ke) :: sz_qv, sz_ql, sz_qr, sz_qi, sz_qs, sz_qg, sz_ccn, sz_cin
-    !$ser verbatim real (kind = r8), intent (out), dimension (ks:ke) :: sd_tz, wr_tz, ic_tz, sz_tz
+    !$ser verbatim real, intent (out), dimension (ks:ke) :: sd_tz, wr_tz, ic_tz, sz_tz
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: tfi_qv, tfi_ql, tfi_qr, tfi_qi, tfi_qs, tfi_qg, tfi_u, tfi_v, tfi_w, tf_vt, tf_dp
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: tfo_qv, tfo_ql, tfo_qr, tfo_qi, tfo_qs, tfo_qg, tfo_u, tfo_v, tfo_w
-    !$ser verbatim real (kind = r8), intent (inout), dimension (ks:ke) :: tfi_pt, tfi_pfi, tfo_pt, tfo_pfi, sf_dm, sf_e1
+    !$ser verbatim real, intent (inout), dimension (ks:ke) :: tfi_pt, tfi_pfi, tfo_pt, tfo_pfi, sf_dm, sf_e1
 
     !$ser verbatim real, intent (out), dimension (ks:ke + 1) :: tf_ze, tf_zt
 
@@ -2124,10 +2124,10 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
     !$ser verbatim real, intent (inout) :: tfi_i1, tfo_i1, sf_nf
     
     real (kind = r8), intent (inout) :: dte
-    !$ser verbatim real (kind = r8), intent (inout) :: tfi_dte, tfo_dte
+    !$ser verbatim real, intent (inout) :: tfi_dte, tfo_dte
 
     !$ser verbatim real, intent (out) :: sd_w1, sd_r1, sd_i1, sd_s1, sd_g1, wr_reevap, sz_cond, sz_dep, sz_reevap, sz_sub
-    !$ser verbatim real (kind = r8), intent (out) :: sd_dte
+    !$ser verbatim real, intent (out) :: sd_dte
     
     ! -----------------------------------------------------------------------
     ! local variables
@@ -2447,10 +2447,10 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     !$ser verbatim real, intent (out), dimension (ks:ke + 1) :: tf_ze, tf_zt
 
     real (kind = r8), intent (inout) :: dte
-    !$ser verbatim real (kind = r8), intent (inout) :: tfi_dte, tfo_dte, sf_nf
+    !$ser verbatim real, intent (inout) :: tfi_dte, tfo_dte, sf_nf
     
     real (kind = r8), intent (inout), dimension (ks:ke) :: tz
-    !$ser verbatim real (kind = r8), intent (inout), dimension (ks:ke) :: tfi_pt, tfi_pfi, tfo_pt, tfo_pfi, sf_dm, sf_e1
+    !$ser verbatim real, intent (inout), dimension (ks:ke) :: tfi_pt, tfi_pfi, tfo_pt, tfo_pfi, sf_dm, sf_e1
     
     ! -----------------------------------------------------------------------
     ! local variables
