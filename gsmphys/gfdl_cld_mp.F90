@@ -2931,6 +2931,9 @@ subroutine terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     if (do_sedi_w) then
         do k = ks, ke
             dm (k) = dp (k) * (1. + qv (k) + ql (k) + qr (k) + qi (k) + qs (k) + qg (k))
+            !$ser verbatim if (nn .eq. 1) then
+                !$ser verbatim sf_dm (k) = dm (k)
+            !$ser verbatim endif
         enddo
     endif
     
@@ -2940,12 +2943,10 @@ subroutine terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     
     do k = ks, ke
         te1 (k) = mte (qv (k), ql (k), qr (k), qi (k), qs (k), qg (k), tz (k), dp (k), .false.)
+        !$ser verbatim if (nn .eq. 1) then
+            !$ser verbatim sf_e1 (k) = te1 (k)
+        !$ser verbatim endif
     enddo
-    
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim sf_dm = dm
-        !$ser verbatim sf_e1 = te1
-    !$ser verbatim endif
 
     ! -----------------------------------------------------------------------
     ! sedimentation
