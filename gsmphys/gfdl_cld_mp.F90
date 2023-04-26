@@ -2513,7 +2513,7 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     !$ser verbatim endif
 
     call terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
-!$ser verbatim tf_ze, tf_zt,&
+!$ser verbatim tf_ze, tf_zt, nn,&
         vti, i1, pfi, u, v, w, dte, "qi")
     
     !$ser verbatim if (nn .eq. 1) then
@@ -2549,7 +2549,7 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     endif
     
     call terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
-!$ser verbatim ze_buf, zt_buf,&
+!$ser verbatim ze_buf, zt_buf, nn,&
         vts, s1, pfs, u, v, w, dte, "qs")
     
     pfs (ks) = max (0.0, pfs (ks))
@@ -2573,7 +2573,7 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     endif
     
     call terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
-!$ser verbatim ze_buf, zt_buf,&
+!$ser verbatim ze_buf, zt_buf, nn,&
         vtg, g1, pfg, u, v, w, dte, "qg")
     
     pfg (ks) = max (0.0, pfg (ks))
@@ -2590,7 +2590,7 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
         call term_rsg (ks, ke, ql, den, denfac, vw_fac, blinw, muw, tvaw, tvbw, vw_max, const_vw, vtw)
     
         call terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
-!$ser verbatim ze_buf, zt_buf,&
+!$ser verbatim ze_buf, zt_buf, nn,&
             vtw, w1, pfw, u, v, w, dte, "ql")
 
         pfw (ks) = max (0.0, pfw (ks))
@@ -2607,7 +2607,7 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     call term_rsg (ks, ke, qr, den, denfac, vr_fac, blinr, mur, tvar, tvbr, vr_max, const_vr, vtr)
     
     call terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
-!$ser verbatim ze_buf, zt_buf,&
+!$ser verbatim ze_buf, zt_buf, nn,&
         vtr, r1, pfr, u, v, w, dte, "qr")
     
     pfr (ks) = max (0.0, pfr (ks))
@@ -2829,7 +2829,7 @@ end subroutine sedi_melt
 ! =======================================================================
 
 subroutine terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
-!$ser verbatim tf_ze, tf_zt,&
+!$ser verbatim tf_ze, tf_zt, nn,&
         vt, x1, m1, u, v, w, dte, qflag)
     
     implicit none
@@ -2839,6 +2839,7 @@ subroutine terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     ! -----------------------------------------------------------------------
     
     integer, intent (in) :: ks, ke
+    !$ser verbatim integer, intent(in) :: nn
     
     real, intent (in) :: dts
     
@@ -2877,8 +2878,10 @@ subroutine terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     
     call zezt (ks, ke, dts, zs, dz, vt, ze, zt)
 
-    !$ser verbatim tf_ze=ze
-    !$ser verbatim tf_zt=zt
+    !$ser verbatim if (nn .eq. 1) then
+        !$ser verbatim tf_ze=ze
+        !$ser verbatim tf_zt=zt
+    !$ser verbatim endif
     
     select case (qflag)
         case ("ql")
