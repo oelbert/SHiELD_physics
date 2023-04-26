@@ -1946,7 +1946,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser savepoint ZeZt-Out
     !$ser data zz_ze=tf_ze zz_zt=tf_zt
 
-    !$ser savepoint StartFall-In
+    !$ser savepoint StartFall-Out
     !$ser data sf_dm=sf_dm sf_e1=sf_e1 sf_nf=sf_nf
 
 end subroutine mpdrv
