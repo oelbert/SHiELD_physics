@@ -1235,7 +1235,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim real, dimension (is:ie, ks:ke) :: zerobuff_3d
 
     !$ser verbatim real, dimension (is:ie, ks:ke + 1) :: tf_ze, tf_zt, zerobuff1_3d
-    !$ser verbatim real, dimension (length) :: tem, t0, t2
+    !$ser verbatim real, dimension (is:ie, 1:length) :: tem, t0, t2
 
     !$ser verbatim integer :: mpi_rank, ier, ii
     !$ser verbatim logical :: ser_on
@@ -1248,21 +1248,6 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser verbatim t0=0.
     !$ser verbatim t2=0.
-
-    !$ser verbatim do ii = 1, length
-        !$ser verbatim tem (ii) = tice - 160. + 0.1 * real (ii - 1)
-    !$ser verbatim enddo
-
-    !$ser savepoint TableComputation-In
-    !$ser data tc_temp=tem tc_t0=t0 tc_t2=t2
-
-    !$ser verbatim do ii = 1, length
-        !$ser verbatim t0 (ii) = table0 (ii)
-        !$ser verbatim t2 (ii) = table2 (ii)
-    !$ser verbatim enddo
-
-    !$ser savepoint TableComputation-Out
-    !$ser data tc_t0=t0 tc_t2=t2
 
     ! -----------------------------------------------------------------------
     ! time steps
@@ -1286,6 +1271,15 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     convt = 86400. * rgrav / dts
     
     do i = is, ie
+
+        !$ser verbatim do ii = 1, length
+            !$ser verbatim tem (i, ii) = tice - 160. + 0.1 * real (ii - 1)
+        !$ser verbatim enddo
+
+        !$ser verbatim do ii = 1, length
+            !$ser verbatim t0 (i, ii) = table0 (ii)
+            !$ser verbatim t2 (i, ii) = table2 (ii)
+        !$ser verbatim enddo
         
         ! -----------------------------------------------------------------------
         ! conversion of temperature
@@ -1931,7 +1925,12 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data sf_dm=zerobuff_3d sf_e1=zerobuff_3d sf_nf=onebuff_2d sf_qf=tfi_qi sf_qv=tfi_qv sf_ql=tfi_ql sf_qr=tfi_qr sf_qi=tfi_qi sf_qs=tfi_qs sf_qg=tfi_qg
     !$ser data sf_delp=tf_dp sf_pt=tfi_pt
 
+    !$ser savepoint TableComputation-In
+    !$ser data tc_temp=tem tc_t0=t0 tc_t2=t2
+
+
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
+
 
     !$ser savepoint NegAdjP-Out
     !$ser data ne_qv=ne_qv_o ne_ql=ne_ql_o ne_qr=ne_qr_o ne_qi=ne_qi_o ne_qs=ne_qs_o ne_qg=ne_qg_o ne_pt=ne_pt_o ne_delp=ne_delp_o ne_cond=ne_cond_o
@@ -1968,6 +1967,9 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser savepoint StartFall-Out
     !$ser data sf_dm=sf_dm sf_e1=sf_e1 sf_nf=sf_nf
+
+    !$ser savepoint TableComputation-Out
+    !$ser data tc_t0=t0 tc_t2=t2
 
 end subroutine mpdrv
 
