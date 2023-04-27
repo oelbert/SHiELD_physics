@@ -1250,15 +1250,15 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim t2=0.
 
     !$ser verbatim do ii = 1, length
-        !$ser verbatim tem (i) = tice - 160. + 0.1 * real (i - 1)
+        !$ser verbatim tem (ii) = tice - 160. + 0.1 * real (ii - 1)
     !$ser verbatim enddo
 
     !$ser savepoint TableComputation-In
     !$ser data tc_temp=tem tc_t0=t0 tc_t2=t2
 
     !$ser verbatim do ii = 1, length
-        !$ser verbatim t0 (i) = table0 (i)
-        !$ser verbatim t2 (i) = table2 (i)
+        !$ser verbatim t0 (ii) = table0 (ii)
+        !$ser verbatim t2 (ii) = table2 (ii)
     !$ser verbatim enddo
 
     !$ser savepoint TableComputation-Out
