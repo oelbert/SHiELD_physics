@@ -1235,6 +1235,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim real, dimension (is:ie, ks:ke) :: zerobuff_3d
 
     !$ser verbatim real, dimension (is:ie, ks:ke + 1) :: tf_ze, tf_zt, zerobuff1_3d
+    !$ser verbatim real, dimension (length) :: tem, t0, t2
 
     !$ser verbatim integer :: mpi_rank, ier, ii
     !$ser verbatim logical :: ser_on
@@ -1244,8 +1245,6 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim zerobuff1_3d = 0.0
     !$ser verbatim zerobuff_2d = 0.0
     !$ser verbatim onebuff_2d = 1.0
-
-    !$ser verbatim real, dimension (length) :: tem, t0, t2
 
     !$ser verbatim t0=0.
     !$ser verbatim t2=0.
