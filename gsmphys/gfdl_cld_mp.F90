@@ -1236,7 +1236,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser verbatim real, dimension (is:ie, ks:ke + 1) :: tf_ze, tf_zt, zerobuff1_3d
 
-    !$ser verbatim integer :: mpi_rank,ier
+    !$ser verbatim integer :: mpi_rank, ier, ii
     !$ser verbatim logical :: ser_on
     !$ser verbatim  call mpi_comm_rank(MPI_COMM_WORLD, mpi_rank,ier)
     !$ser verbatim print *, 'INFO: inside mp_driver'
@@ -1244,6 +1244,26 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim zerobuff1_3d = 0.0
     !$ser verbatim zerobuff_2d = 0.0
     !$ser verbatim onebuff_2d = 1.0
+
+    !$ser verbatim real, dimension (length) :: tem, t0, t2
+
+    !$ser verbatim t0=0.
+    !$ser verbatim t2=0.
+
+    !$ser verbatim do ii = 1, length
+        !$ser verbatim tem (i) = tice - 160. + 0.1 * real (i - 1)
+    !$ser verbatim enddo
+
+    !$ser savepoint TableComputation-In
+    !$ser data tc_temp=tem tc_t0=t0 tc_t2=t2
+
+    !$ser verbatim do ii = 1, length
+        !$ser verbatim t0 (i) = table0 (i)
+        !$ser verbatim t2 (i) = table2 (i)
+    !$ser verbatim enddo
+
+    !$ser savepoint TableComputation-Out
+    !$ser data tc_t0=t0 tc_t2=t2
 
     ! -----------------------------------------------------------------------
     ! time steps
@@ -7289,13 +7309,8 @@ subroutine qs_init
     implicit none
     
     integer :: i
-    !$ser verbatim real, dimension (length) :: tem
     
     if (.not. tables_are_initialized) then
-
-        !$ser verbatim do i = 1, length
-            !$ser verbatim tem (i) = tice - 160. + 0.1 * real (i - 1)
-        !$ser verbatim enddo
         
         allocate (table0 (length))
         allocate (table1 (length))
@@ -7308,18 +7323,12 @@ subroutine qs_init
         allocate (des2 (length))
         allocate (des3 (length))
         allocate (des4 (length))
-
-        !$ser savepoint TableComputation-In
-        !$ser data tc_temp=tem tc_t0=table0 tc_t2=table2
         
         call qs_table0 (length)
         call qs_table1 (length)
         call qs_table2 (length)
         call qs_table3 (length)
         call qs_table4 (length)
-
-        !$ser savepoint TableComputation-Out
-        !$ser data tc_t0=table0 tc_t2=table2
         
         do i = 1, length - 1
             des0 (i) = max (0., table0 (i + 1) - table0 (i))
