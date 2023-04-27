@@ -2894,6 +2894,8 @@ subroutine terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     !$ser verbatim if (nn .eq. 1) then
         !$ser verbatim tf_ze=ze
         !$ser verbatim tf_zt=zt
+        !$ser verbatim sf_dm=0.0
+        !$ser verbatim sf_e1=0.0
         !$ser verbatim sf_nf=0.0
     !$ser verbatim endif
     
@@ -2916,9 +2918,7 @@ subroutine terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     
     !$ser verbatim if (nn .eq. 1) then
         !$ser verbatim if (no_fall) then
-            !$ser verbatim sf_dm=0.0
             !$ser verbatim sf_nf=1.0
-            !$ser verbatim sf_e1=0.0
         !$ser verbatim endif
     !$ser verbatim endif
 
@@ -2931,9 +2931,6 @@ subroutine terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     if (do_sedi_w) then
         do k = ks, ke
             dm (k) = dp (k) * (1. + qv (k) + ql (k) + qr (k) + qi (k) + qs (k) + qg (k))
-            !$ser verbatim if (nn .eq. 1) then
-                !$ser verbatim sf_dm (k) = dm (k)
-            !$ser verbatim endif
         enddo
     endif
     
@@ -2943,10 +2940,12 @@ subroutine terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     
     do k = ks, ke
         te1 (k) = mte (qv (k), ql (k), qr (k), qi (k), qs (k), qg (k), tz (k), dp (k), .false.)
-        !$ser verbatim if (nn .eq. 1) then
-            !$ser verbatim sf_e1 (k) = te1 (k)
-        !$ser verbatim endif
     enddo
+    
+    !$ser verbatim if (nn .eq. 1) then
+        !$ser verbatim sf_e1=te1
+        !$ser verbatim sf_dm=dm
+    !$ser verbatim endif
 
     ! -----------------------------------------------------------------------
     ! sedimentation
@@ -7290,8 +7289,13 @@ subroutine qs_init
     implicit none
     
     integer :: i
+    !$ser verbatim real, dimension (length) :: tem
     
     if (.not. tables_are_initialized) then
+
+        !$ser verbatim do i = 1, length
+            !$ser verbatim tem (i) = tice - 160. + 0.1 * real (i - 1)
+        !$ser verbatim enddo
         
         allocate (table0 (length))
         allocate (table1 (length))
@@ -7304,12 +7308,18 @@ subroutine qs_init
         allocate (des2 (length))
         allocate (des3 (length))
         allocate (des4 (length))
+
+        !$ser savepoint TableComputation-In
+        !$ser data tc_temp=tem tc_t0=table0 tc_t2=table2
         
         call qs_table0 (length)
         call qs_table1 (length)
         call qs_table2 (length)
         call qs_table3 (length)
         call qs_table4 (length)
+
+        !$ser savepoint TableComputation-Out
+        !$ser data tc_t0=table0 tc_t2=table2
         
         do i = 1, length - 1
             des0 (i) = max (0., table0 (i + 1) - table0 (i))
