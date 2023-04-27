@@ -2894,8 +2894,6 @@ subroutine terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     !$ser verbatim if (nn .eq. 1) then
         !$ser verbatim tf_ze=ze
         !$ser verbatim tf_zt=zt
-        !$ser verbatim sf_dm=0.0
-        !$ser verbatim sf_e1=0.0
         !$ser verbatim sf_nf=0.0
     !$ser verbatim endif
     
@@ -2918,7 +2916,9 @@ subroutine terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     
     !$ser verbatim if (nn .eq. 1) then
         !$ser verbatim if (no_fall) then
+            !$ser verbatim sf_dm=0.0
             !$ser verbatim sf_nf=1.0
+            !$ser verbatim sf_e1=0.0
         !$ser verbatim endif
     !$ser verbatim endif
 
