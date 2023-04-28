@@ -2915,6 +2915,7 @@ subroutine terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
         !$ser verbatim sf_dm=0.0
         !$ser verbatim sf_e1=0.0
         !$ser verbatim sf_nf=0.0
+        !$ser verbatim dm=0.0
     !$ser verbatim endif
     
     select case (qflag)
