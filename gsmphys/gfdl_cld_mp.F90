@@ -573,6 +573,12 @@ subroutine gfdl_cld_mp_init (input_nml_file, logunit, hydrostatic)
     write (logunit, *) "gfdl_mp_mod"
     write (logunit, nml = gfdl_mp_nml)
     
+    if (hydrostatic) then
+        print *, 'INFO: hydrostatic init'
+    else
+        print *, 'INFO: nonhydrostatic init'
+    endif
+
     ! -----------------------------------------------------------------------
     ! initialize microphysics variables
     ! -----------------------------------------------------------------------
@@ -3025,7 +3031,6 @@ subroutine terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     ! -----------------------------------------------------------------------
     
     if (do_sedi_uv) then
-        !$ser verbatim print *, 'INFO: sedi_uv ON'
         call sedi_uv (ks, ke, m1, dp, u, v)
     endif
     
