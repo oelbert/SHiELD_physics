@@ -1232,10 +1232,9 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim real, dimension (is:ie, ks:ke) :: tfo_qv, tfo_ql, tfo_qr, tfo_qi, tfo_qs, tfo_qg, tfo_u, tfo_v, tfo_w
     !$ser verbatim real, dimension (is:ie, ks:ke) :: tfi_pt, tfi_pfi, tfo_pt, tfo_pfi, sf_dm, sf_e1
 
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: zerobuff_3d
+    !$ser verbatim real, dimension (is:ie, ks:ke) :: zerobuff_3d, tem, t0, t2
 
     !$ser verbatim real, dimension (is:ie, ks:ke + 1) :: tf_ze, tf_zt, zerobuff1_3d
-    !$ser verbatim real, dimension (is:ie, 1:length) :: tem, t0, t2
 
     !$ser verbatim integer :: mpi_rank, ier, ii
     !$ser verbatim logical :: ser_on
@@ -1272,13 +1271,11 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     
     do i = is, ie
 
-        !$ser verbatim do ii = 1, length
-            !$ser verbatim tem (i, ii) = tice - 160. + 0.1 * real (ii - 1)
-        !$ser verbatim enddo
-
-        !$ser verbatim do ii = 1, length
-            !$ser verbatim t0 (i, ii) = table0 (ii)
-            !$ser verbatim t2 (i, ii) = table2 (ii)
+        !$ser verbatim do k = ks, ke
+            !$ser verbatim ii = k + ke * (i - 1)
+            !$ser verbatim tem (i, k) = tice - 160. + 0.1 * real (ii - 1)
+            !$ser verbatim t0 (i, k) = table0 (ii)
+            !$ser verbatim t2 (i, k) = table2 (ii)
         !$ser verbatim enddo
         
         ! -----------------------------------------------------------------------
@@ -2951,6 +2948,7 @@ subroutine terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     
     if (do_sedi_w) then
         do k = ks, ke
+            !$ser verbatim print *, 'INFO: sedi_w ON'
             dm (k) = dp (k) * (1. + qv (k) + ql (k) + qr (k) + qi (k) + qs (k) + qg (k))
         enddo
     endif
