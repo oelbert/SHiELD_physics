@@ -1272,7 +1272,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     do i = is, ie
 
         !$ser verbatim do k = ks, ke
-            !$ser verbatim ii = k + ke * (i - 1)
+            !$ser verbatim ii = mod(k + ke * (i - 1), length)
             !$ser verbatim tem (i, k) = tice - 160. + 0.1 * real (ii - 1)
             !$ser verbatim t0 (i, k) = table0 (ii)
             !$ser verbatim t2 (i, k) = table2 (ii)
