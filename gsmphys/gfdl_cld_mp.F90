@@ -3025,6 +3025,7 @@ subroutine terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     ! -----------------------------------------------------------------------
     
     if (do_sedi_uv) then
+        !$ser verbatim print *, 'INFO: sedi_uv ON'
         call sedi_uv (ks, ke, m1, dp, u, v)
     endif
     
