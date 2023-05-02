@@ -1225,15 +1225,15 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser verbatim real, dimension (is:ie) :: zerobuff_2d, onebuff_2d
 
-    !$ser verbatim real, dimension (is:ie) :: ini_c_air ini_c_vap ini_d0_vap ini_lv00 ini_li00 ini_li20 ini_d1_vap ini_d1_ice ini_c1_vap ini_c1_liq ini_c1_ice ini_n_min ini_delt ini_esbasw ini_tbasw ini_esbasi
-    !$ser verbatim real, dimension (is:ie) :: ini_tmin ini_t_wfr ini_pcaw ini_pcbw ini_pcai ini_pcbi ini_pcar ini_pcbr ini_pcas ini_pcbs ini_pcag ini_pcbg ini_pcah ini_pcbh ini_edaw ini_edbw ini_edai ini_edbi ini_edar ini_edbr
-    !$ser verbatim real, dimension (is:ie) :: ini_edas ini_edbs ini_edag ini_edbg ini_edah ini_edbh ini_oeaw ini_oebw ini_oeai ini_oebi ini_oear ini_oebr ini_oeas ini_oebs ini_oeag ini_oebg ini_oeah ini_oebh ini_rraw ini_rrbw
-    !$ser verbatim real, dimension (is:ie) :: ini_rrai ini_rrbi ini_rrar ini_rrbr ini_rras ini_rrbs ini_rrag ini_rrbg ini_rrah ini_rrbh ini_tvai ini_tvbi ini_tvar ini_tvbr ini_tvas ini_tvbs ini_tvag ini_tvbg ini_tvah ini_tvbh 
-    !$ser verbatim real, dimension (is:ie) :: ini_crevp_1 ini_crevp_2 ini_crevp_3 ini_crevp_4 ini_crevp_5 ini_cssub_1 ini_cssub_2 ini_cssub_3 ini_cssub_4 ini_cssub_5 ini_cgsub_1 ini_cgsub_2 ini_cgsub_3 ini_cgsub_4 ini_cgsub_5
-    !$ser verbatim real, dimension (is:ie) :: ini_csmelt_1 ini_csmelt_2 ini_csmelt_3 ini_csmelt_4 ini_cgmelt_1 ini_cgmelt_2 ini_cgmelt_3 ini_cgmelt_4 ini_cgfr_1 ini_cgfr_2 ini_normw ini_normr ini_normi ini_norms
-    !$ser verbatim real, dimension (is:ie) :: ini_normg ini_expow ini_expor ini_expoi ini_expos ini_expog ini_cracw ini_craci ini_csacw ini_csaci ini_cgacw ini_cgaci ini_cracs ini_csacr ini_cgacr ini_cgacs
+    !$ser verbatim real, dimension (is:ie) :: ini_c_air, ini_c_vap, ini_d0_vap, ini_lv00, ini_li00, ini_li20, ini_d1_vap, ini_d1_ice, ini_c1_vap, ini_c1_liq, ini_c1_ice, ini_n_min, ini_delt, ini_esbasw, ini_tbasw, ini_esbasi
+    !$ser verbatim real, dimension (is:ie) :: ini_tmin, ini_t_wfr, ini_pcaw, ini_pcbw, ini_pcai, ini_pcbi, ini_pcar, ini_pcbr, ini_pcas, ini_pcbs, ini_pcag, ini_pcbg, ini_pcah, ini_pcbh, ini_edaw, ini_edbw, ini_edai, ini_edbi, ini_edar, ini_edbr
+    !$ser verbatim real, dimension (is:ie) :: ini_edas, ini_edbs, ini_edag, ini_edbg, ini_edah, ini_edbh, ini_oeaw, ini_oebw, ini_oeai, ini_oebi, ini_oear, ini_oebr, ini_oeas, ini_oebs, ini_oeag, ini_oebg, ini_oeah, ini_oebh, ini_rraw, ini_rrbw
+    !$ser verbatim real, dimension (is:ie) :: ini_rrai, ini_rrbi, ini_rrar, ini_rrbr, ini_rras, ini_rrbs, ini_rrag, ini_rrbg, ini_rrah, ini_rrbh, ini_tvai, ini_tvbi, ini_tvar, ini_tvbr, ini_tvas, ini_tvbs, ini_tvag, ini_tvbg, ini_tvah, ini_tvbh 
+    !$ser verbatim real, dimension (is:ie) :: ini_crevp_1, ini_crevp_2, ini_crevp_3, ini_crevp_4, ini_crevp_5, ini_cssub_1, ini_cssub_2, ini_cssub_3, ini_cssub_4, ini_cssub_5, ini_cgsub_1, ini_cgsub_2, ini_cgsub_3, ini_cgsub_4, ini_cgsub_5
+    !$ser verbatim real, dimension (is:ie) :: ini_csmelt_1, ini_csmelt_2, ini_csmelt_3, ini_csmelt_4, ini_cgmelt_1, ini_cgmelt_2, ini_cgmelt_3, ini_cgmelt_4, ini_cgfr_1, ini_cgfr_2, ini_normw, ini_normr, ini_normi, ini_norms
+    !$ser verbatim real, dimension (is:ie) :: ini_normg, ini_expow, ini_expor, ini_expoi, ini_expos, ini_expog, ini_cracw, ini_craci, ini_csacw, ini_csaci, ini_cgacw, ini_cgaci, ini_cracs, ini_csacr, ini_cgacr, ini_cgacs
     !$ser verbatim real, dimension (is:ie, 1:20) :: ini_acc
-    !$ser verbatim real, dimension (is:ie, 1:10) :: ini_acco1 ini_acco2, ini_acco3
+    !$ser verbatim real, dimension (is:ie, 1:10) :: ini_acco1, ini_acco2, ini_acco3
 
     !$ser verbatim real, dimension (is:ie, ks:ke) :: ne_qv, ne_ql, ne_qr, ne_qi, ne_qs, ne_qg, ne_pt, ne_delp
     !$ser verbatim real, dimension (is:ie, ks:ke) :: ne_qv_o, ne_ql_o, ne_qr_o, ne_qi_o, ne_qs_o, ne_qg_o, ne_pt_o, ne_delp_o
