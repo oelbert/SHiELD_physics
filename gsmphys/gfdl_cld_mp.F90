@@ -2816,9 +2816,9 @@ subroutine sedi_melt (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     ! -----------------------------------------------------------------------
     
     integer, intent (in) :: ks, ke
+    !$ser verbatim integer, intent (in) :: nn
     
     real, intent (in) :: dts, tau_mlt
-    !$ser verbatim real, intent (in) :: nn
     !$ser verbatim real, intent (out) :: sm_zs
     
     real, intent (in), dimension (ks:ke) :: vt, dp, dz, icpk
