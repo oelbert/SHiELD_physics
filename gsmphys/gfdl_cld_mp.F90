@@ -1225,12 +1225,12 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser verbatim real, dimension (is:ie) :: zerobuff_2d, onebuff_2d
 
-    !$ser verbatim real, dimension (is:ie) :: ini_c_air, ini_c_vap, ini_d0_vap, ini_lv00, ini_li00, ini_li20, ini_d1_vap, ini_d1_ice, ini_c1_vap, ini_c1_liq, ini_c1_ice, ini_n_min, ini_delt, ini_esbasw, ini_tbasw, ini_esbasi
-    !$ser verbatim real, dimension (is:ie) :: ini_tmin, ini_t_wfr, ini_pcaw, ini_pcbw, ini_pcai, ini_pcbi, ini_pcar, ini_pcbr, ini_pcas, ini_pcbs, ini_pcag, ini_pcbg, ini_pcah, ini_pcbh, ini_edaw, ini_edbw, ini_edai, ini_edbi, ini_edar, ini_edbr
+    !$ser verbatim real, dimension (is:ie) :: ini_c_air, ini_c_vap, ini_d0_vap, ini_lv00, ini_li00, ini_li20, ini_d1_vap, ini_d1_ice, ini_c1_vap, ini_c1_liq, ini_c1_ice
+    !$ser verbatim real, dimension (is:ie) :: ini_t_wfr, ini_pcaw, ini_pcbw, ini_pcai, ini_pcbi, ini_pcar, ini_pcbr, ini_pcas, ini_pcbs, ini_pcag, ini_pcbg, ini_pcah, ini_pcbh, ini_edaw, ini_edbw, ini_edai, ini_edbi, ini_edar, ini_edbr
     !$ser verbatim real, dimension (is:ie) :: ini_edas, ini_edbs, ini_edag, ini_edbg, ini_edah, ini_edbh, ini_oeaw, ini_oebw, ini_oeai, ini_oebi, ini_oear, ini_oebr, ini_oeas, ini_oebs, ini_oeag, ini_oebg, ini_oeah, ini_oebh, ini_rraw, ini_rrbw
     !$ser verbatim real, dimension (is:ie) :: ini_rrai, ini_rrbi, ini_rrar, ini_rrbr, ini_rras, ini_rrbs, ini_rrag, ini_rrbg, ini_rrah, ini_rrbh, ini_tvai, ini_tvbi, ini_tvar, ini_tvbr, ini_tvas, ini_tvbs, ini_tvag, ini_tvbg, ini_tvah, ini_tvbh 
     !$ser verbatim real, dimension (is:ie) :: ini_crevp_1, ini_crevp_2, ini_crevp_3, ini_crevp_4, ini_crevp_5, ini_cssub_1, ini_cssub_2, ini_cssub_3, ini_cssub_4, ini_cssub_5, ini_cgsub_1, ini_cgsub_2, ini_cgsub_3, ini_cgsub_4, ini_cgsub_5
-    !$ser verbatim real, dimension (is:ie) :: ini_csmelt_1, ini_csmelt_2, ini_csmelt_3, ini_csmelt_4, ini_cgmelt_1, ini_cgmelt_2, ini_cgmelt_3, ini_cgmelt_4, ini_cgfr_1, ini_cgfr_2, ini_normw, ini_normr, ini_normi, ini_norms
+    !$ser verbatim real, dimension (is:ie) :: ini_csmlt_1, ini_csmlt_2, ini_csmlt_3, ini_csmlt_4, ini_csmlt_1, ini_csmlt_2, ini_csmlt_3, ini_csmlt_4, ini_cgfr_1, ini_cgfr_2, ini_normw, ini_normr, ini_normi, ini_norms
     !$ser verbatim real, dimension (is:ie) :: ini_normg, ini_expow, ini_expor, ini_expoi, ini_expos, ini_expog, ini_cracw, ini_craci, ini_csacw, ini_csaci, ini_cgacw, ini_cgaci, ini_cracs, ini_csacr, ini_cgacr, ini_cgacs
     !$ser verbatim real, dimension (is:ie, 1:20) :: ini_acc
     !$ser verbatim real, dimension (is:ie, 1:10) :: ini_acco1, ini_acco2, ini_acco3
@@ -1907,12 +1907,6 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
         !$ser verbatim ini_c1_vap (i)=c1_vap
         !$ser verbatim ini_c1_liq (i)=c1_liq
         !$ser verbatim ini_c1_ice (i)=c1_ice
-        !$ser verbatim ini_n_min (i)=n_min
-        !$ser verbatim ini_delt (i)=delt
-        !$ser verbatim ini_esbasw (i)=esbasw
-        !$ser verbatim ini_tbasw (i)=tbasw
-        !$ser verbatim ini_esbasi (i)=esbasi
-        !$ser verbatim ini_tmin (i)=tmin
         !$ser verbatim ini_t_wfr (i)=t_wfr
         !$ser verbatim ini_pcaw (i)=pcaw
         !$ser verbatim ini_pcbw (i)=pcbw
@@ -1987,14 +1981,14 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
         !$ser verbatim ini_cgsub_3 (i)=cgsub (3)
         !$ser verbatim ini_cgsub_4 (i)=cgsub (4)
         !$ser verbatim ini_cgsub_5 (i)=cgsub (5)
-        !$ser verbatim ini_csmelt_1 (i)=csmelt (1)
-        !$ser verbatim ini_csmelt_2 (i)=csmelt (2)
-        !$ser verbatim ini_csmelt_3 (i)=csmelt (3)
-        !$ser verbatim ini_csmelt_4 (i)=csmelt (4)
-        !$ser verbatim ini_cgmelt_1 (i)=cgmelt (1)
-        !$ser verbatim ini_cgmelt_2 (i)=cgmelt (2)
-        !$ser verbatim ini_cgmelt_3 (i)=cgmelt (3)
-        !$ser verbatim ini_cgmelt_4 (i)=cgmelt (4)
+        !$ser verbatim ini_csmlt_1 (i)=csmlt (1)
+        !$ser verbatim ini_csmlt_2 (i)=csmlt (2)
+        !$ser verbatim ini_csmlt_3 (i)=csmlt (3)
+        !$ser verbatim ini_csmlt_4 (i)=csmlt (4)
+        !$ser verbatim ini_csmlt_1 (i)=csmlt (1)
+        !$ser verbatim ini_csmlt_2 (i)=csmlt (2)
+        !$ser verbatim ini_csmlt_3 (i)=csmlt (3)
+        !$ser verbatim ini_csmlt_4 (i)=csmlt (4)
         !$ser verbatim ini_cgfr_1 (i)=cgfr (1)
         !$ser verbatim ini_cgfr_2 (i)=cgfr (2)
         !$ser verbatim ini_normw (i)=normw
@@ -2030,8 +2024,8 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser savepoint ConfigInit-In
     !$ser data ini_c_air=ini_c_air ini_c_vap=ini_c_vap ini_d0_vap=ini_d0_vap ini_lv00=ini_lv00 ini_li00=ini_li00 ini_li20=ini_li20 ini_d1_vap=ini_d1_vap ini_d1_ice=ini_d1_ice
-    !$ser data ini_c1_vap=ini_c1_vap ini_c1_liq=ini_c1_liq ini_c1_ice=ini_c1_ice ini_n_min=ini_n_min ini_delt=ini_delt ini_esbasw=ini_esbasw ini_tbasw=ini_tbasw
-    !$ser data ini_esbasi=ini_esbasi ini_tmin=ini_tmin ini_t_wfr=ini_t_wfr ini_pcaw=ini_pcaw ini_pcbw=ini_pcbw ini_pcai=ini_pcai ini_pcbi=ini_pcbi ini_pcar=ini_pcar
+    !$ser data ini_c1_vap=ini_c1_vap ini_c1_liq=ini_c1_liq ini_c1_ice=ini_c1_ice
+    !$ser data ini_t_wfr=ini_t_wfr ini_pcaw=ini_pcaw ini_pcbw=ini_pcbw ini_pcai=ini_pcai ini_pcbi=ini_pcbi ini_pcar=ini_pcar
     !$ser data ini_pcbr=ini_pcbr ini_pcas=ini_pcas ini_pcbs=ini_pcbs ini_pcag=ini_pcag ini_pcbg=ini_pcbg ini_pcah=ini_pcah ini_pcbh=ini_pcbh ini_edaw=ini_edaw ini_edbw=ini_edbw
     !$ser data ini_edai=ini_edai ini_edbi=ini_edbi ini_edar=ini_edar ini_edbr=ini_edbr ini_edas=ini_edas ini_edbs=ini_edbs ini_edag=ini_edag ini_edbg=ini_edbg ini_edah=ini_edah
     !$ser data ini_edbh=ini_edbh ini_oeaw=ini_oeaw ini_oebw=ini_oebw ini_oeai=ini_oeai ini_oebi=ini_oebi ini_oear=ini_oear ini_oebr=ini_oebr ini_oeas=ini_oeas ini_oebs=ini_oebs
@@ -2040,8 +2034,8 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data ini_tvar=ini_tvar ini_tvbr=ini_tvbr ini_tvas=ini_tvas ini_tvbs=ini_tvbs ini_tvag=ini_tvag ini_tvbg=ini_tvbg ini_tvah=ini_tvah ini_tvbh=ini_tvbh
     !$ser data ini_crevp_1=ini_crevp_1 ini_crevp_2=ini_crevp_2 ini_crevp_3=ini_crevp_3 ini_crevp_4=ini_crevp_4 ini_crevp_5=ini_crevp_5 ini_cssub_1=ini_cssub_1 
     !$ser data ini_cssub_2=ini_cssub_2 ini_cssub_3=ini_cssub_3 ini_cssub_4=ini_cssub_4 ini_cssub_5=ini_cssub_5 ini_cgsub_1=ini_cgsub_1 ini_cgsub_2=ini_cgsub_2
-    !$ser data ini_cgsub_3=ini_cgsub_3 ini_cgsub_4=ini_cgsub_4 ini_cgsub_5=ini_cgsub_5 ini_csmelt_1=ini_csmelt_1 ini_csmelt_2=ini_csmelt_2 ini_csmelt_3=ini_csmelt_3
-    !$ser data ini_csmelt_4=ini_csmelt_4 ini_cgmelt_1=ini_cgmelt_1 ini_cgmelt_2=ini_cgmelt_2 ini_cgmelt_3=ini_cgmelt_3 ini_cgmelt_4=ini_cgmelt_4 ini_cgfr_1=ini_cgfr_1
+    !$ser data ini_cgsub_3=ini_cgsub_3 ini_cgsub_4=ini_cgsub_4 ini_cgsub_5=ini_cgsub_5 ini_csmlt_1=ini_csmlt_1 ini_csmlt_2=ini_csmlt_2 ini_csmlt_3=ini_csmlt_3
+    !$ser data ini_csmlt_4=ini_csmlt_4 ini_csmlt_1=ini_csmlt_1 ini_csmlt_2=ini_csmlt_2 ini_csmlt_3=ini_csmlt_3 ini_csmlt_4=ini_csmlt_4 ini_cgfr_1=ini_cgfr_1
     !$ser data ini_cgfr_2=ini_cgfr_2 ini_normw=ini_normw ini_normr=ini_normr ini_normi=ini_normi ini_norms=ini_norms ini_normg=ini_normg ini_expow=ini_expow ini_expor=ini_expor
     !$ser data ini_expoi=ini_expoi ini_expos=ini_expos ini_expog=ini_expog ini_cracw=ini_cracw ini_craci=ini_craci ini_csacw=ini_csacw ini_csaci=ini_csaci ini_cgacw=ini_cgacw
     !$ser data ini_cgaci=ini_cgaci ini_cracs=ini_cracs ini_csacr=ini_csacr ini_cgacr=ini_cgacr ini_cgacs=ini_cgacs ini_acc=ini_acc ini_acco1=ini_acco1 ini_acco2=ini_acco2 ini_acco3=ini_acco3
@@ -2110,8 +2104,8 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser savepoint ConfigInit-Out
     !$ser data ini_c_air=ini_c_air ini_c_vap=ini_c_vap ini_d0_vap=ini_d0_vap ini_lv00=ini_lv00 ini_li00=ini_li00 ini_li20=ini_li20 ini_d1_vap=ini_d1_vap ini_d1_ice=ini_d1_ice
-    !$ser data ini_c1_vap=ini_c1_vap ini_c1_liq=ini_c1_liq ini_c1_ice=ini_c1_ice ini_n_min=ini_n_min ini_delt=ini_delt ini_esbasw=ini_esbasw ini_tbasw=ini_tbasw
-    !$ser data ini_esbasi=ini_esbasi ini_tmin=ini_tmin ini_t_wfr=ini_t_wfr ini_pcaw=ini_pcaw ini_pcbw=ini_pcbw ini_pcai=ini_pcai ini_pcbi=ini_pcbi ini_pcar=ini_pcar
+    !$ser data ini_c1_vap=ini_c1_vap ini_c1_liq=ini_c1_liq ini_c1_ice=ini_c1_ice
+    !$ser data ini_t_wfr=ini_t_wfr ini_pcaw=ini_pcaw ini_pcbw=ini_pcbw ini_pcai=ini_pcai ini_pcbi=ini_pcbi ini_pcar=ini_pcar
     !$ser data ini_pcbr=ini_pcbr ini_pcas=ini_pcas ini_pcbs=ini_pcbs ini_pcag=ini_pcag ini_pcbg=ini_pcbg ini_pcah=ini_pcah ini_pcbh=ini_pcbh ini_edaw=ini_edaw ini_edbw=ini_edbw
     !$ser data ini_edai=ini_edai ini_edbi=ini_edbi ini_edar=ini_edar ini_edbr=ini_edbr ini_edas=ini_edas ini_edbs=ini_edbs ini_edag=ini_edag ini_edbg=ini_edbg ini_edah=ini_edah
     !$ser data ini_edbh=ini_edbh ini_oeaw=ini_oeaw ini_oebw=ini_oebw ini_oeai=ini_oeai ini_oebi=ini_oebi ini_oear=ini_oear ini_oebr=ini_oebr ini_oeas=ini_oeas ini_oebs=ini_oebs
@@ -2120,8 +2114,8 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data ini_tvar=ini_tvar ini_tvbr=ini_tvbr ini_tvas=ini_tvas ini_tvbs=ini_tvbs ini_tvag=ini_tvag ini_tvbg=ini_tvbg ini_tvah=ini_tvah ini_tvbh=ini_tvbh
     !$ser data ini_crevp_1=ini_crevp_1 ini_crevp_2=ini_crevp_2 ini_crevp_3=ini_crevp_3 ini_crevp_4=ini_crevp_4 ini_crevp_5=ini_crevp_5 ini_cssub_1=ini_cssub_1 
     !$ser data ini_cssub_2=ini_cssub_2 ini_cssub_3=ini_cssub_3 ini_cssub_4=ini_cssub_4 ini_cssub_5=ini_cssub_5 ini_cgsub_1=ini_cgsub_1 ini_cgsub_2=ini_cgsub_2
-    !$ser data ini_cgsub_3=ini_cgsub_3 ini_cgsub_4=ini_cgsub_4 ini_cgsub_5=ini_cgsub_5 ini_csmelt_1=ini_csmelt_1 ini_csmelt_2=ini_csmelt_2 ini_csmelt_3=ini_csmelt_3
-    !$ser data ini_csmelt_4=ini_csmelt_4 ini_cgmelt_1=ini_cgmelt_1 ini_cgmelt_2=ini_cgmelt_2 ini_cgmelt_3=ini_cgmelt_3 ini_cgmelt_4=ini_cgmelt_4 ini_cgfr_1=ini_cgfr_1
+    !$ser data ini_cgsub_3=ini_cgsub_3 ini_cgsub_4=ini_cgsub_4 ini_cgsub_5=ini_cgsub_5 ini_csmlt_1=ini_csmlt_1 ini_csmlt_2=ini_csmlt_2 ini_csmlt_3=ini_csmlt_3
+    !$ser data ini_csmlt_4=ini_csmlt_4 ini_csmlt_1=ini_csmlt_1 ini_csmlt_2=ini_csmlt_2 ini_csmlt_3=ini_csmlt_3 ini_csmlt_4=ini_csmlt_4 ini_cgfr_1=ini_cgfr_1
     !$ser data ini_cgfr_2=ini_cgfr_2 ini_normw=ini_normw ini_normr=ini_normr ini_normi=ini_normi ini_norms=ini_norms ini_normg=ini_normg ini_expow=ini_expow ini_expor=ini_expor
     !$ser data ini_expoi=ini_expoi ini_expos=ini_expos ini_expog=ini_expog ini_cracw=ini_cracw ini_craci=ini_craci ini_csacw=ini_csacw ini_csaci=ini_csaci ini_cgacw=ini_cgacw
     !$ser data ini_cgaci=ini_cgaci ini_cracs=ini_cracs ini_csacr=ini_csacr ini_cgacr=ini_cgacr ini_cgacs=ini_cgacs ini_acc=ini_acc ini_acco1=ini_acco1 ini_acco2=ini_acco2 ini_acco3=ini_acco3
