@@ -160,6 +160,7 @@ module GFS_driver
 
     do nb = 1,nblks
       call Statein  (nb)%create (Init_parm%blksz(nb), Model)
+      Statein(nb)%dycore_hydrostatic = .false.
       call Stateout (nb)%create (Init_parm%blksz(nb), Model)
       call Sfcprop  (nb)%create (Init_parm%blksz(nb), Model)
       call Coupling (nb)%create (Init_parm%blksz(nb), Model)
