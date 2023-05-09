@@ -1282,8 +1282,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     do i = is, ie
 
         !$ser verbatim do k = ks, ke
-            !$ser verbatim ii = mod(k + ke * (i - 1), length) + 1
-            !$ser verbatim print*, 'index is ', ii
+            !$ser verbatim ii = mod((k - 1) + ke * (i - 1), length) + 1
             !$ser verbatim tem (i, k) = tice - 160. + 0.1 * real (ii - 1)
             !$ser verbatim t0 (i, k) = table0 (ii)
             !$ser verbatim t2 (i, k) = table2 (ii)
@@ -2713,6 +2712,12 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     ! terminal fall and melting of falling cloud ice into rain
     ! -----------------------------------------------------------------------
     
+    !$ser verbatim if (nn .eq. 1) then
+        !$ser savepoint SediIce-In
+        !$ser data si_qv=qv si_ql=ql si_qr=qr si_qi=qi si_qs=qs si_qg=qg si_den=den si_denfac=denfac si_delp=delp si_delz=delz
+        !$ser data si_pt=tz si_ua=u si_va=v si_wa=w si_dte=dte dt=dts si_pfi=pfi si_vti=vti si_r1=r1 sd_i1=i1 convt=dts
+    !$ser verbatim endif
+
     if (do_psd_ice_fall) then
         call term_rsg (ks, ke, qi, den, denfac, vi_fac, blini, mui, tvai, tvbi, vi_max, const_vi, vti)
     else
@@ -2773,6 +2778,12 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     do k = ke, ks + 1, -1
         pfi (k) = max (0.0, pfi (k) - pfi (k - 1))
     enddo
+
+    !$ser verbatim if (nn .eq. 1) then
+        !$ser savepoint SediIce-Out
+        !$ser data si_qv=qv si_ql=ql si_qr=qr si_qi=qi si_qs=qs si_qg=qg
+        !$ser data si_pt=tz si_ua=u si_va=v si_wa=w dt=dts si_pfi=pfi si_vti=vti si_r1=r1 sd_i1=i1
+    !$ser verbatim endif
 
     ! -----------------------------------------------------------------------
     ! terminal fall and melting of falling snow into rain
