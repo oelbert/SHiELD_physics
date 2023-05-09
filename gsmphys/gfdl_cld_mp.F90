@@ -572,12 +572,6 @@ subroutine gfdl_cld_mp_init (input_nml_file, logunit, hydrostatic)
     write (logunit, *) " ================================================================== "
     write (logunit, *) "gfdl_mp_mod"
     write (logunit, nml = gfdl_mp_nml)
-    
-    if (hydrostatic) then
-        print *, 'INFO: hydrostatic init'
-    else
-        print *, 'INFO: nonhydrostatic init'
-    endif
 
     ! -----------------------------------------------------------------------
     ! initialize microphysics variables
@@ -1289,6 +1283,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
         !$ser verbatim do k = ks, ke
             !$ser verbatim ii = mod(k + ke * (i - 1), length) + 1
+            !$ser verbatim print*, 'index is ', ii
             !$ser verbatim tem (i, k) = tice - 160. + 0.1 * real (ii - 1)
             !$ser verbatim t0 (i, k) = table0 (ii)
             !$ser verbatim t2 (i, k) = table2 (ii)
@@ -3181,7 +3176,6 @@ subroutine terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     
     if (do_sedi_w) then
         do k = ks, ke
-            !$ser verbatim print *, 'INFO: sedi_w ON'
             dm (k) = dp (k) * (1. + qv (k) + ql (k) + qr (k) + qi (k) + qs (k) + qg (k))
         enddo
     endif
