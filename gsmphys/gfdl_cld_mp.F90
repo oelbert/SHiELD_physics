@@ -2677,7 +2677,7 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     integer :: k
     
     !$ser verbatim real, dimension (ks:ke + 1) :: ze_buf, zt_buf
-    !$ser verbatim real, dimension (ks:ke) :: dm_buf ser_dp, ser_dz, ser_den, ser_denfac
+    !$ser verbatim real, dimension (ks:ke) :: dm_buf, ser_dp, ser_dz, ser_den, ser_denfac
     real, dimension (ks:ke) :: q_liq, q_sol, lcpk, icpk, tcpk, tcp3
     
     real (kind = r8), dimension (ks:ke) :: te8, cvm
