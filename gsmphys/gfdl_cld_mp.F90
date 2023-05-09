@@ -2652,7 +2652,7 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     
     real, intent (in) :: dts
     
-    real, intent (in), dimension (ks:ke) :: dp, dz, den, denfac
+    real, intent (inout), dimension (ks:ke) :: dp, dz, den, denfac
     
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg, u, v, w
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: tfi_qv, tfi_ql, tfi_qr, tfi_qi, tfi_qs, tfi_qg, tfi_u, tfi_v, tfi_w, tf_vt, tf_dp
