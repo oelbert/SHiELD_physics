@@ -2652,7 +2652,7 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     
     real, intent (in) :: dts
     
-    real, intent (inout), dimension (ks:ke) :: dp, dz, den, denfac
+    real, intent (in), dimension (ks:ke) :: dp, dz, den, denfac
     
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg, u, v, w
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: tfi_qv, tfi_ql, tfi_qr, tfi_qi, tfi_qs, tfi_qg, tfi_u, tfi_v, tfi_w, tf_vt, tf_dp
@@ -2677,12 +2677,17 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     integer :: k
     
     !$ser verbatim real, dimension (ks:ke + 1) :: ze_buf, zt_buf
-    !$ser verbatim real, dimension (ks:ke) :: dm_buf
+    !$ser verbatim real, dimension (ks:ke) :: dm_buf ser_dp, ser_dz, ser_den, ser_denfac
     real, dimension (ks:ke) :: q_liq, q_sol, lcpk, icpk, tcpk, tcp3
     
     real (kind = r8), dimension (ks:ke) :: te8, cvm
     !$ser verbatim real :: nf_buf, e1_buf, e2_buf
     
+    !$ser verbatim ser_dp (:) = dp (:)
+    !$ser verbatim ser_dz (:) = dz (:)
+    !$ser verbatim ser_den (:) = den (:)
+    !$ser verbatim ser_denfac (:) = denfac (:)
+
     w1 = 0.
     r1 = 0.
     i1 = 0.
@@ -2714,7 +2719,7 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     
     !$ser verbatim if (nn .eq. 1) then
         !$ser savepoint SediIce-In
-        !$ser data si_qv=qv si_ql=ql si_qr=qr si_qi=qi si_qs=qs si_qg=qg si_den=den si_denfac=denfac si_delp=dp si_delz=dz
+        !$ser data si_qv=qv si_ql=ql si_qr=qr si_qi=qi si_qs=qs si_qg=qg si_den=ser_den si_denfac=ser_denfac si_delp=ser_dp si_delz=ser_dz
         !$ser data si_pt=tz si_ua=u si_va=v si_wa=w si_dte=dte dt=dts si_pfi=pfi si_vti=vti si_r1=r1 sd_i1=i1 convt=dts
     !$ser verbatim endif
 
