@@ -2714,7 +2714,7 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     
     !$ser verbatim if (nn .eq. 1) then
         !$ser savepoint SediIce-In
-        !$ser data si_qv=qv si_ql=ql si_qr=qr si_qi=qi si_qs=qs si_qg=qg si_den=den si_denfac=denfac si_delp=delp si_delz=delz
+        !$ser data si_qv=qv si_ql=ql si_qr=qr si_qi=qi si_qs=qs si_qg=qg si_den=den si_denfac=denfac si_delp=dp si_delz=dz
         !$ser data si_pt=tz si_ua=u si_va=v si_wa=w si_dte=dte dt=dts si_pfi=pfi si_vti=vti si_r1=r1 sd_i1=i1 convt=dts
     !$ser verbatim endif
 
