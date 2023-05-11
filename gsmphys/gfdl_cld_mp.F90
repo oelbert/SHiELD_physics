@@ -2674,7 +2674,7 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
 !$ser verbatim ts_w1, ts_r1, ts_i1, ts_s1, ts_g1, ts_w1o, ts_r1o, ts_i1o, ts_s1o, ts_g1o, ts_dte, ts_dteo,&
 !$ser verbatim ts_qv, ts_ql, ts_qr, ts_qi, ts_qs, ts_qg, ts_qvo, ts_qlo, ts_qro, ts_qio, ts_qso, ts_qgo,&
 !$ser verbatim ts_den, ts_denfac, ts_dp, ts_dz, ts_tz, ts_u, ts_v, ts_w, ts_pf, ts_vt,&
-!$ser verbatim ts_tzo, ts_uo, ts_vo, ts_wo, ts_pfo, ts_vto,&
+!$ser verbatim ts_tzo, ts_uo, ts_vo, ts_wo, ts_pfo, ts_vto, ts_q,&
         u, v, w, den, denfac, dte)
 
     implicit none
