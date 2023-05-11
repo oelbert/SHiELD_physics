@@ -2058,7 +2058,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser savepoint Sedimentation-In
     !$ser data sd_qv=mpf_qv sd_ql=mpf_ql sd_qr=mpf_qr sd_qi=mpf_qi sd_qs=mpf_qs sd_qg=mpf_qg sd_delp=mpf_delp sd_delz=mpf_delz sd_den=mpf_den sd_denfac=mpf_denfac
-    !$ser data sd_pt=mpf_pt sd_u=mpf_u sd_v=mpf_v sd_w=mpf_w sd_dte=mpf_dte convt=convt dt=dts sd_pfw=mpf_pfw sd_pfr=mpf_pfr sd_pfi=mpf_pfi sd_pfs=mpf_pfs sd_pfg=mpf_pfg
+    !$ser data sd_pt=mpf_pt sd_u=mpf_u sd_v=mpf_v sd_w=mpf_w sd_dte=mpf_dte dt=dts sd_pfw=mpf_pfw sd_pfr=mpf_pfr sd_pfi=mpf_pfi sd_pfs=mpf_pfs sd_pfg=mpf_pfg
     !$ser data sd_vtw=zerobuff_3d sd_vtr=zerobuff_3d sd_vti=zerobuff_3d sd_vts=zerobuff_3d sd_vtg=zerobuff_3d sd_w1=zerobuff_2d sd_r1=zerobuff_2d sd_i1=zerobuff_2d 
     !$ser data sd_s1=zerobuff_2d sd_g1=zerobuff_2d
 
@@ -2104,7 +2104,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser savepoint TracerSed-In
     !$ser data ts_qv=ts_qv ts_ql=ts_ql ts_qr=ts_qr ts_qi=ts_qi ts_qs=ts_qs ts_qg=ts_qg ts_den=ts_den ts_denfac=ts_denfac ts_delp=ts_dp ts_delz=ts_dz
-    !$ser data ts_pt=ts_tz ts_ua=ts_u ts_va=ts_v ts_wa=ts_w ts_dte=ts_dte dt=dts ts_pf=ts_pf ts_vt=ts_vt ts_w1=ts_w1 ts_r1=ts_r1 ts_i1=ts_i1 ts_s1=ts_s1 ts_g1=ts_g1 convt=dts ts_q=ts_q
+    !$ser data ts_pt=ts_tz ts_ua=ts_u ts_va=ts_v ts_wa=ts_w ts_dte=ts_dte dt=dts ts_pf=ts_pf ts_vt=ts_vt ts_w1=ts_w1 ts_r1=ts_r1 ts_i1=ts_i1 ts_s1=ts_s1 ts_g1=ts_g1 ts_q=ts_q
 
 
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
