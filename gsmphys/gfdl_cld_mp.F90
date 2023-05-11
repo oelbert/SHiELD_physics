@@ -1547,7 +1547,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 !$ser verbatim ts_w1 (i), ts_r1 (i), ts_i1 (i), ts_s1 (i), ts_g1 (i), ts_w1o (i), ts_r1o (i), ts_i1o (i), ts_s1o (i), ts_g1o (i), ts_dte (i), ts_dteo (i),&
 !$ser verbatim ts_qv (i, :), ts_ql (i, :), ts_qr (i, :), ts_qi (i, :), ts_qs (i, :), ts_qg (i, :), ts_qvo (i, :), ts_qlo (i, :), ts_qro (i, :), ts_qio (i, :), ts_qso (i, :), ts_qgo (i, :),&
 !$ser verbatim ts_den (i, :), ts_denfac (i, :), ts_dp (i, :), ts_dz (i, :), ts_tz (i, :), ts_u (i, :), ts_v (i, :), ts_w (i, :), ts_pf (i, :), ts_vt (i, :),&
-!$ser verbatim ts_tzo (i, :), ts_uo (i, :), ts_vo (i, :), ts_wo (i, :), ts_pfo (i, :), ts_vto (i, :), ts_q,&
+!$ser verbatim ts_tzo (i, :), ts_uo (i, :), ts_vo (i, :), ts_wo (i, :), ts_pfo (i, :), ts_vto (i, :),&
                 condensation (i), deposition (i), evaporation (i), sublimation (i), convt)
             
             !$ser verbatim mpf_qv_o(i,:)=qvz(:)
@@ -2325,7 +2325,7 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
 !$ser verbatim ts_w1, ts_r1, ts_i1, ts_s1, ts_g1, ts_w1o, ts_r1o, ts_i1o, ts_s1o, ts_g1o, ts_dte, ts_dteo,&
 !$ser verbatim ts_qv, ts_ql, ts_qr, ts_qi, ts_qs, ts_qg, ts_qvo, ts_qlo, ts_qro, ts_qio, ts_qso, ts_qgo,&
 !$ser verbatim ts_den, ts_denfac, ts_dp, ts_dz, ts_tz, ts_u, ts_v, ts_w, ts_pf, ts_vt,&
-!$ser verbatim ts_tzo, ts_uo, ts_vo, ts_wo, ts_pfo, ts_vto, ts_q,&
+!$ser verbatim ts_tzo, ts_uo, ts_vo, ts_wo, ts_pfo, ts_vto,&
         condensation, deposition, evaporation, sublimation, convt)
     
     implicit none
@@ -2370,8 +2370,6 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
 
     !$ser verbatim real, intent (out) :: sd_w1, sd_r1, sd_i1, sd_s1, sd_g1, wr_reevap, sz_cond, sz_dep, sz_reevap, sz_sub
     !$ser verbatim real, intent (out) :: sd_dte
-
-    !$ser verbatim character (len = 2), intent (in) :: ts_q
     
     ! -----------------------------------------------------------------------
     ! local variables
@@ -2674,7 +2672,7 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
 !$ser verbatim ts_w1, ts_r1, ts_i1, ts_s1, ts_g1, ts_w1o, ts_r1o, ts_i1o, ts_s1o, ts_g1o, ts_dte, ts_dteo,&
 !$ser verbatim ts_qv, ts_ql, ts_qr, ts_qi, ts_qs, ts_qg, ts_qvo, ts_qlo, ts_qro, ts_qio, ts_qso, ts_qgo,&
 !$ser verbatim ts_den, ts_denfac, ts_dp, ts_dz, ts_tz, ts_u, ts_v, ts_w, ts_pf, ts_vt,&
-!$ser verbatim ts_tzo, ts_uo, ts_vo, ts_wo, ts_pfo, ts_vto, ts_q,&
+!$ser verbatim ts_tzo, ts_uo, ts_vo, ts_wo, ts_pfo, ts_vto,&
         u, v, w, den, denfac, dte)
 
     implicit none
@@ -2685,8 +2683,6 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     
     integer, intent (in) :: ks, ke
     !$ser verbatim integer, intent (in) :: nn
-
-    !$ser verbatim character (len = 2), intent (in) :: ts_q
     
     real, intent (in) :: dts
     
@@ -2710,7 +2706,7 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     
     real (kind = r8), intent (inout), dimension (ks:ke) :: tz
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: tfi_pt, tfi_pfi, tfo_pt, tfo_pfi, sf_dm, sm_cv, sm_vt, sm_ic
-    
+
     ! -----------------------------------------------------------------------
     ! local variables
     ! -----------------------------------------------------------------------
@@ -2723,7 +2719,10 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     
     real (kind = r8), dimension (ks:ke) :: te8, cvm
     !$ser verbatim real :: nf_buf, e1_buf, e2_buf
-    
+
+    !$ser verbatim character (len = 2) :: ts_q
+
+    !$ser verbatim ts_q = "qs"    
     !$ser verbatim ser_dp (:) = dp (:)
     !$ser verbatim ser_dz (:) = dz (:)
     !$ser verbatim ser_den (:) = den (:)
