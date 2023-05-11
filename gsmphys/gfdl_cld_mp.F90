@@ -1216,6 +1216,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim real, dimension (is:ie) :: mpf_h_var_o, mpf_rh_adj_o, mpf_dte_o, mpf_water_o, mpf_rain_o, mpf_ice_o, mpf_snow_o, mpf_graupel_o, mpf_cond_o, mpf_dep_o, mpf_sub_o, mpf_evap_o
     !$ser verbatim real, dimension (is:ie) :: sd_w1, sd_r1, sd_i1, sd_s1, sd_g1, sd_dte, wr_reevap, sz_cond, sz_dep, sz_reevap, sz_sub
     !$ser verbatim real, dimension (is:ie) :: tfi_i1, tfo_i1, tfi_dte, tfo_dte, sf_nf, sf_e1, ef_e1, sm_zs, sm_r1
+    !$ser verbatim real, dimension (is:ie) :: ts_w1, ts_r1, ts_i1, ts_s1, ts_g1, ts_w1o, ts_r1o, ts_i1o, ts_s1o, ts_g1o, ts_dte, ts_dteo
 
     !$ser verbatim real, dimension (is:ie) :: zerobuff_2d, onebuff_2d
 
@@ -1241,10 +1242,14 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim real, dimension (is:ie, ks:ke) :: tfi_qv, tfi_ql, tfi_qr, tfi_qi, tfi_qs, tfi_qg, tfi_u, tfi_v, tfi_w, tf_vt, tf_dp
     !$ser verbatim real, dimension (is:ie, ks:ke) :: tfo_qv, tfo_ql, tfo_qr, tfo_qi, tfo_qs, tfo_qg, tfo_u, tfo_v, tfo_w
     !$ser verbatim real, dimension (is:ie, ks:ke) :: tfi_pt, tfi_pfi, tfo_pt, tfo_pfi, sf_dm, sm_cv, sm_vt, sm_ic
+    !$ser verbatim real, dimension (is:ie, ks:ke) :: ts_qv, ts_ql, ts_qr, ts_qi, ts_qs, ts_qg, ts_qvo, ts_qlo, ts_qro, ts_qio, ts_qso, ts_qgo
+    !$ser verbatim real, dimension (is:ie, ks:ke) :: ts_den, ts_denfac, ts_dp, ts_dz, ts_tz, ts_u, ts_v, ts_w, ts_pf, ts_vt, ts_tzo, ts_uo, ts_vo, ts_wo, ts_pfo, ts_vto 
 
     !$ser verbatim real, dimension (is:ie, ks:ke) :: zerobuff_3d, tem, t0, t2
 
     !$ser verbatim real, dimension (is:ie, ks:ke + 1) :: tf_ze, tf_zt, zerobuff1_3d, sm_ze, sm_zt
+
+    !$ser verbatim character (len = 2) :: ts_q
 
     !$ser verbatim integer :: mpi_rank, ier, ii
     !$ser verbatim logical :: ser_on
@@ -1257,6 +1262,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser verbatim t0=0.
     !$ser verbatim t2=0.
+    !$ser verbatim ts_q = "qs"
 
     ! -----------------------------------------------------------------------
     ! time steps
@@ -1538,6 +1544,10 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 !$ser verbatim tfo_qv (i, :), tfo_ql (i, :), tfo_qr (i, :), tfo_qi (i, :), tfo_qs (i, :), tfo_qg (i, :), tfo_u (i, :), tfo_v (i, :), tfo_w (i, :), tfi_i1 (i), tfo_i1 (i),&
 !$ser verbatim tf_ze (i, :), tf_zt (i, :), tfi_dte (i), tfo_dte (i), tfi_pt (i, :), tfi_pfi (i, :), tfo_pt (i, :), tfo_pfi (i, :), sf_dm (i, :), sf_e1 (i), sf_nf (i), ef_e1 (i),&
 !$ser verbatim sm_ze (i, :), sm_zt (i, :), sm_zs (i), sm_cv (i, :), sm_vt (i, :), sm_ic (i, :), sm_r1 (i),&
+!$ser verbatim ts_w1 (i), ts_r1 (i), ts_i1 (i), ts_s1 (i), ts_g1 (i), ts_w1o (i), ts_r1o (i), ts_i1o (i), ts_s1o (i), ts_g1o (i), ts_dte (i), ts_dteo (i),&
+!$ser verbatim ts_qv (i, :), ts_ql (i, :), ts_qr (i, :), ts_qi (i, :), ts_qs (i, :), ts_qg (i, :), ts_qvo (i, :), ts_qlo (i, :), ts_qro (i, :), ts_qio (i, :), ts_qso (i, :), ts_qgo (i, :),&
+!$ser verbatim ts_den (i, :), ts_denfac (i, :), ts_dp (i, :), ts_dz (i, :), ts_tz (i, :), ts_u (i, :), ts_v (i, :), ts_w (i, :), ts_pf (i, :), ts_vt (i, :),&
+!$ser verbatim ts_tzo (i, :), ts_uo (i, :), ts_vo (i, :), ts_wo (i, :), ts_pfo (i, :), ts_vto (i, :), ts_q,&
                 condensation (i), deposition (i), evaporation (i), sublimation (i), convt)
             
             !$ser verbatim mpf_qv_o(i,:)=qvz(:)
@@ -2092,6 +2102,10 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser savepoint CalcVTSnow-In
     !$ser data vts_qs=mpf_qs vts_den=mpf_den vts_denfac=mpf_denfac vts_pt=zerobuff_3d vts_vts=zerobuff_3d
 
+    !$ser savepoint TracerSed-In
+    !$ser data ts_qv=ts_qv ts_ql=ts_ql ts_qr=ts_qr ts_qi=ts_qi ts_qs=ts_qs ts_qg=ts_qg ts_den=ts_den ts_denfac=ts_denfac ts_delp=ts_dp ts_delz=ts_dz
+    !$ser data ts_pt=ts_tz ts_ua=ts_u ts_va=ts_v ts_wa=ts_w ts_dte=ts_dte dt=dts ts_pf=ts_pf ts_vt=ts_vt ts_w1=ts_w1 ts_r1=ts_r1 ts_i1=ts_i1 ts_s1=ts_s1 ts_g1=ts_g1 convt=dts ts_q=ts_q
+
 
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
 
@@ -2164,6 +2178,11 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser savepoint CalcVTSnow-Out
     !$ser data vts_vts=sd_vts
+
+    !$ser savepoint TracerSed-Out
+    !$ser data ts_qv=ts_qvo ts_ql=ts_qlo ts_qr=ts_qro ts_qi=ts_qio ts_qs=ts_qso ts_qg=ts_qgo
+    !$ser data ts_pt=ts_tzo ts_ua=ts_uo ts_va=ts_vo ts_wa=ts_wo ts_pf=ts_pfo ts_vt=ts_vto 
+    !$ser data ts_w1=ts_w1o ts_r1=ts_r1o ts_i1=ts_i1o ts_s1=ts_s1o ts_g1=ts_g1o ts_dte=ts_dteo
 
 end subroutine mpdrv
 
@@ -2303,6 +2322,10 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
 !$ser verbatim tfo_qv, tfo_ql, tfo_qr, tfo_qi, tfo_qs, tfo_qg, tfo_u, tfo_v, tfo_w, tfi_i1, tfo_i1,&
 !$ser verbatim tf_ze, tf_zt, tfi_dte, tfo_dte, tfi_pt, tfi_pfi, tfo_pt, tfo_pfi, sf_dm, sf_e1, sf_nf, ef_e1,&
 !$ser verbatim sm_ze, sm_zt, sm_zs, sm_cv, sm_vt, sm_ic, sm_r1,&
+!$ser verbatim ts_w1, ts_r1, ts_i1, ts_s1, ts_g1, ts_w1o, ts_r1o, ts_i1o, ts_s1o, ts_g1o, ts_dte, ts_dteo,&
+!$ser verbatim ts_qv, ts_ql, ts_qr, ts_qi, ts_qs, ts_qg, ts_qvo, ts_qlo, ts_qro, ts_qio, ts_qso, ts_qgo,&
+!$ser verbatim ts_den, ts_denfac, ts_dp, ts_dz, ts_tz, ts_u, ts_v, ts_w, ts_pf, ts_vt,&
+!$ser verbatim ts_tzo, ts_uo, ts_vo, ts_wo, ts_pfo, ts_vto, ts_q,&
         condensation, deposition, evaporation, sublimation, convt)
     
     implicit none
@@ -2329,6 +2352,8 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: tfi_qv, tfi_ql, tfi_qr, tfi_qi, tfi_qs, tfi_qg, tfi_u, tfi_v, tfi_w, tf_vt, tf_dp
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: tfo_qv, tfo_ql, tfo_qr, tfo_qi, tfo_qs, tfo_qg, tfo_u, tfo_v, tfo_w
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: tfi_pt, tfi_pfi, tfo_pt, tfo_pfi, sf_dm, sm_cv, sm_vt, sm_ic
+    !$ser verbatim real, intent (inout), dimension (ks:ke) :: ts_qv, ts_ql, ts_qr, ts_qi, ts_qs, ts_qg, ts_qvo, ts_qlo, ts_qro, ts_qio, ts_qso, ts_qgo
+    !$ser verbatim real, intent (inout), dimension (ks:ke) :: ts_den, ts_denfac, ts_dp, ts_dz, ts_tz, ts_u, ts_v, ts_w, ts_pf, ts_vt, ts_tzo, ts_uo, ts_vo, ts_wo, ts_pfo, ts_vto
 
     !$ser verbatim real, intent (out), dimension (ks:ke + 1) :: tf_ze, tf_zt, sm_ze, sm_zt
 
@@ -2338,12 +2363,15 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
     real, intent (inout) :: condensation, deposition
     real, intent (inout) :: evaporation, sublimation
     !$ser verbatim real, intent (inout) :: tfi_i1, tfo_i1, sf_nf, sf_e1, ef_e1, sm_zs, sm_r1
+    !$ser verbatim real, intent (inout) :: ts_w1, ts_r1, ts_i1, ts_s1, ts_g1, ts_w1o ,ts_r1o ,ts_i1o ,ts_s1o ,ts_g1o, ts_dte, ts_dteo
     
     real (kind = r8), intent (inout) :: dte
     !$ser verbatim real, intent (inout) :: tfi_dte, tfo_dte
 
     !$ser verbatim real, intent (out) :: sd_w1, sd_r1, sd_i1, sd_s1, sd_g1, wr_reevap, sz_cond, sz_dep, sz_reevap, sz_sub
     !$ser verbatim real, intent (out) :: sd_dte
+
+    !$ser verbatim character (len = 2), intent (in) :: ts_q
     
     ! -----------------------------------------------------------------------
     ! local variables
@@ -2367,6 +2395,10 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
 !$ser verbatim tfo_qv, tfo_ql, tfo_qr, tfo_qi, tfo_qs, tfo_qg, tfo_u, tfo_v, tfo_w, tfi_i1, tfo_i1,&
 !$ser verbatim tf_ze, tf_zt, tfi_dte, tfo_dte, tfi_pt, tfi_pfi, tfo_pt, tfo_pfi, sf_dm, sf_e1, sf_nf, ef_e1,&
 !$ser verbatim sm_ze, sm_zt, sm_zs, sm_cv, sm_vt, sm_ic, sm_r1,&
+!$ser verbatim ts_w1, ts_r1, ts_i1, ts_s1, ts_g1, ts_w1o, ts_r1o, ts_i1o, ts_s1o, ts_g1o, ts_dte, ts_dteo,&
+!$ser verbatim ts_qv, ts_ql, ts_qr, ts_qi, ts_qs, ts_qg, ts_qvo, ts_qlo, ts_qro, ts_qio, ts_qso, ts_qgo,&
+!$ser verbatim ts_den, ts_denfac, ts_dp, ts_dz, ts_tz, ts_u, ts_v, ts_w, ts_pf, ts_vt,&
+!$ser verbatim ts_tzo, ts_uo, ts_vo, ts_wo, ts_pfo, ts_vto, ts_q,&
             u, v, w, den, denfac, dte)
         
         !$ser verbatim if (n .eq. 1) then
@@ -2639,6 +2671,10 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
 !$ser verbatim tfo_qv, tfo_ql, tfo_qr, tfo_qi, tfo_qs, tfo_qg, tfo_u, tfo_v, tfo_w, tfi_i1, tfo_i1,&
 !$ser verbatim tf_ze, tf_zt, tfi_dte, tfo_dte, tfi_pt, tfi_pfi, tfo_pt, tfo_pfi, sf_dm, sf_e1, sf_nf, ef_e1,&
 !$ser verbatim sm_ze, sm_zt, sm_zs, sm_cv, sm_vt, sm_ic, sm_r1,&
+!$ser verbatim ts_w1, ts_r1, ts_i1, ts_s1, ts_g1, ts_w1o, ts_r1o, ts_i1o, ts_s1o, ts_g1o, ts_dte, ts_dteo,&
+!$ser verbatim ts_qv, ts_ql, ts_qr, ts_qi, ts_qs, ts_qg, ts_qvo, ts_qlo, ts_qro, ts_qio, ts_qso, ts_qgo,&
+!$ser verbatim ts_den, ts_denfac, ts_dp, ts_dz, ts_tz, ts_u, ts_v, ts_w, ts_pf, ts_vt,&
+!$ser verbatim ts_tzo, ts_uo, ts_vo, ts_wo, ts_pfo, ts_vto,&
         u, v, w, den, denfac, dte)
 
     implicit none
@@ -2649,6 +2685,8 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     
     integer, intent (in) :: ks, ke
     !$ser verbatim integer, intent (in) :: nn
+
+    !$ser verbatim character (len = 2), intent (in) :: ts_q
     
     real, intent (in) :: dts
     
@@ -2657,7 +2695,9 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg, u, v, w
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: tfi_qv, tfi_ql, tfi_qr, tfi_qi, tfi_qs, tfi_qg, tfi_u, tfi_v, tfi_w, tf_vt, tf_dp
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: tfo_qv, tfo_ql, tfo_qr, tfo_qi, tfo_qs, tfo_qg, tfo_u, tfo_v, tfo_w
-    
+    !$ser verbatim real, intent (out), dimension (ks:ke) :: ts_qv, ts_ql, ts_qr, ts_qi, ts_qs, ts_qg, ts_qvo, ts_qlo, ts_qro, ts_qio, ts_qso, ts_qgo
+    !$ser verbatim real, intent (out), dimension (ks:ke) :: ts_den, ts_denfac, ts_dp, ts_dz, ts_tz, ts_u, ts_v, ts_w, ts_pf, ts_vt, ts_tzo, ts_uo, ts_vo, ts_wo, ts_pfo, ts_vto 
+
     real, intent (out) :: w1, r1, i1, s1, g1
     !$ser verbatim real, intent (inout) :: tfi_i1, tfo_i1
     
@@ -2666,6 +2706,7 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
 
     real (kind = r8), intent (inout) :: dte
     !$ser verbatim real, intent (inout) :: tfi_dte, tfo_dte, sf_nf, sf_e1, ef_e1, sm_zs, sm_r1
+    !$ser verbatim real, intent (out) :: ts_w1, ts_r1, ts_i1, ts_s1, ts_g1, ts_w1o ,ts_r1o ,ts_i1o ,ts_s1o ,ts_g1o, ts_dte, ts_dteo
     
     real (kind = r8), intent (inout), dimension (ks:ke) :: tz
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: tfi_pt, tfi_pfi, tfo_pt, tfo_pfi, sf_dm, sm_cv, sm_vt, sm_ic
@@ -2716,13 +2757,34 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     ! -----------------------------------------------------------------------
     ! terminal fall and melting of falling cloud ice into rain
     ! -----------------------------------------------------------------------
-    
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser savepoint SediIce-In
-        !$ser data si_qv=qv si_ql=ql si_qr=qr si_qi=qi si_qs=qs si_qg=qg si_den=ser_den si_denfac=ser_denfac si_delp=ser_dp si_delz=ser_dz
-        !$ser data si_pt=tz si_ua=u si_va=v si_wa=w si_dte=dte dt=dts si_pfi=pfi si_vti=vti si_r1=r1 sd_i1=i1 convt=dts
-    !$ser verbatim endif
 
+    !$ser verbatim if (nn .eq. 1) then
+        !$ser verbatim if (ts_q == "qi") then
+            !$ser verbatim ts_qv = qv
+            !$ser verbatim ts_ql = ql
+            !$ser verbatim ts_qr = qr
+            !$ser verbatim ts_qi = qi
+            !$ser verbatim ts_qs = qs
+            !$ser verbatim ts_qg = qg
+            !$ser verbatim ts_den = den
+            !$ser verbatim ts_denfac = denfac
+            !$ser verbatim ts_dp = dp
+            !$ser verbatim ts_dz = dz
+            !$ser verbatim ts_tz = tz
+            !$ser verbatim ts_u = u
+            !$ser verbatim ts_v = v
+            !$ser verbatim ts_w = w
+            !$ser verbatim ts_dte = dte
+            !$ser verbatim ts_pf = pfi
+            !$ser verbatim ts_vt = vti
+            !$ser verbatim ts_w1 = w1
+            !$ser verbatim ts_r1 = r1
+            !$ser verbatim ts_i1 = i1
+            !$ser verbatim ts_s1 = s1
+            !$ser verbatim ts_g1 = g1
+        !$ser verbatim endif
+    !$ser verbatim endif
+        
     if (do_psd_ice_fall) then
         call term_rsg (ks, ke, qi, den, denfac, vi_fac, blini, mui, tvai, tvbi, vi_max, const_vi, vti)
     else
@@ -2785,14 +2847,58 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     enddo
 
     !$ser verbatim if (nn .eq. 1) then
-        !$ser savepoint SediIce-Out
-        !$ser data si_qv=qv si_ql=ql si_qr=qr si_qi=qi si_qs=qs si_qg=qg
-        !$ser data si_pt=tz si_ua=u si_va=v si_wa=w dt=dts si_pfi=pfi si_vti=vti si_r1=r1 sd_i1=i1
+        !$ser verbatim if (ts_q == "qi") then
+            !$ser verbatim ts_qvo = qv
+            !$ser verbatim ts_qlo = ql
+            !$ser verbatim ts_qro = qr
+            !$ser verbatim ts_qio = qi
+            !$ser verbatim ts_qso = qs
+            !$ser verbatim ts_qgo = qg
+            !$ser verbatim ts_tzo = tz
+            !$ser verbatim ts_uo = u
+            !$ser verbatim ts_vo = v
+            !$ser verbatim ts_wo = w
+            !$ser verbatim ts_dteo = dte
+            !$ser verbatim ts_pfo = pfi
+            !$ser verbatim ts_vto = vti
+            !$ser verbatim ts_w1o = w1
+            !$ser verbatim ts_r1o = r1
+            !$ser verbatim ts_i1o = i1
+            !$ser verbatim ts_s1o = s1
+            !$ser verbatim ts_g1o = g1
+        !$ser verbatim endif
     !$ser verbatim endif
 
     ! -----------------------------------------------------------------------
     ! terminal fall and melting of falling snow into rain
     ! -----------------------------------------------------------------------
+
+    !$ser verbatim if (nn .eq. 1) then
+        !$ser verbatim if (ts_q == "qs") then
+            !$ser verbatim ts_qv = qv
+            !$ser verbatim ts_ql = ql
+            !$ser verbatim ts_qr = qr
+            !$ser verbatim ts_qi = qi
+            !$ser verbatim ts_qs = qs
+            !$ser verbatim ts_qg = qg
+            !$ser verbatim ts_den = den
+            !$ser verbatim ts_denfac = denfac
+            !$ser verbatim ts_dp = dp
+            !$ser verbatim ts_dz = dz
+            !$ser verbatim ts_tz = tz
+            !$ser verbatim ts_u = u
+            !$ser verbatim ts_v = v
+            !$ser verbatim ts_w = w
+            !$ser verbatim ts_dte = dte
+            !$ser verbatim ts_pf = pfs
+            !$ser verbatim ts_vt = vts
+            !$ser verbatim ts_w1 = w1
+            !$ser verbatim ts_r1 = r1
+            !$ser verbatim ts_i1 = i1
+            !$ser verbatim ts_s1 = s1
+            !$ser verbatim ts_g1 = g1
+        !$ser verbatim endif
+    !$ser verbatim endif
     
     call term_rsg (ks, ke, qs, den, denfac, vs_fac, blins, mus, tvas, tvbs, vs_max, const_vs, vts)
     
@@ -2811,9 +2917,59 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
         pfs (k) = max (0.0, pfs (k) - pfs (k - 1))
     enddo
 
+    !$ser verbatim if (nn .eq. 1) then
+        !$ser verbatim if (ts_q == "qs") then
+            !$ser verbatim ts_qvo = qv
+            !$ser verbatim ts_qlo = ql
+            !$ser verbatim ts_qro = qr
+            !$ser verbatim ts_qio = qi
+            !$ser verbatim ts_qso = qs
+            !$ser verbatim ts_qgo = qg
+            !$ser verbatim ts_tzo = tz
+            !$ser verbatim ts_uo = u
+            !$ser verbatim ts_vo = v
+            !$ser verbatim ts_wo = w
+            !$ser verbatim ts_dteo = dte
+            !$ser verbatim ts_pfo = pfs
+            !$ser verbatim ts_vto = vts
+            !$ser verbatim ts_w1o = w1
+            !$ser verbatim ts_r1o = r1
+            !$ser verbatim ts_i1o = i1
+            !$ser verbatim ts_s1o = s1
+            !$ser verbatim ts_g1o = g1
+        !$ser verbatim endif
+    !$ser verbatim endif
+
     ! -----------------------------------------------------------------------
     ! terminal fall and melting of falling graupel into rain
     ! -----------------------------------------------------------------------
+
+    !$ser verbatim if (nn .eq. 1) then
+        !$ser verbatim if (ts_q == "qg") then
+            !$ser verbatim ts_qv = qv
+            !$ser verbatim ts_ql = ql
+            !$ser verbatim ts_qr = qr
+            !$ser verbatim ts_qi = qi
+            !$ser verbatim ts_qs = qs
+            !$ser verbatim ts_qg = qg
+            !$ser verbatim ts_den = den
+            !$ser verbatim ts_denfac = denfac
+            !$ser verbatim ts_dp = dp
+            !$ser verbatim ts_dz = dz
+            !$ser verbatim ts_tz = tz
+            !$ser verbatim ts_u = u
+            !$ser verbatim ts_v = v
+            !$ser verbatim ts_w = w
+            !$ser verbatim ts_dte = dte
+            !$ser verbatim ts_pf = pfg
+            !$ser verbatim ts_vt = vtg
+            !$ser verbatim ts_w1 = w1
+            !$ser verbatim ts_r1 = r1
+            !$ser verbatim ts_i1 = i1
+            !$ser verbatim ts_s1 = s1
+            !$ser verbatim ts_g1 = g1
+        !$ser verbatim endif
+    !$ser verbatim endif
     
     if (do_hail) then
         call term_rsg (ks, ke, qg, den, denfac, vg_fac, blinh, muh, tvah, tvbh, vg_max, const_vg, vtg)
@@ -2835,10 +2991,60 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     do k = ke, ks + 1, -1
         pfg (k) = max (0.0, pfg (k) - pfg (k - 1))
     enddo
+
+    !$ser verbatim if (nn .eq. 1) then
+        !$ser verbatim if (ts_q == "qg") then
+            !$ser verbatim ts_qvo = qv
+            !$ser verbatim ts_qlo = ql
+            !$ser verbatim ts_qro = qr
+            !$ser verbatim ts_qio = qi
+            !$ser verbatim ts_qso = qs
+            !$ser verbatim ts_qgo = qg
+            !$ser verbatim ts_tzo = tz
+            !$ser verbatim ts_uo = u
+            !$ser verbatim ts_vo = v
+            !$ser verbatim ts_wo = w
+            !$ser verbatim ts_dteo = dte
+            !$ser verbatim ts_pfo = pfg
+            !$ser verbatim ts_vto = vtg
+            !$ser verbatim ts_w1o = w1
+            !$ser verbatim ts_r1o = r1
+            !$ser verbatim ts_i1o = i1
+            !$ser verbatim ts_s1o = s1
+            !$ser verbatim ts_g1o = g1
+        !$ser verbatim endif
+    !$ser verbatim endif
     
     ! -----------------------------------------------------------------------
     ! terminal fall of cloud water
     ! -----------------------------------------------------------------------
+
+    !$ser verbatim if (nn .eq. 1) then
+        !$ser verbatim if (ts_q == "ql") then
+            !$ser verbatim ts_qv = qv
+            !$ser verbatim ts_ql = ql
+            !$ser verbatim ts_qr = qr
+            !$ser verbatim ts_qi = qi
+            !$ser verbatim ts_qs = qs
+            !$ser verbatim ts_qg = qg
+            !$ser verbatim ts_den = den
+            !$ser verbatim ts_denfac = denfac
+            !$ser verbatim ts_dp = dp
+            !$ser verbatim ts_dz = dz
+            !$ser verbatim ts_tz = tz
+            !$ser verbatim ts_u = u
+            !$ser verbatim ts_v = v
+            !$ser verbatim ts_w = w
+            !$ser verbatim ts_dte = dte
+            !$ser verbatim ts_pf = pfw
+            !$ser verbatim ts_vt = vtw
+            !$ser verbatim ts_w1 = w1
+            !$ser verbatim ts_r1 = r1
+            !$ser verbatim ts_i1 = i1
+            !$ser verbatim ts_s1 = s1
+            !$ser verbatim ts_g1 = g1
+        !$ser verbatim endif
+    !$ser verbatim endif
     
     if (do_psd_water_fall) then
 
@@ -2854,10 +3060,60 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
         enddo
 
     endif
+
+    !$ser verbatim if (nn .eq. 1) then
+        !$ser verbatim if (ts_q == "ql") then
+            !$ser verbatim ts_qvo = qv
+            !$ser verbatim ts_qlo = ql
+            !$ser verbatim ts_qro = qr
+            !$ser verbatim ts_qio = qi
+            !$ser verbatim ts_qso = qs
+            !$ser verbatim ts_qgo = qg
+            !$ser verbatim ts_tzo = tz
+            !$ser verbatim ts_uo = u
+            !$ser verbatim ts_vo = v
+            !$ser verbatim ts_wo = w
+            !$ser verbatim ts_dteo = dte
+            !$ser verbatim ts_pfo = pfw
+            !$ser verbatim ts_vto = vtw
+            !$ser verbatim ts_w1o = w1
+            !$ser verbatim ts_r1o = r1
+            !$ser verbatim ts_i1o = i1
+            !$ser verbatim ts_s1o = s1
+            !$ser verbatim ts_g1o = g1
+        !$ser verbatim endif
+    !$ser verbatim endif
     
     ! -----------------------------------------------------------------------
     ! terminal fall of rain
     ! -----------------------------------------------------------------------
+
+    !$ser verbatim if (nn .eq. 1) then
+        !$ser verbatim if (ts_q == "qr") then
+            !$ser verbatim ts_qv = qv
+            !$ser verbatim ts_ql = ql
+            !$ser verbatim ts_qr = qr
+            !$ser verbatim ts_qi = qi
+            !$ser verbatim ts_qs = qs
+            !$ser verbatim ts_qg = qg
+            !$ser verbatim ts_den = den
+            !$ser verbatim ts_denfac = denfac
+            !$ser verbatim ts_dp = dp
+            !$ser verbatim ts_dz = dz
+            !$ser verbatim ts_tz = tz
+            !$ser verbatim ts_u = u
+            !$ser verbatim ts_v = v
+            !$ser verbatim ts_w = w
+            !$ser verbatim ts_dte = dte
+            !$ser verbatim ts_pf = pfr
+            !$ser verbatim ts_vt = vtr
+            !$ser verbatim ts_w1 = w1
+            !$ser verbatim ts_r1 = r1
+            !$ser verbatim ts_i1 = i1
+            !$ser verbatim ts_s1 = s1
+            !$ser verbatim ts_g1 = g1
+        !$ser verbatim endif
+    !$ser verbatim endif
     
     call term_rsg (ks, ke, qr, den, denfac, vr_fac, blinr, mur, tvar, tvbr, vr_max, const_vr, vtr)
     
@@ -2869,6 +3125,29 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     do k = ke, ks + 1, -1
         pfr (k) = max (0.0, pfr (k) - pfr (k - 1))
     enddo
+
+    !$ser verbatim if (nn .eq. 1) then
+        !$ser verbatim if (ts_q == "qr") then
+            !$ser verbatim ts_qvo = qv
+            !$ser verbatim ts_qlo = ql
+            !$ser verbatim ts_qro = qr
+            !$ser verbatim ts_qio = qi
+            !$ser verbatim ts_qso = qs
+            !$ser verbatim ts_qgo = qg
+            !$ser verbatim ts_tzo = tz
+            !$ser verbatim ts_uo = u
+            !$ser verbatim ts_vo = v
+            !$ser verbatim ts_wo = w
+            !$ser verbatim ts_dteo = dte
+            !$ser verbatim ts_pfo = pfr
+            !$ser verbatim ts_vto = vtr
+            !$ser verbatim ts_w1o = w1
+            !$ser verbatim ts_r1o = r1
+            !$ser verbatim ts_i1o = i1
+            !$ser verbatim ts_s1o = s1
+            !$ser verbatim ts_g1o = g1
+        !$ser verbatim endif
+    !$ser verbatim endif
 
 end subroutine sedimentation
 
