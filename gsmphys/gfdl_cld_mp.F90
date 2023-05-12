@@ -2096,7 +2096,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser savepoint SediMelt-In
     !$ser data sm_qv=sm_qv sm_ql=sm_ql sm_qr=sm_qr sm_qi=sm_qi sm_qs=sm_qs sm_qg=sm_qg sm_pt=sm_pt sm_dp=mpf_delp sm_cv=zerobuff_3d
-    !$ser data sm_ze=sm_ze sm_zt=sm_zt sm_zs=sm_zs sm_vt=sm_vt sm_ic=sm_ic sm_r1=zerobuff_2d dt=dts
+    !$ser data sm_ze=sm_ze sm_zt=sm_zt sm_zs=sm_zs sm_vt=sm_vt sm_ic=sm_ic sm_r1=zerobuff_2d dt=dts sm_qm=zerobuff_3d
 
     !$ser savepoint CalcVTIce-In
     !$ser data vti_qi=mpf_qi vti_den=mpf_den vti_denfac=mpf_denfac vti_pt=mpf_pt vti_vti=zerobuff_3d
