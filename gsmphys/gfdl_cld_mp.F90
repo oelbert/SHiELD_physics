@@ -2332,7 +2332,7 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
 !$ser verbatim tfi_qv, tfi_ql, tfi_qr, tfi_qi, tfi_qs, tfi_qg, tfi_u, tfi_v, tfi_w, tf_vt, tf_dp,&
 !$ser verbatim tfo_qv, tfo_ql, tfo_qr, tfo_qi, tfo_qs, tfo_qg, tfo_u, tfo_v, tfo_w, tfi_i1, tfo_i1,&
 !$ser verbatim tf_ze, tf_zt, tfi_dte, tfo_dte, tfi_pt, tfi_pfi, tfo_pt, tfo_pfi, sf_dm, sf_e1, sf_nf, ef_e1,&
-!$ser verbatim sm_ze, sm_zt, sm_zs, sm_cv, sm_vt, sm_ic, sm_r1, sm_r1o&
+!$ser verbatim sm_ze, sm_zt, sm_zs, sm_cv, sm_vt, sm_ic, sm_r1, sm_r1o,&
 !$ser verbatim ts_w1, ts_r1, ts_i1, ts_s1, ts_g1, ts_w1o, ts_r1o, ts_i1o, ts_s1o, ts_g1o, ts_dte, ts_dteo,&
 !$ser verbatim ts_qv, ts_ql, ts_qr, ts_qi, ts_qs, ts_qg, ts_qvo, ts_qlo, ts_qro, ts_qio, ts_qso, ts_qgo,&
 !$ser verbatim ts_den, ts_denfac, ts_dp, ts_dz, ts_tz, ts_u, ts_v, ts_w, ts_pf, ts_vt,&
