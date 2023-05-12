@@ -2829,33 +2829,12 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     else
         call term_ice (ks, ke, tz, qi, den, vi_fac, vi_max, const_vi, vti)
     endif
-    
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim sm_qv = qv
-        !$ser verbatim sm_ql = ql
-        !$ser verbatim sm_qr = qr
-        !$ser verbatim sm_qi = qi
-        !$ser verbatim sm_qs = qs
-        !$ser verbatim sm_qg = qg
-        !$ser verbatim sm_pt = tz
-        !$ser verbatim sm_vt = vti
-        !$ser verbatim sm_ic = icpk
-    !$ser verbatim endif
 
     if (do_sedi_melt) then
         call sedi_melt (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
-!$ser verbatim sm_ze, sm_zt, sm_zs, sm_cv, nn,&
+!$ser verbatim ze_buf, zt_buf, e1_buf, dm_buf, nn,&
             vti, r1, tau_imlt, icpk, "qi")
     endif
-    
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim sm_qro = qr
-        !$ser verbatim sm_qio = qi
-        !$ser verbatim sm_qso = qs
-        !$ser verbatim sm_qgo = qg
-        !$ser verbatim sm_pto = tz
-        !$ser verbatim sm_r1 = r1
-    !$ser verbatim endif
 
     !$ser verbatim if (nn .eq. 1) then
         !$ser verbatim tf_vt=vti
@@ -2956,11 +2935,32 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     
     call term_rsg (ks, ke, qs, den, denfac, vs_fac, blins, mus, tvas, tvbs, vs_max, const_vs, vts)
     
+    !$ser verbatim if (nn .eq. 1) then
+        !$ser verbatim sm_qv = qv
+        !$ser verbatim sm_ql = ql
+        !$ser verbatim sm_qr = qr
+        !$ser verbatim sm_qi = qi
+        !$ser verbatim sm_qs = qs
+        !$ser verbatim sm_qg = qg
+        !$ser verbatim sm_pt = tz
+        !$ser verbatim sm_vt = vts
+        !$ser verbatim sm_ic = icpk
+    !$ser verbatim endif
+
     if (do_sedi_melt) then
         call sedi_melt (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
-!$ser verbatim ze_buf, zt_buf, e1_buf, dm_buf, nn,&
+!$ser verbatim sm_ze, sm_zt, sm_zs, sm_cv, nn,&
             vts, r1, tau_smlt, icpk, "qs")
     endif
+
+    !$ser verbatim if (nn .eq. 1) then
+        !$ser verbatim sm_qro = qr
+        !$ser verbatim sm_qio = qi
+        !$ser verbatim sm_qso = qs
+        !$ser verbatim sm_qgo = qg
+        !$ser verbatim sm_pto = tz
+        !$ser verbatim sm_r1 = r1
+    !$ser verbatim endif
     
     call terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
 !$ser verbatim ze_buf, zt_buf, nn, dm_buf, e1_buf, nf_buf, e2_buf,&
