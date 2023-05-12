@@ -1249,8 +1249,6 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser verbatim real, dimension (is:ie, ks:ke + 1) :: tf_ze, tf_zt, zerobuff1_3d, sm_ze, sm_zt
 
-    !$ser verbatim character (len = 2) :: ts_q
-
     !$ser verbatim integer :: mpi_rank, ier, ii
     !$ser verbatim logical :: ser_on
     !$ser verbatim  call mpi_comm_rank(MPI_COMM_WORLD, mpi_rank,ier)
@@ -1262,7 +1260,6 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser verbatim t0=0.
     !$ser verbatim t2=0.
-    !$ser verbatim ts_q = "qs"
 
     ! -----------------------------------------------------------------------
     ! time steps
@@ -2104,7 +2101,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser savepoint TracerSed-In
     !$ser data ts_qv=ts_qv ts_ql=ts_ql ts_qr=ts_qr ts_qi=ts_qi ts_qs=ts_qs ts_qg=ts_qg ts_den=ts_den ts_denfac=ts_denfac ts_delp=ts_dp ts_delz=ts_dz
-    !$ser data ts_pt=ts_tz ts_ua=ts_u ts_va=ts_v ts_wa=ts_w ts_dte=ts_dte dt=dts ts_pf=ts_pf ts_vt=ts_vt ts_w1=ts_w1 ts_r1=ts_r1 ts_i1=ts_i1 ts_s1=ts_s1 ts_g1=ts_g1 ts_q=ts_q
+    !$ser data ts_pt=ts_tz ts_ua=ts_u ts_va=ts_v ts_wa=ts_w ts_dte=ts_dte dt=dts ts_pf=ts_pf ts_vt=ts_vt ts_w1=ts_w1 ts_r1=ts_r1 ts_i1=ts_i1 ts_s1=ts_s1 ts_g1=ts_g1
 
 
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
