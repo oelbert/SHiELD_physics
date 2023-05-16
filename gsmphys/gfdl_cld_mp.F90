@@ -1247,6 +1247,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim real, dimension (is:ie, ks:ke) :: ts_den, ts_denfac, ts_dp, ts_dz, ts_tz, ts_u, ts_v, ts_w, ts_pf, ts_vt, ts_tzo, ts_uo, ts_vo, ts_wo, ts_pfo, ts_vto 
     !$ser verbatim real, dimension (is:ie, ks:ke) :: is_icpk, is_pfw, is_pfr, is_pfi, is_pfs, is_pfg, is_vtw, is_vtr, is_vti, is_vts, is_vtg
     !$ser verbatim real, dimension (is:ie, ks:ke) :: sm_qv, sm_ql, sm_qr, sm_qi, sm_qs, sm_qg, sm_pt, sm_qro, sm_qio, sm_qso, sm_qgo, sm_pto
+    !$ser verbatim real, dimension (is:ie, ks:ke) :: tab_wq, tab_dwq, tab_iq, tab_diq
 
     !$ser verbatim real, dimension (is:ie, ks:ke) :: zerobuff_3d, tem, t0, t2
 
@@ -1493,6 +1494,11 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
         ! -----------------------------------------------------------------------
 
         if (do_mp_full) then
+
+            !$ser verbatim do k = ks, ke
+                !$ser verbatim tab_iq (i,k) = iqs (tz (k), den (k), tab_diq (i,k))
+                !$ser verbatim tab_wq (i,k) = wqs (tz (k), den (k), tab_dwq (i,k))
+            !$ser verbatim enddo
 
             !$ser verbatim mpf_qv(i,:)=qvz(:)
             !$ser verbatim mpf_ql(i,:)=qlz(:)
@@ -2092,7 +2098,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data ef_ua=tfi_u ef_va=tfi_v ef_wa=tfi_w ef_pfi=tfo_pfi ef_dte=tfi_dte ef_ie=sf_e1 ef_dm=sf_dm ef_nf=sf_nf ef_fe=zerobuff_2d
 
     !$ser savepoint TableComputation-In
-    !$ser data tc_temp=tem tc_t0=t0 tc_t2=t2
+    !$ser data tc_temp=tem tc_t0=t0 tc_t2=t2 tab_wq=zerobuff_3d tab_dwq=zerobuff_3d tab_iq=zerobuff_3d tab_diq=zerobuff_3d tab_pt=mpf_pt tab_den=mpf_den
 
     !$ser savepoint SediMelt-In
     !$ser data sm_qv=sm_qv sm_ql=sm_ql sm_qr=sm_qr sm_qi=sm_qi sm_qs=sm_qs sm_qg=sm_qg sm_pt=sm_pt sm_dp=mpf_delp sm_cv=zerobuff_3d
@@ -2175,7 +2181,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data ef_ua=tfo_u ef_va=tfo_v ef_wa=tfo_w ef_dte=tfo_dte ef_pt=tfo_pt ef_ie=ef_e1
 
     !$ser savepoint TableComputation-Out
-    !$ser data tc_t0=t0 tc_t2=t2
+    !$ser data tc_t0=t0 tc_t2=t2 tab_wq=tab_wq tab_dwq=tab_dwq tab_iq=tab_iq tab_diq=tab_diq
 
     !$ser savepoint SediMelt-Out
     !$ser data sm_qr=sm_qro sm_qi=sm_qio sm_qs=sm_qso sm_qg=sm_qgo sm_pt=sm_pto sm_cv=sm_cv sm_r1=sm_r1o
