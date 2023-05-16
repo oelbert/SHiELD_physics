@@ -4142,23 +4142,6 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
         !$ser verbatim endif
 
         call pimlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, lcpk, icpk, tcpk, tcp3)
-
-        !$ser verbatim if (nn .eq. 1) then
-            !$ser verbatim isub_qvo=qv
-            !$ser verbatim isub_qlo=ql
-            !$ser verbatim isub_qro=qr
-            !$ser verbatim isub_qio=qi
-            !$ser verbatim isub_qso=qs
-            !$ser verbatim isub_qgo=qg
-            !$ser verbatim isub_pto=tz
-            !$ser verbatim isub_cvmo=cvm
-            !$ser verbatim isub_te8o=te8
-            !$ser verbatim isub_lcpko=lcpk
-            !$ser verbatim isub_icpko=icpk
-            !$ser verbatim isub_tcpko=tcpk
-            !$ser verbatim isub_tcp3o=tcp3
-            !$ser verbatim isub_dio=di
-        !$ser verbatim endif
         
         ! -----------------------------------------------------------------------
         ! cloud water freezing to form cloud ice and snow
@@ -4176,6 +4159,23 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
         ! snow melting (includes snow accretion with cloud water and rain) to form cloud water and rain
         ! -----------------------------------------------------------------------
         
+        !$ser verbatim if (nn .eq. 1) then
+            !$ser verbatim isub_qvo=qv
+            !$ser verbatim isub_qlo=ql
+            !$ser verbatim isub_qro=qr
+            !$ser verbatim isub_qio=qi
+            !$ser verbatim isub_qso=qs
+            !$ser verbatim isub_qgo=qg
+            !$ser verbatim isub_pto=tz
+            !$ser verbatim isub_cvmo=cvm
+            !$ser verbatim isub_te8o=te8
+            !$ser verbatim isub_lcpko=lcpk
+            !$ser verbatim isub_icpko=icpk
+            !$ser verbatim isub_tcpko=tcpk
+            !$ser verbatim isub_tcp3o=tcp3
+            !$ser verbatim isub_dio=di
+        !$ser verbatim endif
+
         call psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
             vtw, vtr, vts, lcpk, icpk, tcpk, tcp3)
         
