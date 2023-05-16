@@ -2127,7 +2127,8 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser savepoint IceSubFunc-In
     !$ser data isub_qv=isub_qv isub_ql=isub_ql isub_qr=isub_qr isub_qi=isub_qi isub_qs=isub_qs isub_qg=isub_qg isub_pt=isub_pt isub_cvm=isub_cvm isub_te8=isub_te8
-    !$ser data isub_lcpk=isub_lcpk isub_icpk=isub_icpk isub_tcpk=isub_tcpk isub_tcp3=isub_tcp3 isub_di=isub_di
+    !$ser data isub_lcpk=isub_lcpk isub_icpk=isub_icpk isub_tcpk=isub_tcpk isub_tcp3=isub_tcp3 isub_di=isub_di isub_den=mpf_den isub_denfac=mpf_denfac isub_vtw=sd_vtw
+    !$ser data isub_vtr=sd_vtr isub_vti=sd_vti isub_vts=sd_vts isub_vtg=sd_vtg isub_h_var=mpf_h_var dt=dts
 
 
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
