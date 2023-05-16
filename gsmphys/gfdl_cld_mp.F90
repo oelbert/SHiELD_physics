@@ -2512,7 +2512,7 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
         ! -----------------------------------------------------------------------
         
         call ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
-!$ser verbatim isub_qv, isub_ql, isub_qr, isub_qi, isub_qs, isub_qg, isub_pt, isub_cvm, isub_te8, isub_lcpk, isub_icpk, isub_tcpk, isub_tcp3, isub_di, nn,&
+!$ser verbatim isub_qv, isub_ql, isub_qr, isub_qi, isub_qs, isub_qg, isub_pt, isub_cvm, isub_te8, isub_lcpk, isub_icpk, isub_tcpk, isub_tcp3, isub_di, n,&
 !$ser verbatim isub_qvo, isub_qlo, isub_qro, isub_qio, isub_qso, isub_qgo, isub_pto, isub_cvmo, isub_te8o, isub_lcpko, isub_icpko, isub_tcpko, isub_tcp3o, isub_dio,&
             denfac, vtw, vtr, vti, vts, vtg, dts, h_var)
         
