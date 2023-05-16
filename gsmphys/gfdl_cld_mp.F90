@@ -2172,7 +2172,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data tf_ua=tfo_u tf_va=tfo_v tf_wa=tfo_w tf_pfi=tfo_pfi tf_i1=tfo_i1 tf_dte=tfo_dte
 
     !$ser savepoint ZeZt-Out
-    !$ser data zz_ze=sm_ze zz_zt=sm_zt, zz_zs=sm_zs
+    !$ser data zz_ze=sm_ze zz_zt=sm_zt zz_zs=sm_zs
 
     !$ser savepoint StartFall-Out
     !$ser data sf_dm=sf_dm sf_e1=sf_e1 sf_nf=sf_nf
