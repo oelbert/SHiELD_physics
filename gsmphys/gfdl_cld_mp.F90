@@ -2081,7 +2081,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data tf_ua=tfi_u tf_va=tfi_v tf_wa=tfi_w tf_pfi=tfi_pfi tf_i1=tfi_i1 tf_dte=tfi_dte dt=dts
 
     !$ser savepoint ZeZt-In
-    !$ser data zz_dz=mpf_delz zz_vt=tf_vt zz_zs=zerobuff_2d zz_ze=zerobuff1_3d zz_zt=zerobuff1_3d dt=dts
+    !$ser data zz_dz=mpf_delz zz_vt=sm_vt zz_zs=zerobuff_2d zz_ze=zerobuff1_3d zz_zt=zerobuff1_3d dt=dts
 
     !$ser savepoint StartFall-In
     !$ser data sf_dm=zerobuff_3d sf_e1=zerobuff_2d sf_nf=onebuff_2d sf_qf=tfi_qi sf_qv=tfi_qv sf_ql=tfi_ql sf_qr=tfi_qr sf_qi=tfi_qi sf_qs=tfi_qs sf_qg=tfi_qg
@@ -2166,7 +2166,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data tf_ua=tfo_u tf_va=tfo_v tf_wa=tfo_w tf_pfi=tfo_pfi tf_i1=tfo_i1 tf_dte=tfo_dte
 
     !$ser savepoint ZeZt-Out
-    !$ser data zz_ze=tf_ze zz_zt=tf_zt
+    !$ser data zz_ze=sm_ze zz_zt=sm_zt, zz_zs=sm_zs
 
     !$ser savepoint StartFall-Out
     !$ser data sf_dm=sf_dm sf_e1=sf_e1 sf_nf=sf_nf
