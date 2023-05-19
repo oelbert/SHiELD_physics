@@ -4143,6 +4143,18 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
 
         call pimlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, lcpk, icpk, tcpk, tcp3)
         
+        ! -----------------------------------------------------------------------
+        ! cloud water freezing to form cloud ice and snow
+        ! -----------------------------------------------------------------------
+        
+        call pifr (ks, ke, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, lcpk, icpk, tcpk, tcp3)
+        
+        ! -----------------------------------------------------------------------
+        ! vertical subgrid variability
+        ! -----------------------------------------------------------------------
+        
+        call linear_prof (ke - ks + 1, qi, di, z_slope_ice, h_var)
+        
         !$ser verbatim if (nn .eq. 1) then
             !$ser verbatim isub_qvo=qv
             !$ser verbatim isub_qlo=ql
@@ -4160,18 +4172,6 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
             !$ser verbatim isub_dio=di
         !$ser verbatim endif
 
-        ! -----------------------------------------------------------------------
-        ! cloud water freezing to form cloud ice and snow
-        ! -----------------------------------------------------------------------
-        
-        call pifr (ks, ke, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, lcpk, icpk, tcpk, tcp3)
-        
-        ! -----------------------------------------------------------------------
-        ! vertical subgrid variability
-        ! -----------------------------------------------------------------------
-        
-        call linear_prof (ke - ks + 1, qi, di, z_slope_ice, h_var)
-        
         ! -----------------------------------------------------------------------
         ! snow melting (includes snow accretion with cloud water and rain) to form cloud water and rain
         ! -----------------------------------------------------------------------
