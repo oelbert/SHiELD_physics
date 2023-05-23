@@ -4175,6 +4175,23 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
 
         call psaci (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, den, denfac, vti, vts)
         
+        !$ser verbatim if (nn .eq. 1) then
+            !$ser verbatim isub_qvo=qv
+            !$ser verbatim isub_qlo=ql
+            !$ser verbatim isub_qro=qr
+            !$ser verbatim isub_qio=qi
+            !$ser verbatim isub_qso=qs
+            !$ser verbatim isub_qgo=qg
+            !$ser verbatim isub_pto=tz
+            !$ser verbatim isub_cvmo=cvm
+            !$ser verbatim isub_te8o=te8
+            !$ser verbatim isub_lcpko=lcpk
+            !$ser verbatim isub_icpko=icpk
+            !$ser verbatim isub_tcpko=tcpk
+            !$ser verbatim isub_tcp3o=tcp3
+            !$ser verbatim isub_dio=di
+        !$ser verbatim endif
+
         ! -----------------------------------------------------------------------
         ! cloud ice to snow autoconversion
         ! -----------------------------------------------------------------------
@@ -4212,23 +4229,6 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
         
         call pgacw_pgacr (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
             vtr, vtg, lcpk, icpk, tcpk, tcp3)
-        
-        !$ser verbatim if (nn .eq. 1) then
-            !$ser verbatim isub_qvo=qv
-            !$ser verbatim isub_qlo=ql
-            !$ser verbatim isub_qro=qr
-            !$ser verbatim isub_qio=qi
-            !$ser verbatim isub_qso=qs
-            !$ser verbatim isub_qgo=qg
-            !$ser verbatim isub_pto=tz
-            !$ser verbatim isub_cvmo=cvm
-            !$ser verbatim isub_te8o=te8
-            !$ser verbatim isub_lcpko=lcpk
-            !$ser verbatim isub_icpko=icpk
-            !$ser verbatim isub_tcpko=tcpk
-            !$ser verbatim isub_tcp3o=tcp3
-            !$ser verbatim isub_dio=di
-        !$ser verbatim endif
 
     endif ! do_warm_rain_mp
     
