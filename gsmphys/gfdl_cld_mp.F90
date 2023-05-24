@@ -4142,9 +4142,43 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
         ! snow melting (includes snow accretion with cloud water and rain) to form cloud water and rain
         ! -----------------------------------------------------------------------
 
+        !$ser verbatim if (nn .eq. 1) then
+            !$ser verbatim isub_qv=qv
+            !$ser verbatim isub_ql=ql
+            !$ser verbatim isub_qr=qr
+            !$ser verbatim isub_qi=qi
+            !$ser verbatim isub_qs=qs
+            !$ser verbatim isub_qg=qg
+            !$ser verbatim isub_pt=tz
+            !$ser verbatim isub_cvm=cvm
+            !$ser verbatim isub_te8=te8
+            !$ser verbatim isub_lcpk=lcpk
+            !$ser verbatim isub_icpk=icpk
+            !$ser verbatim isub_tcpk=tcpk
+            !$ser verbatim isub_tcp3=tcp3
+            !$ser verbatim isub_di=di
+        !$ser verbatim endif
+
         call psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
             vtw, vtr, vts, lcpk, icpk, tcpk, tcp3)
         
+        !$ser verbatim if (nn .eq. 1) then
+            !$ser verbatim isub_qvo=qv
+            !$ser verbatim isub_qlo=ql
+            !$ser verbatim isub_qro=qr
+            !$ser verbatim isub_qio=qi
+            !$ser verbatim isub_qso=qs
+            !$ser verbatim isub_qgo=qg
+            !$ser verbatim isub_pto=tz
+            !$ser verbatim isub_cvmo=cvm
+            !$ser verbatim isub_te8o=te8
+            !$ser verbatim isub_lcpko=lcpk
+            !$ser verbatim isub_icpko=icpk
+            !$ser verbatim isub_tcpko=tcpk
+            !$ser verbatim isub_tcp3o=tcp3
+            !$ser verbatim isub_dio=di
+        !$ser verbatim endif
+
         ! -----------------------------------------------------------------------
         ! graupel melting (includes graupel accretion with cloud water and rain) to form rain
         ! -----------------------------------------------------------------------
@@ -4173,43 +4207,9 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
         ! -----------------------------------------------------------------------
         ! snow accretion with rain and rain freezing to form graupel
         ! -----------------------------------------------------------------------
-        
-        !$ser verbatim if (nn .eq. 1) then
-            !$ser verbatim isub_qv=qv
-            !$ser verbatim isub_ql=ql
-            !$ser verbatim isub_qr=qr
-            !$ser verbatim isub_qi=qi
-            !$ser verbatim isub_qs=qs
-            !$ser verbatim isub_qg=qg
-            !$ser verbatim isub_pt=tz
-            !$ser verbatim isub_cvm=cvm
-            !$ser verbatim isub_te8=te8
-            !$ser verbatim isub_lcpk=lcpk
-            !$ser verbatim isub_icpk=icpk
-            !$ser verbatim isub_tcpk=tcpk
-            !$ser verbatim isub_tcp3=tcp3
-            !$ser verbatim isub_di=di
-        !$ser verbatim endif
 
         call psacr_pgfr (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
             vtr, vts, lcpk, icpk, tcpk, tcp3)
-        
-        !$ser verbatim if (nn .eq. 1) then
-            !$ser verbatim isub_qvo=qv
-            !$ser verbatim isub_qlo=ql
-            !$ser verbatim isub_qro=qr
-            !$ser verbatim isub_qio=qi
-            !$ser verbatim isub_qso=qs
-            !$ser verbatim isub_qgo=qg
-            !$ser verbatim isub_pto=tz
-            !$ser verbatim isub_cvmo=cvm
-            !$ser verbatim isub_te8o=te8
-            !$ser verbatim isub_lcpko=lcpk
-            !$ser verbatim isub_icpko=icpk
-            !$ser verbatim isub_tcpko=tcpk
-            !$ser verbatim isub_tcp3o=tcp3
-            !$ser verbatim isub_dio=di
-        !$ser verbatim endif
 
         ! -----------------------------------------------------------------------
         ! graupel accretion with snow
