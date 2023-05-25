@@ -4167,7 +4167,13 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
         ! -----------------------------------------------------------------------
         ! graupel accretion with cloud ice
         ! -----------------------------------------------------------------------
-        
+
+        call pgaci (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, den, denfac, vti, vtg)
+
+        ! -----------------------------------------------------------------------
+        ! snow accretion with rain and rain freezing to form graupel
+        ! -----------------------------------------------------------------------
+
         !$ser verbatim if (nn .eq. 1) then
             !$ser verbatim isub_qv=qv
             !$ser verbatim isub_ql=ql
@@ -4185,8 +4191,13 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
             !$ser verbatim isub_di=di
         !$ser verbatim endif
 
-        call pgaci (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, den, denfac, vti, vtg)
+        call psacr_pgfr (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
+            vtr, vts, lcpk, icpk, tcpk, tcp3)
 
+        ! -----------------------------------------------------------------------
+        ! graupel accretion with snow
+        ! -----------------------------------------------------------------------
+        
         !$ser verbatim if (nn .eq. 1) then
             !$ser verbatim isub_qvo=qv
             !$ser verbatim isub_qlo=ql
@@ -4204,17 +4215,6 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
             !$ser verbatim isub_dio=di
         !$ser verbatim endif
 
-        ! -----------------------------------------------------------------------
-        ! snow accretion with rain and rain freezing to form graupel
-        ! -----------------------------------------------------------------------
-
-        call psacr_pgfr (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
-            vtr, vts, lcpk, icpk, tcpk, tcp3)
-
-        ! -----------------------------------------------------------------------
-        ! graupel accretion with snow
-        ! -----------------------------------------------------------------------
-        
         call pgacs (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, den, vts, vtg)
         
         ! -----------------------------------------------------------------------
