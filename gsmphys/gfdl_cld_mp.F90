@@ -4390,6 +4390,7 @@ subroutine psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac
                 else
                     factor = acr2d (qden, csacw, denfac (k), blins, mus)
                     psacw = factor / (1. + dts * factor) * ql (k)
+                    !$ser verbatim print *, 'DBG: snow/water accretion'
                 endif
             endif
             
@@ -4400,6 +4401,7 @@ subroutine psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac
                     acc (3), acc (4), den (k)), qr (k) / dts)
                 pracs = acr3d (vtr (k), vts (k), qs (k), qr (k), cracs, acco (:, 1), &
                     acc (1), acc (2), den (k))
+                !$ser verbatim print *, 'DBG: snow/rain accretion'
             endif
             
             tin = tz (k)
