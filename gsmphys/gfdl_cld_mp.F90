@@ -4156,6 +4156,18 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
         ! snow accretion with cloud ice
         ! -----------------------------------------------------------------------
 
+        call psaci (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, den, denfac, vti, vts)
+
+        ! -----------------------------------------------------------------------
+        ! cloud ice to snow autoconversion
+        ! -----------------------------------------------------------------------
+        
+        call psaut (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, den, di)
+
+        ! -----------------------------------------------------------------------
+        ! graupel accretion with cloud ice
+        ! -----------------------------------------------------------------------
+        
         !$ser verbatim if (nn .eq. 1) then
             !$ser verbatim isub_qv=qv
             !$ser verbatim isub_ql=ql
@@ -4173,14 +4185,8 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
             !$ser verbatim isub_di=di
         !$ser verbatim endif
 
-        call psaci (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, den, denfac, vti, vts)
+        call pgaci (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, den, denfac, vti, vtg)
 
-        ! -----------------------------------------------------------------------
-        ! cloud ice to snow autoconversion
-        ! -----------------------------------------------------------------------
-        
-        call psaut (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, den, di)
-        
         !$ser verbatim if (nn .eq. 1) then
             !$ser verbatim isub_qvo=qv
             !$ser verbatim isub_qlo=ql
@@ -4197,12 +4203,6 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
             !$ser verbatim isub_tcp3o=tcp3
             !$ser verbatim isub_dio=di
         !$ser verbatim endif
-
-        ! -----------------------------------------------------------------------
-        ! graupel accretion with cloud ice
-        ! -----------------------------------------------------------------------
-        
-        call pgaci (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, den, denfac, vti, vtg)
 
         ! -----------------------------------------------------------------------
         ! snow accretion with rain and rain freezing to form graupel
