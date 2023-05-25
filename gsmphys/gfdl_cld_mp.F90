@@ -4142,6 +4142,13 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
         ! snow melting (includes snow accretion with cloud water and rain) to form cloud water and rain
         ! -----------------------------------------------------------------------
 
+        call psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
+            vtw, vtr, vts, lcpk, icpk, tcpk, tcp3)
+
+        ! -----------------------------------------------------------------------
+        ! graupel melting (includes graupel accretion with cloud water and rain) to form rain
+        ! -----------------------------------------------------------------------
+        
         !$ser verbatim if (nn .eq. 1) then
             !$ser verbatim isub_qv=qv
             !$ser verbatim isub_ql=ql
@@ -4159,8 +4166,8 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
             !$ser verbatim isub_di=di
         !$ser verbatim endif
 
-        call psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
-            vtw, vtr, vts, lcpk, icpk, tcpk, tcp3)
+        call pgmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
+            vtw, vtr, vtg, lcpk, icpk, tcpk, tcp3)
         
         !$ser verbatim if (nn .eq. 1) then
             !$ser verbatim isub_qvo=qv
@@ -4179,13 +4186,6 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
             !$ser verbatim isub_dio=di
         !$ser verbatim endif
 
-        ! -----------------------------------------------------------------------
-        ! graupel melting (includes graupel accretion with cloud water and rain) to form rain
-        ! -----------------------------------------------------------------------
-        
-        call pgmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
-            vtw, vtr, vtg, lcpk, icpk, tcpk, tcp3)
-        
         ! -----------------------------------------------------------------------
         ! snow accretion with cloud ice
         ! -----------------------------------------------------------------------
@@ -4390,7 +4390,6 @@ subroutine psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac
                 else
                     factor = acr2d (qden, csacw, denfac (k), blins, mus)
                     psacw = factor / (1. + dts * factor) * ql (k)
-                    !$ser verbatim print *, 'DBG: snow/water accretion'
                 endif
             endif
             
@@ -4401,7 +4400,6 @@ subroutine psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac
                     acc (3), acc (4), den (k)), qr (k) / dts)
                 pracs = acr3d (vtr (k), vts (k), qs (k), qr (k), cracs, acco (:, 1), &
                     acc (1), acc (2), den (k))
-                !$ser verbatim print *, 'DBG: snow/rain accretion'
             endif
             
             tin = tz (k)
