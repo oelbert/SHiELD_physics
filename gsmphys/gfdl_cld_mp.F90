@@ -4148,7 +4148,14 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
         ! -----------------------------------------------------------------------
         ! graupel melting (includes graupel accretion with cloud water and rain) to form rain
         ! -----------------------------------------------------------------------
-        
+
+        call pgmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
+            vtw, vtr, vtg, lcpk, icpk, tcpk, tcp3)
+
+        ! -----------------------------------------------------------------------
+        ! snow accretion with cloud ice
+        ! -----------------------------------------------------------------------
+
         !$ser verbatim if (nn .eq. 1) then
             !$ser verbatim isub_qv=qv
             !$ser verbatim isub_ql=ql
@@ -4166,8 +4173,13 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
             !$ser verbatim isub_di=di
         !$ser verbatim endif
 
-        call pgmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
-            vtw, vtr, vtg, lcpk, icpk, tcpk, tcp3)
+        call psaci (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, den, denfac, vti, vts)
+
+        ! -----------------------------------------------------------------------
+        ! cloud ice to snow autoconversion
+        ! -----------------------------------------------------------------------
+        
+        call psaut (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, den, di)
         
         !$ser verbatim if (nn .eq. 1) then
             !$ser verbatim isub_qvo=qv
@@ -4186,18 +4198,6 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
             !$ser verbatim isub_dio=di
         !$ser verbatim endif
 
-        ! -----------------------------------------------------------------------
-        ! snow accretion with cloud ice
-        ! -----------------------------------------------------------------------
-
-        call psaci (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, den, denfac, vti, vts)
-
-        ! -----------------------------------------------------------------------
-        ! cloud ice to snow autoconversion
-        ! -----------------------------------------------------------------------
-        
-        call psaut (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, den, di)
-        
         ! -----------------------------------------------------------------------
         ! graupel accretion with cloud ice
         ! -----------------------------------------------------------------------
