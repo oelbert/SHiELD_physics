@@ -3816,12 +3816,6 @@ subroutine warm_rain (dts, ks, ke, dp, dz, tz, qv, ql, qr, qi, qs, qg, &
     ! rain evaporation to form water vapor
     ! -----------------------------------------------------------------------
 
-    call prevp (ks, ke, dts, tz, qv, ql, qr, qi, qs, qg, den, denfac, rh_rain, h_var, dp, reevap)
-
-    ! -----------------------------------------------------------------------
-    ! rain accretion with cloud water
-    ! -----------------------------------------------------------------------
-    
     !$ser verbatim if (nn .eq. 1) then
         !$ser verbatim ws_qv=qv
         !$ser verbatim ws_ql=ql
@@ -3834,14 +3828,8 @@ subroutine warm_rain (dts, ks, ke, dp, dz, tz, qv, ql, qr, qi, qs, qg, &
         !$ser verbatim ws_reevap=reevap
     !$ser verbatim endif
 
-    call pracw (ks, ke, dts, tz, qv, ql, qr, qi, qs, qg, den, denfac, vtw, vtr)
-    
-    ! -----------------------------------------------------------------------
-    ! cloud water to rain autoconversion
-    ! -----------------------------------------------------------------------
-    
-    call praut (ks, ke, dts, tz, qv, ql, qr, qi, qs, qg, den, ccn, h_var)
-    
+    call prevp (ks, ke, dts, tz, qv, ql, qr, qi, qs, qg, den, denfac, rh_rain, h_var, dp, reevap)
+
     !$ser verbatim if (nn .eq. 1) then
         !$ser verbatim ws_qvo=qv
         !$ser verbatim ws_qlo=ql
@@ -3853,6 +3841,18 @@ subroutine warm_rain (dts, ks, ke, dp, dz, tz, qv, ql, qr, qi, qs, qg, &
         !$ser verbatim ws_ccno=ccn
         !$ser verbatim ws_reevapo=reevap
     !$ser verbatim endif
+
+    ! -----------------------------------------------------------------------
+    ! rain accretion with cloud water
+    ! -----------------------------------------------------------------------
+
+    call pracw (ks, ke, dts, tz, qv, ql, qr, qi, qs, qg, den, denfac, vtw, vtr)
+    
+    ! -----------------------------------------------------------------------
+    ! cloud water to rain autoconversion
+    ! -----------------------------------------------------------------------
+    
+    call praut (ks, ke, dts, tz, qv, ql, qr, qi, qs, qg, den, ccn, h_var)
 
 end subroutine warm_rain
 
