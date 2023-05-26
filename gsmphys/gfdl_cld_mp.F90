@@ -2137,7 +2137,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser savepoint WRainSubFunc-In
     !$ser data ws_delp=mpf_delp ws_den=mpf_den ws_denfac=mpf_denfac ws_vtw=sd_vtw ws_vtr=sd_vtr ws_h_var=mpf_h_var dt=dts
-    !$ser data ws_qv=ws_qv ws_ql=ws_ql ws_qr=ws_qr ws_qi=ws_qi ws_qs=ws_qs ws_qg=ws_qg ws_pt=ws_tz ws_ccn=ws_ccn ws_reevap=ws_reevap
+    !$ser data ws_qv=ws_qv ws_ql=ws_ql ws_qr=ws_qr ws_qi=ws_qi ws_qs=ws_qs ws_qg=ws_qg ws_pt=ws_pt ws_ccn=ws_ccn ws_reevap=ws_reevap
 
 
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
@@ -2227,7 +2227,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data isub_lcpk=isub_lcpko isub_icpk=isub_icpko isub_tcpk=isub_tcpko isub_tcp3=isub_tcp3o isub_di=isub_dio
 
     !$ser savepoint WRainSubFunc-Out
-    !$ser data ws_qv=ws_qvo ws_ql=ws_qlo ws_qr=ws_qro ws_qi=ws_qio ws_qs=ws_qso ws_qg=ws_qgo ws_pt=ws_tzo ws_ccn=ws_ccno ws_reevap=ws_reevapo
+    !$ser data ws_qv=ws_qvo ws_ql=ws_qlo ws_qr=ws_qro ws_qi=ws_qio ws_qs=ws_qso ws_qg=ws_qgo ws_pt=ws_pto ws_ccn=ws_ccno ws_reevap=ws_reevapo
 
 end subroutine mpdrv
 
