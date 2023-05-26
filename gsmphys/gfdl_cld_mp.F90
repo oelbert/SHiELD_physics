@@ -3804,7 +3804,7 @@ subroutine warm_rain (dts, ks, ke, dp, dz, tz, qv, ql, qr, qi, qs, qg, &
     real, intent (out) :: reevap
 
     !$ser verbatim real, intent (inout) :: ws_reevap, ws_reevapo
-    !$ser verbatim real, intent (in) :: nn
+    !$ser verbatim integer, intent (in) :: nn
     
     ! -----------------------------------------------------------------------
     ! initialization
