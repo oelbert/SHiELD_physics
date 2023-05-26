@@ -2136,6 +2136,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data isub_vtr=sd_vtr isub_vti=sd_vti isub_vts=sd_vts isub_vtg=sd_vtg isub_h_var=mpf_h_var dt=dts
 
     !$ser savepoint WRainSubFunc-In
+    !$ser data ws_delp=mpf_delp ws_den=mpf_den ws_denfac=mpf_denfac ws_vtw=sd_vtw ws_vtr=sd_vtr ws_h_var=mpf_h_var dt=dts
     !$ser data ws_qv=ws_qv ws_ql=ws_ql ws_qr=ws_qr ws_qi=ws_qi ws_qs=ws_qs ws_qg=ws_qg ws_pt=ws_tz ws_ccn=ws_ccn ws_reevap=ws_reevap
 
 
