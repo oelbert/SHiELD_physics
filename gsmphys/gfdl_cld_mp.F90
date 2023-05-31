@@ -5095,7 +5095,21 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
         ! -----------------------------------------------------------------------
         ! enforce complete freezing below t_wfr
         ! -----------------------------------------------------------------------
+
+        call pcomp (ks, ke, qv, ql, qr, qi, qs, qg, tz, cvm, te8, lcpk, icpk, tcpk, tcp3)
         
+        ! -----------------------------------------------------------------------
+        ! Wegener Bergeron Findeisen process
+        ! -----------------------------------------------------------------------
+        
+        call pwbf (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, lcpk, icpk, tcpk, tcp3)
+        
+        ! -----------------------------------------------------------------------
+        ! Bigg freezing mechanism
+        ! -----------------------------------------------------------------------
+        
+        call pbigg (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, ccn, lcpk, icpk, tcpk, tcp3)
+
         !$ser verbatim if (nn .eq. 1) then
             !$ser verbatim szs_pt = tz
             !$ser verbatim szs_qv = qv
@@ -5118,19 +5132,12 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
             !$ser verbatim szs_cvm = cvm
         !$ser verbatim endif
 
-        call pcomp (ks, ke, qv, ql, qr, qi, qs, qg, tz, cvm, te8, lcpk, icpk, tcpk, tcp3)
-        
         ! -----------------------------------------------------------------------
-        ! Wegener Bergeron Findeisen process
+        ! cloud ice deposition and sublimation
         ! -----------------------------------------------------------------------
         
-        call pwbf (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, lcpk, icpk, tcpk, tcp3)
-        
-        ! -----------------------------------------------------------------------
-        ! Bigg freezing mechanism
-        ! -----------------------------------------------------------------------
-        
-        call pbigg (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, ccn, lcpk, icpk, tcpk, tcp3)
+        call pidep_pisub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
+            lcpk, icpk, tcpk, tcp3, cin, dep, sub)
         
         !$ser verbatim if (nn .eq. 1) then
             !$ser verbatim szs_pto = tz
@@ -5153,13 +5160,6 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
             !$ser verbatim szs_cvmo = cvm
         !$ser verbatim endif
 
-        ! -----------------------------------------------------------------------
-        ! cloud ice deposition and sublimation
-        ! -----------------------------------------------------------------------
-        
-        call pidep_pisub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-            lcpk, icpk, tcpk, tcp3, cin, dep, sub)
-        
         ! -----------------------------------------------------------------------
         ! snow deposition and sublimation
         ! -----------------------------------------------------------------------
