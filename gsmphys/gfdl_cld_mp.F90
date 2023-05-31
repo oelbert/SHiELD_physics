@@ -2569,10 +2569,10 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
         ! temperature sentive high vertical resolution processes
         ! -----------------------------------------------------------------------
         
-        call subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, &
+        call subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
 !$ser verbatim szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_cond, szs_dep, szs_reevap, szs_sub,&
 !$ser verbatim szs_pto, szs_qvo, szs_qlo, szs_qro, szs_qio, szs_qso, szs_qgo, szs_ccno, szs_cino, szs_condo, szs_depo, szs_reevapo, szs_subo, n,&
-            qr, qi, qs, qg, dp, ccn, cin, cond, dep, reevap, sub)
+            qi, qs, qg, dp, ccn, cin, cond, dep, reevap, sub)
         
         !$ser verbatim if (n .eq. 1) then
             !$ser verbatim sz_qv=qv
