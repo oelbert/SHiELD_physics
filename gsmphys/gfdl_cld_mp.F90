@@ -1254,7 +1254,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim real, dimension (is:ie, ks:ke) :: isub_qvo, isub_qlo, isub_qro, isub_qio, isub_qso, isub_qgo, isub_pto, isub_cvmo, isub_te8o, isub_lcpko, isub_icpko, isub_tcpko, isub_tcp3o, isub_dio
     !$ser verbatim real, dimension (is:ie, ks:ke) :: ws_qv, ws_ql, ws_qr, ws_qi, ws_qs, ws_qg, ws_ccn, ws_pt
     !$ser verbatim real, dimension (is:ie, ks:ke) :: ws_qvo, ws_qlo, ws_qro, ws_qio, ws_qso, ws_qgo, ws_ccno, ws_pto
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin
+    !$ser verbatim real, dimension (is:ie, ks:ke) :: szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_te
     !$ser verbatim real, dimension (is:ie, ks:ke) :: szs_pto, szs_qvo, szs_qlo, szs_qro, szs_qio, szs_qso, szs_qgo, szs_ccno, szs_cino
 
     !$ser verbatim real, dimension (is:ie, ks:ke) :: zerobuff_3d, tem, t0, t2
@@ -1568,7 +1568,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 !$ser verbatim isub_qvo  (i, :), isub_qlo  (i, :), isub_qro  (i, :), isub_qio  (i, :), isub_qso  (i, :), isub_qgo  (i, :), isub_pto  (i, :), isub_cvmo  (i, :), isub_te8o  (i, :), isub_lcpko  (i, :), isub_icpko  (i, :), isub_tcpko  (i, :), isub_tcp3o  (i, :), isub_dio  (i, :),&
 !$ser verbatim ws_qv (i, :), ws_ql (i, :), ws_qr (i, :), ws_qi (i, :), ws_qs (i, :), ws_qg (i, :), ws_ccn (i, :), ws_pt (i, :),&
 !$ser verbatim ws_qvo (i, :), ws_qlo (i, :), ws_qro (i, :), ws_qio (i, :), ws_qso (i, :), ws_qgo (i, :), ws_ccno (i, :), ws_pto (i, :),&
-!$ser verbatim ws_reevap (i), ws_reevapo (i), szs_pt (i, :), szs_qv (i, :), szs_ql (i, :), szs_qr (i, :), szs_qi (i, :), szs_qs (i, :), szs_qg (i, :), szs_ccn (i, :), szs_cin (i, :),&
+!$ser verbatim ws_reevap (i), ws_reevapo (i), szs_pt (i, :), szs_qv (i, :), szs_ql (i, :), szs_qr (i, :), szs_qi (i, :), szs_qs (i, :), szs_qg (i, :), szs_ccn (i, :), szs_cin (i, :), szs_te (i, :),&
 !$ser verbatim szs_cond (i), szs_dep (i), szs_reevap (i), szs_sub (i), szs_pto (i, :), szs_qvo (i, :), szs_qlo (i, :), szs_qro (i, :), szs_qio (i, :), szs_qso (i, :), szs_qgo (i, :), szs_ccno (i, :), szs_cino (i, :),&
 !$ser verbatim szs_condo (i), szs_depo (i), szs_reevapo (i), szs_subo (i),&
                 condensation (i), deposition (i), evaporation (i), sublimation (i), convt)
@@ -2146,7 +2146,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser savepoint SubgridZSubs-In
     !$ser data szs_den=mpf_den szs_denfac=mpf_denfac szs_rh_adj=mpf_rh_adj szs_pt=szs_pt szs_qv=szs_qv szs_ql=szs_ql szs_qr=szs_qr szs_qi=szs_qi szs_qs=szs_qs szs_qg=szs_qg
-    !$ser data szs_ccn=szs_ccn szs_cin=szs_cin dt=dts szs_delp=mpf_delp szs_cond=szs_cond szs_dep=szs_dep szs_reevap=szs_reevap szs_sub=szs_sub
+    !$ser data szs_ccn=szs_ccn szs_cin=szs_cin dt=dts szs_delp=mpf_delp szs_cond=szs_cond szs_dep=szs_dep szs_reevap=szs_reevap szs_sub=szs_sub, szs_te=szs_te
 
 
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
@@ -2390,7 +2390,7 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
 !$ser verbatim isub_qvo, isub_qlo, isub_qro, isub_qio, isub_qso, isub_qgo, isub_pto, isub_cvmo, isub_te8o, isub_lcpko, isub_icpko, isub_tcpko, isub_tcp3o, isub_dio,&
 !$ser verbatim ws_qv, ws_ql, ws_qr, ws_qi, ws_qs, ws_qg, ws_ccn, ws_pt,&
 !$ser verbatim ws_qvo, ws_qlo, ws_qro, ws_qio, ws_qso, ws_qgo, ws_ccno, ws_pto,&
-!$ser verbatim ws_reevap, ws_reevapo, szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin,&
+!$ser verbatim ws_reevap, ws_reevapo, szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_te,&
 !$ser verbatim szs_cond, szs_dep, szs_reevap, szs_sub, szs_pto, szs_qvo, szs_qlo, szs_qro, szs_qio, szs_qso, szs_qgo, szs_ccno, szs_cino,&
 !$ser verbatim szs_condo, szs_depo, szs_reevapo, szs_subo,&
         condensation, deposition, evaporation, sublimation, convt)
@@ -2429,7 +2429,7 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
 
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: ws_qv, ws_ql, ws_qr, ws_qi, ws_qs, ws_qg, ws_ccn, ws_pt
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: ws_qvo, ws_qlo, ws_qro, ws_qio, ws_qso, ws_qgo, ws_ccno, ws_pto
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin
+    !$ser verbatim real, intent (inout), dimension (ks:ke) :: szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_te
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: szs_pto, szs_qvo, szs_qlo, szs_qro, szs_qio, szs_qso, szs_qgo, szs_ccno, szs_cino
     
     !$ser verbatim real, intent (out), dimension (ks:ke + 1) :: tf_ze, tf_zt, sm_ze, sm_zt
@@ -2570,7 +2570,7 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
         ! -----------------------------------------------------------------------
         
         call subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
-!$ser verbatim szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_cond, szs_dep, szs_reevap, szs_sub,&
+!$ser verbatim szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_cond, szs_dep, szs_reevap, szs_sub, szs_te,&
 !$ser verbatim szs_pto, szs_qvo, szs_qlo, szs_qro, szs_qio, szs_qso, szs_qgo, szs_ccno, szs_cino, szs_condo, szs_depo, szs_reevapo, szs_subo, n,&
             qi, qs, qg, dp, ccn, cin, cond, dep, reevap, sub)
         
@@ -5015,7 +5015,7 @@ end subroutine pgacw_pgacr
 ! =======================================================================
 
 subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
-!$ser verbatim szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_cond, szs_dep, szs_reevap, szs_sub,&
+!$ser verbatim szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_cond, szs_dep, szs_reevap, szs_sub, szs_te,&
 !$ser verbatim szs_pto, szs_qvo, szs_qlo, szs_qro, szs_qio, szs_qso, szs_qgo, szs_ccno, szs_cino, szs_condo, szs_depo, szs_reevapo, szs_subo, nn,&
         qi, qs, qg, dp, ccn, cin, cond, dep, reevap, sub)
     
@@ -5033,7 +5033,7 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
     real, intent (in), dimension (ks:ke) :: den, denfac, dp
     
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg, ccn, cin
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin
+    !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_te
     !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_pto, szs_qvo, szs_qlo, szs_qro, szs_qio, szs_qso, szs_qgo, szs_ccno, szs_cino
     
     real, intent (out) :: cond, dep, reevap, sub
@@ -5083,6 +5083,7 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
         !$ser verbatim szs_dep = dep
         !$ser verbatim szs_reevap = reevap
         !$ser verbatim szs_sub = sub
+        !$ser verbatim szs_te = te8
     !$ser verbatim endif
 
     if (.not. do_warm_rain_mp) then
