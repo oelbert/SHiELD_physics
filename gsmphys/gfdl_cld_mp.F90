@@ -2146,7 +2146,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser savepoint SubgridZSubs-In
     !$ser data szs_den=mpf_den szs_denfac=mpf_denfac szs_rh_adj=mpf_rh_adj szs_pt=szs_pt szs_qv=szs_qv szs_ql=szs_ql szs_qr=szs_qr szs_qi=szs_qi szs_qs=szs_qs szs_qg=szs_qg
-    !$ser data szs_ccn=szs_ccn szs_cin=szs_cin dt=dts szs_delp=mpf_delp szs_cond=szs_cond szs_dep=szs_dep szs_reevap=szs_reevap szs_sub=szs_sub, szs_te=szs_te
+    !$ser data szs_ccn=szs_ccn szs_cin=szs_cin dt=dts szs_delp=mpf_delp szs_cond=szs_cond szs_dep=szs_dep szs_reevap=szs_reevap szs_sub=szs_sub szs_te=szs_te
 
 
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
