@@ -5026,7 +5026,7 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
     ! -----------------------------------------------------------------------
     
     integer, intent (in) :: ks, ke
-    !$ser verbtaim integer, intent (in) :: nn
+    !$ser verbatim integer, intent (in) :: nn
     
     real, intent (in) :: dts, rh_adj
     
