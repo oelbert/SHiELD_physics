@@ -8519,14 +8519,14 @@ function wqs_trho (tk, den, dqdt)
     
     real, intent (out) :: dqdt
 
-    !$ser verbatim real (kind = r8) :: fac0, fac1, fac2 
+    real (kind = r8) :: fac0, fac1, fac2 
     
-    wqs_trho = qs_core (length, tk, den, dqdt, table0, des0)
-    !$ser verbatim fac0 = (tk - tice) / (tk * tice)
-    !$ser verbatim fac1 = fac0 * lv0
-    !$ser verbatim fac2 = (dc_vap * log (tk / tice) + fac1) / rvgas
-    !$ser verbatim wqs_trho = e00 * exp (fac2) / (rvgas * tk * den)
-    !$ser verbatim dqdt = wqs_trho * (dc_vap + lv0 / tk) / (rvgas * tk)
+    !wqs_trho = qs_core (length, tk, den, dqdt, table0, des0)
+    fac0 = (tk - tice) / (tk * tice)
+    fac1 = fac0 * lv0
+    fac2 = (dc_vap * log (tk / tice) + fac1) / rvgas
+    wqs_trho = e00 * exp (fac2) / (rvgas * tk * den)
+    dqdt = wqs_trho * (dc_vap + lv0 / tk) / (rvgas * tk)
     
 end function wqs_trho
 
@@ -8573,25 +8573,25 @@ function iqs_trho (tk, den, dqdt)
     
     real, intent (out) :: dqdt
 
-    !$ser verbatim real (kind = r8) :: fac0, fac1, fac2, tem
+    real (kind = r8) :: fac0, fac1, fac2, tem
     
-    iqs_trho = qs_core (length, tk, den, dqdt, table2, des2)
+    !iqs_trho = qs_core (length, tk, den, dqdt, table2, des2)
     
-    !$ser verbatim tem = min(tk, tice + 102.0)
+    tem = min(tk, tice + 102.0)
 
-    !$ser verbatim if (tem .gt. tice) then
-        !$ser verbatim fac0 = (tem - tice) / (tem * tice)
-        !$ser verbatim fac1 = fac0 * li2
-        !$ser verbatim  fac2 = (d2_ice * log (tem / tice) + fac1) / rvgas
-        !$ser verbatim iqs_trho = e00 * exp (fac2) / (rvgas * tem * den)
-        !$ser verbatim dqdt = iqs_trho * (d2_ice + li2 / tem) / (rvgas * tem)
-    !$ser verbatim else
-        !$ser verbatim fac0 = (tem - tice) / (tem * tice)
-        !$ser verbatim fac1 = fac0 * lv0
-        !$ser verbatim fac2 = (dc_vap * log (tem / tice) + fac1) / rvgas
-        !$ser verbatim iqs_trho = e00 * exp (fac2) / (rvgas * tem * den)
-        !$ser verbatim dqdt = iqs_trho * (dc_vap + lv0 / tem) / (rvgas * tem)
-    !$ser verbatim endif
+    if (tem .gt. tice) then
+        fac0 = (tem - tice) / (tem * tice)
+        fac1 = fac0 * li2
+         fac2 = (d2_ice * log (tem / tice) + fac1) / rvgas
+        iqs_trho = e00 * exp (fac2) / (rvgas * tem * den)
+        dqdt = iqs_trho * (d2_ice + li2 / tem) / (rvgas * tem)
+    else
+        fac0 = (tem - tice) / (tem * tice)
+        fac1 = fac0 * lv0
+        fac2 = (dc_vap * log (tem / tice) + fac1) / rvgas
+        iqs_trho = e00 * exp (fac2) / (rvgas * tem * den)
+        dqdt = iqs_trho * (dc_vap + lv0 / tem) / (rvgas * tem)
+    endif
     
 end function iqs_trho
 
