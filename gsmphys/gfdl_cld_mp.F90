@@ -8577,9 +8577,9 @@ function iqs_trho (tk, den, dqdt)
     
     !iqs_trho = qs_core (length, tk, den, dqdt, table2, des2)
     
-    tem = min(tk, tice + 102.0)
+    tem = max(tice - 160.0, min(tk, tice + 102.0))
 
-    if (tem .gt. tice) then
+    if (tem .lt. tice) then
         fac0 = (tem - tice) / (tem * tice)
         fac1 = fac0 * li2
          fac2 = (d2_ice * log (tem / tice) + fac1) / rvgas
@@ -8592,7 +8592,7 @@ function iqs_trho (tk, den, dqdt)
         iqs_trho = e00 * exp (fac2) / (rvgas * tem * den)
         dqdt = iqs_trho * (dc_vap + lv0 / tem) / (rvgas * tem)
     endif
-    
+
 end function iqs_trho
 
 ! =======================================================================
