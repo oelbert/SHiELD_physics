@@ -3907,7 +3907,7 @@ subroutine prevp (ks, ke, dts, tz, qv, ql, qr, qi, qs, qg, &
     real (kind = r8), intent (inout), dimension (ks:ke) :: tz
     
     real, intent (inout), dimension (ks:ke) :: qv, qr, ql, qi, qs, qg
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: !$ser verbatim ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check
+    !$ser verbatim real, intent (out), dimension (ks:ke) :: ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check
     
     real, intent (out) :: reevap
     
