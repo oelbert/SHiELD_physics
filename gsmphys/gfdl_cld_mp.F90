@@ -4300,7 +4300,22 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
         ! -----------------------------------------------------------------------
         ! graupel accretion with snow
         ! -----------------------------------------------------------------------
+
+        call pgacs (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, den, vts, vtg)
         
+        ! -----------------------------------------------------------------------
+        ! snow to graupel autoconversion
+        ! -----------------------------------------------------------------------
+        
+        call pgaut (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, den)
+        
+        ! -----------------------------------------------------------------------
+        ! graupel accretion with cloud water and rain
+        ! -----------------------------------------------------------------------
+        
+        call pgacw_pgacr (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
+            vtr, vtg, lcpk, icpk, tcpk, tcp3)
+
         !$ser verbatim if (nn .eq. 1) then
             !$ser verbatim isub_qvo=qv
             !$ser verbatim isub_qlo=ql
@@ -4317,21 +4332,6 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
             !$ser verbatim isub_tcp3o=tcp3
             !$ser verbatim isub_dio=di
         !$ser verbatim endif
-
-        call pgacs (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, den, vts, vtg)
-        
-        ! -----------------------------------------------------------------------
-        ! snow to graupel autoconversion
-        ! -----------------------------------------------------------------------
-        
-        call pgaut (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, den)
-        
-        ! -----------------------------------------------------------------------
-        ! graupel accretion with cloud water and rain
-        ! -----------------------------------------------------------------------
-        
-        call pgacw_pgacr (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
-            vtr, vtg, lcpk, icpk, tcpk, tcp3)
 
     endif ! do_warm_rain_mp
     
