@@ -1253,7 +1253,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim real, dimension (is:ie, ks:ke) :: isub_qv, isub_ql, isub_qr, isub_qi, isub_qs, isub_qg, isub_pt, isub_cvm, isub_te8, isub_lcpk, isub_icpk, isub_tcpk, isub_tcp3, isub_di
     !$ser verbatim real, dimension (is:ie, ks:ke) :: isub_qvo, isub_qlo, isub_qro, isub_qio, isub_qso, isub_qgo, isub_pto, isub_cvmo, isub_te8o, isub_lcpko, isub_icpko, isub_tcpko, isub_tcp3o, isub_dio
     !$ser verbatim real, dimension (is:ie, ks:ke) :: ws_qv, ws_ql, ws_qr, ws_qi, ws_qs, ws_qg, ws_ccn, ws_pt
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: ws_qvo, ws_qlo, ws_qro, ws_qio, ws_qso, ws_qgo, ws_ccno, ws_pto, ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink
+    !$ser verbatim real, dimension (is:ie, ks:ke) :: ws_qvo, ws_qlo, ws_qro, ws_qio, ws_qso, ws_qgo, ws_ccno, ws_pto, ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink, ws_vc
     !$ser verbatim real, dimension (is:ie, ks:ke) :: szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_te
     !$ser verbatim real, dimension (is:ie, ks:ke) :: szs_pto, szs_qvo, szs_qlo, szs_qro, szs_qio, szs_qso, szs_qgo, szs_ccno, szs_cino
     !$ser verbatim real, dimension (is:ie, ks:ke) :: szs_lcpk, szs_icpk, szs_tcpk, szs_tcp3, szs_lcpko, szs_icpko, szs_tcpko, szs_tcp3o, szs_cvm, szs_cvmo
@@ -1568,7 +1568,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 !$ser verbatim isub_qv  (i, :), isub_ql  (i, :), isub_qr  (i, :), isub_qi  (i, :), isub_qs  (i, :), isub_qg  (i, :), isub_pt  (i, :), isub_cvm  (i, :), isub_te8  (i, :), isub_lcpk  (i, :), isub_icpk  (i, :), isub_tcpk  (i, :), isub_tcp3  (i, :), isub_di  (i, :),&
 !$ser verbatim isub_qvo  (i, :), isub_qlo  (i, :), isub_qro  (i, :), isub_qio  (i, :), isub_qso  (i, :), isub_qgo  (i, :), isub_pto  (i, :), isub_cvmo  (i, :), isub_te8o  (i, :), isub_lcpko  (i, :), isub_icpko  (i, :), isub_tcpko  (i, :), isub_tcp3o  (i, :), isub_dio  (i, :),&
 !$ser verbatim ws_qv (i, :), ws_ql (i, :), ws_qr (i, :), ws_qi (i, :), ws_qs (i, :), ws_qg (i, :), ws_ccn (i, :), ws_pt (i, :),&
-!$ser verbatim ws_qvo (i, :), ws_qlo (i, :), ws_qro (i, :), ws_qio (i, :), ws_qso (i, :), ws_qgo (i, :), ws_ccno (i, :), ws_pto (i, :), ws_tin (i, :), ws_qsat (i, :), ws_dqdt (i, :), ws_dqh (i, :), ws_bool_check (i, :), ws_dq (i, :), ws_sink0 (i, :), ws_sink (i, :),&
+!$ser verbatim ws_qvo (i, :), ws_qlo (i, :), ws_qro (i, :), ws_qio (i, :), ws_qso (i, :), ws_qgo (i, :), ws_ccno (i, :), ws_pto (i, :), ws_tin (i, :), ws_qsat (i, :), ws_dqdt (i, :), ws_dqh (i, :), ws_bool_check (i, :), ws_dq (i, :), ws_sink0 (i, :), ws_sink (i, :), ws_vc (i, :),&
 !$ser verbatim ws_reevap (i), ws_reevapo (i), szs_pt (i, :), szs_qv (i, :), szs_ql (i, :), szs_qr (i, :), szs_qi (i, :), szs_qs (i, :), szs_qg (i, :), szs_ccn (i, :), szs_cin (i, :), szs_te (i, :),&
 !$ser verbatim szs_cond (i), szs_dep (i), szs_reevap (i), szs_sub (i), szs_pto (i, :), szs_qvo (i, :), szs_qlo (i, :), szs_qro (i, :), szs_qio (i, :), szs_qso (i, :), szs_qgo (i, :), szs_ccno (i, :), szs_cino (i, :),&
 !$ser verbatim szs_condo (i), szs_depo (i), szs_reevapo (i), szs_subo (i), szs_lcpk (i, :), szs_icpk (i, :), szs_tcpk (i, :), szs_tcp3 (i, :), szs_lcpko (i, :), szs_icpko (i, :), szs_tcpko (i, :), szs_tcp3o (i, :), szs_cvm (i, :), szs_cvmo (i, :),&
@@ -2144,7 +2144,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser savepoint WRainSubFunc-In
     !$ser data ws_delp=mpf_delp ws_den=mpf_den ws_denfac=mpf_denfac ws_vtw=sd_vtw ws_vtr=sd_vtr ws_h_var=mpf_h_var dt=dts
     !$ser data ws_qv=ws_qv ws_ql=ws_ql ws_qr=ws_qr ws_qi=ws_qi ws_qs=ws_qs ws_qg=ws_qg ws_pt=ws_pt ws_ccn=ws_ccn ws_reevap=ws_reevap
-    !$ser data ws_tin=zerobuff_3d ws_qsat=zerobuff_3d ws_dqdt=zerobuff_3d ws_dqh=zerobuff_3d ws_bool_check=zerobuff_3d ws_dq=zerobuff_3d ws_sink0=zerobuff_3d ws_sink=zerobuff_3d
+    !$ser data ws_tin=zerobuff_3d ws_qsat=zerobuff_3d ws_dqdt=zerobuff_3d ws_dqh=zerobuff_3d ws_bool_check=zerobuff_3d ws_dq=zerobuff_3d ws_sink0=zerobuff_3d ws_sink=zerobuff_3d ws_vc=zerobuff_3d
 
     !$ser savepoint SubgridZSubs-In
     !$ser data szs_den=mpf_den szs_denfac=mpf_denfac szs_rh_adj=mpf_rh_adj szs_pt=szs_pt szs_qv=szs_qv szs_ql=szs_ql szs_qr=szs_qr szs_qi=szs_qi szs_qs=szs_qs szs_qg=szs_qg
@@ -2240,7 +2240,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser savepoint WRainSubFunc-Out
     !$ser data ws_qv=ws_qvo ws_ql=ws_qlo ws_qr=ws_qro ws_qi=ws_qio ws_qs=ws_qso ws_qg=ws_qgo ws_pt=ws_pto ws_ccn=ws_ccno ws_reevap=ws_reevapo
-    !$ser data ws_tin=ws_tin ws_qsat=ws_qsat ws_dqdt=ws_dqdt ws_dqh=ws_dqh ws_bool_check=ws_bool_check ws_dq=ws_dq ws_sink0=ws_sink0 ws_sink=ws_sink
+    !$ser data ws_tin=ws_tin ws_qsat=ws_qsat ws_dqdt=ws_dqdt ws_dqh=ws_dqh ws_bool_check=ws_bool_check ws_dq=ws_dq ws_sink0=ws_sink0 ws_sink=ws_sink ws_vc=ws_vc
 
     !$ser savepoint SubgridZSubs-Out
     !$ser data szs_qv=szs_qvo szs_ql=szs_qlo szs_qr=szs_qro szs_qi=szs_qio szs_qs=szs_qso szs_qg=szs_qgo szs_ccn=szs_ccno szs_cin=szs_cino szs_pt=szs_pto
@@ -2394,7 +2394,7 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
 !$ser verbatim isub_qv, isub_ql, isub_qr, isub_qi, isub_qs, isub_qg, isub_pt, isub_cvm, isub_te8, isub_lcpk, isub_icpk, isub_tcpk, isub_tcp3, isub_di,&
 !$ser verbatim isub_qvo, isub_qlo, isub_qro, isub_qio, isub_qso, isub_qgo, isub_pto, isub_cvmo, isub_te8o, isub_lcpko, isub_icpko, isub_tcpko, isub_tcp3o, isub_dio,&
 !$ser verbatim ws_qv, ws_ql, ws_qr, ws_qi, ws_qs, ws_qg, ws_ccn, ws_pt,&
-!$ser verbatim ws_qvo, ws_qlo, ws_qro, ws_qio, ws_qso, ws_qgo, ws_ccno, ws_pto, ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink,&
+!$ser verbatim ws_qvo, ws_qlo, ws_qro, ws_qio, ws_qso, ws_qgo, ws_ccno, ws_pto, ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink, ws_vc,&
 !$ser verbatim ws_reevap, ws_reevapo, szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_te,&
 !$ser verbatim szs_cond, szs_dep, szs_reevap, szs_sub, szs_pto, szs_qvo, szs_qlo, szs_qro, szs_qio, szs_qso, szs_qgo, szs_ccno, szs_cino,&
 !$ser verbatim szs_condo, szs_depo, szs_reevapo, szs_subo, szs_lcpk, szs_icpk, szs_tcpk, szs_tcp3, szs_lcpko, szs_icpko, szs_tcpko, szs_tcp3o, szs_cvm, szs_cvmo,&
@@ -2433,7 +2433,7 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: isub_qvo, isub_qlo, isub_qro, isub_qio, isub_qso, isub_qgo, isub_pto, isub_cvmo, isub_te8o, isub_lcpko, isub_icpko, isub_tcpko, isub_tcp3o, isub_dio
 
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: ws_qv, ws_ql, ws_qr, ws_qi, ws_qs, ws_qg, ws_ccn, ws_pt
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: ws_qvo, ws_qlo, ws_qro, ws_qio, ws_qso, ws_qgo, ws_ccno, ws_pto, ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink
+    !$ser verbatim real, intent (inout), dimension (ks:ke) :: ws_qvo, ws_qlo, ws_qro, ws_qio, ws_qso, ws_qgo, ws_ccno, ws_pto, ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink, ws_vc
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_te
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: szs_pto, szs_qvo, szs_qlo, szs_qro, szs_qio, szs_qso, szs_qgo, szs_ccno, szs_cino
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: szs_lcpk, szs_icpk, szs_tcpk, szs_tcp3, szs_lcpko, szs_icpko, szs_tcpko, szs_tcp3o, szs_cvm, szs_cvmo
@@ -2535,7 +2535,7 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
         call warm_rain (dts, ks, ke, dp, dz, tz, qv, ql, qr, qi, qs, qg, &
 !$ser verbatim ws_qv, ws_ql, ws_qr, ws_qi, ws_qs, ws_qg, ws_ccn, ws_pt,&
 !$ser verbatim ws_qvo, ws_qlo, ws_qro, ws_qio, ws_qso, ws_qgo, ws_ccno, ws_pto,&
-!$ser verbatim ws_reevap, ws_reevapo, n, ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink,&
+!$ser verbatim ws_reevap, ws_reevapo, n, ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink, ws_vc,&
             den, denfac, vtw, vtr, ccn, rh_rain, h_var, reevap)
         
         !$ser verbatim if (n .eq. 1) then
@@ -3805,7 +3805,7 @@ end subroutine check_column
 subroutine warm_rain (dts, ks, ke, dp, dz, tz, qv, ql, qr, qi, qs, qg, &
 !$ser verbatim ws_qv, ws_ql, ws_qr, ws_qi, ws_qs, ws_qg, ws_ccn, ws_pt,&
 !$ser verbatim ws_qvo, ws_qlo, ws_qro, ws_qio, ws_qso, ws_qgo, ws_ccno, ws_pto,&
-!$ser verbatim ws_reevap, ws_reevapo, nn, ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink,&
+!$ser verbatim ws_reevap, ws_reevapo, nn, ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink, ws_vc,&
         den, denfac, vtw, vtr, ccn, rh_rain, h_var, reevap)
     
     implicit none
@@ -3823,7 +3823,7 @@ subroutine warm_rain (dts, ks, ke, dp, dz, tz, qv, ql, qr, qi, qs, qg, &
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg, ccn
 
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: ws_qv, ws_ql, ws_qr, ws_qi, ws_qs, ws_qg, ws_ccn, ws_pt
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: ws_qvo, ws_qlo, ws_qro, ws_qio, ws_qso, ws_qgo, ws_ccno, ws_pto, ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink
+    !$ser verbatim real, intent (inout), dimension (ks:ke) :: ws_qvo, ws_qlo, ws_qro, ws_qio, ws_qso, ws_qgo, ws_ccno, ws_pto, ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink, ws_vc
     
     real (kind = r8), intent (inout), dimension (ks:ke) :: tz
     
@@ -3855,7 +3855,7 @@ subroutine warm_rain (dts, ks, ke, dp, dz, tz, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim endif
 
     call prevp (ks, ke, dts, tz, qv, ql, qr, qi, qs, qg, &
-!$ser verbatim ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink,&
+!$ser verbatim ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink, ws_vc,&
     den, denfac, rh_rain, h_var, dp, reevap)
 
     !$ser verbatim if (nn .eq. 1) then
@@ -3889,7 +3889,7 @@ end subroutine warm_rain
 ! =======================================================================
 
 subroutine prevp (ks, ke, dts, tz, qv, ql, qr, qi, qs, qg, &
-!$ser verbatim ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink,&
+!$ser verbatim ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink, ws_vc,&
     den, denfac, rh_rain, h_var, dp, reevap)
     
     implicit none
@@ -3907,7 +3907,7 @@ subroutine prevp (ks, ke, dts, tz, qv, ql, qr, qi, qs, qg, &
     real (kind = r8), intent (inout), dimension (ks:ke) :: tz
     
     real, intent (inout), dimension (ks:ke) :: qv, qr, ql, qi, qs, qg
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink
+    !$ser verbatim real, intent (out), dimension (ks:ke) :: ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink, ws_vc
     
     real, intent (out) :: reevap
     
@@ -3954,6 +3954,7 @@ subroutine prevp (ks, ke, dts, tz, qv, ql, qr, qi, qs, qg, &
         !$ser verbatim ws_dq (k) = -1.0
         !$ser verbatim ws_sink0 (k) = 0.0
         !$ser verbatim ws_sink (k) = 0.0
+        !$ser verbatim ws_vc (k) = 0.0
         
         ! -----------------------------------------------------------------------
         ! calculate supersaturation and subgrid variability of water
@@ -3992,6 +3993,7 @@ subroutine prevp (ks, ke, dts, tz, qv, ql, qr, qi, qs, qg, &
             qden = qr (k) * den (k)
             t2 = tin * tin
             sink = psub (t2, dq, qden, qsat, crevp, den (k), denfac (k), blinr, mur, lcpk (k), cvm (k))
+            !$ser verbatim ws_vc (k) = vent_coeff (qden, crevp (2), crevp (3), denfac (k), blinr, mur)
             !$ser verbatim ws_sink0 (k) = sink
             sink = min (qr (k), dts * fac_revp * sink, dqv / (1. + lcpk (k) * dqdt))
             if (use_rhc_revap .and. rh_tem .ge. rhc_revap) then
