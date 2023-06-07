@@ -4258,6 +4258,20 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
         
         call linear_prof (ke - ks + 1, qi, di, z_slope_ice, h_var)
 
+        ! -----------------------------------------------------------------------
+        ! snow melting (includes snow accretion with cloud water and rain) to form cloud water and rain
+        ! -----------------------------------------------------------------------
+
+        call psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
+            vtw, vtr, vts, lcpk, icpk, tcpk, tcp3)
+
+        ! -----------------------------------------------------------------------
+        ! graupel melting (includes graupel accretion with cloud water and rain) to form rain
+        ! -----------------------------------------------------------------------
+
+        call pgmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
+            vtw, vtr, vtg, lcpk, icpk, tcpk, tcp3)
+
         !$ser verbatim if (nn .eq. 1) then
             !$ser verbatim isub_qvo=qv
             !$ser verbatim isub_qlo=ql
@@ -4274,20 +4288,6 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
             !$ser verbatim isub_tcp3o=tcp3
             !$ser verbatim isub_dio=di
         !$ser verbatim endif
-
-        ! -----------------------------------------------------------------------
-        ! snow melting (includes snow accretion with cloud water and rain) to form cloud water and rain
-        ! -----------------------------------------------------------------------
-
-        call psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
-            vtw, vtr, vts, lcpk, icpk, tcpk, tcp3)
-
-        ! -----------------------------------------------------------------------
-        ! graupel melting (includes graupel accretion with cloud water and rain) to form rain
-        ! -----------------------------------------------------------------------
-
-        call pgmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
-            vtw, vtr, vtg, lcpk, icpk, tcpk, tcp3)
 
         ! -----------------------------------------------------------------------
         ! snow accretion with cloud ice
