@@ -4270,7 +4270,7 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
         !$ser verbatim endif
 
         call psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
-!$ser verbatim is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp
+!$ser verbatim is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp,&
             vtw, vtr, vts, lcpk, icpk, tcpk, tcp3)
 
         !$ser verbatim if (nn .eq. 1) then
@@ -4456,7 +4456,7 @@ end subroutine pifr
 ! =======================================================================
 
 subroutine psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
-!$ser verbatim is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp
+!$ser verbatim is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp,&
         vtw, vtr, vts, lcpk, icpk, tcpk, tcp3)
     
     implicit none
