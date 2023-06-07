@@ -4476,7 +4476,7 @@ subroutine psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg
     real, intent (inout), dimension (ks:ke) :: lcpk, icpk, tcpk, tcp3
 
-    !ser verbatim real, intent (out), dimension (ks:ke) :: is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp
+    !$ser verbatim real, intent (out), dimension (ks:ke) :: is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp
     
     real (kind = r8), intent (inout), dimension (ks:ke) :: cvm, tz
     
