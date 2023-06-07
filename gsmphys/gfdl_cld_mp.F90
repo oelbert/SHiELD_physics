@@ -1252,6 +1252,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser verbatim real, dimension (is:ie, ks:ke) :: isub_qv, isub_ql, isub_qr, isub_qi, isub_qs, isub_qg, isub_pt, isub_cvm, isub_te8, isub_lcpk, isub_icpk, isub_tcpk, isub_tcp3, isub_di
     !$ser verbatim real, dimension (is:ie, ks:ke) :: isub_qvo, isub_qlo, isub_qro, isub_qio, isub_qso, isub_qgo, isub_pto, isub_cvmo, isub_te8o, isub_lcpko, isub_icpko, isub_tcpko, isub_tcp3o, isub_dio
+    !$ser verbatim real, dimension (is:ie, ks:ke) :: is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp
     !$ser verbatim real, dimension (is:ie, ks:ke) :: ws_qv, ws_ql, ws_qr, ws_qi, ws_qs, ws_qg, ws_ccn, ws_pt
     !$ser verbatim real, dimension (is:ie, ks:ke) :: ws_qvo, ws_qlo, ws_qro, ws_qio, ws_qso, ws_qgo, ws_ccno, ws_pto, ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink, ws_vc
     !$ser verbatim real, dimension (is:ie, ks:ke) :: szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_te
@@ -1566,7 +1567,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 !$ser verbatim is_icpk  (i, :), is_pfw  (i, :), is_pfr  (i, :), is_pfi  (i, :), is_pfs  (i, :), is_pfg  (i, :), is_vtw  (i, :), is_vtr  (i, :), is_vti  (i, :), is_vts  (i, :), is_vtg  (i, :), is_w1 (i), is_r1 (i), is_i1 (i), is_s1 (i), is_g1 (i),&
 !$ser verbatim sm_qv (i, :), sm_ql (i, :), sm_qr (i, :), sm_qi (i, :), sm_qs (i, :), sm_qg (i, :), sm_pt (i, :), sm_qro (i, :), sm_qio (i, :), sm_qso (i, :), sm_qgo (i, :), sm_pto (i, :),&
 !$ser verbatim isub_qv  (i, :), isub_ql  (i, :), isub_qr  (i, :), isub_qi  (i, :), isub_qs  (i, :), isub_qg  (i, :), isub_pt  (i, :), isub_cvm  (i, :), isub_te8  (i, :), isub_lcpk  (i, :), isub_icpk  (i, :), isub_tcpk  (i, :), isub_tcp3  (i, :), isub_di  (i, :),&
-!$ser verbatim isub_qvo  (i, :), isub_qlo  (i, :), isub_qro  (i, :), isub_qio  (i, :), isub_qso  (i, :), isub_qgo  (i, :), isub_pto  (i, :), isub_cvmo  (i, :), isub_te8o  (i, :), isub_lcpko  (i, :), isub_icpko  (i, :), isub_tcpko  (i, :), isub_tcp3o  (i, :), isub_dio  (i, :),&
+!$ser verbatim isub_qvo  (i, :), isub_qlo  (i, :), isub_qro  (i, :), isub_qio  (i, :), isub_qso  (i, :), isub_qgo  (i, :), isub_pto  (i, :), isub_cvmo  (i, :), isub_te8o  (i, :), isub_lcpko  (i, :), isub_icpko  (i, :), isub_tcpko  (i, :), isub_tcp3o  (i, :), isub_dio  (i, :), is_psacw (i, :), is_psacr (i, :), is_pracs (i, :), is_qsi (i, :), is_dqdt (i, :), is_sink0 (i, :), is_sink (i, :), is_tmp (i, :),&
 !$ser verbatim ws_qv (i, :), ws_ql (i, :), ws_qr (i, :), ws_qi (i, :), ws_qs (i, :), ws_qg (i, :), ws_ccn (i, :), ws_pt (i, :),&
 !$ser verbatim ws_qvo (i, :), ws_qlo (i, :), ws_qro (i, :), ws_qio (i, :), ws_qso (i, :), ws_qgo (i, :), ws_ccno (i, :), ws_pto (i, :), ws_tin (i, :), ws_qsat (i, :), ws_dqdt (i, :), ws_dqh (i, :), ws_bool_check (i, :), ws_dq (i, :), ws_sink0 (i, :), ws_sink (i, :), ws_vc (i, :),&
 !$ser verbatim ws_reevap (i), ws_reevapo (i), szs_pt (i, :), szs_qv (i, :), szs_ql (i, :), szs_qr (i, :), szs_qi (i, :), szs_qs (i, :), szs_qg (i, :), szs_ccn (i, :), szs_cin (i, :), szs_te (i, :),&
@@ -2140,6 +2141,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data isub_qv=isub_qv isub_ql=isub_ql isub_qr=isub_qr isub_qi=isub_qi isub_qs=isub_qs isub_qg=isub_qg isub_pt=isub_pt isub_cvm=isub_cvm isub_te8=isub_te8
     !$ser data isub_lcpk=isub_lcpk isub_icpk=isub_icpk isub_tcpk=isub_tcpk isub_tcp3=isub_tcp3 isub_di=isub_di isub_den=mpf_den isub_denfac=mpf_denfac isub_vtw=sd_vtw
     !$ser data isub_vtr=sd_vtr isub_vti=sd_vti isub_vts=sd_vts isub_vtg=sd_vtg isub_h_var=mpf_h_var dt=dts
+    !$ser data is_psacw=zerobuff_3d is_psacr=zerobuff_3d is_pracs=zerobuff_3d is_qsi=zerobuff_3d is_dqdt=zerobuff_3d is_sink0=zerobuff_3d is_sink=zerobuff_3d is_tmp=zerobuff_3d
 
     !$ser savepoint WRainSubFunc-In
     !$ser data ws_delp=mpf_delp ws_den=mpf_den ws_denfac=mpf_denfac ws_vtw=sd_vtw ws_vtr=sd_vtr ws_h_var=mpf_h_var dt=dts
@@ -2237,6 +2239,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser savepoint IceSubFunc-Out
     !$ser data isub_qv=isub_qvo isub_ql=isub_qlo isub_qr=isub_qro isub_qi=isub_qio isub_qs=isub_qso isub_qg=isub_qgo isub_pt=isub_pto isub_cvm=isub_cvmo isub_te8=isub_te8o
     !$ser data isub_lcpk=isub_lcpko isub_icpk=isub_icpko isub_tcpk=isub_tcpko isub_tcp3=isub_tcp3o isub_di=isub_dio
+    !$ser data is_psacw=is_psacw is_psacr=is_psacr is_pracs=is_pracs is_qsi=is_qsi is_dqdt=is_dqdt is_sink0=is_sink0 is_sink=is_sink is_tmp=is_tmp
 
     !$ser savepoint WRainSubFunc-Out
     !$ser data ws_qv=ws_qvo ws_ql=ws_qlo ws_qr=ws_qro ws_qi=ws_qio ws_qs=ws_qso ws_qg=ws_qgo ws_pt=ws_pto ws_ccn=ws_ccno ws_reevap=ws_reevapo
@@ -2392,7 +2395,7 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
 !$ser verbatim is_icpk, is_pfw, is_pfr, is_pfi, is_pfs, is_pfg, is_vtw, is_vtr, is_vti, is_vts, is_vtg, is_w1, is_r1, is_i1, is_s1, is_g1,&
 !$ser verbatim sm_qv, sm_ql, sm_qr, sm_qi, sm_qs, sm_qg, sm_pt, sm_qro, sm_qio, sm_qso, sm_qgo, sm_pto,&
 !$ser verbatim isub_qv, isub_ql, isub_qr, isub_qi, isub_qs, isub_qg, isub_pt, isub_cvm, isub_te8, isub_lcpk, isub_icpk, isub_tcpk, isub_tcp3, isub_di,&
-!$ser verbatim isub_qvo, isub_qlo, isub_qro, isub_qio, isub_qso, isub_qgo, isub_pto, isub_cvmo, isub_te8o, isub_lcpko, isub_icpko, isub_tcpko, isub_tcp3o, isub_dio,&
+!$ser verbatim isub_qvo, isub_qlo, isub_qro, isub_qio, isub_qso, isub_qgo, isub_pto, isub_cvmo, isub_te8o, isub_lcpko, isub_icpko, isub_tcpko, isub_tcp3o, isub_dio, is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp,&
 !$ser verbatim ws_qv, ws_ql, ws_qr, ws_qi, ws_qs, ws_qg, ws_ccn, ws_pt,&
 !$ser verbatim ws_qvo, ws_qlo, ws_qro, ws_qio, ws_qso, ws_qgo, ws_ccno, ws_pto, ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink, ws_vc,&
 !$ser verbatim ws_reevap, ws_reevapo, szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_te,&
@@ -2431,6 +2434,7 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
 
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: isub_qv, isub_ql, isub_qr, isub_qi, isub_qs, isub_qg, isub_pt, isub_cvm, isub_te8, isub_lcpk, isub_icpk, isub_tcpk, isub_tcp3, isub_di
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: isub_qvo, isub_qlo, isub_qro, isub_qio, isub_qso, isub_qgo, isub_pto, isub_cvmo, isub_te8o, isub_lcpko, isub_icpko, isub_tcpko, isub_tcp3o, isub_dio
+    !$ser verbatim real, intent (inout), dimension (ks:ke) :: is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp
 
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: ws_qv, ws_ql, ws_qr, ws_qi, ws_qs, ws_qg, ws_ccn, ws_pt
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: ws_qvo, ws_qlo, ws_qro, ws_qio, ws_qso, ws_qgo, ws_ccno, ws_pto, ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink, ws_vc
@@ -2559,6 +2563,7 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
         call ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
 !$ser verbatim isub_qv, isub_ql, isub_qr, isub_qi, isub_qs, isub_qg, isub_pt, isub_cvm, isub_te8, isub_lcpk, isub_icpk, isub_tcpk, isub_tcp3, isub_di, n,&
 !$ser verbatim isub_qvo, isub_qlo, isub_qro, isub_qio, isub_qso, isub_qgo, isub_pto, isub_cvmo, isub_te8o, isub_lcpko, isub_icpko, isub_tcpko, isub_tcp3o, isub_dio,&
+!$ser verbatim is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp,&
             denfac, vtw, vtr, vti, vts, vtg, dts, h_var)
         
         !$ser verbatim if (n .eq. 1) then
@@ -4183,6 +4188,7 @@ end subroutine praut
 subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
 !$ser verbatim isub_qv, isub_ql, isub_qr, isub_qi, isub_qs, isub_qg, isub_pt, isub_cvm, isub_te8, isub_lcpk, isub_icpk, isub_tcpk, isub_tcp3, isub_di, nn,&
 !$ser verbatim isub_qvo, isub_qlo, isub_qro, isub_qio, isub_qso, isub_qgo, isub_pto, isub_cvmo, isub_te8o, isub_lcpko, isub_icpko, isub_tcpko, isub_tcp3o, isub_dio,&
+!$ser verbatim is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp,&
         denfac, vtw, vtr, vti, vts, vtg, dts, h_var)
     
     implicit none
@@ -4205,6 +4211,7 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
 
     !$ser verbatim real, intent (out), dimension (ks:ke) :: isub_qv, isub_ql, isub_qr, isub_qi, isub_qs, isub_qg, isub_pt, isub_cvm, isub_te8, isub_lcpk, isub_icpk, isub_tcpk, isub_tcp3, isub_di
     !$ser verbatim real, intent (out), dimension (ks:ke) :: isub_qvo, isub_qlo, isub_qro, isub_qio, isub_qso, isub_qgo, isub_pto, isub_cvmo, isub_te8o, isub_lcpko, isub_icpko, isub_tcpko, isub_tcp3o, isub_dio
+    !$ser verbatim real, intent (inout), dimension (ks:ke) :: is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp
     
     ! -----------------------------------------------------------------------
     ! local variables
@@ -4227,23 +4234,6 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
         ! cloud ice melting to form cloud water and rain
         ! -----------------------------------------------------------------------
 
-        !$ser verbatim if (nn .eq. 1) then
-            !$ser verbatim isub_qv=qv
-            !$ser verbatim isub_ql=ql
-            !$ser verbatim isub_qr=qr
-            !$ser verbatim isub_qi=qi
-            !$ser verbatim isub_qs=qs
-            !$ser verbatim isub_qg=qg
-            !$ser verbatim isub_pt=tz
-            !$ser verbatim isub_cvm=cvm
-            !$ser verbatim isub_te8=te8
-            !$ser verbatim isub_lcpk=lcpk
-            !$ser verbatim isub_icpk=icpk
-            !$ser verbatim isub_tcpk=tcpk
-            !$ser verbatim isub_tcp3=tcp3
-            !$ser verbatim isub_di=di
-        !$ser verbatim endif
-
         call pimlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, lcpk, icpk, tcpk, tcp3)
         
         ! -----------------------------------------------------------------------
@@ -4262,15 +4252,26 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
         ! snow melting (includes snow accretion with cloud water and rain) to form cloud water and rain
         ! -----------------------------------------------------------------------
 
+        !$ser verbatim if (nn .eq. 1) then
+            !$ser verbatim isub_qv=qv
+            !$ser verbatim isub_ql=ql
+            !$ser verbatim isub_qr=qr
+            !$ser verbatim isub_qi=qi
+            !$ser verbatim isub_qs=qs
+            !$ser verbatim isub_qg=qg
+            !$ser verbatim isub_pt=tz
+            !$ser verbatim isub_cvm=cvm
+            !$ser verbatim isub_te8=te8
+            !$ser verbatim isub_lcpk=lcpk
+            !$ser verbatim isub_icpk=icpk
+            !$ser verbatim isub_tcpk=tcpk
+            !$ser verbatim isub_tcp3=tcp3
+            !$ser verbatim isub_di=di
+        !$ser verbatim endif
+
         call psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
+!$ser verbatim is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp
             vtw, vtr, vts, lcpk, icpk, tcpk, tcp3)
-
-        ! -----------------------------------------------------------------------
-        ! graupel melting (includes graupel accretion with cloud water and rain) to form rain
-        ! -----------------------------------------------------------------------
-
-        call pgmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
-            vtw, vtr, vtg, lcpk, icpk, tcpk, tcp3)
 
         !$ser verbatim if (nn .eq. 1) then
             !$ser verbatim isub_qvo=qv
@@ -4288,6 +4289,13 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
             !$ser verbatim isub_tcp3o=tcp3
             !$ser verbatim isub_dio=di
         !$ser verbatim endif
+
+        ! -----------------------------------------------------------------------
+        ! graupel melting (includes graupel accretion with cloud water and rain) to form rain
+        ! -----------------------------------------------------------------------
+
+        call pgmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
+            vtw, vtr, vtg, lcpk, icpk, tcpk, tcp3)
 
         ! -----------------------------------------------------------------------
         ! snow accretion with cloud ice
@@ -4448,6 +4456,7 @@ end subroutine pifr
 ! =======================================================================
 
 subroutine psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
+!$ser verbatim is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp
         vtw, vtr, vts, lcpk, icpk, tcpk, tcp3)
     
     implicit none
@@ -4466,6 +4475,8 @@ subroutine psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac
     
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg
     real, intent (inout), dimension (ks:ke) :: lcpk, icpk, tcpk, tcp3
+
+    !ser verbatim real, intent (out), dimension (ks:ke) :: is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp
     
     real (kind = r8), intent (inout), dimension (ks:ke) :: cvm, tz
     
@@ -4481,6 +4492,15 @@ subroutine psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac
     do k = ks, ke
         
         tc = tz (k) - tice
+
+        !$ser verbatim is_psacw (k) = 0.
+        !$ser verbatim is_psacr (k) = 0.
+        !$ser verbatim is_pracs (k) = 0.
+        !$ser verbatim is_qsi (k) = 0.
+        !$ser verbatim is_dqdt (k) = 0.
+        !$ser verbatim is_sink0 (k) = 0.
+        !$ser verbatim is_sink (k) = 0.
+        !$ser verbatim is_tmp (k) = 0.
         
         if (tc .ge. 0. .and. qs (k) .gt. qcmin) then
             
@@ -4495,6 +4515,8 @@ subroutine psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac
                     psacw = factor / (1. + dts * factor) * ql (k)
                 endif
             endif
+
+            !$ser verbatim is_psacw (k) = psacw
             
             psacr = 0.
             pracs = 0.
@@ -4504,15 +4526,23 @@ subroutine psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac
                 pracs = acr3d (vtr (k), vts (k), qs (k), qr (k), cracs, acco (:, 1), &
                     acc (1), acc (2), den (k))
             endif
+            !$ser verbatim is_psacr (k) = psacr
+            !$ser verbatim is_pracs (k) = pracs
             
             tin = tz (k)
             qsi = iqs (tin, den (k), dqdt)
+            !$ser verbatim is_qsi (k) = qsi
+            !$ser verbatim is_dqdt (k) = dqdt
             dq = qsi - qv (k)
-            sink = max (0., pmlt (tc, dq, qden, psacw, psacr, csmlt, den (k), denfac (k), blins, mus, &
-                lcpk (k), icpk (k), cvm (k)))
+            sink = pmlt (tc, dq, qden, psacw, psacr, csmlt, den (k), denfac (k), blins, mus, &
+                lcpk (k), icpk (k), cvm (k))
+            !$ser verbatim is_sink0 (k) = sink
+            sink = max (0., sink)
             
             sink = min (qs (k), (sink + pracs) * dts, tc / icpk (k))
+            !$ser verbatim is_sink (k) = sink
             tmp = min (sink, dim (qs_mlt, ql (k)))
+            !$ser verbatim is_tmp (k) = tmp
             
             call update_qt (qv (k), ql (k), qr (k), qi (k), qs (k), qg (k), &
                 0., tmp, sink - tmp, 0., - sink, 0., te8 (k), cvm (k), tz (k), &
