@@ -5197,7 +5197,7 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
         !$ser verbatim endif
 
         call pidep_pisub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-!$ser verbatim szs_qsi, szs_dqdt, szs_pidep0, szs_pidep, szs_qi_crt, szs_sink1, szs_sink2, szs_tmp, szs_dq,&
+!$ser verbatim nn, szs_qsi, szs_dqdt, szs_pidep0, szs_pidep, szs_qi_crt, szs_sink1, szs_sink2, szs_tmp, szs_dq,&
             lcpk, icpk, tcpk, tcp3, cin, dep, sub)
         
         !$ser verbatim if (nn .eq. 1) then
@@ -5567,7 +5567,7 @@ end subroutine pbigg
 ! =======================================================================
 
 subroutine pidep_pisub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-!$ser verbatim szs_qsi, szs_dqdt, szs_pidep0, szs_pidep, szs_qi_crt, szs_sink1, szs_sink2, szs_tmp, szs_dq,&
+!$ser verbatim nn, szs_qsi, szs_dqdt, szs_pidep0, szs_pidep, szs_qi_crt, szs_sink1, szs_sink2, szs_tmp, szs_dq,&
         lcpk, icpk, tcpk, tcp3, cin, dep, sub)
     
     implicit none
@@ -5577,6 +5577,7 @@ subroutine pidep_pisub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
     ! -----------------------------------------------------------------------
     
     integer, intent (in) :: ks, ke
+    !$ser verbatim integer, intent (in) :: nn
     
     real, intent (in) :: dts
     
@@ -5586,7 +5587,7 @@ subroutine pidep_pisub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
     
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg, cin
     real, intent (inout), dimension (ks:ke) :: lcpk, icpk, tcpk, tcp3
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: szs_qsi, szs_dqdt, szs_pidep0, szs_pidep, szs_qi_crt, szs_sink1, szs_sink2, szs_tmp, szs_dq
+    !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_qsi, szs_dqdt, szs_pidep0, szs_pidep, szs_qi_crt, szs_sink1, szs_sink2, szs_tmp, szs_dq
     
     real (kind = r8), intent (inout), dimension (ks:ke) :: cvm, tz
     
@@ -5602,27 +5603,35 @@ subroutine pidep_pisub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
     
     do k = ks, ke
 
-        !$ser verbatim szs_qsi (k) = 0.
-        !$ser verbatim szs_dqdt (k) = 0.
-        !$ser verbatim szs_pidep0 (k) = 0.
-        !$ser verbatim szs_pidep (k) = 0.
-        !$ser verbatim szs_qi_crt (k) = 0.
-        !$ser verbatim szs_sink1 (k) = 0.
-        !$ser verbatim szs_sink2 (k) = 0.
-        !$ser verbatim szs_tmp (k) = 0.
-        !$ser verbatim szs_dq (k) = 0.
+        !$ser verbatim if (nn .eq. 1) then
+            !$ser verbatim szs_qsi (k) = 0.
+            !$ser verbatim szs_dqdt (k) = 0.
+            !$ser verbatim szs_pidep0 (k) = 0.
+            !$ser verbatim szs_pidep (k) = 0.
+            !$ser verbatim szs_qi_crt (k) = 0.
+            !$ser verbatim szs_sink1 (k) = 0.
+            !$ser verbatim szs_sink2 (k) = 0.
+            !$ser verbatim szs_tmp (k) = 0.
+            !$ser verbatim szs_dq (k) = 0.
+        !$ser verbatim endif
         
         if (tz (k) .lt. tice) then
             
             pidep = 0.
             tin = tz (k)
             qsi = iqs (tin, den (k), dqdt)
-            !$ser verbatim szs_qsi (k) = qsi
-            !$ser verbatim szs_dqdt (k) = dqdt
+            !$ser verbatim if (nn .eq. 1) then
+                !$ser verbatim szs_qsi (k) = qsi
+                !$ser verbatim szs_dqdt (k) = dqdt
+            !$ser verbatim endif
             dq = qv (k) - qsi
-            !$ser verbatim szs_dq (k) = dq
+            !$ser verbatim if (nn .eq. 1) then
+                !$ser verbatim szs_dq (k) = dq
+            !$ser verbatim endif
             tmp = dq / (1. + tcpk (k) * dqdt)
-            !$ser verbatim szs_tmp (k) = tmp
+            !$ser verbatim if (nn .eq. 1) then
+                !$ser verbatim szs_tmp (k) = tmp
+            !$ser verbatim endif
             
             if (qi (k) .gt. qcmin) then
                 if (.not. prog_ccn) then
@@ -5645,7 +5654,9 @@ subroutine pidep_pisub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
                 pidep = dts * dq * 4.0 * 11.9 * exp (0.5 * log (qi (k) * den (k) * cin (k))) / &
                      (qsi * den (k) * (tcpk (k) * cvm (k)) ** 2 / (tcond * rvgas * tz (k) ** 2) + &
                     1. / vdifu)
-                !$ser verbatim szs_pidep0 (k) = pidep
+                !$ser verbatim if (nn .eq. 1) then
+                    !$ser verbatim szs_pidep0 (k) = pidep
+                !$ser verbatim endif
             endif
             
             if (dq .gt. 0.) then
@@ -5659,15 +5670,19 @@ subroutine pidep_pisub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
                     qi_crt = 1.82e-6 * min (qi_lim, 0.1 * tc) / den (k)
                 if (igflag .eq. 4) &
                     qi_crt = max (qi_gen, 1.82e-6) * min (qi_lim, 0.1 * tc) / den (k)
-                !$ser verbatim szs_qi_crt (k) = qi_crt
                 sink = min (tmp, max (qi_crt - qi (k), pidep), tc / tcpk (k))
-                !$ser verbatim szs_sink1 (k) = sink
+                !$ser verbatim if (nn .eq. 1) then
+                    !$ser verbatim szs_qi_crt (k) = qi_crt
+                    !$ser verbatim szs_sink1 (k) = sink
+                !$ser verbatim endif
                 dep = dep + sink * dp (k)
             else
                 pidep = pidep * min (1., dim (tz (k), t_sub) * is_fac)
-                !$ser verbatim szs_pidep (k) = pidep
                 sink = max (pidep, tmp, - qi (k))
-                !$ser verbatim szs_sink2 (k) = sink
+                !$ser verbatim if (nn .eq. 1) then
+                    !$ser verbatim szs_pidep (k) = pidep
+                    !$ser verbatim szs_sink2 (k) = sink
+                !$ser verbatim endif
                 sub = sub - sink * dp (k)
             endif
             
