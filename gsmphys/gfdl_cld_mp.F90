@@ -2747,7 +2747,7 @@ subroutine mp_fast (ks, ke, tz, qv, ql, qr, qi, qs, qg, dtm, dp, den, &
         ! -----------------------------------------------------------------------
         
         call pidep_pisub (ks, ke, dtm, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-!$ser verbatim szs_qsi, szs_dqdt, szs_pidep0, szs_pidep, szs_qi_crt, szs_sink1, szs_sink2, szs_tmp, szs_dq,&
+!$ser verbatim 1, szs_qsi, szs_dqdt, szs_pidep0, szs_pidep, szs_qi_crt, szs_sink1, szs_sink2, szs_tmp, szs_dq,&
             lcpk, icpk, tcpk, tcp3, cin, dep, sub)
         
         deposition = deposition + dep * convt
