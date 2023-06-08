@@ -2634,7 +2634,7 @@ subroutine mp_fast (ks, ke, tz, qv, ql, qr, qi, qs, qg, dtm, dp, den, &
     real, intent (in), dimension (ks:ke) :: dp, den
     
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg, ccn, cin
-    !$ser verbtaim real, intent (inout), dimension (ks:ke) ::  szs_qsi, szs_dqdt, szs_pidep0, szs_pidep, szs_qi_crt, szs_sink1, szs_sink2,&
+    !$ser verbatim real, intent (inout), dimension (ks:ke) ::  szs_qsi, szs_dqdt, szs_pidep0, szs_pidep, szs_qi_crt, szs_sink1, szs_sink2,&
     
     real (kind = r8), intent (inout), dimension (ks:ke) :: tz
     
@@ -2747,7 +2747,7 @@ subroutine mp_fast (ks, ke, tz, qv, ql, qr, qi, qs, qg, dtm, dp, den, &
         ! -----------------------------------------------------------------------
         
         call pidep_pisub (ks, ke, dtm, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-!$ser verbtaim szs_qsi, szs_dqdt, szs_pidep0, szs_pidep, szs_qi_crt, szs_sink1, szs_sink2,&
+!$ser verbatim szs_qsi, szs_dqdt, szs_pidep0, szs_pidep, szs_qi_crt, szs_sink1, szs_sink2,&
             lcpk, icpk, tcpk, tcp3, cin, dep, sub)
         
         deposition = deposition + dep * convt
@@ -5197,7 +5197,7 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
         ! -----------------------------------------------------------------------
         
         call pidep_pisub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-!$ser verbtaim szs_qsi, szs_dqdt, szs_pidep0, szs_pidep, szs_qi_crt, szs_sink1, szs_sink2,&
+!$ser verbatim szs_qsi, szs_dqdt, szs_pidep0, szs_pidep, szs_qi_crt, szs_sink1, szs_sink2,&
             lcpk, icpk, tcpk, tcp3, cin, dep, sub)
         
         !$ser verbatim if (nn .eq. 1) then
@@ -5567,7 +5567,7 @@ end subroutine pbigg
 ! =======================================================================
 
 subroutine pidep_pisub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-!$ser verbtaim szs_qsi, szs_dqdt, szs_pidep0, szs_pidep, szs_qi_crt, szs_sink1, szs_sink2,&
+!$ser verbatim szs_qsi, szs_dqdt, szs_pidep0, szs_pidep, szs_qi_crt, szs_sink1, szs_sink2,&
         lcpk, icpk, tcpk, tcp3, cin, dep, sub)
     
     implicit none
