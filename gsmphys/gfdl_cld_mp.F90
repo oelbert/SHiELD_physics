@@ -5663,7 +5663,7 @@ subroutine pidep_pisub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
                 pidep = pidep * min (1., dim (tz (k), t_sub) * is_fac)
                 !$ser verbatim szs_pidep (k) = pidep
                 sink = max (pidep, tmp, - qi (k))
-                !$ser verbatim szs_sink2 (k) = 0.
+                !$ser verbatim szs_sink2 (k) = sink
                 sub = sub - sink * dp (k)
             endif
             
