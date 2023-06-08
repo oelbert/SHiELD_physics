@@ -2634,7 +2634,7 @@ subroutine mp_fast (ks, ke, tz, qv, ql, qr, qi, qs, qg, dtm, dp, den, &
     real, intent (in), dimension (ks:ke) :: dp, den
     
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg, ccn, cin
-    !$ser verbatim real, intent (inout), dimension (ks:ke) ::  szs_qsi, szs_dqdt, szs_pidep0, szs_pidep, szs_qi_crt, szs_sink1, szs_sink2,&
+    !$ser verbatim real, intent (inout), dimension (ks:ke) ::  szs_qsi, szs_dqdt, szs_pidep0, szs_pidep, szs_qi_crt, szs_sink1, szs_sink2
     
     real (kind = r8), intent (inout), dimension (ks:ke) :: tz
     
