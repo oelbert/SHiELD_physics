@@ -1259,7 +1259,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim real, dimension (is:ie, ks:ke) :: szs_pto, szs_qvo, szs_qlo, szs_qro, szs_qio, szs_qso, szs_qgo, szs_ccno, szs_cino
     !$ser verbatim real, dimension (is:ie, ks:ke) :: szs_lcpk, szs_icpk, szs_tcpk, szs_tcp3, szs_lcpko, szs_icpko, szs_tcpko, szs_tcp3o, szs_cvm, szs_cvmo, szs_qsi, szs_dqdt, szs_pidep0, szs_pidep, szs_qi_crt, szs_sink1, szs_sink2, szs_tmp, szs_dq
 
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: zerobuff_3d, tem, t0, t2
+    !$ser verbatim real, dimension (is:ie, ks:ke) :: zerobuff_3d, tem, t0, t2, tc_index
 
     !$ser verbatim real, dimension (is:ie, ks:ke + 1) :: tf_ze, tf_zt, zerobuff1_3d, sm_ze, sm_zt
 
@@ -1300,6 +1300,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
         !$ser verbatim do k = ks, ke
             !$ser verbatim ii = mod((k - 1) + ke * (i - 1), length) + 1
+            !$ser verbatim tc_index (i, k) = ii
             !$ser verbatim tem (i, k) = tice - 160. + 0.1 * real (ii - 1)
             !$ser verbatim t0 (i, k) = table0 (ii)
             !$ser verbatim t2 (i, k) = table2 (ii)
@@ -2118,6 +2119,9 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser savepoint TableComputation-In
     !$ser data tc_temp=tem tc_t0=t0 tc_t2=t2 tab_wq=zerobuff_3d tab_dwq=zerobuff_3d tab_iq=zerobuff_3d tab_diq=zerobuff_3d tab_pt=mpf_pt tab_den=mpf_den
 
+    !$ser savepoint PythonTables-In
+    !$ser data tc_index=tc_index tc_t0=t0 tc_t2=t2 tab_wq=zerobuff_3d tab_dwq=zerobuff_3d tab_iq=zerobuff_3d tab_diq=zerobuff_3d tab_pt=mpf_pt tab_den=mpf_den
+
     !$ser savepoint SediMelt-In
     !$ser data sm_qv=sm_qv sm_ql=sm_ql sm_qr=sm_qr sm_qi=sm_qi sm_qs=sm_qs sm_qg=sm_qg sm_pt=sm_pt sm_dp=mpf_delp sm_cv=zerobuff_3d
     !$ser data sm_ze=sm_ze sm_zt=sm_zt sm_zs=sm_zs sm_vt=sm_vt sm_ic=sm_ic sm_r1=sm_r1 dt=dts
@@ -2216,6 +2220,9 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data ef_ua=tfo_u ef_va=tfo_v ef_wa=tfo_w ef_dte=tfo_dte ef_pt=tfo_pt ef_ie=ef_e1
 
     !$ser savepoint TableComputation-Out
+    !$ser data tc_t0=t0 tc_t2=t2 tab_wq=tab_wq tab_dwq=tab_dwq tab_iq=tab_iq tab_diq=tab_diq
+
+    !$ser savepoint PythonTables-Out
     !$ser data tc_t0=t0 tc_t2=t2 tab_wq=tab_wq tab_dwq=tab_dwq tab_iq=tab_iq tab_diq=tab_diq
 
     !$ser savepoint SediMelt-Out
@@ -8616,14 +8623,14 @@ function wqs_trho (tk, den, dqdt)
     
     real, intent (out) :: dqdt
 
-    real (kind = r8) :: fac0, fac1, fac2 
+    ! real (kind = r8) :: fac0, fac1, fac2 
     
-    !wqs_trho = qs_core (length, tk, den, dqdt, table0, des0)
-    fac0 = (tk - tice) / (tk * tice)
-    fac1 = fac0 * lv0
-    fac2 = (dc_vap * log (tk / tice) + fac1) / rvgas
-    wqs_trho = e00 * exp (fac2) / (rvgas * tk * den)
-    dqdt = wqs_trho * (dc_vap + lv0 / tk) / (rvgas * tk)
+    wqs_trho = qs_core (length, tk, den, dqdt, table0, des0)
+    ! fac0 = (tk - tice) / (tk * tice)
+    ! fac1 = fac0 * lv0
+    ! fac2 = (dc_vap * log (tk / tice) + fac1) / rvgas
+    ! wqs_trho = e00 * exp (fac2) / (rvgas * tk * den)
+    ! dqdt = wqs_trho * (dc_vap + lv0 / tk) / (rvgas * tk)
     
 end function wqs_trho
 
@@ -8670,25 +8677,25 @@ function iqs_trho (tk, den, dqdt)
     
     real, intent (out) :: dqdt
 
-    real (kind = r8) :: fac0, fac1, fac2, tem
+    ! real (kind = r8) :: fac0, fac1, fac2, tem
     
-    !iqs_trho = qs_core (length, tk, den, dqdt, table2, des2)
+    iqs_trho = qs_core (length, tk, den, dqdt, table2, des2)
     
-    tem = max(tice - 160.0, min(tk, tice + 102.0))
+    ! tem = max(tice - 160.0, min(tk, tice + 102.0))
 
-    if (tem .lt. tice) then
-        fac0 = (tem - tice) / (tem * tice)
-        fac1 = fac0 * li2
-         fac2 = (d2_ice * log (tem / tice) + fac1) / rvgas
-        iqs_trho = e00 * exp (fac2) / (rvgas * tem * den)
-        dqdt = iqs_trho * (d2_ice + li2 / tem) / (rvgas * tem)
-    else
-        fac0 = (tem - tice) / (tem * tice)
-        fac1 = fac0 * lv0
-        fac2 = (dc_vap * log (tem / tice) + fac1) / rvgas
-        iqs_trho = e00 * exp (fac2) / (rvgas * tem * den)
-        dqdt = iqs_trho * (dc_vap + lv0 / tem) / (rvgas * tem)
-    endif
+    ! if (tem .lt. tice) then
+    !     fac0 = (tem - tice) / (tem * tice)
+    !     fac1 = fac0 * li2
+    !      fac2 = (d2_ice * log (tem / tice) + fac1) / rvgas
+    !     iqs_trho = e00 * exp (fac2) / (rvgas * tem * den)
+    !     dqdt = iqs_trho * (d2_ice + li2 / tem) / (rvgas * tem)
+    ! else
+    !     fac0 = (tem - tice) / (tem * tice)
+    !     fac1 = fac0 * lv0
+    !     fac2 = (dc_vap * log (tem / tice) + fac1) / rvgas
+    !     iqs_trho = e00 * exp (fac2) / (rvgas * tem * den)
+    !     dqdt = iqs_trho * (dc_vap + lv0 / tem) / (rvgas * tem)
+    ! endif
 
 end function iqs_trho
 
