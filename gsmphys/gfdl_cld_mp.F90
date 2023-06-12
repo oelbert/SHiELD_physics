@@ -5107,7 +5107,7 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
     !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_te
     !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_pto, szs_qvo, szs_qlo, szs_qro, szs_qio, szs_qso, szs_qgo, szs_ccno, szs_cino
     !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_lcpk, szs_icpk, szs_tcpk, szs_tcp3, szs_lcpko, szs_icpko, szs_tcpko, szs_tcp3o, szs_cvm, szs_cvmo
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt
+    !$ser verbatim real, intent (inout), dimension (ks:ke) :: szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt
 
     real, intent (out) :: cond, dep, reevap, sub
     !$ser verbatim real, intent (out) :: szs_cond, szs_dep, szs_reevap, szs_sub, szs_condo, szs_depo, szs_reevapo, szs_subo
@@ -5119,6 +5119,7 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
     ! -----------------------------------------------------------------------
     
     real, dimension (ks:ke) :: q_liq, q_sol, q_cond, lcpk, icpk, tcpk, tcp3
+    !$ser verbatim real, dimension (ks:ke) :: buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt
     
     real (kind = r8), dimension (ks:ke) :: cvm, te8
     
