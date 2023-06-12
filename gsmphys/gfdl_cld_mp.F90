@@ -5107,7 +5107,7 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
     !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_te
     !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_pto, szs_qvo, szs_qlo, szs_qro, szs_qio, szs_qso, szs_qgo, szs_ccno, szs_cino
     !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_lcpk, szs_icpk, szs_tcpk, szs_tcp3, szs_lcpko, szs_icpko, szs_tcpko, szs_tcp3o, szs_cvm, szs_cvmo
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt
+    !$ser verbatim real, intent (inout), dimension (ks:ke) :: szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt
 
     real, intent (out) :: cond, dep, reevap, sub
     !$ser verbatim real, intent (out) :: szs_cond, szs_dep, szs_reevap, szs_sub, szs_condo, szs_depo, szs_reevapo, szs_subo
@@ -5144,8 +5144,52 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
 
     if (.not. do_warm_rain_mp) then
         
+        !$ser verbatim if (nn .eq. 1) then
+            !$ser verbatim szs_pt = tz
+            !$ser verbatim szs_qv = qv
+            !$ser verbatim szs_ql = ql
+            !$ser verbatim szs_qr = qr
+            !$ser verbatim szs_qi = qi
+            !$ser verbatim szs_qs = qs
+            !$ser verbatim szs_qg = qg
+            !$ser verbatim szs_ccn = ccn
+            !$ser verbatim szs_cin = cin
+            !$ser verbatim szs_cond = cond
+            !$ser verbatim szs_dep = dep
+            !$ser verbatim szs_reevap = reevap
+            !$ser verbatim szs_sub = sub
+            !$ser verbatim szs_te = te8
+            !$ser verbatim szs_lcpk = lcpk
+            !$ser verbatim szs_icpk = icpk
+            !$ser verbatim szs_tcpk = tcpk
+            !$ser verbatim szs_tcp3 = tcp3
+            !$ser verbatim szs_cvm = cvm
+        !$ser verbatim endif
+
         call pinst (ks, ke, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
+!$ser verbatim nn, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
             lcpk, icpk, tcpk, tcp3, rh_adj, dep, sub, reevap)
+
+        !$ser verbatim if (nn .eq. 1) then
+            !$ser verbatim szs_pto = tz
+            !$ser verbatim szs_qvo = qv
+            !$ser verbatim szs_qlo = ql
+            !$ser verbatim szs_qro = qr
+            !$ser verbatim szs_qio = qi
+            !$ser verbatim szs_qso = qs
+            !$ser verbatim szs_qgo = qg
+            !$ser verbatim szs_ccno = ccn
+            !$ser verbatim szs_cino = cin
+            !$ser verbatim szs_condo = cond
+            !$ser verbatim szs_depo = dep
+            !$ser verbatim szs_reevapo = reevap
+            !$ser verbatim szs_subo = sub
+            !$ser verbatim szs_lcpko = lcpk
+            !$ser verbatim szs_icpko = icpk
+            !$ser verbatim szs_tcpko = tcpk
+            !$ser verbatim szs_tcp3o = tcp3
+            !$ser verbatim szs_cvmo = cvm
+        !$ser verbatim endif
         
     endif
 
@@ -5180,52 +5224,9 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
         ! cloud ice deposition and sublimation
         ! -----------------------------------------------------------------------
 
-        !$ser verbatim if (nn .eq. 1) then
-            !$ser verbatim szs_pt = tz
-            !$ser verbatim szs_qv = qv
-            !$ser verbatim szs_ql = ql
-            !$ser verbatim szs_qr = qr
-            !$ser verbatim szs_qi = qi
-            !$ser verbatim szs_qs = qs
-            !$ser verbatim szs_qg = qg
-            !$ser verbatim szs_ccn = ccn
-            !$ser verbatim szs_cin = cin
-            !$ser verbatim szs_cond = cond
-            !$ser verbatim szs_dep = dep
-            !$ser verbatim szs_reevap = reevap
-            !$ser verbatim szs_sub = sub
-            !$ser verbatim szs_te = te8
-            !$ser verbatim szs_lcpk = lcpk
-            !$ser verbatim szs_icpk = icpk
-            !$ser verbatim szs_tcpk = tcpk
-            !$ser verbatim szs_tcp3 = tcp3
-            !$ser verbatim szs_cvm = cvm
-        !$ser verbatim endif
-
         call pidep_pisub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-!$ser verbatim nn, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
+!$ser verbatim nn, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
             lcpk, icpk, tcpk, tcp3, cin, dep, sub)
-
-        !$ser verbatim if (nn .eq. 1) then
-            !$ser verbatim szs_pto = tz
-            !$ser verbatim szs_qvo = qv
-            !$ser verbatim szs_qlo = ql
-            !$ser verbatim szs_qro = qr
-            !$ser verbatim szs_qio = qi
-            !$ser verbatim szs_qso = qs
-            !$ser verbatim szs_qgo = qg
-            !$ser verbatim szs_ccno = ccn
-            !$ser verbatim szs_cino = cin
-            !$ser verbatim szs_condo = cond
-            !$ser verbatim szs_depo = dep
-            !$ser verbatim szs_reevapo = reevap
-            !$ser verbatim szs_subo = sub
-            !$ser verbatim szs_lcpko = lcpk
-            !$ser verbatim szs_icpko = icpk
-            !$ser verbatim szs_tcpko = tcpk
-            !$ser verbatim szs_tcp3o = tcp3
-            !$ser verbatim szs_cvmo = cvm
-        !$ser verbatim endif
 
         ! -----------------------------------------------------------------------
         ! snow deposition and sublimation
@@ -5250,6 +5251,7 @@ end subroutine subgrid_z_proc
 ! =======================================================================
 
 subroutine pinst (ks, ke, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
+!$ser verbatim nn, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
         lcpk, icpk, tcpk, tcp3, rh_adj, dep, sub, reevap)
     
     implicit none
@@ -5259,6 +5261,7 @@ subroutine pinst (ks, ke, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
     ! -----------------------------------------------------------------------
     
     integer, intent (in) :: ks, ke
+    !$ser verbatim integer, intent (in) :: nn
     
     real, intent (in) :: rh_adj
     
@@ -5268,6 +5271,7 @@ subroutine pinst (ks, ke, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
     
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg
     real, intent (inout), dimension (ks:ke) :: lcpk, icpk, tcpk, tcp3
+    !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt
     
     real (kind = r8), intent (inout), dimension (ks:ke) :: cvm, tz
     
@@ -5282,6 +5286,13 @@ subroutine pinst (ks, ke, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
     real :: sink, tin, qpz, rh, dqdt, tmp, qsi
     
     do k = ks, ke
+
+        !$ser verbatim if (nn .eq. 1) then
+            !$ser verbatim szs_qsi (k) = 0.
+            !$ser verbatim szs_dqidt (k) = 0.
+            !$ser verbatim szs_qsw (k) = 0.
+            !$ser verbatim szs_dqwdt (k) = 0.
+        !$ser verbatim endif
         
         ! -----------------------------------------------------------------------
         ! instant deposit all water vapor to cloud ice when temperature is super low
@@ -5309,6 +5320,10 @@ subroutine pinst (ks, ke, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
         if (tin .gt. t_sub + 6.) then
             
             qsi = iqs (tin, den (k), dqdt)
+            !$ser verbatim if (nn .eq. 1) then
+                !$ser verbatim szs_qsi (k) = qsi
+                !$ser verbatim szs_dqidt (k) = dqdt
+            !$ser verbatim endif
             rh = qpz / qsi
             if (rh .lt. rh_adj) then
                 
