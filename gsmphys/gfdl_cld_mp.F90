@@ -2696,6 +2696,7 @@ subroutine mp_fast (ks, ke, tz, qv, ql, qr, qi, qs, qg, dtm, dp, den, &
     ! -----------------------------------------------------------------------
     
     call pcond_pevap (ks, ke, dtm, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
+!$ser verbatim 1, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
         lcpk, icpk, tcpk, tcp3, cond, reevap)
     
     condensation = condensation + cond * convt
@@ -2714,7 +2715,9 @@ subroutine mp_fast (ks, ke, tz, qv, ql, qr, qi, qs, qg, dtm, dp, den, &
         ! Wegener Bergeron Findeisen process
         ! -----------------------------------------------------------------------
         
-        call pwbf (ks, ke, dtm, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, &
+        call pwbf (ks, ke, dtm, qv, ql, qr, qi, qs, qg, tz, &
+!$ser verbatim 1, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
+            cvm, te8, den, &
             lcpk, icpk, tcpk, tcp3)
         
         ! -----------------------------------------------------------------------
@@ -5127,6 +5130,34 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
     ! initialization
     ! -----------------------------------------------------------------------
 
+    cond = 0
+    dep = 0
+    reevap = 0
+    sub = 0
+    
+    ! -----------------------------------------------------------------------
+    ! calculate heat capacities and latent heat coefficients
+    ! -----------------------------------------------------------------------
+    
+    call cal_mhc_lhc (ks, ke, qv, ql, qr, qi, qs, qg, q_liq, q_sol, cvm, te8, tz, &
+        lcpk, icpk, tcpk, tcp3)
+    
+    ! -----------------------------------------------------------------------
+    ! instant processes (include deposition, evaporation, and sublimation)
+    ! -----------------------------------------------------------------------
+
+    if (.not. do_warm_rain_mp) then
+
+        call pinst (ks, ke, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
+!$ser verbatim nn, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
+            lcpk, icpk, tcpk, tcp3, rh_adj, dep, sub, reevap)
+        
+    endif
+
+    ! -----------------------------------------------------------------------
+    ! cloud water condensation and evaporation
+    ! -----------------------------------------------------------------------
+
     !$ser verbatim if (nn .eq. 1) then
         !$ser verbatim szs_pt = tz
         !$ser verbatim szs_qv = qv
@@ -5149,27 +5180,9 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
         !$ser verbatim szs_cvm = cvm
     !$ser verbatim endif
 
-    cond = 0
-    dep = 0
-    reevap = 0
-    sub = 0
-    
-    ! -----------------------------------------------------------------------
-    ! calculate heat capacities and latent heat coefficients
-    ! -----------------------------------------------------------------------
-    
-    call cal_mhc_lhc (ks, ke, qv, ql, qr, qi, qs, qg, q_liq, q_sol, cvm, te8, tz, &
-        lcpk, icpk, tcpk, tcp3)
-    
-    ! -----------------------------------------------------------------------
-    ! instant processes (include deposition, evaporation, and sublimation)
-    ! -----------------------------------------------------------------------
-
-    if (.not. do_warm_rain_mp) then
-
-        call pinst (ks, ke, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
+    call pcond_pevap (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
 !$ser verbatim nn, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
-            lcpk, icpk, tcpk, tcp3, rh_adj, dep, sub, reevap)
+        lcpk, icpk, tcpk, tcp3, cond, reevap)
 
         !$ser verbatim if (nn .eq. 1) then
             !$ser verbatim szs_pto = tz
@@ -5191,15 +5204,6 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
             !$ser verbatim szs_tcp3o = tcp3
             !$ser verbatim szs_cvmo = cvm
         !$ser verbatim endif
-        
-    endif
-
-    ! -----------------------------------------------------------------------
-    ! cloud water condensation and evaporation
-    ! -----------------------------------------------------------------------
-
-    call pcond_pevap (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-        lcpk, icpk, tcpk, tcp3, cond, reevap)
     
     if (.not. do_warm_rain_mp) then
         
@@ -5213,7 +5217,9 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
         ! Wegener Bergeron Findeisen process
         ! -----------------------------------------------------------------------
         
-        call pwbf (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, lcpk, icpk, tcpk, tcp3)
+        call pwbf (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, &
+!$ser verbatim nn, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
+            cvm, te8, den, lcpk, icpk, tcpk, tcp3)
         
         ! -----------------------------------------------------------------------
         ! Bigg freezing mechanism
@@ -5234,6 +5240,7 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
         ! -----------------------------------------------------------------------
         
         call psdep_pssub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
+!$ser verbatim nn, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
             denfac, lcpk, icpk, tcpk, tcp3, dep, sub)
         
         ! -----------------------------------------------------------------------
@@ -5241,6 +5248,7 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
         ! -----------------------------------------------------------------------
         
         call pgdep_pgsub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
+!$ser verbatim nn, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
             denfac, lcpk, icpk, tcpk, tcp3, dep, sub)
         
     endif
@@ -5351,6 +5359,7 @@ end subroutine pinst
 ! =======================================================================
 
 subroutine pcond_pevap (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
+!$ser verbatim nn, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
         lcpk, icpk, tcpk, tcp3, cond, reevap)
     
     implicit none
@@ -5360,6 +5369,7 @@ subroutine pcond_pevap (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
     ! -----------------------------------------------------------------------
     
     integer, intent (in) :: ks, ke
+    !$ser verbatim integer, intent (in) :: nn
     
     real, intent (in) :: dts
     
@@ -5369,6 +5379,7 @@ subroutine pcond_pevap (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
     
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg
     real, intent (inout), dimension (ks:ke) :: lcpk, icpk, tcpk, tcp3
+    !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt
     
     real (kind = r8), intent (inout), dimension (ks:ke) :: cvm, tz
     
@@ -5386,9 +5397,20 @@ subroutine pcond_pevap (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
     fac_v2l = 1. - exp (- dts / tau_v2l)
     
     do k = ks, ke
+
+        !$ser verbatim if (nn .eq. 1) then
+            !$ser verbatim szs_qsi (k) = 0.
+            !$ser verbatim szs_dqidt (k) = 0.
+            !$ser verbatim szs_qsw (k) = 0.
+            !$ser verbatim szs_dqwdt (k) = 0.
+        !$ser verbatim endif
         
         tin = tz (k)
         qsw = wqs (tin, den (k), dqdt)
+        !$ser verbatim if (nn .eq. 1) then
+            !$ser verbatim szs_qsw (k) = qsw
+            !$ser verbatim szs_dqwdt (k) = dqdt
+        !$ser verbatim endif
         qpz = qv (k) + ql (k) + qi (k)
         rh_tem = qpz / qsw
         dq = qsw - qv (k)
@@ -5468,7 +5490,9 @@ end subroutine pcomp
 ! Wegener Bergeron Findeisen process, Storelvmo and Tan (2015)
 ! =======================================================================
 
-subroutine pwbf (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, lcpk, icpk, tcpk, tcp3)
+subroutine pwbf (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, &
+!$ser verbatim nn, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
+        cvm, te8, den, lcpk, icpk, tcpk, tcp3)
     
     implicit none
     
@@ -5477,6 +5501,7 @@ subroutine pwbf (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, lcpk, i
     ! -----------------------------------------------------------------------
     
     integer, intent (in) :: ks, ke
+    !$ser verbatim integer, intent (in) :: nn
     
     real, intent (in) :: dts
     
@@ -5486,6 +5511,7 @@ subroutine pwbf (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, lcpk, i
     
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg
     real, intent (inout), dimension (ks:ke) :: lcpk, icpk, tcpk, tcp3
+    !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt
     
     real (kind = r8), intent (inout), dimension (ks:ke) :: cvm, tz
     
@@ -5502,12 +5528,27 @@ subroutine pwbf (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, lcpk, i
     fac_wbf = 1. - exp (- dts / tau_wbf)
     
     do k = ks, ke
+
+        !$ser verbatim if (nn .eq. 1) then
+            !$ser verbatim szs_qsi (k) = 0.
+            !$ser verbatim szs_dqidt (k) = 0.
+            !$ser verbatim szs_qsw (k) = 0.
+            !$ser verbatim szs_dqwdt (k) = 0.
+        !$ser verbatim endif
         
         tc = tice - tz (k)
         
         tin = tz (k)
         qsw = wqs (tin, den (k), dqdt)
+        !$ser verbatim if (nn .eq. 1) then
+            !$ser verbatim szs_qsw (k) = qsw
+            !$ser verbatim szs_dqwdt (k) = dqdt
+        !$ser verbatim endif
         qsi = iqs (tin, den (k), dqdt)
+        !$ser verbatim if (nn .eq. 1) then
+            !$ser verbatim szs_qsi (k) = qsi
+            !$ser verbatim szs_dqidt (k) = dqdt
+        !$ser verbatim endif
 
         if (tc .gt. 0. .and. ql (k) .gt. qcmin .and. qi (k) .gt. qcmin .and. &
             qv (k) .gt. qsi .and. qv (k) .lt. qsw) then
@@ -5701,6 +5742,7 @@ end subroutine pidep_pisub
 ! =======================================================================
 
 subroutine psdep_pssub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
+!$ser verbatim nn, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
         denfac, lcpk, icpk, tcpk, tcp3, dep, sub)
     
     implicit none
@@ -5710,6 +5752,7 @@ subroutine psdep_pssub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
     ! -----------------------------------------------------------------------
     
     integer, intent (in) :: ks, ke
+    !$ser verbatim integer, intent (in) :: nn
     
     real, intent (in) :: dts
     
@@ -5719,6 +5762,7 @@ subroutine psdep_pssub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
     
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg
     real, intent (inout), dimension (ks:ke) :: lcpk, icpk, tcpk, tcp3
+    !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt
     
     real (kind = r8), intent (inout), dimension (ks:ke) :: cvm, tz
     
@@ -5733,11 +5777,22 @@ subroutine psdep_pssub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
     real :: sink, tin, dqdt, qsi, qden, t2, dq, pssub
     
     do k = ks, ke
+
+        !$ser verbatim if (nn .eq. 1) then
+            !$ser verbatim szs_qsi (k) = 0.
+            !$ser verbatim szs_dqidt (k) = 0.
+            !$ser verbatim szs_qsw (k) = 0.
+            !$ser verbatim szs_dqwdt (k) = 0.
+        !$ser verbatim endif
         
         if (qs (k) .gt. qcmin) then
             
             tin = tz (k)
             qsi = iqs (tin, den (k), dqdt)
+            !$ser verbatim if (nn .eq. 1) then
+                !$ser verbatim szs_qsi (k) = qsi
+                !$ser verbatim szs_dqidt (k) = dqdt
+            !$ser verbatim endif
             qden = qs (k) * den (k)
             t2 = tz (k) * tz (k)
             dq = qsi - qv (k)
@@ -5770,6 +5825,7 @@ end subroutine psdep_pssub
 ! =======================================================================
 
 subroutine pgdep_pgsub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
+!$ser verbatim nn, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
         denfac, lcpk, icpk, tcpk, tcp3, dep, sub)
     
     implicit none
@@ -5807,6 +5863,10 @@ subroutine pgdep_pgsub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
             
             tin = tz (k)
             qsi = iqs (tin, den (k), dqdt)
+            !$ser verbatim if (nn .eq. 1) then
+                !$ser verbatim szs_qsi (k) = qsi
+                !$ser verbatim szs_dqidt (k) = dqdt
+            !$ser verbatim endif
             qden = qg (k) * den (k)
             t2 = tz (k) * tz (k)
             dq = qsi - qv (k)
