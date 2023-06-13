@@ -1234,7 +1234,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser verbatim real, dimension (is:ie, ks:ke) :: ne_qv, ne_ql, ne_qr, ne_qi, ne_qs, ne_qg, ne_pt, ne_delp
     !$ser verbatim real, dimension (is:ie, ks:ke) :: ne_qv_o, ne_ql_o, ne_qr_o, ne_qi_o, ne_qs_o, ne_qg_o, ne_pt_o, ne_delp_o
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: cf_qv, cf_ql, cf_qr, cf_qi, cf_qs, cf_qg, cf_qa, cf_qa_o, cf_pt, cf_den, cf_pz
+    !$ser verbatim real, dimension (is:ie, ks:ke) :: cf_qv, cf_ql, cf_qr, cf_qi, cf_qs, cf_qg, cf_qa, cf_qa_o, cf_pt, cf_den, cf_pz, cf_qsi, cf_dqidt, cf_qsw, cf_dqwdt
     !$ser verbatim real, dimension (is:ie, ks:ke) :: mpf_qv, mpf_ql, mpf_qr, mpf_qi, mpf_qs, mpf_qg, mpf_pt, mpf_delp, mpf_delz, mpf_u, mpf_v, mpf_w, mpf_den, mpf_denfac, mpf_ccn, mpf_cin, mpf_pfw, mpf_pfr, mpf_pfi, mpf_pfs, mpf_pfg
     !$ser verbatim real, dimension (is:ie, ks:ke) :: mpf_qv_o, mpf_ql_o, mpf_qr_o, mpf_qi_o, mpf_qs_o, mpf_qg_o, mpf_pt_o, mpf_delp_o, mpf_delz_o, mpf_u_o, mpf_v_o, mpf_w_o, mpf_den_o, mpf_denfac_o, mpf_ccn_o, mpf_cin_o, mpf_pfw_o, mpf_pfr_o, mpf_pfi_o, mpf_pfs_o, mpf_pfg_o
     !$ser verbatim real, dimension (is:ie, ks:ke) :: sd_qv, sd_ql, sd_qr, sd_qi, sd_qs, sd_qg, sd_u, sd_v, sd_w, sd_vtw, sd_vtr, sd_vti, sd_vts, sd_vtg, sd_pfw, sd_pfr, sd_pfi, sd_pfs, sd_pfg, sd_tz
@@ -1630,6 +1630,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
         !$ser verbatim cf_gsize(i)=gsize(i)
         if (do_qa .and. last_step) then
             call cloud_fraction (ks, ke, pz, den, qvz, qlz, qrz, qiz, qsz, qgz, qaz, &
+!$ser verbatim cf_qsi (i,:), cf_dqidt (i,:), cf_qsw (i,:), cf_dqwdt (i,:),&
                 tz, h_var, gsize (i))
         endif
         !$ser verbatim cf_qa_o(i,:)=qaz(:)
@@ -2075,7 +2076,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data ne_qv=ne_qv ne_ql=ne_ql ne_qr=ne_qr ne_qi=ne_qi ne_qs=ne_qs ne_qg=ne_qg ne_pt=ne_pt ne_delp=ne_delp ne_cond=ne_cond convt=convt
     
     !$ser savepoint CloudFrac-In
-    !$ser data cf_qv=cf_qv cf_ql=cf_ql cf_qr=cf_qr cf_qi=cf_qi cf_qs=cf_qs cf_qg=cf_qg cf_pt=cf_pt cf_qa=cf_qa cf_den=cf_den cf_pz=cf_pz cf_h_var=cf_h_var cf_gsize=cf_gsize
+    !$ser data cf_qv=cf_qv cf_ql=cf_ql cf_qr=cf_qr cf_qi=cf_qi cf_qs=cf_qs cf_qg=cf_qg cf_pt=cf_pt cf_qa=cf_qa cf_den=cf_den cf_pz=cf_pz cf_h_var=cf_h_var cf_gsize=cf_gsize cf_qsi=cf_qsi cf_dqidt=cf_dqidt cf_qsw=cf_qsw cf_dqwdt=cf_dqwdt
     
     !$ser savepoint MPFull-In
     !$ser data mpf_qv=mpf_qv mpf_ql=mpf_ql mpf_qr=mpf_qr mpf_qi=mpf_qi mpf_qs=mpf_qs mpf_qg=mpf_qg mpf_pt=mpf_pt mpf_delp=mpf_delp mpf_delz=mpf_delz
@@ -5835,6 +5836,7 @@ subroutine pgdep_pgsub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
     ! -----------------------------------------------------------------------
     
     integer, intent (in) :: ks, ke
+    !$ser verbatim integer, intent (in) :: nn
     
     real, intent (in) :: dts
     
@@ -5844,6 +5846,7 @@ subroutine pgdep_pgsub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
     
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg
     real, intent (inout), dimension (ks:ke) :: lcpk, icpk, tcpk, tcp3
+    !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt
     
     real (kind = r8), intent (inout), dimension (ks:ke) :: cvm, tz
     
@@ -5858,6 +5861,13 @@ subroutine pgdep_pgsub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
     real :: sink, tin, dqdt, qsi, qden, t2, dq, pgsub
     
     do k = ks, ke
+
+        !$ser verbatim if (nn .eq. 1) then
+            !$ser verbatim szs_qsi (k) = 0.
+            !$ser verbatim szs_dqidt (k) = 0.
+            !$ser verbatim szs_qsw (k) = 0.
+            !$ser verbatim szs_dqwdt (k) = 0.
+        !$ser verbatim endif
         
         if (qg (k) .gt. qcmin) then
             
@@ -5904,7 +5914,9 @@ end subroutine pgdep_pgsub
 ! cloud fraction diagnostic
 ! =======================================================================
 
-subroutine cloud_fraction (ks, ke, pz, den, qv, ql, qr, qi, qs, qg, qa, tz, h_var, gsize)
+subroutine cloud_fraction (ks, ke, pz, den, qv, ql, qr, qi, qs, qg, qa, &
+!$ser verbatim cf_qsi, cf_dqidt, cf_qsw, cf_dqwdt,&
+    tz, h_var, gsize)
     
     implicit none
     
@@ -5921,6 +5933,7 @@ subroutine cloud_fraction (ks, ke, pz, den, qv, ql, qr, qi, qs, qg, qa, tz, h_va
     real (kind = r8), intent (in), dimension (ks:ke) :: tz
     
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg, qa
+    !$ser verbatim real, intent (out), dimension (ks:ke) :: cf_qsi, cf_dqidt, cf_qsw, cf_dqwdt
     
     ! -----------------------------------------------------------------------
     ! local variables
@@ -5945,6 +5958,11 @@ subroutine cloud_fraction (ks, ke, pz, den, qv, ql, qr, qi, qs, qg, qa, tz, h_va
         lcpk, icpk, tcpk, tcp3)
     
     do k = ks, ke
+
+        !$ser verbatim cf_qsi (k) = 0.
+        !$ser verbatim cf_dqidt (k) = 0.
+        !$ser verbatim cf_qsw (k) = 0.
+        !$ser verbatim cf_dqwdt (k) = 0.
         
         ! combine water species
         
@@ -5974,6 +5992,9 @@ subroutine cloud_fraction (ks, ke, pz, den, qv, ql, qr, qi, qs, qg, qa, tz, h_va
         
         ! calculate saturated specific humidity
         
+        !$ser verbatim cf_qsi = iqs (tin, den (k), dqidt)
+        !$ser verbatim cf_qsw = wqs (tin, den (k), dqwdt)
+
         if (tin .le. t_wfr) then
             qstar = iqs (tin, den (k), dqdt)
         elseif (tin .ge. tice) then
