@@ -5175,9 +5175,52 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
         ! Wegener Bergeron Findeisen process
         ! -----------------------------------------------------------------------
         
+    !$ser verbatim if (nn .eq. 1) then
+        !$ser verbatim szs_pt = tz
+        !$ser verbatim szs_qv = qv
+        !$ser verbatim szs_ql = ql
+        !$ser verbatim szs_qr = qr
+        !$ser verbatim szs_qi = qi
+        !$ser verbatim szs_qs = qs
+        !$ser verbatim szs_qg = qg
+        !$ser verbatim szs_ccn = ccn
+        !$ser verbatim szs_cin = cin
+        !$ser verbatim szs_cond = cond
+        !$ser verbatim szs_dep = dep
+        !$ser verbatim szs_reevap = reevap
+        !$ser verbatim szs_sub = sub
+        !$ser verbatim szs_te = te8
+        !$ser verbatim szs_lcpk = lcpk
+        !$ser verbatim szs_icpk = icpk
+        !$ser verbatim szs_tcpk = tcpk
+        !$ser verbatim szs_tcp3 = tcp3
+        !$ser verbatim szs_cvm = cvm
+    !$ser verbatim endif
+
         call pwbf (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, &
-!$ser verbatim nn, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
+!$ser verbatim nn, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
             cvm, te8, den, lcpk, icpk, tcpk, tcp3)
+
+        !$ser verbatim if (nn .eq. 1) then
+            !$ser verbatim szs_pto = tz
+            !$ser verbatim szs_qvo = qv
+            !$ser verbatim szs_qlo = ql
+            !$ser verbatim szs_qro = qr
+            !$ser verbatim szs_qio = qi
+            !$ser verbatim szs_qso = qs
+            !$ser verbatim szs_qgo = qg
+            !$ser verbatim szs_ccno = ccn
+            !$ser verbatim szs_cino = cin
+            !$ser verbatim szs_condo = cond
+            !$ser verbatim szs_depo = dep
+            !$ser verbatim szs_reevapo = reevap
+            !$ser verbatim szs_subo = sub
+            !$ser verbatim szs_lcpko = lcpk
+            !$ser verbatim szs_icpko = icpk
+            !$ser verbatim szs_tcpko = tcpk
+            !$ser verbatim szs_tcp3o = tcp3
+            !$ser verbatim szs_cvmo = cvm
+        !$ser verbatim endif
         
         ! -----------------------------------------------------------------------
         ! Bigg freezing mechanism
@@ -5204,53 +5247,10 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
         ! -----------------------------------------------------------------------
         ! graupel deposition and sublimation
         ! -----------------------------------------------------------------------
-        
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim szs_pt = tz
-        !$ser verbatim szs_qv = qv
-        !$ser verbatim szs_ql = ql
-        !$ser verbatim szs_qr = qr
-        !$ser verbatim szs_qi = qi
-        !$ser verbatim szs_qs = qs
-        !$ser verbatim szs_qg = qg
-        !$ser verbatim szs_ccn = ccn
-        !$ser verbatim szs_cin = cin
-        !$ser verbatim szs_cond = cond
-        !$ser verbatim szs_dep = dep
-        !$ser verbatim szs_reevap = reevap
-        !$ser verbatim szs_sub = sub
-        !$ser verbatim szs_te = te8
-        !$ser verbatim szs_lcpk = lcpk
-        !$ser verbatim szs_icpk = icpk
-        !$ser verbatim szs_tcpk = tcpk
-        !$ser verbatim szs_tcp3 = tcp3
-        !$ser verbatim szs_cvm = cvm
-    !$ser verbatim endif
 
         call pgdep_pgsub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-!$ser verbatim nn, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
+!$ser verbatim nn, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
             denfac, lcpk, icpk, tcpk, tcp3, dep, sub)
-        
-        !$ser verbatim if (nn .eq. 1) then
-            !$ser verbatim szs_pto = tz
-            !$ser verbatim szs_qvo = qv
-            !$ser verbatim szs_qlo = ql
-            !$ser verbatim szs_qro = qr
-            !$ser verbatim szs_qio = qi
-            !$ser verbatim szs_qso = qs
-            !$ser verbatim szs_qgo = qg
-            !$ser verbatim szs_ccno = ccn
-            !$ser verbatim szs_cino = cin
-            !$ser verbatim szs_condo = cond
-            !$ser verbatim szs_depo = dep
-            !$ser verbatim szs_reevapo = reevap
-            !$ser verbatim szs_subo = sub
-            !$ser verbatim szs_lcpko = lcpk
-            !$ser verbatim szs_icpko = icpk
-            !$ser verbatim szs_tcpko = tcpk
-            !$ser verbatim szs_tcp3o = tcp3
-            !$ser verbatim szs_cvmo = cvm
-        !$ser verbatim endif
 
     endif
     
