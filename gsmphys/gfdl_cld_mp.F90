@@ -5992,8 +5992,8 @@ subroutine cloud_fraction (ks, ke, pz, den, qv, ql, qr, qi, qs, qg, qa, &
         
         ! calculate saturated specific humidity
         
-        !$ser verbatim cf_qsi = iqs (tin, den (k), cf_dqidt)
-        !$ser verbatim cf_qsw = wqs (tin, den (k), cf_dqwdt)
+        !$ser verbatim cf_qsi (k) = iqs (tin, den (k), cf_dqidt (k))
+        !$ser verbatim cf_qsw (k) = wqs (tin, den (k), cf_dqwdt (k))
 
         if (tin .le. t_wfr) then
             qstar = iqs (tin, den (k), dqdt)
