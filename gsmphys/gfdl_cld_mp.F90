@@ -5196,6 +5196,14 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
         ! -----------------------------------------------------------------------
         ! snow deposition and sublimation
         ! -----------------------------------------------------------------------
+
+        call psdep_pssub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
+!$ser verbatim nn, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
+            denfac, lcpk, icpk, tcpk, tcp3, dep, sub)
+
+        ! -----------------------------------------------------------------------
+        ! graupel deposition and sublimation
+        ! -----------------------------------------------------------------------
         
     !$ser verbatim if (nn .eq. 1) then
         !$ser verbatim szs_pt = tz
@@ -5219,7 +5227,7 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
         !$ser verbatim szs_cvm = cvm
     !$ser verbatim endif
 
-        call psdep_pssub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
+        call pgdep_pgsub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
 !$ser verbatim nn, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
             denfac, lcpk, icpk, tcpk, tcp3, dep, sub)
         
@@ -5244,14 +5252,6 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
             !$ser verbatim szs_cvmo = cvm
         !$ser verbatim endif
 
-        ! -----------------------------------------------------------------------
-        ! graupel deposition and sublimation
-        ! -----------------------------------------------------------------------
-        
-        call pgdep_pgsub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-!$ser verbatim nn, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
-            denfac, lcpk, icpk, tcpk, tcp3, dep, sub)
-        
     endif
     
 end subroutine subgrid_z_proc
