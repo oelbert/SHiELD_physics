@@ -1211,9 +1211,10 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     
     real (kind = r8), dimension (ks:ke) :: tz, tzuv, tzw
     
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: pre_qv, pre_ql, pre_qr, pre_qi, pre_qs, pre_qg, pre_pt, pre_delp, pre_delz, pre_ua, pre_va, pre_wa, pre_water, pre_rain, pre_ice, pre_snow, pre_graupel
+    !$ser verbatim real, dimension (is:ie, ks:ke) :: pre_qv, pre_ql, pre_qr, pre_qi, pre_qs, pre_qg, pre_pt, pre_delp, pre_delz, pre_ua, pre_va, pre_wa
     !$ser verbatim real, dimension (is:ie, ks:ke) :: pp_qv, pp_ql, pp_qr, pp_qi, pp_qs, pp_qg, pp_den
 
+    !$ser verbatim real, dimension (is:ie) :: pre_vapor, pre_water, pre_rain, pre_ice, pre_snow, pre_graupel
     !$ser verbatim real, dimension (is:ie) :: ne_cond, ne_cond_o, cf_h_var, cf_gsize
     !$ser verbatim real, dimension (is:ie) :: mpf_h_var, mpf_rh_adj, mpf_rh_rain, mpf_dte, mpf_water, mpf_rain, mpf_ice, mpf_snow, mpf_graupel, mpf_cond, mpf_dep, mpf_sub, mpf_evap
     !$ser verbatim real, dimension (is:ie) :: mpf_h_var_o, mpf_rh_adj_o, mpf_dte_o, mpf_water_o, mpf_rain_o, mpf_ice_o, mpf_snow_o, mpf_graupel_o, mpf_cond_o, mpf_dep_o, mpf_sub_o, mpf_evap_o
@@ -1301,6 +1302,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim pre_ua = ua
     !$ser verbatim pre_va = va
     !$ser verbatim pre_wa = wa
+    !$ser verbatim pre_vapor = 0.
     !$ser verbatim pre_water = water
     !$ser verbatim pre_rain = rain
     !$ser verbatim pre_ice = ice
@@ -2243,12 +2245,12 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser savepoint PreliminaryCalculations-In
     !$ser data pre_qv=pre_qv pre_ql=pre_ql pre_qr=pre_qr pre_qi=pre_qi pre_qs=pre_qs pre_qg=pre_qg pre_pt=pre_pt pre_delp=pre_delp pre_delz=pre_delz pre_ua=pre_ua pre_va=pre_va pre_wa=pre_wa
-    !$ser data pre_water=pre_water pre_rain=pre_rain pre_ice=pre_ice pre_snow=pre_snow pre_graupel=pre_graupel
+    !$ser data pre_vapor=pre_vapor pre_water=pre_water pre_rain=pre_rain pre_ice=pre_ice pre_snow=pre_snow pre_graupel=pre_graupel pre_gsize=gsize pre_hs=hs pre_qnl=qnl pre_qni=qni
     !$ser data pre_qv0=zerobuff_3d pre_ql0=zerobuff_3d pre_qr0=zerobuff_3d pre_qi0=zerobuff_3d pre_qs0=zerobuff_3d pre_qg0=zerobuff_3d pre_dp0=zerobuff_3d pre_pt0=zerobuff_3d pre_u0=zerobuff_3d pre_v0=zerobuff_3d pre_w0=zerobuff_3d
     !$ser data pre_den=zerobuff_3d pre_pz=zerobuff_3d pre_denfac=zerobuff_3d pp_dp0=pp_dp0 pre_dte=zerobuff_3d pre_cond=zerobuff_3d pre_adj_vmr=zerobuff_3d pre_ccn=zerobuff_3d pre_cin=zerobuff_3d pre_h_var=zerobuff_3d
     !$ser data pre_rh_adj=zerobuff_3d pre_rh_rain=zerobuff_3d pp_ew0=pp_ew0 pp_ww0=pp_ww0 pp_bew0=pp_bew0 pp_bww0=pp_bww0 pp_ed0=pp_ed0 pp_wd0=pp_wd0 pp_bed0=pp_bed0 pp_bwd0=pp_bwd0
 
-    
+
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
 
 
