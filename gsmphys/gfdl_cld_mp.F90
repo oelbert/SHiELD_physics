@@ -1211,6 +1211,9 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     
     real (kind = r8), dimension (ks:ke) :: tz, tzuv, tzw
     
+    !$ser verbatim real, dimension (is:ie, ks:ke) :: pre_qv, pre_ql, pre_qr, pre_qi, pre_qs, pre_qg, pre_pt, pre_delp, pre_delz, pre_ua, pre_va, pre_wa, pre_water, pre_rain, pre_ice, pre_snow, pre_graupel
+    !$ser verbatim real, dimension (is:ie, ks:ke) :: pp_qv, pp_ql, pp_qr, pp_qi, pp_qs, pp_qg, pp_den
+
     !$ser verbatim real, dimension (is:ie) :: ne_cond, ne_cond_o, cf_h_var, cf_gsize
     !$ser verbatim real, dimension (is:ie) :: mpf_h_var, mpf_rh_adj, mpf_rh_rain, mpf_dte, mpf_water, mpf_rain, mpf_ice, mpf_snow, mpf_graupel, mpf_cond, mpf_dep, mpf_sub, mpf_evap
     !$ser verbatim real, dimension (is:ie) :: mpf_h_var_o, mpf_rh_adj_o, mpf_dte_o, mpf_water_o, mpf_rain_o, mpf_ice_o, mpf_snow_o, mpf_graupel_o, mpf_cond_o, mpf_dep_o, mpf_sub_o, mpf_evap_o
@@ -1286,6 +1289,24 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     ! initialization of total energy difference and condensation diag
     ! -----------------------------------------------------------------------
     
+    !$ser verbatim pre_qv = qv
+    !$ser verbatim pre_ql = ql
+    !$ser verbatim pre_qr = qr
+    !$ser verbatim pre_qi = qi
+    !$ser verbatim pre_qs = qs
+    !$ser verbatim pre_qg = qg
+    !$ser verbatim pre_pt = pt
+    !$ser verbatim pre_delp = delp
+    !$ser verbatim pre_delz = delz
+    !$ser verbatim pre_ua = ua
+    !$ser verbatim pre_va = va
+    !$ser verbatim pre_wa = wa
+    !$ser verbatim pre_water = water
+    !$ser verbatim pre_rain = rain
+    !$ser verbatim pre_ice = ice
+    !$ser verbatim pre_snow = snow
+    !$ser verbatim pre_graupel = graupel
+
     dte = 0.0
     cond = 0.0
     adj_vmr = 1.0
@@ -1295,7 +1316,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     ! -----------------------------------------------------------------------
     
     convt = 86400. * rgrav / dts
-    
+
     do i = is, ie
 
         !$ser verbatim do k = ks, ke
@@ -1309,7 +1330,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
         ! -----------------------------------------------------------------------
         ! conversion of temperature
         ! -----------------------------------------------------------------------
-        
+
         if (do_inline_mp) then
             do k = ks, ke
                 q_cond = ql (i, k) + qr (i, k) + qi (i, k) + qs (i, k) + qg (i, k)
@@ -1460,6 +1481,52 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
         
         rh_adj = 1. - h_var - rh_inc
         rh_rain = max (0.35, rh_adj - rh_inr)
+
+        !$ser verbatim pre_qvo (i, :) = qvz (:)
+        !$ser verbatim pre_qlo (i, :) = qlz (:)
+        !$ser verbatim pre_qro (i, :) = qrz (:)
+        !$ser verbatim pre_qio (i, :) = qiz (:)
+        !$ser verbatim pre_qso (i, :) = qsz (:)
+        !$ser verbatim pre_qgo (i, :) = qgz (:)
+        !$ser verbatim pre_pto (i, :) = tz (:)
+        !$ser verbatim pre_delpo (i, :) = dp (:)
+        !$ser verbatim pre_delzo (i, :) = dz (:)
+        !$ser verbatim pre_uao (i, :) = u (:)
+        !$ser verbatim pre_vao (i, :) = v (:)
+        !$ser verbatim pre_wao (i, :) = w (:)
+        !$ser verbatim pre_den (i, :) = den (:)
+        !$ser verbatim pre_pz (i, :) = pz (:)
+        !$ser verbatim pre_denfac (i, :) = denfac (:)
+        !$ser verbatim pp_dp0 (i, :) = dp0 (:)
+        !$ser verbatim pre_dte (i) = dte (i)
+        !$ser verbatim pre_cond (i) = cond
+        !$ser verbatim pre_adj_vmr (i, :) = adj_vmr (i, :)
+        !$ser verbatim pre_ccn (i, :) = ccn (:)
+        !$ser verbatim pre_cin (i, :) = cin (:)
+        !$ser verbatim pre_h_var (i) = h_var
+        !$ser verbatim pre_rh_adj (i) = rh_adj
+        !$ser verbatim pre_rh_rain (i) = rh_rain
+
+        !$ser verbatim if (consv_checker) then
+            !$ser verbatim pp_ew0 (i, :) = te_beg_m (i, :)
+            !$ser verbatim pp_ww0 (i, :) = tw_beg_m (i, :)
+            !$ser verbatim pp_bew0 (i) = te_b_beg_m (i)
+            !$ser verbatim pp_bww0 (i) = tw_b_beg_m (i)
+            !$ser verbatim pp_ed0 (i, :) = te_beg_d (i, :)
+            !$ser verbatim pp_wd0 (i, :) = tw_beg_d (i, :)
+            !$ser verbatim pp_bed0 (i) = te_b_beg_d (i)
+            !$ser verbatim pp_bwd0 (i) = tw_b_beg_d (i)
+        !$ser verbatim else
+            !$ser verbatim pp_ew0 (i, :) = 0.
+            !$ser verbatim pp_ww0 (i, :) = 0.
+            !$ser verbatim pp_bew0 (i) = 0.
+            !$ser verbatim pp_bww0 (i) = 0.
+            !$ser verbatim pp_ed0 (i, :) = 0.
+            !$ser verbatim pp_wd0 (i, :) = 0.
+            !$ser verbatim pp_bed0 (i) = 0.
+            !$ser verbatim pp_bwd0 (i) = 0.
+        !$ser verbatim endif
+        
         
         ! -----------------------------------------------------------------------
         ! fix negative water species from outside
@@ -1640,6 +1707,14 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
         ! optical extinction (oe), radar reflectivity factor (rr), and
         ! mass-weighted terminal velocity (tv)
         ! =======================================================================
+
+        !$ser verbatim pp_qv (i, :) = qvz (:)
+        !$ser verbatim pp_ql (i, :) = qlz (:)
+        !$ser verbatim pp_qr (i, :) = qrz (:)
+        !$ser verbatim pp_qi (i, :) = qiz (:)
+        !$ser verbatim pp_qs (i, :) = qsz (:)
+        !$ser verbatim pp_qg (i, :) = qgz (:)
+        !$ser verbatim pp_den (i, :) = den (:)
 
         pcw (i, :) = 0.0
         edw (i, :) = 0.0
@@ -2160,6 +2235,20 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data szs_lcpk=szs_lcpk szs_icpk=szs_icpk szs_tcpk=szs_tcpk szs_tcp3=szs_tcp3 szs_cvm=szs_cvm
     !$ser data szs_qsi=szs_qsi szs_dqidt=szs_dqidt szs_qsw=szs_qsw szs_dqwdt=szs_dqwdt
 
+    !$ser savepoint ParticleProperties-In
+    !$ser data pp_qv=pp_qv pp_ql=pp_ql pp_qr=pp_qr pp_qi=pp_qi pp_qs=pp_qs pp_qg=pp_qg pp_den=pp_den
+    !$ser data pp_pcw=zerobuff_3d pp_edw=zerobuff_3d pp_oew=zerobuff_3d pp_rrw=zerobuff_3d pp_tvw=zerobuff_3d pp_pci=zerobuff_3d pp_edi=zerobuff_3d pp_oei=zerobuff_3d pp_rri=zerobuff_3d pp_tvi=zerobuff_3d
+    !$ser data pp_pcr=zerobuff_3d pp_edr=zerobuff_3d pp_oer=zerobuff_3d pp_rrr=zerobuff_3d pp_tvr=zerobuff_3d pp_pcs=zerobuff_3d pp_eds=zerobuff_3d pp_oes=zerobuff_3d pp_rrs=zerobuff_3d pp_tvs=zerobuff_3d
+    !$ser data pp_pcg=zerobuff_3d pp_edg=zerobuff_3d pp_oeg=zerobuff_3d pp_rrg=zerobuff_3d pp_tvg=zerobuff_3d
+
+    !$ser savepoint PreliminaryCalculations-In
+    !$ser data pre_qv=pre_qv pre_ql=pre_ql pre_qr=pre_qr pre_qi=pre_qi pre_qs=pre_qs pre_qg=pre_qg pre_pt=pre_pt pre_delp=pre_delp pre_delz=pre_delz pre_ua=pre_ua pre_va=pre_va pre_wa=pre_wa
+    !$ser data pre_water=pre_water pre_rain=pre_rain pre_ice=pre_ice pre_snow=pre_snow pre_graupel=pre_graupel
+    !$ser data pre_qv0=zerobuff_3d pre_ql0=zerobuff_3d pre_qr0=zerobuff_3d pre_qi0=zerobuff_3d pre_qs0=zerobuff_3d pre_qg0=zerobuff_3d pre_dp0=zerobuff_3d pre_pt0=zerobuff_3d pre_u0=zerobuff_3d pre_v0=zerobuff_3d pre_w0=zerobuff_3d
+    !$ser data pre_den=zerobuff_3d pre_pz=zerobuff_3d pre_denfac=zerobuff_3d pp_dp0=pp_dp0 pre_dte=zerobuff_3d pre_cond=zerobuff_3d pre_adj_vmr=zerobuff_3d pre_ccn=zerobuff_3d pre_cin=zerobuff_3d pre_h_var=zerobuff_3d
+    !$ser data pre_rh_adj=zerobuff_3d pre_rh_rain=zerobuff_3d pp_ew0=pp_ew0 pp_ww0=pp_ww0 pp_bew0=pp_bew0 pp_bww0=pp_bww0 pp_ed0=pp_ed0 pp_wd0=pp_wd0 pp_bed0=pp_bed0 pp_bwd0=pp_bwd0
+
+    
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
 
 
@@ -2258,6 +2347,17 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data szs_qv=szs_qvo szs_ql=szs_qlo szs_qr=szs_qro szs_qi=szs_qio szs_qs=szs_qso szs_qg=szs_qgo szs_ccn=szs_ccno szs_cin=szs_cino szs_pt=szs_pto
     !$ser data szs_cond=szs_condo szs_dep=szs_depo szs_reevap=szs_reevapo szs_sub=szs_subo
     !$ser data szs_lcpk=szs_lcpko szs_icpk=szs_icpko szs_tcpk=szs_tcpko szs_tcp3=szs_tcp3o szs_cvm=szs_cvmo
+
+    !$ser savepoint ParticleProperties-Out
+    !$ser data pp_pcw=pcw pp_edw=edw pp_oew=oew pp_rrw=rrw pp_tvw=tvw pp_pci=pci pp_edi=edi pp_oei=oei pp_rri=rri pp_tvi=tvi
+    !$ser data pp_pcr=pcr pp_edr=edr pp_oer=oer pp_rrr=rrr pp_tvr=tvr pp_pcs=pcs pp_eds=eds pp_oes=oes pp_rrs=rrs pp_tvs=tvs
+    !$ser data pp_pcg=pcg pp_edg=edg pp_oeg=oeg pp_rrg=rrg pp_tvg=tvg
+
+    !$ser savepoint PreliminaryCalculations-Out
+    !$ser data pre_qv=pre_qvo pre_ql=pre_qlo pre_qr=pre_qro pre_qi=pre_qio pre_qs=pre_qso pre_qg=pre_qgo pre_pt=pre_pto pre_delp=pre_delpo pre_delz=pre_delzo pre_ua=pre_uao pre_va=pre_vao pre_wa=pre_wao
+    !$ser data pre_qv0=pre_qv pre_ql0=pre_ql pre_qr0=pre_qr pre_qi0=pre_qi pre_qs0=pre_qs pre_qg0=pre_qg pre_dp0=pre_dp pre_pt0=pre_pt pre_u0=pre_ua pre_v0=pre_va pre_w0=pre_wa
+    !$ser data pre_den=pre_den pre_pz=pre_pz pre_denfac=pre_denfac pp_dp0=pp_dp0 pre_dte=pre_dte pre_cond=pre_cond pre_adj_vmr=pre_adj_vmr pre_ccn=pre_ccn pre_cin=pre_cin pre_h_var=pre_h_var
+    !$ser data pre_rh_adj=pre_rh_adj pre_rh_rain=pre_rh_rain pp_ew0=pp_ew0 pp_ww0=pp_ww0 pp_bew0=pp_bew0 pp_bww0=pp_bww0 pp_ed0=pp_ed0 pp_wd0=pp_wd0 pp_bed0=pp_bed0 pp_bwd0=pp_bwd0
 
 end subroutine mpdrv
 
