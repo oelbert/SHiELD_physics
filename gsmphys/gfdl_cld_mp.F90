@@ -1212,6 +1212,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     real (kind = r8), dimension (ks:ke) :: tz, tzuv, tzw
 
     !$ser verbatim real, dimension (is:ie) :: pre_vapor, pre_water, pre_rain, pre_ice, pre_snow, pre_graupel, pre_dte, pre_cond, pre_h_var, pre_rh_adj, pre_rh_rain, pre_bew0, pre_bww0, pre_bed0, pre_bwd0, pre_gsize, pre_hs
+    !$ser verbatim real, dimension (is:ie) :: fin_dte, fin_dte0, fin_te_loss, fin_bew, fin_bww, fin_bed, fin_bwd, fin_vapor, fin_water, fin_rain, fin_ice, fin_snow, fin_graupel
     !$ser verbatim real, dimension (is:ie) :: ne_cond, ne_cond_o, cf_h_var, cf_gsize
     !$ser verbatim real, dimension (is:ie) :: mpf_h_var, mpf_rh_adj, mpf_rh_rain, mpf_dte, mpf_water, mpf_rain, mpf_ice, mpf_snow, mpf_graupel, mpf_cond, mpf_dep, mpf_sub, mpf_evap
     !$ser verbatim real, dimension (is:ie) :: mpf_h_var_o, mpf_rh_adj_o, mpf_dte_o, mpf_water_o, mpf_rain_o, mpf_ice_o, mpf_snow_o, mpf_graupel_o, mpf_cond_o, mpf_dep_o, mpf_sub_o, mpf_evap_o
@@ -1237,6 +1238,8 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim real, dimension (is:ie, ks:ke) :: pre_qvo, pre_qlo, pre_qro, pre_qio, pre_qso, pre_qgo, pre_pto, pre_delpo, pre_delzo, pre_uao, pre_vao, pre_wao
     !$ser verbatim real, dimension (is:ie, ks:ke) :: pre_ew0, pre_ww0, pre_adj_vmr, pre_ccn, pre_cin, pre_ed0, pre_wd0, pre_den, pre_pz, pre_denfac, pre_dp0    
     !$ser verbatim real, dimension (is:ie, ks:ke) :: pp_qv, pp_ql, pp_qr, pp_qi, pp_qs, pp_qg, pp_den
+    !$ser verbatim real, dimension (is:ie, ks:ke) :: fin_tzuv, fin_tzw, fin_qv, fin_ql, fin_qr, fin_qi, fin_qs, fin_qg, fin_pt, fin_delp, fin_delz, fin_ua, fin_va, fin_wa
+    !$ser verbatim real, dimension (is:ie, ks:ke) :: fin_adj_vmr, fin_te, fin_ew, fin_ww, fin_ed, fin_wd, fin_te0, fin_qv0, fin_ql0, fin_qr0, fin_qi0, fin_qs0, fin_qg0, fin_delp0, fin_delz0, fin_pt0, fin_ua0, fin_va0, fin_wa0
     !$ser verbatim real, dimension (is:ie, ks:ke) :: ne_qv, ne_ql, ne_qr, ne_qi, ne_qs, ne_qg, ne_pt, ne_delp
     !$ser verbatim real, dimension (is:ie, ks:ke) :: ne_qv_o, ne_ql_o, ne_qr_o, ne_qi_o, ne_qs_o, ne_qg_o, ne_pt_o, ne_delp_o
     !$ser verbatim real, dimension (is:ie, ks:ke) :: cf_qv, cf_ql, cf_qr, cf_qi, cf_qs, cf_qg, cf_qa, cf_qa_o, cf_pt, cf_den, cf_pz, cf_qsi, cf_dqidt, cf_qsw, cf_dqwdt
@@ -1790,6 +1793,27 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
         ! update temperature before delp and q update
         ! -----------------------------------------------------------------------
         
+        !$ser verbatim fin_qv0 (i, :) = qvz (:)
+        !$ser verbatim fin_ql0 (i, :) = qlz (:)
+        !$ser verbatim fin_qr0 (i, :) = qrz (:)
+        !$ser verbatim fin_qi0 (i, :) = qiz (:)
+        !$ser verbatim fin_qs0 (i, :) = qsz (:)
+        !$ser verbatim fin_qg0 (i, :) = qgz (:)
+        !$ser verbatim fin_delp0 (i, :) = dp (:)
+        !$ser verbatim fin_delz0 (i, :) = dz (:)
+        !$ser verbatim fin_pt0 (i, :) = tz (:)
+        !$ser verbatim fin_ua0 (i, :) = u (:)
+        !$ser verbatim fin_va0 (i, :) = v (:)
+        !$ser verbatim fin_wa0 (i, :) = w (:)
+        !$ser verbatim fin_te0 (i, :) = te (i, :)
+        !$ser verbatim fin_dte0 (i) = dte (i)
+        !$ser verbatim fin_vapor (i) = 0.
+        !$ser verbatim fin_water (i) = water (i)
+        !$ser verbatim fin_rain (i) = rain (i)
+        !$ser verbatim fin_ice (i) = ice (i)
+        !$ser verbatim fin_snow (i) = snow (i)
+        !$ser verbatim fin_graupel (i) = graupel (i)
+
         if (do_sedi_uv) then
             do k = ks, ke
                 c8 = mhc (qvz (k), qlz (k), qrz (k), qiz (k), qsz (k), qgz (k)) * c_air
@@ -2133,8 +2157,48 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
             !$ser verbatim ini_acco2 (i, k) = acco (2, k)
             !$ser verbatim ini_acco3 (i, k) = acco (3, k)
         !$ser verbatim enddo ! k loop
-    
+
+        !$ser verbatim fin_tzuv (i, :) = tzuv (:)
+        !$ser verbatim fin_tzw (i, :) = tzw (:)
+
     enddo ! i loop
+
+    !$ser verbatim fin_qv = qv
+    !$ser verbatim fin_ql = ql
+    !$ser verbatim fin_qr = qr
+    !$ser verbatim fin_qi = qi
+    !$ser verbatim fin_qs = qs
+    !$ser verbatim fin_qg = qg
+    !$ser verbatim fin_pt = pt
+    !$ser verbatim fin_delp = delp
+    !$ser verbatim fin_delz = delz
+    !$ser verbatim fin_ua = ua
+    !$ser verbatim fin_va = va
+    !$ser verbatim fin_wa = wa
+    !$ser verbatim fin_dte = dte
+    !$ser verbatim fin_adj_vmr = adj_vmr
+    !$ser verbatim fin_te = te
+    !$ser verbatim fin_te_loss = te_loss
+
+    !$ser verbatim if (consv_checker) then
+        !$ser verbatim fin_ew = te_end_m
+        !$ser verbatim fin_ww = tw_end_m
+        !$ser verbatim fin_bew = te_b_end_m
+        !$ser verbatim fin_bww = tw_b_end_m
+        !$ser verbatim fin_ed = te_end_d
+        !$ser verbatim fin_wd = tw_end_d
+        !$ser verbatim fin_bed = te_b_end_d
+        !$ser verbatim fin_bwd = tw_b_end_d
+    !$ser verbatim else
+        !$ser verbatim fin_ew = 0.
+        !$ser verbatim fin_ww = 0.
+        !$ser verbatim fin_bew = 0.
+        !$ser verbatim fin_bww = 0.
+        !$ser verbatim fin_ed = 0.
+        !$ser verbatim fin_wd = 0.
+        !$ser verbatim fin_bed = 0.
+        !$ser verbatim fin_bwd = 0.
+    !$ser verbatim endif
 
     !$ser savepoint ConfigInit-In
     !$ser data ini_c_air=ini_c_air ini_c_vap=ini_c_vap ini_d0_vap=ini_d0_vap ini_lv00=ini_lv00 ini_li00=ini_li00 ini_li20=ini_li20 ini_d1_vap=ini_d1_vap ini_d1_ice=ini_d1_ice
@@ -2255,6 +2319,14 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data pre_den=zerobuff_3d pre_pz=zerobuff_3d pre_denfac=zerobuff_3d pre_dte=zerobuff_2d pre_cond=zerobuff_2d pre_adj_vmr=zerobuff_3d pre_ccn=zerobuff_3d pre_cin=zerobuff_3d pre_h_var=zerobuff_2d
     !$ser data pre_rh_adj=zerobuff_2d pre_rh_rain=zerobuff_2d pre_ew0=zerobuff_3d pre_ww0=zerobuff_3d pre_bew0=zerobuff_2d pre_bww0=zerobuff_2d pre_ed0=zerobuff_3d pre_wd0=zerobuff_3d pre_bed0=zerobuff_2d pre_bwd0=zerobuff_2d
 
+    !$ser savepoint FinalCalculations-In
+    !$ser data fin_qv=fin_qv0 fin_ql=fin_ql0 fin_qr=fin_qr0 fin_qi=fin_qi0 fin_qs=fin_qs0 fin_qg=fin_qg0 fin_delp=fin_delp0 fin_delz=fin_delz0 fin_pt=fin_pt0 fin_ua=fin_ua0 fin_va=fin_va0 fin_wa=fin_wa0
+    !$ser data fin_gsize=pre_gsize fin_vapor=fin_vapor fin_water=fin_water fin_rain=fin_rain fin_ice=fin_ice fin_snow=fin_snow fin_graupel=fin_graupel
+    !$ser data fin_qv0=pre_qv fin_ql0=pre_ql fin_qr0=pre_qr fin_qi0=pre_qi fin_qs0=pre_qs fin_qg0=pre_qg fin_dp0=pre_dp fin_pt0=pre_pt fin_u0=pre_ua fin_v0=pre_va fin_w0=pre_wa
+    !$ser data fin_ew0=pre_ew0 fin_ww0=pre_ww0 fin_bew0=pre_bew0 fin_bww0=pre_bww0 fin_ed0=pre_ed0 fin_wd0=pre_wd0 fin_bed0=pre_bed0 fin_bwd0=pre_bwd0
+    !$ser data fin_adj_vmr=pre_adj_vmr fin_te=fin_te0 fin_te_loss=zerobuff_3d fin_ew=zerobuff_3d fin_ww=zerobuff_3d fin_bew=zerobuff_3d fin_bww=zerobuff_3d
+    !$ser data fin_ed=zerobuff_3d fin_wd=zerobuff_3d fin_bed=zerobuff_3d fin_bwd=zerobuff_3d fin_tzuv=zerobuff_3d fin_tzw=zerobuff_3d, fin_dte=fin_dte0
+
 
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
 
@@ -2365,6 +2437,10 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data pre_qv0=pre_qv pre_ql0=pre_ql pre_qr0=pre_qr pre_qi0=pre_qi pre_qs0=pre_qs pre_qg0=pre_qg pre_dp0=pre_dp0 pre_pt0=pre_pt pre_u0=pre_ua pre_v0=pre_va pre_w0=pre_wa
     !$ser data pre_den=pre_den pre_pz=pre_pz pre_denfac=pre_denfac pre_dte=pre_dte pre_cond=pre_cond pre_adj_vmr=pre_adj_vmr pre_ccn=pre_ccn pre_cin=pre_cin pre_h_var=pre_h_var
     !$ser data pre_rh_adj=pre_rh_adj pre_rh_rain=pre_rh_rain pre_ew0=pre_ew0 pre_ww0=pre_ww0 pre_bew0=pre_bew0 pre_bww0=pre_bww0 pre_ed0=pre_ed0 pre_wd0=pre_wd0 pre_bed0=pre_bed0 pre_bwd0=pre_bwd0
+
+    !$ser savepoint FinalCalculations-Out
+    !$ser data fin_qv=fin_qv fin_ql=fin_ql fin_qr=fin_qr fin_qi=fin_qi fin_qs=fin_qs fin_qg=fin_qg fin_pt=fin_pt fin_delp=fin_delp fin_delz=fin_delz fin_ua=fin_ua fin_va=fin_va fin_wa=fin_wa fin_tzuv=fin_tzuv fin_tzw=fin_tzw
+    !$ser data fin_dte=fin_dte fin_adj_vmr=fin_adj_vmr fin_te=fin_te fin_te_loss=fin_te_loss fin_ew=fin_ew fin_ww=fin_ww fin_bew=fin_bew fin_bww=fin_bww fin_ed=fin_ed fin_wd=fin_wd fin_bed=fin_bed fin_bwd=fin_bwd
 
 end subroutine mpdrv
 
