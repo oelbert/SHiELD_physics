@@ -2252,7 +2252,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data pre_qv=pre_qv pre_ql=pre_ql pre_qr=pre_qr pre_qi=pre_qi pre_qs=pre_qs pre_qg=pre_qg pre_pt=pre_pt pre_delp=pre_delp pre_delz=pre_delz pre_ua=pre_ua pre_va=pre_va pre_wa=pre_wa
     !$ser data pre_vapor=pre_vapor pre_water=pre_water pre_rain=pre_rain pre_ice=pre_ice pre_snow=pre_snow pre_graupel=pre_graupel pre_gsize=pre_gsize pre_hs=pre_hs pre_qnl=pre_qnl pre_qni=pre_qni
     !$ser data pre_qv0=zerobuff_3d pre_ql0=zerobuff_3d pre_qr0=zerobuff_3d pre_qi0=zerobuff_3d pre_qs0=zerobuff_3d pre_qg0=zerobuff_3d pre_dp0=zerobuff_3d pre_pt0=zerobuff_3d pre_u0=zerobuff_3d pre_v0=zerobuff_3d pre_w0=zerobuff_3d
-    !$ser data pre_den=zerobuff_3d pre_pz=zerobuff_3d pre_denfac=zerobuff_3d pre_dp0=pre_dp0 pre_dte=zerobuff_2d pre_cond=zerobuff_2d pre_adj_vmr=zerobuff_2d pre_ccn=zerobuff_3d pre_cin=zerobuff_3d pre_h_var=zerobuff_2d
+    !$ser data pre_den=zerobuff_3d pre_pz=zerobuff_3d pre_denfac=zerobuff_3d pre_dte=zerobuff_2d pre_cond=zerobuff_2d pre_adj_vmr=zerobuff_3d pre_ccn=zerobuff_3d pre_cin=zerobuff_3d pre_h_var=zerobuff_2d
     !$ser data pre_rh_adj=zerobuff_2d pre_rh_rain=zerobuff_2d pre_ew0=zerobuff_3d pre_ww0=zerobuff_3d pre_bew0=zerobuff_2d pre_bww0=zerobuff_2d pre_ed0=zerobuff_3d pre_wd0=zerobuff_3d pre_bed0=zerobuff_2d pre_bwd0=zerobuff_2d
 
 
@@ -2362,8 +2362,8 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser savepoint PreliminaryCalculations-Out
     !$ser data pre_qv=pre_qvo pre_ql=pre_qlo pre_qr=pre_qro pre_qi=pre_qio pre_qs=pre_qso pre_qg=pre_qgo pre_pt=pre_pto pre_delp=pre_delpo pre_delz=pre_delzo pre_ua=pre_uao pre_va=pre_vao pre_wa=pre_wao
-    !$ser data pre_qv0=pre_qv pre_ql0=pre_ql pre_qr0=pre_qr pre_qi0=pre_qi pre_qs0=pre_qs pre_qg0=pre_qg pre_dp0=pre_delp pre_pt0=pre_pt pre_u0=pre_ua pre_v0=pre_va pre_w0=pre_wa
-    !$ser data pre_den=pre_den pre_pz=pre_pz pre_denfac=pre_denfac pre_dp0=pre_dp0 pre_dte=pre_dte pre_cond=pre_cond pre_adj_vmr=pre_adj_vmr pre_ccn=pre_ccn pre_cin=pre_cin pre_h_var=pre_h_var
+    !$ser data pre_qv0=pre_qv pre_ql0=pre_ql pre_qr0=pre_qr pre_qi0=pre_qi pre_qs0=pre_qs pre_qg0=pre_qg pre_dp0=pre_dp0 pre_pt0=pre_pt pre_u0=pre_ua pre_v0=pre_va pre_w0=pre_wa
+    !$ser data pre_den=pre_den pre_pz=pre_pz pre_denfac=pre_denfac pre_dte=pre_dte pre_cond=pre_cond pre_adj_vmr=pre_adj_vmr pre_ccn=pre_ccn pre_cin=pre_cin pre_h_var=pre_h_var
     !$ser data pre_rh_adj=pre_rh_adj pre_rh_rain=pre_rh_rain pre_ew0=pre_ew0 pre_ww0=pre_ww0 pre_bew0=pre_bew0 pre_bww0=pre_bww0 pre_ed0=pre_ed0 pre_wd0=pre_wd0 pre_bed0=pre_bed0 pre_bwd0=pre_bwd0
 
 end subroutine mpdrv
