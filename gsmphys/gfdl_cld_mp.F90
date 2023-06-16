@@ -1210,11 +1210,8 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     real (kind = r8), dimension (is:ie) :: te_b_beg_m, te_b_end_m, tw_b_beg_m, tw_b_end_m
     
     real (kind = r8), dimension (ks:ke) :: tz, tzuv, tzw
-    
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: pre_qv, pre_ql, pre_qr, pre_qi, pre_qs, pre_qg, pre_pt, pre_delp, pre_delz, pre_ua, pre_va, pre_wa
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: pp_qv, pp_ql, pp_qr, pp_qi, pp_qs, pp_qg, pp_den
 
-    !$ser verbatim real, dimension (is:ie) :: pre_vapor, pre_water, pre_rain, pre_ice, pre_snow, pre_graupel
+    !$ser verbatim real, dimension (is:ie) :: pre_vapor, pre_water, pre_rain, pre_ice, pre_snow, pre_graupel, pre_dte, pre_cond, pre_h_var, pre_rh_adj, pre_rh_rain, pp_bew0, pp_bww0, pp_bed0, pp_bwd0    
     !$ser verbatim real, dimension (is:ie) :: ne_cond, ne_cond_o, cf_h_var, cf_gsize
     !$ser verbatim real, dimension (is:ie) :: mpf_h_var, mpf_rh_adj, mpf_rh_rain, mpf_dte, mpf_water, mpf_rain, mpf_ice, mpf_snow, mpf_graupel, mpf_cond, mpf_dep, mpf_sub, mpf_evap
     !$ser verbatim real, dimension (is:ie) :: mpf_h_var_o, mpf_rh_adj_o, mpf_dte_o, mpf_water_o, mpf_rain_o, mpf_ice_o, mpf_snow_o, mpf_graupel_o, mpf_cond_o, mpf_dep_o, mpf_sub_o, mpf_evap_o
@@ -1236,6 +1233,10 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim real, dimension (is:ie, 1:20) :: ini_acc
     !$ser verbatim real, dimension (is:ie, 1:10) :: ini_acco1, ini_acco2, ini_acco3
 
+    !$ser verbatim real, dimension (is:ie, ks:ke) :: pre_qv, pre_ql, pre_qr, pre_qi, pre_qs, pre_qg, pre_pt, pre_delp, pre_delz, pre_ua, pre_va, pre_wa
+    !$ser verbatim real, dimension (is:ie, ks:ke) :: pre_qvo, pre_qlo, pre_qro, pre_qio, pre_qso, pre_qgo, pre_pto, pre_delpo, pre_delzo, pre_uao, pre_vao, pre_wao
+    !$ser verbatim real, dimension (is:ie, ks:ke) :: pp_ew0, pp_ww0, pre_adj_vmr, pre_ccn, pre_cin, pp_ed0, pp_wd0, pre_den, pre_pz, pre_denfac, pp_dp0    
+    !$ser verbatim real, dimension (is:ie, ks:ke) :: pp_qv, pp_ql, pp_qr, pp_qi, pp_qs, pp_qg, pp_den
     !$ser verbatim real, dimension (is:ie, ks:ke) :: ne_qv, ne_ql, ne_qr, ne_qi, ne_qs, ne_qg, ne_pt, ne_delp
     !$ser verbatim real, dimension (is:ie, ks:ke) :: ne_qv_o, ne_ql_o, ne_qr_o, ne_qi_o, ne_qs_o, ne_qg_o, ne_pt_o, ne_delp_o
     !$ser verbatim real, dimension (is:ie, ks:ke) :: cf_qv, cf_ql, cf_qr, cf_qi, cf_qs, cf_qg, cf_qa, cf_qa_o, cf_pt, cf_den, cf_pz, cf_qsi, cf_dqidt, cf_qsw, cf_dqwdt
