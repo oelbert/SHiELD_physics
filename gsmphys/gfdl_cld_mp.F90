@@ -2360,7 +2360,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser savepoint FinalTempUpdate-In
     !$ser data ftu_qv=ftu_qv0 ftu_ql=ftu_ql0 ftu_qr=ftu_qr0 ftu_qi=ftu_qi0 ftu_qs=ftu_qs0 ftu_qg=ftu_qg0 ftu_delp=ftu_delp0 ftu_pt=ftu_pt0 ftu_ua=ftu_ua0 ftu_va=ftu_va0 ftu_wa=ftu_wa0
-    !$ser data ftu_qv0=pre_qv ftu_ql0=pre_ql ftu_qr0=pre_qr ftu_qi0=pre_qi ftu_qs0=pre_qs ftu_qg0=pre_qg ftu_dp0=pre_delp ftu_u0=pre_ua ftu_v0=pre_va ftu_w0=pre_wa ftu_adj_vmr=pre_adj_vmr ftu_tzuv=ftu_tzuv0 ftu_tzw=ftu_tzw0
+    !$ser data ftu_dp0=pre_delp ftu_u0=pre_ua ftu_v0=pre_va ftu_w0=pre_wa ftu_tzuv=ftu_tzuv0 ftu_tzw=ftu_tzw0
 
 
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
@@ -2478,8 +2478,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data fin_dte=fin_dte fin_adj_vmr=fin_adj_vmr fin_te=fin_te fin_te_loss=fin_te_loss fin_ew=fin_ew fin_ww=fin_ww fin_bew=fin_bew fin_bww=fin_bww fin_ed=fin_ed fin_wd=fin_wd fin_bed=fin_bed fin_bwd=fin_bwd
 
     !$ser savepoint FinalTempUpdate-Out
-    !$ser data ftu_qv=ftu_qv ftu_ql=ftu_ql ftu_qr=ftu_qr ftu_qi=ftu_qi ftu_qs=ftu_qs ftu_qg=ftu_qg ftu_delp=ftu_delp ftu_pt=ftu_pt ftu_ua=ftu_ua ftu_va=ftu_va ftu_wa=ftu_wa
-    !$ser data ftu_adj_vmr=ftu_adj_vmr ftu_tzuv=ftu_tzuv ftu_tzw=ftu_tzw
+    !$ser data ftu_pt=ftu_pt ftu_tzuv=ftu_tzuv ftu_tzw=ftu_tzw
 
 end subroutine mpdrv
 
