@@ -2324,8 +2324,8 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data fin_gsize=pre_gsize fin_vapor=fin_vapor fin_water=fin_water fin_rain=fin_rain fin_ice=fin_ice fin_snow=fin_snow fin_graupel=fin_graupel
     !$ser data fin_qv0=pre_qv fin_ql0=pre_ql fin_qr0=pre_qr fin_qi0=pre_qi fin_qs0=pre_qs fin_qg0=pre_qg fin_dp0=pre_delp fin_pt0=pre_pt fin_u0=pre_ua fin_v0=pre_va fin_w0=pre_wa
     !$ser data fin_ew0=pre_ew0 fin_ww0=pre_ww0 fin_bew0=pre_bew0 fin_bww0=pre_bww0 fin_ed0=pre_ed0 fin_wd0=pre_wd0 fin_bed0=pre_bed0 fin_bwd0=pre_bwd0
-    !$ser data fin_adj_vmr=pre_adj_vmr fin_te=fin_te0 fin_te_loss=zerobuff_3d fin_ew=zerobuff_3d fin_ww=zerobuff_3d fin_bew=zerobuff_3d fin_bww=zerobuff_3d
-    !$ser data fin_ed=zerobuff_3d fin_wd=zerobuff_3d fin_bed=zerobuff_3d fin_bwd=zerobuff_3d fin_tzuv=zerobuff_3d fin_tzw=zerobuff_3d fin_dte=fin_dte0
+    !$ser data fin_adj_vmr=pre_adj_vmr fin_te=fin_te0 fin_te_loss=zerobuff_2d fin_ew=zerobuff_3d fin_ww=zerobuff_3d fin_bew=zerobuff_2d fin_bww=zerobuff_2d
+    !$ser data fin_ed=zerobuff_3d fin_wd=zerobuff_3d fin_bed=zerobuff_2d fin_bwd=zerobuff_2d fin_tzuv=zerobuff_3d fin_tzw=zerobuff_3d fin_dte=fin_dte0
 
 
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
