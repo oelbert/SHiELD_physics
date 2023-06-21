@@ -1903,7 +1903,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
         !$ser verbatim ftu_qi0 (i, :) = qiz (:)
         !$ser verbatim ftu_qs0 (i, :) = qsz (:)
         !$ser verbatim ftu_qg0 (i, :) = qgz (:)
-        !$ser verbatim ftu_delp0 (i, :) = dp (:)
+        !$ser verbatim ftu_delp0 (i, :) = delp (i, :)
         !$ser verbatim ftu_pt0 (i, :) = tz (:)
         !$ser verbatim ftu_ua0 (i, :) = u (:)
         !$ser verbatim ftu_va0 (i, :) = v (:)
