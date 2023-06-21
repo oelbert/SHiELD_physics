@@ -1240,8 +1240,6 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim real, dimension (is:ie, ks:ke) :: pp_qv, pp_ql, pp_qr, pp_qi, pp_qs, pp_qg, pp_den
     !$ser verbatim real, dimension (is:ie, ks:ke) :: fin_tzuv, fin_tzw, fin_qv, fin_ql, fin_qr, fin_qi, fin_qs, fin_qg, fin_pt, fin_delp, fin_delz, fin_ua, fin_va, fin_wa
     !$ser verbatim real, dimension (is:ie, ks:ke) :: fin_adj_vmr, fin_te, fin_ew, fin_ww, fin_ed, fin_wd, fin_te0, fin_qv0, fin_ql0, fin_qr0, fin_qi0, fin_qs0, fin_qg0, fin_delp0, fin_delz0, fin_pt0, fin_ua0, fin_va0, fin_wa0
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: ftu_qv0, ftu_ql0, ftu_qr0, ftu_qi0, ftu_qs0, ftu_qg0, ftu_delp0, ftu_pt0, ftu_ua0, ftu_va0, ftu_wa0, ftu_tzuv0, ftu_tzw0
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: ftu_qv, ftu_ql, ftu_qr, ftu_qi, ftu_qs, ftu_qg, ftu_delp, ftu_ua, ftu_va, ftu_wa, ftu_pt, ftu_tzuv, ftu_tzw
     !$ser verbatim real, dimension (is:ie, ks:ke) :: ne_qv, ne_ql, ne_qr, ne_qi, ne_qs, ne_qg, ne_pt, ne_delp
     !$ser verbatim real, dimension (is:ie, ks:ke) :: ne_qv_o, ne_ql_o, ne_qr_o, ne_qi_o, ne_qs_o, ne_qg_o, ne_pt_o, ne_delp_o
     !$ser verbatim real, dimension (is:ie, ks:ke) :: cf_qv, cf_ql, cf_qr, cf_qi, cf_qs, cf_qg, cf_qa, cf_qa_o, cf_pt, cf_den, cf_pz, cf_qsi, cf_dqidt, cf_qsw, cf_dqwdt
@@ -1897,20 +1895,6 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
             
         enddo
         
-        !$ser verbatim ftu_qv0 (i, :) = qvz (:)
-        !$ser verbatim ftu_ql0 (i, :) = qlz (:)
-        !$ser verbatim ftu_qr0 (i, :) = qrz (:)
-        !$ser verbatim ftu_qi0 (i, :) = qiz (:)
-        !$ser verbatim ftu_qs0 (i, :) = qsz (:)
-        !$ser verbatim ftu_qg0 (i, :) = qgz (:)
-        !$ser verbatim ftu_delp0 (i, :) = delp (i, :)
-        !$ser verbatim ftu_pt0 (i, :) = tz (:)
-        !$ser verbatim ftu_ua0 (i, :) = u (:)
-        !$ser verbatim ftu_va0 (i, :) = v (:)
-        !$ser verbatim ftu_wa0 (i, :) = w (:)
-        !$ser verbatim ftu_tzuv0 (i, :) = tzuv (:)
-        !$ser verbatim ftu_tzw0 (i, :) = tzw (:)
-
         ! -----------------------------------------------------------------------
         ! momentum transportation during sedimentation
         ! update temperature after delp and q update
@@ -1950,20 +1934,6 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
                 wa (i, k) = w (k)
             enddo
         endif
-
-        !$ser verbatim ftu_qv (i, :) = qv (i, :)
-        !$ser verbatim ftu_ql (i, :) = ql (i, :)
-        !$ser verbatim ftu_qr (i, :) = qr (i, :)
-        !$ser verbatim ftu_qi (i, :) = qi (i, :)
-        !$ser verbatim ftu_qs (i, :) = qs (i, :)
-        !$ser verbatim ftu_qg (i, :) = qg (i, :)
-        !$ser verbatim ftu_delp (i, :) = delp (i, :)
-        !$ser verbatim ftu_ua (i, :) = ua (i, :)
-        !$ser verbatim ftu_va (i, :) = va (i, :)
-        !$ser verbatim ftu_wa (i, :) = wa (i, :)
-        !$ser verbatim ftu_pt (i, :) = tz (:)
-        !$ser verbatim ftu_tzuv (i, :) = tzuv (:)
-        !$ser verbatim ftu_tzw (i, :) = tzw (:)
         
         ! -----------------------------------------------------------------------
         ! total energy checker
@@ -2357,10 +2327,6 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data fin_adj_vmr=pre_adj_vmr fin_te=fin_te0 fin_te_loss=zerobuff_2d fin_ew=zerobuff_3d fin_ww=zerobuff_3d fin_bew=zerobuff_2d fin_bww=zerobuff_2d
     !$ser data fin_ed=zerobuff_3d fin_wd=zerobuff_3d fin_bed=zerobuff_2d fin_bwd=zerobuff_2d fin_tzuv=zerobuff_3d fin_tzw=zerobuff_3d fin_dte=fin_dte0
 
-    !$ser savepoint FinalTempUpdate-In
-    !$ser data ftu_qv=ftu_qv0 ftu_ql=ftu_ql0 ftu_qr=ftu_qr0 ftu_qi=ftu_qi0 ftu_qs=ftu_qs0 ftu_qg=ftu_qg0 ftu_delp=ftu_delp0 ftu_pt=ftu_pt0 ftu_ua=ftu_ua0 ftu_va=ftu_va0 ftu_wa=ftu_wa0
-    !$ser data ftu_dp0=pre_delp ftu_u0=pre_ua ftu_v0=pre_va ftu_w0=pre_wa ftu_tzuv=ftu_tzuv0 ftu_tzw=ftu_tzw0
-
 
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
 
@@ -2473,11 +2439,8 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data pre_rh_adj=pre_rh_adj pre_rh_rain=pre_rh_rain pre_ew0=pre_ew0 pre_ww0=pre_ww0 pre_bew0=pre_bew0 pre_bww0=pre_bww0 pre_ed0=pre_ed0 pre_wd0=pre_wd0 pre_bed0=pre_bed0 pre_bwd0=pre_bwd0
 
     !$ser savepoint FinalCalculations-Out
-    !$ser data fin_qv=fin_qv fin_ql=fin_ql fin_qr=fin_qr fin_qi=fin_qi fin_qs=fin_qs fin_qg=fin_qg fin_pt=fin_pt fin_delp=fin_delp fin_delz=fin_delz fin_ua=fin_ua fin_va=fin_va fin_wa=fin_wa fin_tzuv=fin_tzuv fin_tzw=fin_tzw
+    !$ser data fin_qv=fin_qv fin_ql=fin_ql fin_qr=fin_qr fin_qi=fin_qi fin_qs=fin_qs fin_qg=fin_qg fin_pt=fin_pt fin_delp=fin_delp fin_delz=fin_delz fin_ua=fin_ua fin_va=fin_va fin_wa=fin_wa 
     !$ser data fin_dte=fin_dte fin_adj_vmr=fin_adj_vmr fin_te=fin_te fin_te_loss=fin_te_loss fin_ew=fin_ew fin_ww=fin_ww fin_bew=fin_bew fin_bww=fin_bww fin_ed=fin_ed fin_wd=fin_wd fin_bed=fin_bed fin_bwd=fin_bwd
-
-    !$ser savepoint FinalTempUpdate-Out
-    !$ser data ftu_pt=ftu_pt ftu_tzuv=ftu_tzuv ftu_tzw=ftu_tzw
 
 end subroutine mpdrv
 
