@@ -5407,6 +5407,22 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
 !$ser verbatim nn, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
             lcpk, icpk, tcpk, tcp3, cin, dep, sub)
 
+        ! -----------------------------------------------------------------------
+        ! snow deposition and sublimation
+        ! -----------------------------------------------------------------------
+
+        call psdep_pssub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
+!$ser verbatim nn, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
+            denfac, lcpk, icpk, tcpk, tcp3, dep, sub)
+
+        ! -----------------------------------------------------------------------
+        ! graupel deposition and sublimation
+        ! -----------------------------------------------------------------------
+
+        call pgdep_pgsub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
+!$ser verbatim nn, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
+            denfac, lcpk, icpk, tcpk, tcp3, dep, sub)
+
         !$ser verbatim if (nn .eq. 1) then
             !$ser verbatim szs_pto = tz
             !$ser verbatim szs_qvo = qv
@@ -5427,22 +5443,6 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
             !$ser verbatim szs_tcp3o = tcp3
             !$ser verbatim szs_cvmo = cvm
         !$ser verbatim endif
-
-        ! -----------------------------------------------------------------------
-        ! snow deposition and sublimation
-        ! -----------------------------------------------------------------------
-
-        call psdep_pssub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-!$ser verbatim nn, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
-            denfac, lcpk, icpk, tcpk, tcp3, dep, sub)
-
-        ! -----------------------------------------------------------------------
-        ! graupel deposition and sublimation
-        ! -----------------------------------------------------------------------
-
-        call pgdep_pgsub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-!$ser verbatim nn, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
-            denfac, lcpk, icpk, tcpk, tcp3, dep, sub)
 
     endif
     
