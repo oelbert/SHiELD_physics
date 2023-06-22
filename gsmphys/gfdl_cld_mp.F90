@@ -5361,26 +5361,6 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
         ! enforce complete freezing below t_wfr
         ! -----------------------------------------------------------------------
 
-        call pcomp (ks, ke, qv, ql, qr, qi, qs, qg, tz, cvm, te8, lcpk, icpk, tcpk, tcp3)
-        
-        ! -----------------------------------------------------------------------
-        ! Wegener Bergeron Findeisen process
-        ! -----------------------------------------------------------------------
-
-        call pwbf (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, &
-!$ser verbatim nn, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
-            cvm, te8, den, lcpk, icpk, tcpk, tcp3)
-        
-        ! -----------------------------------------------------------------------
-        ! Bigg freezing mechanism
-        ! -----------------------------------------------------------------------
-        
-        call pbigg (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, ccn, lcpk, icpk, tcpk, tcp3)
-
-        ! -----------------------------------------------------------------------
-        ! cloud ice deposition and sublimation
-        ! -----------------------------------------------------------------------
-
         !$ser verbatim if (nn .eq. 1) then
             !$ser verbatim szs_pt = tz
             !$ser verbatim szs_qv = qv
@@ -5402,6 +5382,26 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
             !$ser verbatim szs_tcp3 = tcp3
             !$ser verbatim szs_cvm = cvm
         !$ser verbatim endif
+
+        call pcomp (ks, ke, qv, ql, qr, qi, qs, qg, tz, cvm, te8, lcpk, icpk, tcpk, tcp3)
+        
+        ! -----------------------------------------------------------------------
+        ! Wegener Bergeron Findeisen process
+        ! -----------------------------------------------------------------------
+
+        call pwbf (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, &
+!$ser verbatim nn, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
+            cvm, te8, den, lcpk, icpk, tcpk, tcp3)
+        
+        ! -----------------------------------------------------------------------
+        ! Bigg freezing mechanism
+        ! -----------------------------------------------------------------------
+        
+        call pbigg (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, ccn, lcpk, icpk, tcpk, tcp3)
+
+        ! -----------------------------------------------------------------------
+        ! cloud ice deposition and sublimation
+        ! -----------------------------------------------------------------------
 
         call pidep_pisub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
 !$ser verbatim nn, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
