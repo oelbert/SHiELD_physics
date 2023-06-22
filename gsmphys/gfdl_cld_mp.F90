@@ -1267,10 +1267,11 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim real, dimension (is:ie, ks:ke) :: szs_pto, szs_qvo, szs_qlo, szs_qro, szs_qio, szs_qso, szs_qgo, szs_ccno, szs_cino
     !$ser verbatim real, dimension (is:ie, ks:ke) :: szs_lcpk, szs_icpk, szs_tcpk, szs_tcp3, szs_lcpko, szs_icpko, szs_tcpko, szs_tcp3o, szs_cvm, szs_cvmo, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt
 
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: zerobuff_3d, tem, t0, t2, tc_index
+    !$ser verbatim real, dimension (is:ie, ks:ke) :: zerobuff_3d, tem, t0, t2, tc_index, tc_ap1
 
     !$ser verbatim real, dimension (is:ie, ks:ke + 1) :: tf_ze, tf_zt, zerobuff1_3d, sm_ze, sm_zt
 
+    !$ser verbatim integer, dimension (is:ie, ks:ke) :: tc_it1, tc_it2
     !$ser verbatim integer :: mpi_rank, ier, ii
     !$ser verbatim logical :: ser_on
     !$ser verbatim  call mpi_comm_rank(MPI_COMM_WORLD, mpi_rank,ier)
@@ -2161,6 +2162,13 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
         !$ser verbatim fin_tzuv (i, :) = tzuv (:)
         !$ser verbatim fin_tzw (i, :) = tzw (:)
 
+        !$ser verbatim do k = ks, ke
+            !$ser verbatim tc_ap1 (i, k) = 10. * dim (mpf_pt (i, k), tice - 160.) + 1.
+            !$ser verbatim tc_ap1 (i, k) = min (2621., tc_ap1 (i, k))
+            !$ser verbatim tc_it1 (i, k) = tc_ap1 (i, k)
+            !$ser verbatim tc_it2 (i, k) = tc_ap1 (i, k) - 0.5
+        !$ser verbatim enddo ! k loop
+
     enddo ! i loop
 
     !$ser verbatim fin_qv = qv
@@ -2264,7 +2272,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data ef_ua=tfi_u ef_va=tfi_v ef_wa=tfi_w ef_pfi=tfo_pfi ef_dte=tfi_dte ef_ie=sf_e1 ef_dm=sf_dm ef_nf=sf_nf ef_fe=zerobuff_2d
 
     !$ser savepoint TableComputation-In
-    !$ser data tc_temp=tem tc_t0=t0 tc_t2=t2 tab_wq=zerobuff_3d tab_dwq=zerobuff_3d tab_iq=zerobuff_3d tab_diq=zerobuff_3d tab_pt=mpf_pt tab_den=mpf_den
+    !$ser data tc_temp=tem tc_t0=t0 tc_t2=t2 tab_wq=zerobuff_3d tab_dwq=zerobuff_3d tab_iq=zerobuff_3d tab_diq=zerobuff_3d tab_pt=mpf_pt tab_den=mpf_den tc_ap1=zerobuff_3d tc_it1=zerobuff3d tc_it2=zerobuff_3d
 
     !$ser savepoint PythonTables-In
     !$ser data tc_index=tc_index tc_t0=t0 tc_t2=t2 tab_wq=zerobuff_3d tab_dwq=zerobuff_3d tab_iq=zerobuff_3d tab_diq=zerobuff_3d tab_pt=mpf_pt tab_den=mpf_den
@@ -2389,7 +2397,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data ef_ua=tfo_u ef_va=tfo_v ef_wa=tfo_w ef_dte=tfo_dte ef_pt=tfo_pt ef_ie=ef_e1
 
     !$ser savepoint TableComputation-Out
-    !$ser data tc_t0=t0 tc_t2=t2 tab_wq=tab_wq tab_dwq=tab_dwq tab_iq=tab_iq tab_diq=tab_diq
+    !$ser data tc_t0=t0 tc_t2=t2 tab_wq=tab_wq tab_dwq=tab_dwq tab_iq=tab_iq tab_diq=tab_diq tc_ap1=tc_ap1 tc_it1=tc_it1 tc_it2=tc_it2
 
     !$ser savepoint PythonTables-Out
     !$ser data tc_t0=t0 tc_t2=t2 tab_wq=tab_wq tab_dwq=tab_dwq tab_iq=tab_iq tab_diq=tab_diq
