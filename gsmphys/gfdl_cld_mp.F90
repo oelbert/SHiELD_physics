@@ -1271,12 +1271,13 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     !$ser verbatim real, dimension (is:ie, ks:ke + 1) :: tf_ze, tf_zt, zerobuff1_3d, sm_ze, sm_zt
 
-    !$ser verbatim integer, dimension (is:ie, ks:ke) :: tc_it1, tc_it2
+    !$ser verbatim integer, dimension (is:ie, ks:ke) :: tc_it1, tc_it2, zerobuff_3d_int
     !$ser verbatim integer :: mpi_rank, ier, ii
     !$ser verbatim logical :: ser_on
     !$ser verbatim  call mpi_comm_rank(MPI_COMM_WORLD, mpi_rank,ier)
     !$ser verbatim print *, 'INFO: inside mp_driver'
     !$ser verbatim zerobuff_3d = 0.0
+    !$ser verbatim zerobuff_3d_int = 0
     !$ser verbatim zerobuff1_3d = 0.0
     !$ser verbatim zerobuff_2d = 0.0
     !$ser verbatim onebuff_2d = 1.0
@@ -2272,7 +2273,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data ef_ua=tfi_u ef_va=tfi_v ef_wa=tfi_w ef_pfi=tfo_pfi ef_dte=tfi_dte ef_ie=sf_e1 ef_dm=sf_dm ef_nf=sf_nf ef_fe=zerobuff_2d
 
     !$ser savepoint TableComputation-In
-    !$ser data tc_temp=tem tc_t0=t0 tc_t2=t2 tab_wq=zerobuff_3d tab_dwq=zerobuff_3d tab_iq=zerobuff_3d tab_diq=zerobuff_3d tab_pt=mpf_pt tab_den=mpf_den tc_ap1=zerobuff_3d tc_it1=zerobuff_3d tc_it2=zerobuff_3d
+    !$ser data tc_temp=tem tc_t0=t0 tc_t2=t2 tab_wq=zerobuff_3d tab_dwq=zerobuff_3d tab_iq=zerobuff_3d tab_diq=zerobuff_3d tab_pt=mpf_pt tab_den=mpf_den tc_ap1=zerobuff_3d tc_it1=zerobuff_3d_int tc_it2=zerobuff_3d_int
 
     !$ser savepoint PythonTables-In
     !$ser data tc_index=tc_index tc_t0=t0 tc_t2=t2 tab_wq=zerobuff_3d tab_dwq=zerobuff_3d tab_iq=zerobuff_3d tab_diq=zerobuff_3d tab_pt=mpf_pt tab_den=mpf_den
