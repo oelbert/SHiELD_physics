@@ -5323,6 +5323,28 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
     ! initialization
     ! -----------------------------------------------------------------------
 
+    !$ser verbatim if (nn .eq. 1) then
+        !$ser verbatim szs_pt = tz
+        !$ser verbatim szs_qv = qv
+        !$ser verbatim szs_ql = ql
+        !$ser verbatim szs_qr = qr
+        !$ser verbatim szs_qi = qi
+        !$ser verbatim szs_qs = qs
+        !$ser verbatim szs_qg = qg
+        !$ser verbatim szs_ccn = ccn
+        !$ser verbatim szs_cin = cin
+        !$ser verbatim szs_cond = cond
+        !$ser verbatim szs_dep = dep
+        !$ser verbatim szs_reevap = reevap
+        !$ser verbatim szs_sub = sub
+        !$ser verbatim szs_te = te8
+        !$ser verbatim szs_lcpk = lcpk
+        !$ser verbatim szs_icpk = icpk
+        !$ser verbatim szs_tcpk = tcpk
+        !$ser verbatim szs_tcp3 = tcp3
+        !$ser verbatim szs_cvm = cvm
+    !$ser verbatim endif
+
     cond = 0
     dep = 0
     reevap = 0
@@ -5339,28 +5361,6 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
     ! instant processes (include deposition, evaporation, and sublimation)
     ! -----------------------------------------------------------------------
 
-        !$ser verbatim if (nn .eq. 1) then
-            !$ser verbatim szs_pt = tz
-            !$ser verbatim szs_qv = qv
-            !$ser verbatim szs_ql = ql
-            !$ser verbatim szs_qr = qr
-            !$ser verbatim szs_qi = qi
-            !$ser verbatim szs_qs = qs
-            !$ser verbatim szs_qg = qg
-            !$ser verbatim szs_ccn = ccn
-            !$ser verbatim szs_cin = cin
-            !$ser verbatim szs_cond = cond
-            !$ser verbatim szs_dep = dep
-            !$ser verbatim szs_reevap = reevap
-            !$ser verbatim szs_sub = sub
-            !$ser verbatim szs_te = te8
-            !$ser verbatim szs_lcpk = lcpk
-            !$ser verbatim szs_icpk = icpk
-            !$ser verbatim szs_tcpk = tcpk
-            !$ser verbatim szs_tcp3 = tcp3
-            !$ser verbatim szs_cvm = cvm
-        !$ser verbatim endif
-
     if (.not. do_warm_rain_mp) then
 
         call pinst (ks, ke, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
@@ -5368,27 +5368,6 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
             lcpk, icpk, tcpk, tcp3, rh_adj, dep, sub, reevap)
 
     endif
-
-        !$ser verbatim if (nn .eq. 1) then
-            !$ser verbatim szs_pto = tz
-            !$ser verbatim szs_qvo = qv
-            !$ser verbatim szs_qlo = ql
-            !$ser verbatim szs_qro = qr
-            !$ser verbatim szs_qio = qi
-            !$ser verbatim szs_qso = qs
-            !$ser verbatim szs_qgo = qg
-            !$ser verbatim szs_ccno = ccn
-            !$ser verbatim szs_cino = cin
-            !$ser verbatim szs_condo = cond
-            !$ser verbatim szs_depo = dep
-            !$ser verbatim szs_reevapo = reevap
-            !$ser verbatim szs_subo = sub
-            !$ser verbatim szs_lcpko = lcpk
-            !$ser verbatim szs_icpko = icpk
-            !$ser verbatim szs_tcpko = tcpk
-            !$ser verbatim szs_tcp3o = tcp3
-            !$ser verbatim szs_cvmo = cvm
-        !$ser verbatim endif
 
     ! -----------------------------------------------------------------------
     ! cloud water condensation and evaporation
@@ -5398,6 +5377,27 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
 !$ser verbatim nn, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
         lcpk, icpk, tcpk, tcp3, cond, reevap)
     
+    !$ser verbatim if (nn .eq. 1) then
+        !$ser verbatim szs_pto = tz
+        !$ser verbatim szs_qvo = qv
+        !$ser verbatim szs_qlo = ql
+        !$ser verbatim szs_qro = qr
+        !$ser verbatim szs_qio = qi
+        !$ser verbatim szs_qso = qs
+        !$ser verbatim szs_qgo = qg
+        !$ser verbatim szs_ccno = ccn
+        !$ser verbatim szs_cino = cin
+        !$ser verbatim szs_condo = cond
+        !$ser verbatim szs_depo = dep
+        !$ser verbatim szs_reevapo = reevap
+        !$ser verbatim szs_subo = sub
+        !$ser verbatim szs_lcpko = lcpk
+        !$ser verbatim szs_icpko = icpk
+        !$ser verbatim szs_tcpko = tcpk
+        !$ser verbatim szs_tcp3o = tcp3
+        !$ser verbatim szs_cvmo = cvm
+    !$ser verbatim endif
+
     if (.not. do_warm_rain_mp) then
         
         ! -----------------------------------------------------------------------
