@@ -2336,6 +2336,17 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data fin_adj_vmr=pre_adj_vmr fin_te=fin_te0 fin_te_loss=zerobuff_2d fin_ew=zerobuff_3d fin_ww=zerobuff_3d fin_bew=zerobuff_2d fin_bww=zerobuff_2d
     !$ser data fin_ed=zerobuff_3d fin_wd=zerobuff_3d fin_bed=zerobuff_2d fin_bwd=zerobuff_2d fin_tzuv=zerobuff_3d fin_tzw=zerobuff_3d fin_dte=fin_dte0
 
+    !$ser savepoint PostMP-In
+    !$ser data post_qv=cf_qv post_ql=cf_ql post_qr=cf_qr post_qi=cf_qi post_qs=cf_qs post_qg=cf_qg post_pt=cf_pt post_qa=cf_qa post_den=cf_den post_pz=cf_pz post_h_var=cf_h_var post_gsize=cf_gsize
+    !$ser data post_pcw=zerobuff_3d post_edw=zerobuff_3d post_oew=zerobuff_3d post_rrw=zerobuff_3d post_tvw=zerobuff_3d post_pci=zerobuff_3d post_edi=zerobuff_3d post_oei=zerobuff_3d post_rri=zerobuff_3d post_tvi=zerobuff_3d
+    !$ser data post_pcr=zerobuff_3d post_edr=zerobuff_3d post_oer=zerobuff_3d post_rrr=zerobuff_3d post_tvr=zerobuff_3d post_pcs=zerobuff_3d post_eds=zerobuff_3d post_oes=zerobuff_3d post_rrs=zerobuff_3d post_tvs=zerobuff_3d
+    !$ser data post_pcg=zerobuff_3d post_edg=zerobuff_3d post_oeg=zerobuff_3d post_rrg=zerobuff_3d post_tvg=zerobuff_3d post_delp=fin_delp0 post_delz=fin_delz0 post_ua=fin_ua0 post_va=fin_va0 post_wa=fin_wa0
+    !$ser data post_vapor=fin_vapor post_water=fin_water post_rain=fin_rain post_ice=fin_ice post_snow=fin_snow post_graupel=fin_graupel
+    !$ser data post_qv0=pre_qv post_ql0=pre_ql post_qr0=pre_qr post_qi0=pre_qi post_qs0=pre_qs post_qg0=pre_qg post_dp0=pre_delp post_pt0=pre_pt post_u0=pre_ua post_v0=pre_va post_w0=pre_wa
+    !$ser data post_ew0=pre_ew0 post_ww0=pre_ww0 post_bew0=pre_bew0 post_bww0=pre_bww0 post_ed0=pre_ed0 post_wd0=pre_wd0 post_bed0=pre_bed0 post_bwd0=pre_bwd0
+    !$ser data post_adj_vmr=pre_adj_vmr post_te=fin_te0 post_te_loss=zerobuff_2d post_ew=zerobuff_3d post_ww=zerobuff_3d post_bew=zerobuff_2d post_bww=zerobuff_2d
+    !$ser data post_ed=zerobuff_3d post_wd=zerobuff_3d post_bed=zerobuff_2d post_bwd=zerobuff_2d post_dte=fin_dte0
+
 
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
 
@@ -2450,6 +2461,13 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser savepoint FinalCalculations-Out
     !$ser data fin_qv=fin_qv fin_ql=fin_ql fin_qr=fin_qr fin_qi=fin_qi fin_qs=fin_qs fin_qg=fin_qg fin_pt=fin_pt fin_delp=fin_delp fin_delz=fin_delz fin_ua=fin_ua fin_va=fin_va fin_wa=fin_wa 
     !$ser data fin_dte=fin_dte fin_adj_vmr=fin_adj_vmr fin_te=fin_te fin_te_loss=fin_te_loss fin_ew=fin_ew fin_ww=fin_ww fin_bew=fin_bew fin_bww=fin_bww fin_ed=fin_ed fin_wd=fin_wd fin_bed=fin_bed fin_bwd=fin_bwd
+
+    !$ser savepoint PostMP-Out
+    !$ser data post_qv=fin_qv post_ql=fin_ql post_qr=fin_qr post_qi=fin_qi post_qs=fin_qs post_qg=fin_qg post_pt=fin_pt post_delp=fin_delp post_delz=fin_delz post_ua=fin_ua post_va=fin_va post_wa=fin_wa 
+    !$ser data post_dte=fin_dte post_adj_vmr=fin_adj_vmr post_te=fin_te post_te_loss=fin_te_loss post_ew=fin_ew post_ww=fin_ww post_bew=fin_bew post_bww=fin_bww post_ed=fin_ed post_wd=fin_wd post_bed=fin_bed post_bwd=fin_bwd
+    !$ser data post_pcw=pcw post_edw=edw post_oew=oew post_rrw=rrw post_tvw=tvw post_pci=pci post_edi=edi post_oei=oei post_rri=rri post_tvi=tvi
+    !$ser data post_pcr=pcr post_edr=edr post_oer=oer post_rrr=rrr post_tvr=tvr post_pcs=pcs post_eds=eds post_oes=oes post_rrs=rrs post_tvs=tvs
+    !$ser data post_pcg=pcg post_edg=edg post_oeg=oeg post_rrg=rrg post_tvg=tvg post_qa=cf_qa_o
 
 end subroutine mpdrv
 
