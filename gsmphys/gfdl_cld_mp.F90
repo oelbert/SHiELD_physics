@@ -189,7 +189,7 @@ module gfdl_cld_mp_mod
     
     integer :: ntimes = 1 ! cloud microphysics sub cycles
     
-    integer :: cfflag = 2 ! cloud fraction scheme
+    integer :: cfflag = 3 ! cloud fraction scheme
     ! 1: GFDL cloud scheme
     ! 2: Xu and Randall (1996)
     ! 3: Park et al. (2016)
