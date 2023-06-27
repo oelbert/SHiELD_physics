@@ -2427,7 +2427,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data ts_qv=ts_qvo ts_ql=ts_qlo ts_qr=ts_qro ts_qi=ts_qio ts_qs=ts_qso ts_qg=ts_qgo
     !$ser data ts_pt=ts_tzo ts_ua=ts_uo ts_va=ts_vo ts_wa=ts_wo ts_pf=ts_pfo ts_vt=ts_vto 
     !$ser data ts_w1=ts_w1o ts_r1=ts_r1o ts_i1=ts_i1o ts_s1=ts_s1o ts_g1=ts_g1o ts_dte=ts_dteo
-    !$ser data ts_ze=sm_ze ts_zt=sm_zt ts_zs=sm_zs
+    !$ser data ts_ze=tf_ze ts_zt=tf_zt ts_zs=sm_zs
 
     !$ser savepoint InitSed-Out
     !$ser data is_icpk=is_icpk is_pfw=is_pfw is_pfr=is_pfr is_pfi=is_pfi is_pfs=is_pfs is_pfg=is_pfg is_vtw=is_vtw is_vtr=is_vtr is_vti=is_vti is_vts=is_vts is_vtg=is_vtg
