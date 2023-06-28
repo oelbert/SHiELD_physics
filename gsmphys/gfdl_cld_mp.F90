@@ -3050,7 +3050,7 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
 
     !$ser verbatim character (len = 2) :: ts_q
 
-    !$ser verbatim ts_q = "qr"    
+    !$ser verbatim ts_q = "qs"    
     !$ser verbatim ser_dp (:) = dp (:)
     !$ser verbatim ser_dz (:) = dz (:)
     !$ser verbatim ser_den (:) = den (:)
