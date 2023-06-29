@@ -2825,10 +2825,10 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
             !$ser verbatim mpsub_ice=ice
             !$ser verbatim mpsub_snow=snow
             !$ser verbatim mpsub_graupel=graupel
-            !$ser verbatim mpsub_cond=cond
-            !$ser verbatim mpsub_dep=dep
-            !$ser verbatim mpsub_sub=sub
-            !$ser verbatim mpsub_evap=reevap
+            !$ser verbatim mpsub_cond=condensation
+            !$ser verbatim mpsub_dep=deposition
+            !$ser verbatim mpsub_sub=sublimation
+            !$ser verbatim mpsub_evap=evaporation
         !$ser verbatim endif
 
         call warm_rain (dts, ks, ke, dp, dz, tz, qv, ql, qr, qi, qs, qg, &
@@ -2900,10 +2900,10 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
             !$ser verbatim mpsub_ice_o=ice
             !$ser verbatim mpsub_snow_o=snow
             !$ser verbatim mpsub_graupel_o=graupel
-            !$ser verbatim mpsub_cond_o=cond
-            !$ser verbatim mpsub_dep_o=dep
-            !$ser verbatim mpsub_sub_o=sub
-            !$ser verbatim mpsub_evap_o=reevap
+            !$ser verbatim mpsub_cond_o=condensation
+            !$ser verbatim mpsub_dep_o=deposition
+            !$ser verbatim mpsub_sub_o=sublimation
+            !$ser verbatim mpsub_evap_o=evaporation
         !$ser verbatim endif
 
         ! -----------------------------------------------------------------------
