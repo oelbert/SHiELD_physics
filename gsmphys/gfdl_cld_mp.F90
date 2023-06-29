@@ -1222,6 +1222,9 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim real, dimension (is:ie) :: is_w1, is_r1, is_i1, is_s1, is_g1, ws_reevap, ws_reevapo
     !$ser verbatim real, dimension (is:ie) :: szs_cond, szs_dep, szs_reevap, szs_sub, szs_condo, szs_depo, szs_reevapo, szs_subo
 
+    !$ser verbatim real, dimension (is:ie) :: mpsub_dte, mpsub_water, mpsub_rain, mpsub_ice, mpsub_snow, mpsub_graupel, mpsub_cond, mpsub_dep, mpsub_sub, mpsub_evap
+    !$ser verbatim real, dimension (is:ie) :: mpsub_dte_o, mpsub_water_o, mpsub_rain_o, mpsub_ice_o, mpsub_snow_o, mpsub_graupel_o, mpsub_cond_o, mpsub_dep_o, mpsub_sub_o, mpsub_evap_o
+
     !$ser verbatim real, dimension (is:ie) :: zerobuff_2d, onebuff_2d
 
     !$ser verbatim real, dimension (is:ie) :: ini_c_air, ini_c_vap, ini_d0_vap, ini_lv00, ini_li00, ini_li20, ini_d1_vap, ini_d1_ice, ini_c1_vap, ini_c1_liq, ini_c1_ice
@@ -1266,6 +1269,11 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser verbatim real, dimension (is:ie, ks:ke) :: szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_te
     !$ser verbatim real, dimension (is:ie, ks:ke) :: szs_pto, szs_qvo, szs_qlo, szs_qro, szs_qio, szs_qso, szs_qgo, szs_ccno, szs_cino
     !$ser verbatim real, dimension (is:ie, ks:ke) :: szs_lcpk, szs_icpk, szs_tcpk, szs_tcp3, szs_lcpko, szs_icpko, szs_tcpko, szs_tcp3o, szs_cvm, szs_cvmo, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt
+
+    !$ser verbatim real, dimension (is:ie, ks:ke) :: mpsub_qv, mpsub_ql, mpsub_qr, mpsub_qi, mpsub_qs, mpsub_qg, mpsub_pt, mpsub_u, mpsub_v, mpsub_w
+    !$ser verbatim real, dimension (is:ie, ks:ke) :: mpsub_ccn, mpsub_cin, mpsub_pfw, mpsub_pfr, mpsub_pfi, mpsub_pfs, mpsub_pfg, mpsub_vtw, mpsub_vtr, mpsub_vti, mpsub_vts, mpsub_vtg
+    !$ser verbatim real, dimension (is:ie, ks:ke) :: mpsub_qv_o, mpsub_ql_o, mpsub_qr_o, mpsub_qi_o, mpsub_qs_o, mpsub_qg_o, mpsub_pt_o, mpsub_u_o, mpsub_v_o, mpsub_w_o
+    !$ser verbatim real, dimension (is:ie, ks:ke) :: mpsub_ccn_o, mpsub_cin_o, mpsub_pfw_o, mpsub_pfr_o, mpsub_pfi_o, mpsub_pfs_o, mpsub_pfg_o, mpsub_vtw_o, mpsub_vtr_o, mpsub_vti_o, mpsub_vts_o, mpsub_vtg_o
 
     !$ser verbatim real, dimension (is:ie, ks:ke) :: zerobuff_3d, tem, t0, t2, tc_index, tc_ap1
 
@@ -1654,6 +1662,12 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 !$ser verbatim szs_cond (i), szs_dep (i), szs_reevap (i), szs_sub (i), szs_pto (i, :), szs_qvo (i, :), szs_qlo (i, :), szs_qro (i, :), szs_qio (i, :), szs_qso (i, :), szs_qgo (i, :), szs_ccno (i, :), szs_cino (i, :),&
 !$ser verbatim szs_condo (i), szs_depo (i), szs_reevapo (i), szs_subo (i), szs_lcpk (i, :), szs_icpk (i, :), szs_tcpk (i, :), szs_tcp3 (i, :), szs_lcpko (i, :), szs_icpko (i, :), szs_tcpko (i, :), szs_tcp3o (i, :), szs_cvm (i, :), szs_cvmo (i, :),&
 !$ser verbatim szs_qsi (i, :), szs_dqidt (i, :), szs_qsw (i, :), szs_dqwdt (i, :),&
+!$ser verbatim mpsub_qv (i, :), mpsub_ql (i, :), mpsub_qr (i, :), mpsub_qi (i, :), mpsub_qs (i, :), mpsub_qg (i, :), mpsub_pt (i, :), mpsub_u (i, :), mpsub_v (i, :), mpsub_w (i, :),&
+!$ser verbatim mpsub_ccn (i, :), mpsub_cin (i, :), mpsub_pfw (i, :), mpsub_pfr (i, :), mpsub_pfi (i, :), mpsub_pfs (i, :), mpsub_pfg (i, :), mpsub_vtw (i, :), mpsub_vtr (i, :), mpsub_vti (i, :), mpsub_vts (i, :), mpsub_vtg (i, :),&
+!$ser verbatim mpsub_qv_o (i, :), mpsub_ql_o (i, :), mpsub_qr_o (i, :), mpsub_qi_o (i, :), mpsub_qs_o (i, :), mpsub_qg_o (i, :), mpsub_pt_o (i, :), mpsub_u_o (i, :), mpsub_v_o (i, :), mpsub_w_o (i, :),&
+!$ser verbatim mpsub_ccn_o (i, :), mpsub_cin_o (i, :), mpsub_pfw_o (i, :), mpsub_pfr_o (i, :), mpsub_pfi_o (i, :), mpsub_pfs_o (i, :), mpsub_pfg_o (i, :), mpsub_vtw_o (i, :), mpsub_vtr_o (i, :), mpsub_vti_o (i, :), mpsub_vts_o (i, :), mpsub_vtg_o (i, :),&
+!$ser verbatim mpsub_dte (i), mpsub_water (i), mpsub_rain (i), mpsub_ice (i), mpsub_snow (i), mpsub_graupel (i), mpsub_cond (i), mpsub_dep (i), mpsub_sub (i), mpsub_evap (i),&
+!$ser verbatim mpsub_dte_o (i), mpsub_water_o (i), mpsub_rain_o (i), mpsub_ice_o (i), mpsub_snow_o (i), mpsub_graupel_o (i), mpsub_cond_o (i), mpsub_dep_o (i), mpsub_sub_o (i), mpsub_evap_o (i),&
                 condensation (i), deposition (i), evaporation (i), sublimation (i), convt)
             
             !$ser verbatim mpf_qv_o(i,:)=qvz(:)
@@ -2347,6 +2361,12 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data post_adj_vmr=pre_adj_vmr post_te=fin_te0 post_te_loss=zerobuff_2d post_ew=zerobuff_3d post_ww=zerobuff_3d post_bew=zerobuff_2d post_bww=zerobuff_2d
     !$ser data post_ed=zerobuff_3d post_wd=zerobuff_3d post_bed=zerobuff_2d post_bwd=zerobuff_2d post_dte=fin_dte0
 
+    !$ser savepoint MPSub-In
+    !$ser data mpsub_qv=mpsub_qv mpsub_ql=mpsub_ql mpsub_qr=mpsub_qr mpsub_qi=mpsub_qi mpsub_qs=mpsub_qs mpsub_qg=mpsub_qg mpsub_pt=mpsub_pt mpsub_u=mpsub_u mpsub_v=mpsub_v mpsub_w=mpsub_w
+    !$ser data mpsub_ccn=mpsub_ccn mpsub_cin=mpsub_cin mpsub_pfw=mpsub_pfw mpsub_pfr=mpsub_pfr mpsub_pfi=mpsub_pfi mpsub_pfs=mpsub_pfs mpsub_pfg=mpsub_pfg mpsub_vtw=mpsub_vtw mpsub_vtr=mpsub_vtr
+    !$ser data mpsub_vti=mpsub_vti mpsub_vts=mpsub_vts mpsub_vtg=mpsub_vtg mpsub_dte=mpsub_dte mpsub_water=mpsub_water mpsub_rain=mpsub_rain mpsub_ice=mpsub_ice mpsub_snow=mpsub_snow
+    !$ser data mpsub_graupel=mpsub_graupel mpsub_cond=mpsub_cond mpsub_dep=mpsub_dep mpsub_sub=mpsub_sub mpsub_evap=mpsub_evap
+    !$ser data mpsub_den=mpf_den mpsub_denfac=mpf_denfac mpsub_delp=mpf_delp mpsub_delz=mpf_delz convt=convt dt=dts mpsub_h_var=mpsub_h_var
 
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
 
@@ -2468,6 +2488,12 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data post_pcw=pcw post_edw=edw post_oew=oew post_rrw=rrw post_tvw=tvw post_pci=pci post_edi=edi post_oei=oei post_rri=rri post_tvi=tvi
     !$ser data post_pcr=pcr post_edr=edr post_oer=oer post_rrr=rrr post_tvr=tvr post_pcs=pcs post_eds=eds post_oes=oes post_rrs=rrs post_tvs=tvs
     !$ser data post_pcg=pcg post_edg=edg post_oeg=oeg post_rrg=rrg post_tvg=tvg post_qa=cf_qa_o
+
+    !$ser savepoint MPSub-Out
+    !$ser data mpsub_qv=mpsub_qv_o mpsub_ql=mpsub_ql_o mpsub_qr=mpsub_qr_o mpsub_qi=mpsub_qi_o mpsub_qs=mpsub_qs_o mpsub_qg=mpsub_qg_o mpsub_pt=mpsub_pt_o mpsub_u=mpsub_u_o mpsub_v=mpsub_v_o mpsub_w=mpsub_w_o
+    !$ser data mpsub_ccn=mpsub_ccn_o mpsub_cin=mpsub_cin_o mpsub_pfw=mpsub_pfw_o mpsub_pfr=mpsub_pfr_o mpsub_pfi=mpsub_pfi_o mpsub_pfs=mpsub_pfs_o mpsub_pfg=mpsub_pfg_o mpsub_vtw=mpsub_vtw_o mpsub_vtr=mpsub_vtr_o
+    !$ser data mpsub_vti=mpsub_vti_o mpsub_vts=mpsub_vts_o mpsub_vtg=mpsub_vtg_o mpsub_dte=mpsub_dte_o mpsub_water=mpsub_water_o mpsub_rain=mpsub_rain_o mpsub_ice=mpsub_ice_o mpsub_snow=mpsub_snow_o
+    !$ser data mpsub_graupel=mpsub_graupel_o mpsub_cond=mpsub_cond_o mpsub_dep=mpsub_dep_o mpsub_sub=mpsub_sub_o mpsub_evap=mpsub_evap_o
 
 end subroutine mpdrv
 
@@ -2621,6 +2647,12 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
 !$ser verbatim szs_cond, szs_dep, szs_reevap, szs_sub, szs_pto, szs_qvo, szs_qlo, szs_qro, szs_qio, szs_qso, szs_qgo, szs_ccno, szs_cino,&
 !$ser verbatim szs_condo, szs_depo, szs_reevapo, szs_subo, szs_lcpk, szs_icpk, szs_tcpk, szs_tcp3, szs_lcpko, szs_icpko, szs_tcpko, szs_tcp3o, szs_cvm, szs_cvmo,&
 !$ser verbatim szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
+!$ser verbatim mpsub_qv, mpsub_ql, mpsub_qr, mpsub_qi, mpsub_qs, mpsub_qg, mpsub_pt, mpsub_u, mpsub_v, mpsub_w,&
+!$ser verbatim mpsub_ccn, mpsub_cin, mpsub_pfw, mpsub_pfr, mpsub_pfi, mpsub_pfs, mpsub_pfg, mpsub_vtw, mpsub_vtr, mpsub_vti, mpsub_vts, mpsub_vtg,&
+!$ser verbatim mpsub_qv_o, mpsub_ql_o, mpsub_qr_o, mpsub_qi_o, mpsub_qs_o, mpsub_qg_o, mpsub_pt_o, mpsub_u_o, mpsub_v_o, mpsub_w_o,&
+!$ser verbatim mpsub_ccn_o, mpsub_cin_o, mpsub_pfw_o, mpsub_pfr_o, mpsub_pfi_o, mpsub_pfs_o, mpsub_pfg_o, mpsub_vtw_o, mpsub_vtr_o, mpsub_vti_o, mpsub_vts_o, mpsub_vtg_o,&
+!$ser verbatim mpsub_dte, mpsub_water, mpsub_rain, mpsub_ice, mpsub_snow, mpsub_graupel, mpsub_cond, mpsub_dep, mpsub_sub, mpsub_evap,&
+!$ser verbatim mpsub_dte_o, mpsub_water_o, mpsub_rain_o, mpsub_ice_o, mpsub_snow_o, mpsub_graupel_o, mpsub_cond_o, mpsub_dep_o, mpsub_sub_o, mpsub_evap_o,&
         condensation, deposition, evaporation, sublimation, convt)
     
     implicit none
@@ -2661,6 +2693,11 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_te
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: szs_pto, szs_qvo, szs_qlo, szs_qro, szs_qio, szs_qso, szs_qgo, szs_ccno, szs_cino
     !$ser verbatim real, intent (inout), dimension (ks:ke) :: szs_lcpk, szs_icpk, szs_tcpk, szs_tcp3, szs_lcpko, szs_icpko, szs_tcpko, szs_tcp3o, szs_cvm, szs_cvmo, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt
+
+    !$ser verbatim real, intent (inout), dimension (ks:ke) :: mpsub_qv, mpsub_ql, mpsub_qr, mpsub_qi, mpsub_qs, mpsub_qg, mpsub_pt, mpsub_u, mpsub_v, mpsub_w
+    !$ser verbatim real, intent (inout), dimension (ks:ke) :: mpsub_ccn, mpsub_cin, mpsub_pfw, mpsub_pfr, mpsub_pfi, mpsub_pfs, mpsub_pfg, mpsub_vtw, mpsub_vtr, mpsub_vti, mpsub_vts, mpsub_vtg
+    !$ser verbatim real, intent (inout), dimension (ks:ke) :: mpsub_qv_o, mpsub_ql_o, mpsub_qr_o, mpsub_qi_o, mpsub_qs_o, mpsub_qg_o, mpsub_pt_o, mpsub_u_o, mpsub_v_o, mpsub_w_o
+    !$ser verbatim real, intent (inout), dimension (ks:ke) :: mpsub_ccn_o, mpsub_cin_o, mpsub_pfw_o, mpsub_pfr_o, mpsub_pfi_o, mpsub_pfs_o, mpsub_pfg_o, mpsub_vtw_o, mpsub_vtr_o, mpsub_vti_o, mpsub_vts_o, mpsub_vtg_o
     
     !$ser verbatim real, intent (out), dimension (ks:ke + 1) :: tf_ze, tf_zt, sm_ze, sm_zt
 
@@ -2675,6 +2712,9 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
     real (kind = r8), intent (inout) :: dte
     !$ser verbatim real, intent (inout) :: tfi_dte, tfo_dte, is_w1, is_r1, is_i1, is_s1, is_g1
     !$ser verbatim real, intent (inout) :: ws_reevap, ws_reevapo, szs_cond, szs_dep, szs_reevap, szs_sub, szs_condo, szs_depo, szs_reevapo, szs_subo
+
+    !$ser verbatim real, intent (inout) :: mpsub_dte, mpsub_water, mpsub_rain, mpsub_ice, mpsub_snow, mpsub_graupel, mpsub_cond, mpsub_dep, mpsub_sub, mpsub_evap
+    !$ser verbatim real, intent (inout) :: mpsub_dte_o, mpsub_water_o, mpsub_rain_o, mpsub_ice_o, mpsub_snow_o, mpsub_graupel_o, mpsub_cond_o, mpsub_dep_o, mpsub_sub_o, mpsub_evap_o
 
     !$ser verbatim real, intent (out) :: sd_w1, sd_r1, sd_i1, sd_s1, sd_g1, wr_reevap, sz_cond, sz_dep, sz_reevap, sz_sub
     !$ser verbatim real, intent (out) :: sd_dte
@@ -2756,6 +2796,41 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
         ! warm rain cloud microphysics
         ! -----------------------------------------------------------------------
         
+        !$ser verbatim if (n .eq. 1) then
+            !$ser verbatim mpsub_qv(:)=qv(:)
+            !$ser verbatim mpsub_ql(:)=ql(:)
+            !$ser verbatim mpsub_qr(:)=qr(:)
+            !$ser verbatim mpsub_qi(:)=qi(:)
+            !$ser verbatim mpsub_qs(:)=qs(:)
+            !$ser verbatim mpsub_qg(:)=qg(:)
+            !$ser verbatim mpsub_pt(:)=tz(:)
+            !$ser verbatim mpsub_u(:)=u(:)
+            !$ser verbatim mpsub_v(:)=v(:)
+            !$ser verbatim mpsub_w(:)=w(:)
+            !$ser verbatim mpsub_ccn(:)=ccn(:)
+            !$ser verbatim mpsub_cin(:)=cin(:)
+            !$ser verbatim mpsub_pfw(:)=prefluxw(:)
+            !$ser verbatim mpsub_pfr(:)=prefluxr(:)
+            !$ser verbatim mpsub_pfi(:)=prefluxi(:)
+            !$ser verbatim mpsub_pfs(:)=prefluxs(:)
+            !$ser verbatim mpsub_pfg(:)=prefluxg(:)
+            !$ser verbatim mpsub_vtw(:)=vtw(:)
+            !$ser verbatim mpsub_vtr(:)=vtr(:)
+            !$ser verbatim mpsub_vti(:)=vti(:)
+            !$ser verbatim mpsub_vts(:)=vts(:)
+            !$ser verbatim mpsub_vtg(:)=vtg(:)
+            !$ser verbatim mpsub_dte=dte
+            !$ser verbatim mpsub_water=water
+            !$ser verbatim mpsub_rain=rain
+            !$ser verbatim mpsub_ice=ice
+            !$ser verbatim mpsub_snow=snow
+            !$ser verbatim mpsub_graupel=graupel
+            !$ser verbatim mpsub_cond=cond
+            !$ser verbatim mpsub_dep=dep
+            !$ser verbatim mpsub_sub=sub
+            !$ser verbatim mpsub_evap=reevap
+        !$ser verbatim endif
+
         call warm_rain (dts, ks, ke, dp, dz, tz, qv, ql, qr, qi, qs, qg, &
 !$ser verbatim ws_qv, ws_ql, ws_qr, ws_qi, ws_qs, ws_qg, ws_ccn, ws_pt,&
 !$ser verbatim ws_qvo, ws_qlo, ws_qro, ws_qio, ws_qso, ws_qgo, ws_ccno, ws_pto,&
@@ -2794,6 +2869,41 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
             !$ser verbatim ic_qs=qs
             !$ser verbatim ic_qg=qg
             !$ser verbatim ic_tz=tz
+        !$ser verbatim endif
+
+        !$ser verbatim if (n .eq. 1) then
+            !$ser verbatim mpsub_qv_o(:)=qv(:)
+            !$ser verbatim mpsub_ql_o(:)=ql(:)
+            !$ser verbatim mpsub_qr_o(:)=qr(:)
+            !$ser verbatim mpsub_qi_o(:)=qi(:)
+            !$ser verbatim mpsub_qs_o(:)=qs(:)
+            !$ser verbatim mpsub_qg_o(:)=qg(:)
+            !$ser verbatim mpsub_pt_o(:)=tz(:)
+            !$ser verbatim mpsub_u_o(:)=u(:)
+            !$ser verbatim mpsub_v_o(:)=v(:)
+            !$ser verbatim mpsub_w_o(:)=w(:)
+            !$ser verbatim mpsub_ccn_o(:)=ccn(:)
+            !$ser verbatim mpsub_cin_o(:)=cin(:)
+            !$ser verbatim mpsub_pfw_o(:)=prefluxw(:)
+            !$ser verbatim mpsub_pfr_o(:)=prefluxr(:)
+            !$ser verbatim mpsub_pfi_o(:)=prefluxi(:)
+            !$ser verbatim mpsub_pfs_o(:)=prefluxs(:)
+            !$ser verbatim mpsub_pfg_o(:)=prefluxg(:)
+            !$ser verbatim mpsub_vtw_o(:)=vtw(:)
+            !$ser verbatim mpsub_vtr_o(:)=vtr(:)
+            !$ser verbatim mpsub_vti_o(:)=vti(:)
+            !$ser verbatim mpsub_vts_o(:)=vts(:)
+            !$ser verbatim mpsub_vtg_o(:)=vtg(:)
+            !$ser verbatim mpsub_dte_o=dte
+            !$ser verbatim mpsub_water_o=water
+            !$ser verbatim mpsub_rain_o=rain
+            !$ser verbatim mpsub_ice_o=ice
+            !$ser verbatim mpsub_snow_o=snow
+            !$ser verbatim mpsub_graupel_o=graupel
+            !$ser verbatim mpsub_cond_o=cond
+            !$ser verbatim mpsub_dep_o=dep
+            !$ser verbatim mpsub_sub_o=sub
+            !$ser verbatim mpsub_evap_o=reevap
         !$ser verbatim endif
 
         ! -----------------------------------------------------------------------
