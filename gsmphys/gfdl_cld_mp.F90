@@ -2361,12 +2361,13 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data post_adj_vmr=pre_adj_vmr post_te=fin_te0 post_te_loss=zerobuff_2d post_ew=zerobuff_3d post_ww=zerobuff_3d post_bew=zerobuff_2d post_bww=zerobuff_2d
     !$ser data post_ed=zerobuff_3d post_wd=zerobuff_3d post_bed=zerobuff_2d post_bwd=zerobuff_2d post_dte=fin_dte0
 
-    !$ser savepoint MPSub-In
+    !$ser savepoint MPSub-Out
     !$ser data mpsub_qv=mpsub_qv mpsub_ql=mpsub_ql mpsub_qr=mpsub_qr mpsub_qi=mpsub_qi mpsub_qs=mpsub_qs mpsub_qg=mpsub_qg mpsub_pt=mpsub_pt mpsub_u=mpsub_u mpsub_v=mpsub_v mpsub_w=mpsub_w
     !$ser data mpsub_ccn=mpsub_ccn mpsub_cin=mpsub_cin mpsub_pfw=mpsub_pfw mpsub_pfr=mpsub_pfr mpsub_pfi=mpsub_pfi mpsub_pfs=mpsub_pfs mpsub_pfg=mpsub_pfg mpsub_vtw=mpsub_vtw mpsub_vtr=mpsub_vtr
     !$ser data mpsub_vti=mpsub_vti mpsub_vts=mpsub_vts mpsub_vtg=mpsub_vtg mpsub_dte=mpsub_dte mpsub_water=mpsub_water mpsub_rain=mpsub_rain mpsub_ice=mpsub_ice mpsub_snow=mpsub_snow
     !$ser data mpsub_graupel=mpsub_graupel mpsub_cond=mpsub_cond mpsub_dep=mpsub_dep mpsub_sub=mpsub_sub mpsub_evap=mpsub_evap
-    !$ser data mpsub_den=mpf_den mpsub_denfac=mpf_denfac mpsub_delp=mpf_delp mpsub_delz=mpf_delz convt=convt dt=dts mpsub_h_var=mpf_h_var
+    !$ser data mpsub_den=mpf_den mpsub_denfac=mpf_denfac mpsub_delp=mpf_delp mpsub_delz=mpf_delz convt=convt dt=dts mpsub_h_var=mpf_h_var mpsub_rh_adj=mpf_rh_adj
+
 
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
 
