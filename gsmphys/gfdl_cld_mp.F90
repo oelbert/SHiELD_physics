@@ -2366,7 +2366,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data mpsub_ccn=mpsub_ccn mpsub_cin=mpsub_cin mpsub_pfw=mpsub_pfw mpsub_pfr=mpsub_pfr mpsub_pfi=mpsub_pfi mpsub_pfs=mpsub_pfs mpsub_pfg=mpsub_pfg mpsub_vtw=mpsub_vtw mpsub_vtr=mpsub_vtr
     !$ser data mpsub_vti=mpsub_vti mpsub_vts=mpsub_vts mpsub_vtg=mpsub_vtg mpsub_dte=mpsub_dte mpsub_water=mpsub_water mpsub_rain=mpsub_rain mpsub_ice=mpsub_ice mpsub_snow=mpsub_snow
     !$ser data mpsub_graupel=mpsub_graupel mpsub_cond=mpsub_cond mpsub_dep=mpsub_dep mpsub_sub=mpsub_sub mpsub_evap=mpsub_evap
-    !$ser data mpsub_den=mpf_den mpsub_denfac=mpf_denfac mpsub_delp=mpf_delp mpsub_delz=mpf_delz convt=convt dt=dts mpsub_h_var=mpsub_h_var
+    !$ser data mpsub_den=mpf_den mpsub_denfac=mpf_denfac mpsub_delp=mpf_delp mpsub_delz=mpf_delz convt=convt dt=dts mpsub_h_var=mpf_h_var
 
     !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
 
