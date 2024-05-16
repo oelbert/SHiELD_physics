@@ -3596,10 +3596,6 @@ module module_physics_driver
         !$ser verbatim mp_prefluxi(:,:)=prefluxi(:,levs:1:-1)
         !$ser verbatim mp_prefluxs(:,:)=prefluxs(:,levs:1:-1)
         !$ser verbatim mp_prefluxg(:,:)=prefluxg(:,levs:1:-1)
-        !$ser verbatim mp_cond(:,1)=cond0
-        !$ser verbatim mp_dep(:,1)=dep0
-        !$ser verbatim mp_reevap(:,1)=reevap0
-        !$ser verbatim mp_sub(:,1)=sub0
         !$ser verbatim mp_consv_te=.false.
         !$ser verbatim mp_last_step=.true.
         !$ser verbatim print *, 'INFO: serialize microphysics in'
@@ -3648,40 +3644,11 @@ module module_physics_driver
         !$ser verbatim mp_adj_vmr(:,:)=adj_vmr(:,levs:1:-1)
         !$ser verbatim mp_te(:,:)=te(:,levs:1:-1)
         !$ser verbatim mp_dte(:,1)=dte
-        !$ser verbatim mp_pcw(:,:)=pcw(:,levs:1:-1)
-        !$ser verbatim mp_edw(:,:)=edw(:,levs:1:-1)
-        !$ser verbatim mp_oew(:,:)=oew(:,levs:1:-1)
-        !$ser verbatim mp_rrw(:,:)=rrw(:,levs:1:-1)
-        !$ser verbatim mp_tvw(:,:)=tvw(:,levs:1:-1)
-        !$ser verbatim mp_pcr(:,:)=pcr(:,levs:1:-1)
-        !$ser verbatim mp_edr(:,:)=edr(:,levs:1:-1)
-        !$ser verbatim mp_oer(:,:)=oer(:,levs:1:-1)
-        !$ser verbatim mp_rrr(:,:)=rrr(:,levs:1:-1)
-        !$ser verbatim mp_tvr(:,:)=tvr(:,levs:1:-1)
-        !$ser verbatim mp_pci(:,:)=pci(:,levs:1:-1)
-        !$ser verbatim mp_edi(:,:)=edi(:,levs:1:-1)
-        !$ser verbatim mp_oei(:,:)=oei(:,levs:1:-1)
-        !$ser verbatim mp_rri(:,:)=rri(:,levs:1:-1)
-        !$ser verbatim mp_tvi(:,:)=tvi(:,levs:1:-1)
-        !$ser verbatim mp_pcs(:,:)=pcs(:,levs:1:-1)
-        !$ser verbatim mp_eds(:,:)=eds(:,levs:1:-1)
-        !$ser verbatim mp_oes(:,:)=oes(:,levs:1:-1)
-        !$ser verbatim mp_rrs(:,:)=rrs(:,levs:1:-1)
-        !$ser verbatim mp_tvs(:,:)=tvs(:,levs:1:-1)
-        !$ser verbatim mp_pcg(:,:)=pcg(:,levs:1:-1)
-        !$ser verbatim mp_edg(:,:)=edg(:,levs:1:-1)
-        !$ser verbatim mp_oeg(:,:)=oeg(:,levs:1:-1)
-        !$ser verbatim mp_rrg(:,:)=rrg(:,levs:1:-1)
-        !$ser verbatim mp_tvg(:,:)=tvg(:,levs:1:-1)
         !$ser verbatim mp_prefluxw(:,:)=prefluxw(:,levs:1:-1)
         !$ser verbatim mp_prefluxr(:,:)=prefluxr(:,levs:1:-1)
         !$ser verbatim mp_prefluxi(:,:)=prefluxi(:,levs:1:-1)
         !$ser verbatim mp_prefluxs(:,:)=prefluxs(:,levs:1:-1)
         !$ser verbatim mp_prefluxg(:,:)=prefluxg(:,levs:1:-1)
-        !$ser verbatim mp_cond(:,1)=cond0
-        !$ser verbatim mp_dep(:,1)=dep0
-        !$ser verbatim mp_reevap(:,1)=reevap0
-        !$ser verbatim mp_sub(:,1)=sub0
 
         !$ser verbatim print *, 'INFO: serialize microphysics out'
         !$ser savepoint Microphysics3-Out
@@ -3689,12 +3656,9 @@ module module_physics_driver
         !$ser data mp_qs=mp_qs mp_qg=mp_qg mp_qa=mp_qa
         !$ser data mp_pt=mp_pt mp_wa=mp_wa mp_ua=mp_ua mp_va=mp_va mp_delz=mp_delz mp_delp=mp_delp
         !$ser data mp_water=mp_water mp_rain=mp_rain mp_ice=mp_ice mp_snow=mp_snow mp_graupel=mp_graupel mp_q_con=mp_q_con mp_cappa=mp_cappa
-        !$ser data mp_adj_vmr=mp_adj_vmr mp_te=mp_te mp_dte=mp_dte mp_pcw=mp_pcw mp_edw=mp_edw mp_oew=mp_oew mp_rrw=mp_rrw
-        !$ser data mp_tvw=mp_tvw mp_pci=mp_pci mp_edi=mp_edi mp_oei=mp_oei mp_rri=mp_rri mp_tvi=mp_tvi mp_pcr=mp_pcr
-        !$ser data mp_edr=mp_edr mp_oer=mp_oer mp_rrr=mp_rrr mp_tvr=mp_tvr mp_pcs=mp_pcs mp_eds=mp_eds mp_oes=mp_oes
-        !$ser data mp_rrs=mp_rrs mp_tvs=mp_tvs mp_pcg=mp_pcg mp_edg=mp_edg mp_oeg=mp_oeg mp_rrg=mp_rrg mp_tvg=mp_tvg
+        !$ser data mp_adj_vmr=mp_adj_vmr mp_te=mp_te mp_dte=mp_dte
         !$ser data mp_prefluxw=mp_prefluxw mp_prefluxr=mp_prefluxr mp_prefluxi=mp_prefluxi mp_prefluxs=mp_prefluxs
-        !$ser data mp_prefluxg=mp_prefluxg mp_cond=mp_cond mp_dep=mp_dep mp_reevap=mp_reevap mp_sub=mp_sub
+        !$ser data mp_prefluxg=mp_prefluxg
         !$ser verbatim print *, 'INFO: end serialize microphysics'
         tem = dtp * con_p001 / con_day
         water0(:)   = water0(:)   * tem
