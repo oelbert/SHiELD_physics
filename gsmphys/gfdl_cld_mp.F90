@@ -2971,6 +2971,7 @@ subroutine mp_fast (ks, ke, tz, qv, ql, qr, qi, qs, qg, dtm, dp, den, &
     real, intent (in), dimension (ks:ke) :: dp, den, denfac
 
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg, ccn, cin
+    !$ser verbatim real, dimension (ks:ke) :: buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt
 
     real (kind = r8), intent (inout), dimension (ks:ke) :: tz
 
@@ -3118,6 +3119,7 @@ subroutine mp_fast (ks, ke, tz, qv, ql, qr, qi, qs, qg, dtm, dp, den, &
         ! -----------------------------------------------------------------------
 
         call psdep_pssub (ks, ke, dtm, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
+!$ser verbatim 1, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
             denfac, lcpk, icpk, tcpk, tcp3, dep, sub)
 
         ! -----------------------------------------------------------------------
@@ -3125,6 +3127,7 @@ subroutine mp_fast (ks, ke, tz, qv, ql, qr, qi, qs, qg, dtm, dp, den, &
         ! -----------------------------------------------------------------------
 
         call pgdep_pgsub (ks, ke, dtm, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
+!$ser verbatim 1, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
             denfac, lcpk, icpk, tcpk, tcp3, dep, sub)
 
     endif
