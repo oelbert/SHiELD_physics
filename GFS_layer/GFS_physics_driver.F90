@@ -428,7 +428,7 @@ module module_physics_driver
 
       integer, dimension(size(Grid%xlon,1)) ::                          &
            kbot, ktop, kcnv, soiltyp, vegtype, kpbl, slopetyp, kinver,  &
-           lmh, levshc, islmsk,                                         &
+           lmh, levshc, islmsk, soilcol,                                &
            !--- coupling inputs for physics
            islmsk_cice
 
@@ -753,22 +753,32 @@ module module_physics_driver
               Sfcprop%slmsk(i) = 2
               Sfcprop%hice(i) = 0.1 !minimum value
            elseif (nint(Sfcprop%slmsk(i)) == 2) then
-              if (Statein%ci(i) < 0.15) then !remove sea ice
+              if (Statein%ci(i) < 0.15) then ! Remove sea ice and associated snow
                  Sfcprop%slmsk(i) = 0
                  Sfcprop%fice(i) = 0.0
                  Sfcprop%hice(i) = 0.0
+                 Sfcprop%snowd(i) = 0.0
+                 Sfcprop%weasd(i) = 0.0
               else
                  Sfcprop%fice(i) = Statein%ci(i)
               endif
               
            endif
         endif
+        if (nint(Sfcprop%slmsk(i)) .eq. 0) then
+           ! Always reset the snow cover fraction to zero over all ocean grid
+           ! cells regardless of whether we are running with sea ice prescribed
+           ! from an external source or not.  This is to prevent persisted
+           ! snow cover from sea ice from contaminating the snow cover
+           ! diagnostic over ocean (where it should always be zero).
+           Sfcprop%sncovr(i) = 0.0
+        endif
       enddo
 
       do i = 1, im
         sigmaf(i)   = max( Sfcprop%vfrac(i),0.01 )
         islmsk(i)   = nint(Sfcprop%slmsk(i))
-
+        soilcol(i)  = nint(Sfcprop%scolor(i))
 
         if (islmsk(i) == 2) then
           if (Model%isot == 1) then
@@ -883,6 +893,13 @@ module module_physics_driver
              adjnirbmu, adjnirdfu, adjvisbmu, adjvisdfu,                    &
              adjnirbmd, adjnirdfd, adjvisbmd, adjvisdfd                     &
            )
+
+        if (Model%do_diagnostic_radiation_with_scaled_co2) then
+           call compute_diagnostics_with_scaled_co2(                        &
+              Model, Statein, Sfcprop, Coupling, Grid, Radtend, ix, im,     &
+              levs, Diag                                                    &
+           )
+        endif
 
 !
 ! save temp change due to radiation - need for sttp stochastic physics
@@ -1320,7 +1337,8 @@ module module_physics_driver
           call noahmpdrv                                               &
 !  ---  inputs:
            (im, Model%lsoil, kdt, Statein%pgr,  Statein%ugrs, Statein%vgrs,   &
-            Statein%tgrs,  Statein%qgrs, soiltyp, vegtype, sigmaf,     &
+            Statein%tgrs,  Statein%qgrs, soiltyp, soilcol,             &
+            vegtype, sigmaf,                                           &
             Radtend%semis, adjsfcdlw_for_coupling,                     &
             adjsfcdsw_for_coupling, adjsfcnsw_for_coupling, dtf,       &
             Sfcprop%tg3, cd, cdq, Statein%prsl(:,1), work3,            &
@@ -1330,7 +1348,7 @@ module module_physics_driver
             Model%iopt_dveg,  Model%iopt_crs,  Model%iopt_btr,         &
             Model%iopt_run,   Model%iopt_sfc,  Model%iopt_frz,         &
             Model%iopt_inf,   Model%iopt_rad,  Model%iopt_alb,         &
-            Model%iopt_snf,   Model%iopt_tbot, Model%iopt_stc,         &
+            Model%iopt_snf,   Model%iopt_tbot, Model%iopt_stc, Model%iopt_gla, &
             grid%xlat, xcosz, Model%yearlen,   Model%julian, Model%imn,&
             Sfcprop%drainncprv, Sfcprop%draincprv, Sfcprop%dsnowprv,   &
             Sfcprop%dgraupelprv, Sfcprop%diceprv,                      &
@@ -1467,6 +1485,7 @@ module module_physics_driver
          if (dry(i)) then
           Sfcprop%t2m(i) = t2mmp(i)
           Sfcprop%q2m(i) = q2mp(i)
+          Sfcprop%emiss(i) = Radtend%semis(i)
          endif
         enddo
       endif 
@@ -3756,7 +3775,7 @@ module module_physics_driver
           Sfcprop%drainncprv(:)  = tem * (frain * rain1(:))
           Sfcprop%dsnowprv(:)    = tem * Diag%snow(:)
           Sfcprop%dgraupelprv(:) = tem * Diag%graupel(:)
-          Sfcprop%diceprv(:)     = tem * Diag%ice(:)
+          Sfcprop%diceprv(:)     = 0.0
         else
           Sfcprop%draincprv(:)   = 0.0
           Sfcprop%drainncprv(:)  = 0.0
@@ -4307,6 +4326,60 @@ module module_physics_driver
         ! Compute the mass of dry air plus all hydrometeors at the end of the physics.
         delp = initial_mass_of_dry_air_plus_vapor * dry_air_plus_hydrometeor_mass_fraction_after_physics
       end subroutine compute_updated_delp_following_dynamics_definition
+
+  subroutine compute_diagnostics_with_scaled_co2(Model, Statein, Sfcprop, Coupling, Grid, Radtend, ix, im, levs, Diag)
+     type(GFS_control_type),         intent(in)    :: Model
+     type(GFS_statein_type),         intent(in)    :: Statein
+     type(GFS_sfcprop_type),         intent(in)    :: Sfcprop
+     type(GFS_coupling_type),        intent(in)    :: Coupling
+     type(GFS_grid_type),            intent(in)    :: Grid
+     type(GFS_radtend_type),         intent(in)    :: Radtend
+     integer,                        intent(in)    :: ix, im, levs
+     type(GFS_diag_type),            intent(inout) :: Diag
+
+     integer :: n
+
+     ! Local variables that will get reused throughout the multi-call loop
+     real(kind=kind_phys), dimension(im,levs) :: dtdt, dtdtc
+     real(kind=kind_phys), dimension(im) :: adjsfcdsw, adjsfcnsw, adjsfcdlw, &
+        adjsfculw, adjnirbmu, adjnirdfu, adjvisbmu, adjvisdfu, adjnirbmd,    &
+        adjnirdfd, adjvisbmd, adjvisdfd, xmu, xcosz
+
+     do n = 1, Model%n_diagnostic_radiation_calls
+        call dcyc2t3                                                                        &
+    !  ---  inputs:
+           ( Model%solhr, Model%slag, Model%sdec, Model%cdec, Grid%sinlat,                  &
+             Grid%coslat, Grid%xlon, Radtend%coszen, Sfcprop%tsfc,                          &
+             Statein%tgrs(1,1), Radtend%tsflw, Radtend%semis,                               &
+             Coupling%sfcdsw_with_scaled_co2(n,:), Coupling%sfcnsw_with_scaled_co2(n,:),    &
+             Coupling%sfcdlw_with_scaled_co2(n,:), Radtend%htrsw_with_scaled_co2(n,:,:),    &
+             Radtend%swhc_with_scaled_co2(n,:,:), Radtend%htrlw_with_scaled_co2(n,:,:),     &
+             Radtend%lwhc_with_scaled_co2(n,:,:), Coupling%nirbmui_with_scaled_co2(n,:),    &
+             Coupling%nirdfui_with_scaled_co2(n,:), Coupling%visbmui_with_scaled_co2(n,:),  &
+             Coupling%visdfui_with_scaled_co2(n,:), Coupling%nirbmdi_with_scaled_co2(n,:),  &
+             Coupling%nirdfdi_with_scaled_co2(n,:), Coupling%visbmdi_with_scaled_co2(n,:),  &
+             Coupling%visdfdi_with_scaled_co2(n,:), ix, im, levs, Model%daily_mean,         &
+    !  ---  input/output:
+             dtdt, dtdtc,                                                                   &
+    !  ---  outputs:
+             adjsfcdsw, adjsfcnsw, adjsfcdlw, adjsfculw, xmu, xcosz, adjnirbmu, adjnirdfu,  &
+             adjvisbmu, adjvisdfu, adjnirbmd, adjnirdfd, adjvisbmd,                         &
+             adjvisdfd                                                                      &
+           )
+
+        Diag%dlwsfc_with_scaled_co2(n,:) = Diag%dlwsfc_with_scaled_co2(n,:) + adjsfcdlw * Model%dtf
+        Diag%ulwsfc_with_scaled_co2(n,:) = Diag%ulwsfc_with_scaled_co2(n,:) + adjsfculw * Model%dtf
+
+        Diag%dlwsfci_with_scaled_co2(n,:) = adjsfcdlw
+        Diag%ulwsfci_with_scaled_co2(n,:) = adjsfculw
+        Diag%uswsfci_with_scaled_co2(n,:) = adjsfcdsw - adjsfcnsw
+        Diag%dswsfci_with_scaled_co2(n,:) = adjsfcdsw
+
+        Diag%uswsfc_with_scaled_co2(n,:) = Diag%uswsfc_with_scaled_co2(n,:) + (adjsfcdsw - adjsfcnsw) * Model%dtf
+        Diag%dswsfc_with_scaled_co2(n,:) = Diag%dswsfc_with_scaled_co2(n,:) + adjsfcdsw * Model%dtf
+      enddo
+
+  end subroutine compute_diagnostics_with_scaled_co2
 !> @}
 
 end module module_physics_driver

@@ -225,6 +225,7 @@ module GFS_typedefs
     real (kind=kind_phys), pointer :: vfrac  (:)   => null()  !< vegetation fraction
     real (kind=kind_phys), pointer :: vtype  (:)   => null()  !< vegetation type
     real (kind=kind_phys), pointer :: stype  (:)   => null()  !< soil type
+    real (kind=kind_phys), pointer :: scolor (:)   => null()  !< soil color
     real (kind=kind_phys), pointer :: uustar (:)   => null()  !< boundary layer parameter
     real (kind=kind_phys), pointer :: oro    (:)   => null()  !< orography
     real (kind=kind_phys), pointer :: oro_uf (:)   => null()  !< unfiltered orography
@@ -346,12 +347,28 @@ module GFS_typedefs
     real (kind=kind_phys), pointer :: visbmui(:)     => null()   !< sfc uv+vis beam sw upward flux (w/m2)
     real (kind=kind_phys), pointer :: visdfui(:)     => null()   !< sfc uv+vis diff sw upward flux (w/m2)
 
+    real (kind=kind_phys), pointer :: nirbmdi_with_scaled_co2(:,:)     => null()   !< sfc nir beam sw downward flux with scaled carbon dioxide (w/m2)
+    real (kind=kind_phys), pointer :: nirdfdi_with_scaled_co2(:,:)     => null()   !< sfc nir diff sw downward flux with scaled carbon dioxide (w/m2)
+    real (kind=kind_phys), pointer :: visbmdi_with_scaled_co2(:,:)     => null()   !< sfc uv+vis beam sw downward flux with scaled carbon dioxide (w/m2)
+    real (kind=kind_phys), pointer :: visdfdi_with_scaled_co2(:,:)     => null()   !< sfc uv+vis diff sw downward flux with scaled carbon dioxide (w/m2)
+    real (kind=kind_phys), pointer :: nirbmui_with_scaled_co2(:,:)     => null()   !< sfc nir beam sw upward flux with scaled carbon dioxide (w/m2)
+    real (kind=kind_phys), pointer :: nirdfui_with_scaled_co2(:,:)     => null()   !< sfc nir diff sw upward flux with scaled carbon dioxide (w/m2)
+    real (kind=kind_phys), pointer :: visbmui_with_scaled_co2(:,:)     => null()   !< sfc uv+vis beam sw upward flux with scaled carbon dioxide (w/m2)
+    real (kind=kind_phys), pointer :: visdfui_with_scaled_co2(:,:)     => null()   !< sfc uv+vis diff sw upward flux with scaled carbon dioxide (w/m2)
+
     !--- In (physics only)
     real (kind=kind_phys), pointer :: sfcdsw(:)      => null()   !< total sky sfc downward sw flux ( w/m**2 )
                                                                  !< GFS_radtend_type%sfcfsw%dnfxc
     real (kind=kind_phys), pointer :: sfcnsw(:)      => null()   !< total sky sfc netsw flx into ground(w/m**2)
                                                                  !< difference of dnfxc & upfxc from GFS_radtend_type%sfcfsw
     real (kind=kind_phys), pointer :: sfcdlw(:)      => null()   !< total sky sfc downward lw flux ( w/m**2 )
+                                                                 !< GFS_radtend_type%sfclsw%dnfxc
+
+    real (kind=kind_phys), pointer :: sfcdsw_with_scaled_co2(:,:)      => null()   !< total sky sfc downward sw flux with scaled carbon dioxide ( w/m**2 )
+                                                                 !< GFS_radtend_type%sfcfsw%dnfxc
+    real (kind=kind_phys), pointer :: sfcnsw_with_scaled_co2(:,:)      => null()   !< total sky sfc netsw flx into ground with scaled carbon dioxide(w/m**2)
+                                                                 !< difference of dnfxc & upfxc from GFS_radtend_type%sfcfsw
+    real (kind=kind_phys), pointer :: sfcdlw_with_scaled_co2(:,:)      => null()   !< total sky sfc downward lw flux with scaled carbon dioxide ( w/m**2 )
                                                                  !< GFS_radtend_type%sfclsw%dnfxc
 
     !--- incoming quantities
@@ -553,6 +570,9 @@ module GFS_typedefs
     logical              :: fixed_solhr     !< flag to fix solar angle to initial time
     logical              :: fixed_sollat    !< flag to fix solar latitude
     logical              :: daily_mean      !< flag to replace cosz with daily mean value
+    logical              :: do_diagnostic_radiation_with_scaled_co2 !< flag to call radiation multiple times with scaled carbon dioxide for diagnostic purposes (does not affect evolution of simulation)
+    real(kind=kind_phys), dimension(8) :: diagnostic_radiation_co2_scale_factors !< factors to scale carbon dioxide by in diagnostic radiation calls
+    integer              :: n_diagnostic_radiation_calls  !< number of diagnostic radiation calls
 
     !--- microphysical switch
     integer              :: ncld            !< cnoice of cloud scheme
@@ -605,10 +625,11 @@ module GFS_typedefs
     integer              :: iopt_frz  !supercooled liquid water (1-> ny06; 2->koren99)
     integer              :: iopt_inf  !frozen soil permeability (1-> ny06; 2->koren99)
     integer              :: iopt_rad  !radiation transfer (1->gap=f(3d,cosz); 2->gap=0; 3->gap=1-fveg)
-    integer              :: iopt_alb  !snow surface albedo (1->bats; 2->class)
+    integer              :: iopt_alb  !snow surface albedo (1->bats; 2->class; 3->climatology)
     integer              :: iopt_snf  !rainfall & snowfall (1-jordan91; 2->bats; 3->noah)
     integer              :: iopt_tbot !lower boundary of soil temperature (1->zero-flux; 2->noah)
     integer              :: iopt_stc  !snow/soil temperature time scheme (only layer 1)
+    integer              :: iopt_gla  !glacier option (1->phase change; 2->simple)
 
     !--- tuning parameters for physical parameterizations
     logical              :: ras             !< flag for ras convection scheme
@@ -1029,6 +1050,32 @@ module GFS_typedefs
     real (kind=kind_phys), pointer :: lwhc (:,:)   => null()  !< clear sky lw heating rates ( k/s )
     real (kind=kind_phys), pointer :: lwhd (:,:,:) => null()  !< idea sky lw heating rates ( k/s )
 
+!-----------------------------------------
+! Optional arrays for outputs when calling the radiation code a multiple times with scaled carbon dioxide for diagnostic purposes
+
+    type (sfcfsw_type),    pointer :: sfcfsw_with_scaled_co2(:,:)   => null()   !< sw radiation fluxes at sfc with scaled carbon dioxide
+                                                                            !< [dim(im): created in grrad.f], components:
+                                                                            !!     (check module_radsw_parameters for definition)
+                                                                            !!\n   %upfxc - total sky upward sw flux at sfc (w/m**2)
+                                                                            !!\n   %upfx0 - clear sky upward sw flux at sfc (w/m**2)
+                                                                            !!\n   %dnfxc - total sky downward sw flux at sfc (w/m**2)
+                                                                            !!\n   %dnfx0 - clear sky downward sw flux at sfc (w/m**2)
+
+    type (sfcflw_type),    pointer :: sfcflw_with_scaled_co2(:,:)    => null()  !< lw radiation fluxes at sfc with scaled carbon dioxide
+                                                                            !< [dim(im): created in grrad.f], components:
+                                                                            !!     (check module_radlw_paramters for definition)
+                                                                            !!\n   %upfxc - total sky upward lw flux at sfc (w/m**2)
+                                                                            !!\n   %upfx0 - clear sky upward lw flux at sfc (w/m**2)
+                                                                            !!\n   %dnfxc - total sky downward lw flux at sfc (w/m**2)
+                                                                            !!\n   %dnfx0 - clear sky downward lw flux at sfc (w/m**2)
+
+    real (kind=kind_phys), pointer :: htrsw_with_scaled_co2 (:,:,:)  => null()  !< swh  total sky sw heating rate in k/sec with scaled carbon dioxide
+    real (kind=kind_phys), pointer :: htrlw_with_scaled_co2 (:,:,:)  => null()  !< hlw  total sky lw heating rate in k/sec with scaled carbon dioxide
+
+    real (kind=kind_phys), pointer :: swhc_with_scaled_co2 (:,:,:)   => null()  !< clear sky sw heating rates with scaled carbon dioxide ( k/s )
+    real (kind=kind_phys), pointer :: lwhc_with_scaled_co2 (:,:,:)   => null()  !< clear sky lw heating rates with scaled carbon dioxide ( k/s )
+    real (kind=kind_phys), pointer :: lwhd_with_scaled_co2 (:,:,:,:) => null()  !< idea sky lw heating rates with scaled carbon dioxide ( k/s )
+
     contains
       procedure :: create  => radtend_create   !<   allocate array data
   end type GFS_radtend_type
@@ -1180,6 +1227,26 @@ module GFS_typedefs
     type (topflw_type),    pointer :: topflw(:)     => null()   !< lw radiation fluxes at top, component:
                                                !       %upfxc    - total sky upward lw flux at toa (w/m**2)
                                                !       %upfx0    - clear sky upward lw flux at toa (w/m**2)
+    type (topfsw_type),    pointer :: topfsw_with_scaled_co2(:,:)     => null()   !< sw radiation fluxes at toa with scaled carbon dioxide, components:
+                                                             !       %upfxc    - total sky upward sw flux at toa (w/m**2)
+                                                             !       %dnfxc    - total sky downward sw flux at toa (w/m**2)
+                                                             !       %upfx0    - clear sky upward sw flux at toa (w/m**2)
+    type (topflw_type),    pointer :: topflw_with_scaled_co2(:,:)     => null()   !< lw radiation fluxes at top with scaled carbon dioxide, component:
+                                                             !       %upfxc    - total sky upward lw flux at toa (w/m**2)
+                                                             !       %upfx0    - clear sky upward lw flux at toa (w/m**2)
+    real (kind=kind_phys), pointer :: dswrftoa_with_scaled_co2(:,:) => null()  !< sw dn at toa with scaled carbon dioxide (w/m**2)
+    real (kind=kind_phys), pointer :: uswrftoa_with_scaled_co2(:,:) => null()  !< sw up at toa with scaled carbon dioxide (w/m**2)
+    real (kind=kind_phys), pointer :: ulwrftoa_with_scaled_co2(:,:) => null()  !< lw up at toa with scaled carbon dioxide (w/m**2)
+
+    real (kind=kind_phys), pointer :: dlwsfci_with_scaled_co2(:,:) => null()   !< instantaneous lw dn at sfc with scaled carbon dioxide (w/m**2)
+    real (kind=kind_phys), pointer :: ulwsfci_with_scaled_co2(:,:) => null()   !< instantaneous lw up at sfc with scaled carbon dioxide (w/m**2)
+    real (kind=kind_phys), pointer :: dswsfci_with_scaled_co2(:,:) => null()   !< instantaneous sw dn at sfc with scaled carbon dioxide (w/m**2)
+    real (kind=kind_phys), pointer :: uswsfci_with_scaled_co2(:,:) => null()   !< instantaneous sw up at sfc with scaled carbon dioxide (w/m**2)
+    real (kind=kind_phys), pointer :: dlwsfc_with_scaled_co2(:,:) => null()    !< interval-average lw dn at sfc with scaled carbon dioxide (w/m**2)
+    real (kind=kind_phys), pointer :: ulwsfc_with_scaled_co2(:,:) => null()    !< interval-average lw up at sfc with scaled carbon dioxide (w/m**2)
+    real (kind=kind_phys), pointer :: dswsfc_with_scaled_co2(:,:) => null()    !< interval-average sw dn at sfc with scaled carbon dioxide (w/m**2)
+    real (kind=kind_phys), pointer :: uswsfc_with_scaled_co2(:,:) => null()    !< interval-average sw up at sfc with scaled carbon dioxide (w/m**2)
+
 #if defined (USE_COSP) || defined (COSP_OFFLINE)
     type (cosp_type)               :: cosp                      !< cosp output
 #endif
@@ -1321,6 +1388,9 @@ module GFS_typedefs
     real (kind=kind_phys), pointer :: wu2_shal(:,:) => null()
     real (kind=kind_phys), pointer :: eta_shal(:,:) => null()
     real (kind=kind_phys), pointer :: co2(:,:) => null()  ! Vertically resolved CO2 concentration
+    real (kind=kind_phys), pointer :: column_moles_co2_per_square_meter(:) => null()  ! Moles of CO2 in column per square meter
+    real (kind=kind_phys), pointer :: column_moles_dry_air_per_square_meter(:) => null()  ! Moles of dry air in column per square meter
+    real (kind=kind_phys), pointer :: column_moles_co2_per_square_meter_with_scaled_co2(:,:) => null()  ! Moles of CO2 in column per square meter in radiation double call
 
     !--- accumulated quantities for 3D diagnostics
     real (kind=kind_phys), pointer :: upd_mf (:,:)   => null()  !< instantaneous convective updraft mass flux
@@ -1604,6 +1674,7 @@ module GFS_typedefs
     allocate (Sfcprop%vfrac   (IM))
     allocate (Sfcprop%vtype   (IM))
     allocate (Sfcprop%stype   (IM))
+    allocate (Sfcprop%scolor  (IM))
     allocate (Sfcprop%uustar  (IM))
     allocate (Sfcprop%oro     (IM))
     allocate (Sfcprop%oro_uf  (IM))
@@ -1616,6 +1687,7 @@ module GFS_typedefs
     Sfcprop%vfrac   = clear_val
     Sfcprop%vtype   = clear_val
     Sfcprop%stype   = clear_val
+    Sfcprop%scolor  = clear_val
     Sfcprop%uustar  = clear_val
     Sfcprop%oro     = clear_val
     Sfcprop%oro_uf  = clear_val
@@ -1852,6 +1924,34 @@ module GFS_typedefs
     Coupling%sfcdsw    = clear_val
     Coupling%sfcnsw    = clear_val
     Coupling%sfcdlw    = clear_val
+
+    if (Model%do_diagnostic_radiation_with_scaled_co2) then
+       allocate (Coupling%nirbmdi_with_scaled_co2  (Model%n_diagnostic_radiation_calls,IM))
+       allocate (Coupling%nirdfdi_with_scaled_co2  (Model%n_diagnostic_radiation_calls,IM))
+       allocate (Coupling%visbmdi_with_scaled_co2  (Model%n_diagnostic_radiation_calls,IM))
+       allocate (Coupling%visdfdi_with_scaled_co2  (Model%n_diagnostic_radiation_calls,IM))
+       allocate (Coupling%nirbmui_with_scaled_co2  (Model%n_diagnostic_radiation_calls,IM))
+       allocate (Coupling%nirdfui_with_scaled_co2  (Model%n_diagnostic_radiation_calls,IM))
+       allocate (Coupling%visbmui_with_scaled_co2  (Model%n_diagnostic_radiation_calls,IM))
+       allocate (Coupling%visdfui_with_scaled_co2  (Model%n_diagnostic_radiation_calls,IM))
+
+       Coupling%nirbmdi_with_scaled_co2 = clear_val
+       Coupling%nirdfdi_with_scaled_co2 = clear_val
+       Coupling%visbmdi_with_scaled_co2 = clear_val
+       Coupling%visdfdi_with_scaled_co2 = clear_val
+       Coupling%nirbmui_with_scaled_co2 = clear_val
+       Coupling%nirdfui_with_scaled_co2 = clear_val
+       Coupling%visbmui_with_scaled_co2 = clear_val
+       Coupling%visdfui_with_scaled_co2 = clear_val
+
+       allocate (Coupling%sfcdsw_with_scaled_co2    (Model%n_diagnostic_radiation_calls,IM))
+       allocate (Coupling%sfcnsw_with_scaled_co2    (Model%n_diagnostic_radiation_calls,IM))
+       allocate (Coupling%sfcdlw_with_scaled_co2    (Model%n_diagnostic_radiation_calls,IM))
+
+       Coupling%sfcdsw_with_scaled_co2    = clear_val
+       Coupling%sfcnsw_with_scaled_co2    = clear_val
+       Coupling%sfcdlw_with_scaled_co2    = clear_val
+    endif
 
     if (Model%cplflx .or. Model%do_sppt) then
       allocate (Coupling%rain_cpl     (IM))
@@ -2181,6 +2281,8 @@ end subroutine overrides_create
     logical              :: fixed_solhr    = .false.         !< flag to fix solar angle to initial time
     logical              :: fixed_sollat   = .false.         !< flag to fix solar latitude
     logical              :: daily_mean     = .false.         !< flag to replace cosz with daily mean value
+    logical              :: do_diagnostic_radiation_with_scaled_co2 = .false.  !< flag to call radiation a second time with scaled carbon dioxide
+    real(kind=kind_phys), dimension(8) :: diagnostic_radiation_co2_scale_factors = -999.0  !< factors to scale carbon dioxide by in radiation double calls
 
     !--- GFDL microphysical parameters
     logical              :: do_sat_adj   = .false.           !< flag for fast saturation adjustment
@@ -2228,6 +2330,7 @@ end subroutine overrides_create
     integer              :: iopt_snf       =  1  !rainfall & snowfall (1-jordan91; 2->bats; 3->noah)
     integer              :: iopt_tbot      =  2  !lower boundary of soil temperature (1->zero-flux; 2->noah)
     integer              :: iopt_stc       =  1  !snow/soil temperature time scheme (only layer 1)
+    integer              :: iopt_gla       =  2  !glacier option (1->phase change; 2->simple)
 
     !--- tuning parameters for physical parameterizations
     logical              :: ras            = .false.                  !< flag for ras convection scheme
@@ -2470,6 +2573,8 @@ end subroutine overrides_create
                                isot, iems,  iaer, iovr_sw, iovr_lw, ictm, isubc_sw,         &
                                isubc_lw, crick_proof, ccnorm, lwhtr, swhtr, nkld,           &
                                fixed_date, fixed_solhr, fixed_sollat, daily_mean, sollat,   &
+                               do_diagnostic_radiation_with_scaled_co2,                                    &
+                               diagnostic_radiation_co2_scale_factors,                     &
                           !--- microphysical parameterizations
                                ncld, do_sat_adj, zhao_mic, psautco, prautco,                &
                                evpco, wminco, fprcp, mg_dcs, mg_qcvar,                      &
@@ -2479,6 +2584,7 @@ end subroutine overrides_create
                           !    Noah MP options
                                iopt_dveg,iopt_crs,iopt_btr,iopt_run,iopt_sfc, iopt_frz,     &
                                iopt_inf, iopt_rad,iopt_alb,iopt_snf,iopt_tbot,iopt_stc,     &
+                               iopt_gla,                                                    &
                           !--- physical parameterizations
                                ras, trans_trac, old_monin, cnvgwd, mstrat, moist_adj,       &
                                cscnv, cal_pre, do_aw, do_shoc, shocaftcnv, shoc_cld,        &
@@ -2646,6 +2752,9 @@ end subroutine overrides_create
     Model%fixed_solhr      = fixed_solhr
     Model%fixed_sollat     = fixed_sollat
     Model%daily_mean       = daily_mean
+    Model%do_diagnostic_radiation_with_scaled_co2 = do_diagnostic_radiation_with_scaled_co2
+    Model%diagnostic_radiation_co2_scale_factors = diagnostic_radiation_co2_scale_factors
+    Model%n_diagnostic_radiation_calls = count(Model%diagnostic_radiation_co2_scale_factors .ne. -999.0)
 
     !--- microphysical switch
     Model%ncld             = ncld
@@ -2692,6 +2801,7 @@ end subroutine overrides_create
     Model%iopt_snf         = iopt_snf
     Model%iopt_tbot        = iopt_tbot
     Model%iopt_stc         = iopt_stc
+    Model%iopt_gla         = iopt_gla
 
 
     !--- tuning parameters for physical parameterizations
@@ -3070,6 +3180,7 @@ end subroutine overrides_create
         print *,'iopt_snf   =  ', Model%iopt_snf
         print *,'iopt_tbot   =  ',Model%iopt_tbot
         print *,'iopt_stc   =  ', Model%iopt_stc
+        print *,'iopt_gla   =  ', Model%iopt_gla
 
 
 
@@ -3343,6 +3454,9 @@ end subroutine overrides_create
       print *, ' fixed_solhr       : ', Model%fixed_solhr
       print *, ' fixed_sollat      : ', Model%fixed_sollat
       print *, ' daily_mean        : ', Model%daily_mean
+      print *, ' do_diagnostic_radiation_with_scaled_co2 : ', Model%do_diagnostic_radiation_with_scaled_co2
+      print *, ' diagnostic_radiation_co2_scale_factors : ', Model%diagnostic_radiation_co2_scale_factors
+      print *, ' n_diagnostic_radiation_calls : ', Model%n_diagnostic_radiation_calls
       print *, ' '
       print *, 'microphysical switch'
       print *, ' ncld              : ', Model%ncld
@@ -3389,6 +3503,7 @@ end subroutine overrides_create
       print *, ' iopt_snf          : ', Model%iopt_snf
       print *, ' iopt_tbot         : ', Model%iopt_tbot
       print *, ' iopt_stc          : ', Model%iopt_stc
+      print *, ' iopt_gla          : ', Model%iopt_gla
 
       endif
 
@@ -3781,6 +3896,34 @@ end subroutine overrides_create
     Radtend%lwhc  = clear_val
     Radtend%swhc  = clear_val
 
+    if (Model%do_diagnostic_radiation_with_scaled_co2) then
+       allocate (Radtend%sfcfsw_with_scaled_co2 (Model%n_diagnostic_radiation_calls,IM))
+       allocate (Radtend%sfcflw_with_scaled_co2 (Model%n_diagnostic_radiation_calls,IM))
+
+       Radtend%sfcfsw_with_scaled_co2%upfxc = clear_val
+       Radtend%sfcfsw_with_scaled_co2%upfx0 = clear_val
+       Radtend%sfcfsw_with_scaled_co2%dnfxc = clear_val
+       Radtend%sfcfsw_with_scaled_co2%dnfx0 = clear_val
+       Radtend%sfcflw_with_scaled_co2%upfxc = clear_val
+       Radtend%sfcflw_with_scaled_co2%upfx0 = clear_val
+       Radtend%sfcflw_with_scaled_co2%dnfxc = clear_val
+       Radtend%sfcflw_with_scaled_co2%dnfx0 = clear_val
+
+       allocate(Radtend%htrsw_with_scaled_co2(Model%n_diagnostic_radiation_calls,IM,Model%levs))
+       allocate(Radtend%htrlw_with_scaled_co2(Model%n_diagnostic_radiation_calls,IM,Model%levs))
+
+       Radtend%htrsw_with_scaled_co2  = clear_val
+       Radtend%htrlw_with_scaled_co2  = clear_val
+
+       allocate (Radtend%swhc_with_scaled_co2  (Model%n_diagnostic_radiation_calls,IM,Model%levs))
+       allocate (Radtend%lwhc_with_scaled_co2  (Model%n_diagnostic_radiation_calls,IM,Model%levs))
+       allocate (Radtend%lwhd_with_scaled_co2  (Model%n_diagnostic_radiation_calls,IM,Model%levs,6))
+
+       Radtend%lwhd_with_scaled_co2  = clear_val
+       Radtend%lwhc_with_scaled_co2  = clear_val
+       Radtend%swhc_with_scaled_co2  = clear_val
+    endif
+
   end subroutine radtend_create
 
 
@@ -3799,6 +3942,21 @@ end subroutine overrides_create
     allocate (Diag%ctau    (IM,Model%levs,2))
     allocate (Diag%topfsw  (IM))
     allocate (Diag%topflw  (IM))
+    if (Model%do_diagnostic_radiation_with_scaled_co2) then
+       allocate (Diag%topfsw_with_scaled_co2  (Model%n_diagnostic_radiation_calls,IM))
+       allocate (Diag%topflw_with_scaled_co2  (Model%n_diagnostic_radiation_calls,IM))
+       allocate (Diag%dswrftoa_with_scaled_co2 (Model%n_diagnostic_radiation_calls,IM))
+       allocate (Diag%uswrftoa_with_scaled_co2 (Model%n_diagnostic_radiation_calls,IM))
+       allocate (Diag%ulwrftoa_with_scaled_co2 (Model%n_diagnostic_radiation_calls,IM))
+       allocate (Diag%dlwsfci_with_scaled_co2 (Model%n_diagnostic_radiation_calls,IM))
+       allocate (Diag%ulwsfci_with_scaled_co2 (Model%n_diagnostic_radiation_calls,IM))
+       allocate (Diag%dswsfci_with_scaled_co2 (Model%n_diagnostic_radiation_calls,IM))
+       allocate (Diag%uswsfci_with_scaled_co2 (Model%n_diagnostic_radiation_calls,IM))
+       allocate (Diag%dlwsfc_with_scaled_co2 (Model%n_diagnostic_radiation_calls,IM))
+       allocate (Diag%ulwsfc_with_scaled_co2 (Model%n_diagnostic_radiation_calls,IM))
+       allocate (Diag%dswsfc_with_scaled_co2 (Model%n_diagnostic_radiation_calls,IM))
+       allocate (Diag%uswsfc_with_scaled_co2 (Model%n_diagnostic_radiation_calls,IM))
+    endif
     !--- Physics
     !--- In/Out
     allocate (Diag%srunoff (IM))
@@ -3907,6 +4065,8 @@ end subroutine overrides_create
     allocate (Diag%pfr(IM,Model%levs))
     allocate (Diag%pfs(IM,Model%levs))
     allocate (Diag%pfg(IM,Model%levs))
+    allocate (Diag%column_moles_co2_per_square_meter(IM))
+    allocate (Diag%column_moles_dry_air_per_square_meter(IM))
 
     !--- 3D diagnostics
     if (Model%ldiag3d) then
@@ -3924,6 +4084,10 @@ end subroutine overrides_create
       allocate (Diag%wu2_shal(IM,Model%levs))
       allocate (Diag%eta_shal(IM,Model%levs))
       allocate (Diag%co2(IM,Model%levs))
+
+      if (Model%do_diagnostic_radiation_with_scaled_co2) then
+         allocate (Diag%column_moles_co2_per_square_meter_with_scaled_co2(Model%n_diagnostic_radiation_calls,IM))
+      endif
 
       !--- needed to allocate GoCart coupling fields
       allocate (Diag%upd_mf (IM,Model%levs))
@@ -4078,6 +4242,24 @@ end subroutine overrides_create
       Diag%cldcov     = zero
     endif
 
+    if (Model%do_diagnostic_radiation_with_scaled_co2) then
+       Diag%topfsw_with_scaled_co2%upfxc = zero
+       Diag%topfsw_with_scaled_co2%dnfxc = zero
+       Diag%topfsw_with_scaled_co2%upfx0 = zero
+       Diag%topflw_with_scaled_co2%upfxc = zero
+       Diag%topflw_with_scaled_co2%upfx0 = zero
+       Diag%dswrftoa_with_scaled_co2 = zero
+       Diag%uswrftoa_with_scaled_co2 = zero
+       Diag%ulwrftoa_with_scaled_co2 = zero
+       Diag%dlwsfci_with_scaled_co2 = zero
+       Diag%ulwsfci_with_scaled_co2 = zero
+       Diag%dswsfci_with_scaled_co2 = zero
+       Diag%uswsfci_with_scaled_co2 = zero
+       Diag%dlwsfc_with_scaled_co2 = zero
+       Diag%ulwsfc_with_scaled_co2 = zero
+       Diag%dswsfc_with_scaled_co2 = zero
+       Diag%uswsfc_with_scaled_co2 = zero
+    endif
 
   end subroutine diag_rad_zero
 
