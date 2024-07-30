@@ -1672,6 +1672,16 @@ module module_physics_driver
 
           if (Model%isatmedmf == 0) then   
              ! initial version of satmedmfvdif (Nov 2018) modified by kgao
+             !$ser verbatim pbl_prsik=Statein%prsik(1,1)
+             !$ser savepoint PBL-In
+             !$ser data pbl_ntrac=nvdiff pbl_ntcw=Model%ntcw pbl_ntiw=Model%ntiw pbl_ntke=Model%ntke pbl_dv=dvdt pbl_du=dudt pbl_tdt=dtdt pbl_rtg=dqdt pbl_u1=Statein%ugrs pbl_v1=Statein%vgrs
+             !$ser data pbl_t1=Statein%tgrs pbl_q1=Statein%qgrs pbl_swh=Radtend%htrsw pbl_hlw=Radtend%htrlw pbl_xmu=xmu pbl_garea=garea pbl_islmsk=islmsk pbl_psk=pbl_prsik pbl_rbsoil=rb
+             !$ser data pbl_zorl=Sfcprop%zorl pbl_u10m=Diag%u10m pbl_v10m=Diag%v10m pbl_fm=Sfcprop%ffmm pbl_fh=Sfcprop%ffhh pbl_tsea=Sfcprop%tsfc pbl_heat=hflx pbl_evap=evap pbl_stress=stress
+             !$ser data pbl_wind=wind pbl_kpbl=kpbl pbl_prsi=Statein%prsi pbl_delta=del pbl_prsl=Statein%prsl pbl_prslk=Statein%prslk pbl_phii=Statein%phii pbl_phil=Statein%phil pbl_dtp=dtp
+             !$ser data pbl_dspheat=Model%dspheat pbl_dusfc=dusfc1 pbl_dvsfc=dvsfc1 pbl_dtsfc=dtsfc1 pbl_dqsfc=dqsfc1 pbl_hpbl=Diag%hpbl pbl_kinver=kinver pbl_xkzm_m=Model%xkzm_m
+             !$ser data pbl_xkzm_h=Model%xkzm_h pbl_xkzm_ml=Model%xkzm_ml pbl_xkzm_hl=Model%xkzm_hl pbl_xkzm_mi=Model%xkzm_mi pbl_xkzm_hi=Model%xkzm_hi pbl_xkzm_s=Model%xkzm_s
+             !$ser data pbl_xkzminv=Model%xkzminv pbl_do_dk_hb19=Model%do_dk_hb19 pbl_xkzm_lim=Model%xkzm_lim pbl_xkgdx=Model%xkgdx pbl_rlmn=Model%rlmn pbl_rlmx=Model%rlmx pbl_dkt=dkt
+             !$ser data pbl_cap_k0_land=Model%cap_k0_land
              call satmedmfvdif(ix, im, levs, nvdiff,                            & 
                    Model%ntcw, Model%ntiw, Model%ntke,                          &
                    dvdt, dudt, dtdt, dqdt,                                      &
@@ -1687,7 +1697,9 @@ module module_physics_driver
                    Model%xkzm_s,  Model%xkzminv, Model%do_dk_hb19,              &
                    Model%xkzm_lim, Model%xkgdx,                                 &
                    Model%rlmn, Model%rlmx, Model%cap_k0_land, dkt)
-
+             !$ser savepoint PBL-Out
+             !$ser data pbl_du=dudt pbl_dv=dvdt pbl_tdt=dtdt pbl_rtg=dqdt pbl_kpbl=kpbl
+             !$ser data pbl_dusfc=dusfc1 pbl_dvsfc=dvsfc1 pbl_dtsfc=dtsfc1 pbl_dqsfc=dqsfc1 pbl_hpbl=Diag%hpbl
              elseif (Model%isatmedmf == 1) then   
                 do i=1,im
                    if (islmsk(i) == 1) then
