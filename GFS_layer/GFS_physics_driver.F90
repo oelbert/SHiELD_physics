@@ -1288,6 +1288,16 @@ module module_physics_driver
         else
 
 !  --- ...  surface energy balance over ocean
+          !$ser verbatim if (iter == 1) then
+            !$ser savepoint "sfc_ocean-in-iter1"
+          !$ser verbatim else
+            !$ser savepoint "sfc_ocean-in-iter2"
+          !$ser verbatim end if
+          !$ser data ocean_ps=Statein%pgr ocean_u1=Statein%ugrs ocean_v1=Statein%vgrs ocean_t1=Statein%tgrs
+          !$ser data ocean_q1=Statein%qgrs ocean_tskin=Sfcprop%tsfc ocean_cm=cd ocean_ch=cdq
+          !$ser data ocean_prsl1=Statein%prsl(:,1) ocean_prslki=work3 ocean_islmsk=islmsk ocean_ep=ep1d
+          !$ser data ocean_ddvel=Tbd%phy_f2d(:,Model%num_p2d) ocean_flag_iter=flag_iter ocean_qsurf=qss
+          !$ser data ocean_cmm=Diag%cmm ocean_chh=Diag%chh ocean_gflux=gflx ocean_evap=evap ocean_hflx=hflx
 
           call sfc_ocean                                                &
 !  ---  inputs:
@@ -1296,6 +1306,13 @@ module module_physics_driver
             work3, islmsk, Tbd%phy_f2d(1,Model%num_p2d), flag_iter,     &
 !  ---  outputs:
              qss, Diag%cmm, Diag%chh, gflx, evap, hflx, ep1d)
+          !$ser verbatim if (iter == 1) then
+            !$ser savepoint "sfc_ocean-in-iter1"
+          !$ser verbatim else
+            !$ser savepoint "sfc_ocean-in-iter2"
+          !$ser verbatim end if
+          !$ser data ocean_qsurf=qss ocean_cmm=Diag%cmm ocean_chh=Diag%chh ocean_gflux=gflx ocean_evap=evap
+          !$ser data ocean_hflx=hflx ocean_ep=ep1d
 
         endif       ! if ( nstf_name(1) > 0 ) then
 
@@ -1388,7 +1405,12 @@ module module_physics_driver
             endif
           enddo
         endif
-
+        !$ser verbatim if (iter == 1) then
+          !$ser savepoint "sfc_sice-in-iter1"
+        !$ser verbatim else
+          !$ser savepoint "sfc_sice-in-iter2"
+        !$ser verbatim end if
+        !$ser data
         call sfc_sice                                                   &
 !  ---  inputs:
            (im, Model%lsoil, Statein%pgr, Statein%ugrs, Statein%vgrs,   &
