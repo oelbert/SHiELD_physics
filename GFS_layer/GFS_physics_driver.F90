@@ -1192,9 +1192,9 @@ module module_physics_driver
             if (Model%sfc_gfdl) then
 ! a new and more flexible version of sfc_diff by kgao
             !$ser verbatim if (iter == 1) then
-              !$ser savepoint "sfc_diff-in-iter1"
+              !$ser savepoint sfc_diff-in-iter1
             !$ser verbatim else
-              !$ser savepoint "sfc_diff-in-iter2"
+              !$ser savepoint sfc_diff-in-iter2
             !$ser verbatim end if
             !$ser data u1=Statein%ugrs v1=Statein%vgrs t1=Statein%tgrs q1=Statein%qgrs z1=Diag%zlvl
             !$ser data snowdepth=Sfcprop%snowd tsfc=Sfcprop%tsfc z0rl=Sfcprop%zorl ztrl=Sfcprop%ztrl cm=cd ch=cdq
@@ -1216,9 +1216,9 @@ module module_physics_driver
                  Model%do_z0_hwrf17, Model%do_z0_hwrf17_hwonly,     &
                  Model%wind_th_hwrf)
             !$ser verbatim if (iter == 1) then
-              !$ser savepoint "sfc_diff-out-iter1"
+              !$ser savepoint sfc_diff-out-iter1
             !$ser verbatim else
-              !$ser savepoint "sfc_diff-out-iter2"
+              !$ser savepoint sfc_diff-out-iter2
             !$ser verbatim end if
             !$ser data wind=wind z0rl=Sfcprop%zorl ztrl=Sfcprop%ztrl cm=cd ch=cdq stress=stress fm=Sfcprop%ffmm
             !$ser data fh=Sfcprop%ffhh ustar=Sfcprop%uustar fm10=fm10 fh2=fh2
@@ -1309,9 +1309,9 @@ module module_physics_driver
 
 !  --- ...  surface energy balance over ocean
           !$ser verbatim if (iter == 1) then
-            !$ser savepoint "sfc_ocean-in-iter1"
+            !$ser savepoint sfc_ocean-in-iter1
           !$ser verbatim else
-            !$ser savepoint "sfc_ocean-in-iter2"
+            !$ser savepoint sfc_ocean-in-iter2
           !$ser verbatim end if
           !$ser data ocean_ps=Statein%pgr ocean_u1=Statein%ugrs ocean_v1=Statein%vgrs ocean_t1=Statein%tgrs
           !$ser data ocean_q1=Statein%qgrs ocean_tskin=Sfcprop%tsfc ocean_cm=cd ocean_ch=cdq
@@ -1327,9 +1327,9 @@ module module_physics_driver
 !  ---  outputs:
              qss, Diag%cmm, Diag%chh, gflx, evap, hflx, ep1d)
           !$ser verbatim if (iter == 1) then
-            !$ser savepoint "sfc_ocean-out-iter1"
+            !$ser savepoint sfc_ocean-out-iter1
           !$ser verbatim else
-            !$ser savepoint "sfc_ocean-out-iter2"
+            !$ser savepoint sfc_ocean-out-iter2
           !$ser verbatim end if
           !$ser data ocean_qsurf=qss ocean_cmm=Diag%cmm ocean_chh=Diag%chh ocean_gflux=gflx ocean_evap=evap
           !$ser data ocean_hflx=hflx ocean_ep=ep1d
@@ -1348,6 +1348,24 @@ module module_physics_driver
 !     if (lprnt) write(0,*)' tsead=',tsea(ipr),' tsurf=',tsurf(ipr),iter
 !    &,' pgr=',pgr(ipr),' sfcemis=',sfcemis(ipr)
 
+          !$ser verbatim if (iter == 1) then
+            !$ser savepoint sfc_drv-in-iter1
+          !$ser verbatim else
+            !$ser savepoint sfc_drv-in-iter2
+          !$ser verbatim end if
+          !$ser data km=Model%lsoil ps=Statein%pgr t1=Statein%tgrs q1=Statein%qgrs soiltyp=soiltyp
+          !$ser data vegtype=vegtype sigmaf=sigmaf sfcemis=Radtend%semis dlwflx=gabsbdlw dswsfc=adjsfcdsw_for_coupling
+          !$ser data snet=adjsfcnsw_for_coupling delt=dtf tg3=Sfcprop%tg3 cm=cd ch=cdq prsl1=Statein%prsl(:,1)
+          !$ser data prslki=work3 zf=Diag%zlvl land=dry wind=wind slopetyp=slopetyp shdmin=Sfcprop%shdmin
+          !$ser data shdmax=Sfcprop%shdmax snoalb=Sfcprop%snoalb sfalb=Radtend%sfalb flag_iter=flag_iter flag_guess=flag_guess
+          !$ser data lheatstrg=Model%lheatstrg isot=Model%isot ivegsrc=Model%ivegsrc bexppert=bexp1d xlaipert=xlai1d
+          !$ser data vegfpert=vegf1d pertvegf=Model%pertvegf
+          !$ser data weasd=Sfcprop%weasd snwdph=Sfcprop%snowd tskin=Sfcprop%tsfc
+          !$ser data tprcp=Sfcprop%tprcp srflag=Sfcprop%srflag smc=smsoil stc=stsoil slc=slsoil canopy=Sfcprop%canopy
+          !$ser data trans=trans tsurf=tsurf zorl=Sfcprop%zorl
+          !$ser data sncovr1=Sfcprop%sncovr qsurf=qss gflux=gflx drain=drain evap=evap hflx=hflx
+          !$ser data ep=ep1d runoff=runof cmm=Diag%cmm chh=Diag%chh evbs=evbs evcw=evcw sbsno=sbsno snowc=snowc
+          !$ser data stm=Diag%soilm snohf=snohf smcwlt2=Diag%smcwlt2 smcref2=Diag%smcref2 wet1=Diag%wet1
           call sfc_drv                                                 &
 !  ---  inputs:
            (im, Model%lsoil, Statein%pgr,                              &
@@ -1367,6 +1385,18 @@ module module_physics_driver
             Sfcprop%sncovr, qss, gflx, drain, evap, hflx, ep1d, runof, &
             Diag%cmm, Diag%chh, evbs, evcw, sbsno, snowc, Diag%soilm,  &
             snohf, Diag%smcwlt2, Diag%smcref2, Diag%wet1)
+
+          !$ser verbatim if (iter == 1) then
+            !$ser savepoint sfc_drv-out-iter1
+          !$ser verbatim else
+            !$ser savepoint sfc_drv-out-iter2
+          !$ser verbatim end if
+          !$ser data weasd=Sfcprop%weasd snwdph=Sfcprop%snowd tskin=Sfcprop%tsfc
+          !$ser data tprcp=Sfcprop%tprcp srflag=Sfcprop%srflag smc=smsoil stc=stsoil slc=slsoil canopy=Sfcprop%canopy
+          !$ser data trans=trans tsurf=tsurf zorl=Sfcprop%zorl
+          !$ser data sncovr1=Sfcprop%sncovr qsurf=qss gflux=gflx drain=drain evap=evap hflx=hflx
+          !$ser data ep=ep1d runoff=runof cmm=Diag%cmm chh=Diag%chh evbs=evbs evcw=evcw sbsno=sbsno snowc=snowc
+          !$ser data stm=Diag%soilm snohf=snohf smcwlt2=Diag%smcwlt2 smcref2=Diag%smcref2 wet1=Diag%wet1
 
 !     if (lprnt) write(0,*)' tseae=',tsea(ipr),' tsurf=',tsurf(ipr),iter
 !    &,' phy_f2d=',phy_f2d(ipr,num_p2d)
@@ -1426,9 +1456,9 @@ module module_physics_driver
           enddo
         endif
         !$ser verbatim if (iter == 1) then
-          !$ser savepoint "sfc_sice-in-iter1"
+          !$ser savepoint sfc_sice-in-iter1
         !$ser verbatim else
-          !$ser savepoint "sfc_sice-in-iter2"
+          !$ser savepoint sfc_sice-in-iter2
         !$ser verbatim end if
         !$ser data sice_ps=Statein%pgr sice_wind=wind sice_u1=Statein%ugrs sice_v1=Statein%vgrs
         !$ser data sice_t1=Statein%tgrs sice_q1=Statein%qgrs sice_delt=dtf sfcemis=semis
@@ -1454,9 +1484,9 @@ module module_physics_driver
             Sfcprop%snowd, qss, snowmt, gflx, Diag%cmm, Diag%chh, evap, &
             hflx)
         !$ser verbatim if (iter == 1) then
-          !$ser savepoint "sfc_sice-out-iter1"
+          !$ser savepoint sfc_sice-out-iter1
         !$ser verbatim else
-          !$ser savepoint "sfc_sice-out-iter2"
+          !$ser savepoint sfc_sice-out-iter2
         !$ser verbatim end if
         !$ser data sice_hice=zice sice_fice=cice sice_tice=tice sice_weasd=Sfcprop%weasd sice_tskin=Sfcprop%tsfc
         !$ser data sice_tprcp=Sfcprop%tprcp sice_stc=stsoil sice_ep=ep1d sice_snowd=Sfcprop%snowd sice_qsurf=qss
