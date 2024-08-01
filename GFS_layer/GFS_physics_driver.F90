@@ -1410,7 +1410,15 @@ module module_physics_driver
         !$ser verbatim else
           !$ser savepoint "sfc_sice-in-iter2"
         !$ser verbatim end if
-        !$ser data
+        !$ser data sice_ps=Statein%pgr sice_wind=wind sice_u1=Statein%ugrs sice_v1=Statein%vgrs
+        !$ser data sice_t1=Statein%tgrs sice_q1=Statein%qgrs sice_delt=dtf sfcemis=semis
+        !$ser data sice_dlwflx=gabsbdlw sice_sfcnsw=adjsfcnsw_for_coupling sice_sfcdsw=adjsfcdsw_for_coupling
+        !$ser data sice_srflag=Sfcprop%srflag sice_cm=cd sice_ch=cdq sice_prsl1=Statein%prsl(1,1)
+        !$ser data sice_prslki=work3 sice_islmsk=islmsk sice_flag_iter=flag_iter sice_mom4ice=Model%mom4ice
+        !$ser data sice_lsm=Model%lsm sice_hice=zice sice_fice=cice sice_tice=tice sice_weasd=Sfcprop%weasd
+        !$ser data sice_tskin=Sfcprop%tsfc sice_tprcp=Sfcprop%tprcp sice_stc=stsoil sice_ep=ep1d
+        !$ser data sice_snowd=Sfcprop%snowd sice_qsurf=qss sice_snowmt=snowmt sice_gflux=gflx sice_cmm=Diag%cmm
+        !$ser data sice_chh%chh=Diag%chh sice_evap=evap sice_hflx=hflx
         call sfc_sice                                                   &
 !  ---  inputs:
            (im, Model%lsoil, Statein%pgr, Statein%ugrs, Statein%vgrs,   &
@@ -1425,6 +1433,15 @@ module module_physics_driver
 !  ---  outputs:
             Sfcprop%snowd, qss, snowmt, gflx, Diag%cmm, Diag%chh, evap, &
             hflx)
+        !$ser verbatim if (iter == 1) then
+          !$ser savepoint "sfc_sice-in-iter1"
+        !$ser verbatim else
+          !$ser savepoint "sfc_sice-in-iter2"
+        !$ser verbatim end if
+        !$ser data sice_hice=zice sice_fice=cice sice_tice=tice sice_weasd=Sfcprop%weasd sice_tskin=Sfcprop%tsfc
+        !$ser data sice_tprcp=Sfcprop%tprcp sice_stc=stsoil sice_ep=ep1d sice_snowd=Sfcprop%snowd sice_qsurf=qss
+        !$ser data sice_snowmt=snowmt sice_gflux=gflx sice_cmm=Diag%cmmsice_chh%chh=Diag%chh sice_evap=evap
+        !$ser data sice_hflx=hflx
 
         if (Model%cplflx) then
           do i = 1, im
