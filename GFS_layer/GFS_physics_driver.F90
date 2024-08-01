@@ -1191,6 +1191,19 @@ module module_physics_driver
 
             if (Model%sfc_gfdl) then
 ! a new and more flexible version of sfc_diff by kgao
+            !$ser verbatim if (iter == 1) then
+              !$ser savepoint "sfc_diff-in-iter1"
+            !$ser verbatim else
+              !$ser savepoint "sfc_diff-in-iter2"
+            !$ser verbatim end if
+            !$ser data u1=Statein%ugrs v1=Statein%vgrs t1=Statein%tgrs q1=Statein%qgrs z1=Diag%zlvl
+            !$ser data snowdepth=Sfcprop%snowd tsfc=Sfcprop%tsfc z0rl=Sfcprop%zorl ztrl=Sfcprop%ztrl cm=cd ch=cdq
+            !$ser data rb=rb prsl1=Statein%prsl(1,1) prslki=work3 islmsk=islmsk stress=stress fm=Sfcprop%ffmm
+            !$ser data fh=Sfcprop%ffhh ustar=Sfcprop%uustar wind=wind ddvel=Tbd%phy_f2d(1,Model%num_p2d) fm10=fm10
+            !$ser data fh2=fh2 sigmaf=sigmaf vegtype=vegtype shdmax=Sfcprop%shdmax ivegsrc=Model%ivegsrc tsurf=tsurf
+            !$ser data flag_iter=flag_iter redrag=Model%redrag do_z0_moon=Model%do_z0_moon
+            !$ser data do_z0_hwrf15=Model%do_z0_hwrf15 do_z0_hwrf17=Model%do_z0_hwrf17 
+            !$ser data do_z0_hwrf17_hwonly=Model%do_z0_hwrf17_hwonly wind_th_hwrf=Model%wind_th_hwrf
             call sfc_diff_gfdl(im,Statein%pgr, Statein%ugrs, Statein%vgrs,&
                  Statein%tgrs, Statein%qgrs, Diag%zlvl, Sfcprop%snowd, &
                  Sfcprop%tsfc, Sfcprop%zorl, Sfcprop%ztrl, cd,      &
@@ -1202,6 +1215,13 @@ module module_physics_driver
                  Model%do_z0_moon, Model%do_z0_hwrf15,              &
                  Model%do_z0_hwrf17, Model%do_z0_hwrf17_hwonly,     &
                  Model%wind_th_hwrf)
+            !$ser verbatim if (iter == 1) then
+              !$ser savepoint "sfc_diff-out-iter1"
+            !$ser verbatim else
+              !$ser savepoint "sfc_diff-out-iter2"
+            !$ser verbatim end if
+            !$ser data wind=wind z0rl=Sfcprop%zorl ztrl=Sfcprop%ztrl cm=cd ch=cdq stress=stress fm=Sfcprop%ffmm
+            !$ser data fh=Sfcprop%ffhh ustar=Sfcprop%uustar fm10=fm10 fh2=fh2
             else
 ! GFS original sfc_diff modified by kgao 
             call sfc_diff (im,Statein%pgr, Statein%ugrs, Statein%vgrs,&
@@ -1307,9 +1327,9 @@ module module_physics_driver
 !  ---  outputs:
              qss, Diag%cmm, Diag%chh, gflx, evap, hflx, ep1d)
           !$ser verbatim if (iter == 1) then
-            !$ser savepoint "sfc_ocean-in-iter1"
+            !$ser savepoint "sfc_ocean-out-iter1"
           !$ser verbatim else
-            !$ser savepoint "sfc_ocean-in-iter2"
+            !$ser savepoint "sfc_ocean-out-iter2"
           !$ser verbatim end if
           !$ser data ocean_qsurf=qss ocean_cmm=Diag%cmm ocean_chh=Diag%chh ocean_gflux=gflx ocean_evap=evap
           !$ser data ocean_hflx=hflx ocean_ep=ep1d
@@ -1434,9 +1454,9 @@ module module_physics_driver
             Sfcprop%snowd, qss, snowmt, gflx, Diag%cmm, Diag%chh, evap, &
             hflx)
         !$ser verbatim if (iter == 1) then
-          !$ser savepoint "sfc_sice-in-iter1"
+          !$ser savepoint "sfc_sice-out-iter1"
         !$ser verbatim else
-          !$ser savepoint "sfc_sice-in-iter2"
+          !$ser savepoint "sfc_sice-out-iter2"
         !$ser verbatim end if
         !$ser data sice_hice=zice sice_fice=cice sice_tice=tice sice_weasd=Sfcprop%weasd sice_tskin=Sfcprop%tsfc
         !$ser data sice_tprcp=Sfcprop%tprcp sice_stc=stsoil sice_ep=ep1d sice_snowd=Sfcprop%snowd sice_qsurf=qss
