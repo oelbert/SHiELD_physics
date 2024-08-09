@@ -1763,7 +1763,7 @@ module module_physics_driver
              ! initial version of satmedmfvdif (Nov 2018) modified by kgao
              !$ser savepoint PBL-In
              !$ser data pbl_ntrac=nvdiff pbl_ntcw=Model%ntcw pbl_ntiw=Model%ntiw pbl_ntke=Model%ntke
-             !$ser datapbl_dv=dvdt pbl_du=dudt pbl_tdt=dtdt pbl_rtg=dqdt pbl_u1=Statein%ugrs pbl_v1=Statein%vgrs
+             !$ser data pbl_dv=dvdt pbl_du=dudt pbl_tdt=dtdt pbl_rtg=dqdt pbl_u1=Statein%ugrs pbl_v1=Statein%vgrs
              !$ser data pbl_t1=Statein%tgrs pbl_q1=Statein%qgrs pbl_swh=Radtend%htrsw pbl_hlw=Radtend%htrlw
              !$ser data pbl_xmu=xmu pbl_garea=garea pbl_islmsk=islmsk pbl_psk=Statein%prsik(1:ix,1) pbl_rbsoil=rb
              !$ser data pbl_zorl=Sfcprop%zorl pbl_u10m=Diag%u10m pbl_v10m=Diag%v10m pbl_fm=Sfcprop%ffmm
