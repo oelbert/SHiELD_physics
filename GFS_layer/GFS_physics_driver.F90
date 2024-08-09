@@ -425,6 +425,7 @@ module module_physics_driver
                  itc, nn
       integer :: kflip
       integer :: ntsd ! for myj
+      !$ser verbatim integer :: ivegsrc, lsm, lsoil, isot, ntcw, ntiw, ntke
 
       integer, dimension(size(Grid%xlon,1)) ::                          &
            kbot, ktop, kcnv, soiltyp, vegtype, kpbl, slopetyp, kinver,  &
@@ -435,7 +436,9 @@ module module_physics_driver
       !--- LOGICAL VARIABLES
       logical :: lprnt, revap, do_awdd, trans_aero
       !$ser verbatim logical :: mp_consv_te, mp_last_step
-
+      !$ser verbatim logical :: redrag, do_z0_moon, do_z0_hwrf15, do_z0_hwrf17, do_dk_hb19
+      !$ser verbatim logical :: do_z0_hwrf17_hwonly, mom4ice, lheatstrg, dspheat, cap_k0_land
+      
       logical, dimension(size(Grid%xlon,1)) ::                          &
            flag_iter, flag_guess, invrsn, skip_macro,                   &
            !--- coupling inputs for physics
@@ -453,6 +456,9 @@ module module_physics_driver
            !--- GFDL Cloud microphysics
            crain, csnow,                                                &
            z0fun, diag_water, diag_rain, diag_rain1
+
+      !$ser verbatim real(kind=kind_phys) :: wind_th_hwrf, pertvegf, xkzm_m, xkzm_h, xkzm_ml, rlmn, rlmx
+      !$ser verbatim real(kind=kind_phys) :: xkzm_hl, xkzm_mi, xkzm_hi, xkzm_s, xkzminv, xkzm_lim, xkgdx
 
       real(kind=kind_phys), dimension(Model%ntrac-Model%ncld+2) ::      &
            fscav, fswtr
@@ -593,6 +599,38 @@ module module_physics_driver
 !
 !
 !===> ...  begin here
+
+      !$ser verbatim ivegsrc = Model%ivegsrc
+      !$ser verbatim redrag = Model%redrag
+      !$ser verbatim do_z0_moon = Model%do_z0_moon
+      !$ser verbatim do_z0_hwrf15 = Model%do_z0_hwrf15
+      !$ser verbatim do_z0_hwrf17  = Model%do_z0_hwrf17 
+      !$ser verbatim do_z0_hwrf17_hwonly = Model%do_z0_hwrf17_hwonly
+      !$ser verbatim wind_th_hwrf = Model%wind_th_hwrf
+      !$ser verbatim mom4ice = Model%mom4ice
+      !$ser verbatim lsm = Model%lsm
+      !$ser verbatim lsoil = Model%lsoil
+      !$ser verbatim lheatstrg = Model%lheatstrg
+      !$ser verbatim isot = Model%isot
+      !$ser verbatim pertvegf = Model%pertvegf
+      !$ser verbatim ntcw = Model%ntcw
+      !$ser verbatim ntiw = Model%ntiw
+      !$ser verbatim ntke = Model%ntke
+      !$ser verbatim dspheat = Model%dspheat
+      !$ser verbatim xkzm_m = Model%xkzm_m
+      !$ser verbatim xkzm_h = Model%xkzm_h
+      !$ser verbatim xkzm_ml = Model%xkzm_ml
+      !$ser verbatim xkzm_hl = Model%xkzm_hl
+      !$ser verbatim xkzm_mi = Model%xkzm_mi
+      !$ser verbatim xkzm_hi = Model%xkzm_hi
+      !$ser verbatim xkzm_s = Model%xkzm_s
+      !$ser verbatim xkzminv = Model%xkzminv
+      !$ser verbatim xkzm_lim = Model%xkzm_lim
+      !$ser verbatim xkgdx = Model%xkgdx
+      !$ser verbatim rlmn = Model%rlmn
+      !$ser verbatim rlmx = Model%rlmx
+      !$ser verbatim cap_k0_land = Model%cap_k0_land
+      !$ser verbatim do_dk_hb19 = Model%do_dk_hb19
 
       me     = Model%me
       ix     = size(Grid%xlon,1)
@@ -1200,10 +1238,10 @@ module module_physics_driver
             !$ser data snowdepth=Sfcprop%snowd tsfc=Sfcprop%tsfc z0rl=Sfcprop%zorl ztrl=Sfcprop%ztrl cm=cd ch=cdq
             !$ser data rb=rb prsl1=Statein%prsl(1,1) prslki=work3 islmsk=islmsk stress=stress fm=Sfcprop%ffmm
             !$ser data fh=Sfcprop%ffhh ustar=Sfcprop%uustar wind=wind ddvel=Tbd%phy_f2d(1,Model%num_p2d) fm10=fm10
-            !$ser data fh2=fh2 sigmaf=sigmaf vegtype=vegtype shdmax=Sfcprop%shdmax ivegsrc=Model%ivegsrc tsurf=tsurf
-            !$ser data flag_iter=flag_iter redrag=Model%redrag do_z0_moon=Model%do_z0_moon
-            !$ser data do_z0_hwrf15=Model%do_z0_hwrf15 do_z0_hwrf17=Model%do_z0_hwrf17 
-            !$ser data do_z0_hwrf17_hwonly=Model%do_z0_hwrf17_hwonly wind_th_hwrf=Model%wind_th_hwrf
+            !$ser data fh2=fh2 sigmaf=sigmaf vegtype=vegtype shdmax=Sfcprop%shdmax ivegsrc=ivegsrc tsurf=tsurf
+            !$ser data flag_iter=flag_iter redrag=redrag do_z0_moon=do_z0_moon
+            !$ser data do_z0_hwrf15=do_z0_hwrf15 do_z0_hwrf17=do_z0_hwrf17 
+            !$ser data do_z0_hwrf17_hwonly=do_z0_hwrf17_hwonly wind_th_hwrf=wind_th_hwrf
             call sfc_diff_gfdl(im,Statein%pgr, Statein%ugrs, Statein%vgrs,&
                  Statein%tgrs, Statein%qgrs, Diag%zlvl, Sfcprop%snowd, &
                  Sfcprop%tsfc, Sfcprop%zorl, Sfcprop%ztrl, cd,      &
@@ -1353,13 +1391,13 @@ module module_physics_driver
           !$ser verbatim else
             !$ser savepoint sfc_drv-in-iter2
           !$ser verbatim end if
-          !$ser data km=Model%lsoil ps=Statein%pgr t1=Statein%tgrs q1=Statein%qgrs soiltyp=soiltyp
+          !$ser data km=lsoil ps=Statein%pgr t1=Statein%tgrs q1=Statein%qgrs soiltyp=soiltyp
           !$ser data vegtype=vegtype sigmaf=sigmaf sfcemis=Radtend%semis dlwflx=gabsbdlw dswsfc=adjsfcdsw_for_coupling
           !$ser data snet=adjsfcnsw_for_coupling delt=dtf tg3=Sfcprop%tg3 cm=cd ch=cdq prsl1=Statein%prsl(:,1)
           !$ser data prslki=work3 zf=Diag%zlvl land=dry wind=wind slopetyp=slopetyp shdmin=Sfcprop%shdmin
           !$ser data shdmax=Sfcprop%shdmax snoalb=Sfcprop%snoalb sfalb=Radtend%sfalb flag_iter=flag_iter flag_guess=flag_guess
-          !$ser data lheatstrg=Model%lheatstrg isot=Model%isot ivegsrc=Model%ivegsrc bexppert=bexp1d xlaipert=xlai1d
-          !$ser data vegfpert=vegf1d pertvegf=Model%pertvegf
+          !$ser data lheatstrg=lheatstrg isot=isot ivegsrc=ivegsrc bexppert=bexp1d xlaipert=xlai1d
+          !$ser data vegfpert=vegf1d pertvegf=pertvegf
           !$ser data weasd=Sfcprop%weasd snwdph=Sfcprop%snowd tskin=Sfcprop%tsfc
           !$ser data tprcp=Sfcprop%tprcp srflag=Sfcprop%srflag smc=smsoil stc=stsoil slc=slsoil canopy=Sfcprop%canopy
           !$ser data trans=trans tsurf=tsurf zorl=Sfcprop%zorl
@@ -1464,8 +1502,8 @@ module module_physics_driver
         !$ser data sice_t1=Statein%tgrs sice_q1=Statein%qgrs sice_delt=dtf sfcemis=Radtend%semis
         !$ser data sice_dlwflx=gabsbdlw sice_sfcnsw=adjsfcnsw_for_coupling sice_sfcdsw=adjsfcdsw_for_coupling
         !$ser data sice_srflag=Sfcprop%srflag sice_cm=cd sice_ch=cdq sice_prsl1=Statein%prsl(1,1)
-        !$ser data sice_prslki=work3 sice_islmsk=islmsk sice_flag_iter=flag_iter sice_mom4ice=Model%mom4ice
-        !$ser data sice_lsm=Model%lsm sice_hice=zice sice_fice=cice sice_tice=tice sice_weasd=Sfcprop%weasd
+        !$ser data sice_prslki=work3 sice_islmsk=islmsk sice_flag_iter=flag_iter sice_mom4ice=mom4ice
+        !$ser data sice_lsm=lsm sice_hice=zice sice_fice=cice sice_tice=tice sice_weasd=Sfcprop%weasd
         !$ser data sice_tskin=Sfcprop%tsfc sice_tprcp=Sfcprop%tprcp sice_stc=stsoil sice_ep=ep1d
         !$ser data sice_snowd=Sfcprop%snowd sice_qsurf=qss sice_snowmt=snowmt sice_gflux=gflx sice_cmm=Diag%cmm
         !$ser data sice_chh%chh=Diag%chh sice_evap=evap sice_hflx=hflx
@@ -1762,7 +1800,7 @@ module module_physics_driver
           if (Model%isatmedmf == 0) then   
              ! initial version of satmedmfvdif (Nov 2018) modified by kgao
              !$ser savepoint PBL-In
-             !$ser data pbl_ntrac=nvdiff pbl_ntcw=Model%ntcw pbl_ntiw=Model%ntiw pbl_ntke=Model%ntke
+             !$ser data pbl_ntrac=nvdiff pbl_ntcw=ntcw pbl_ntiw=ntiw pbl_ntke=ntke
              !$ser data pbl_dv=dvdt pbl_du=dudt pbl_tdt=dtdt pbl_rtg=dqdt pbl_u1=Statein%ugrs pbl_v1=Statein%vgrs
              !$ser data pbl_t1=Statein%tgrs pbl_q1=Statein%qgrs pbl_swh=Radtend%htrsw pbl_hlw=Radtend%htrlw
              !$ser data pbl_xmu=xmu pbl_garea=garea pbl_islmsk=islmsk pbl_psk=Statein%prsik(1:ix,1) pbl_rbsoil=rb
@@ -1770,13 +1808,13 @@ module module_physics_driver
              !$ser data pbl_fh=Sfcprop%ffhh pbl_tsea=Sfcprop%tsfc pbl_heat=hflx pbl_evap=evap pbl_stress=stress
              !$ser data pbl_wind=wind pbl_kpbl=kpbl pbl_prsi=Statein%prsi pbl_delta=del pbl_prsl=Statein%prsl
              !$ser data pbl_prslk=Statein%prslk pbl_phii=Statein%phii pbl_phil=Statein%phil pbl_dtp=dtp
-             !$ser data pbl_dspheat=Model%dspheat pbl_dusfc=dusfc1 pbl_dvsfc=dvsfc1 pbl_dtsfc=dtsfc1
-             !$ser data pbl_dqsfc=dqsfc1 pbl_hpbl=Diag%hpbl pbl_kinver=kinver pbl_xkzm_m=Model%xkzm_m
-             !$ser data pbl_xkzm_h=Model%xkzm_h pbl_xkzm_ml=Model%xkzm_ml pbl_xkzm_hl=Model%xkzm_hl
-             !$ser data pbl_xkzm_mi=Model%xkzm_mi pbl_xkzm_hi=Model%xkzm_hi pbl_xkzm_s=Model%xkzm_s
-             !$ser data pbl_xkzminv=Model%xkzminv pbl_do_dk_hb19=Model%do_dk_hb19 pbl_xkzm_lim=Model%xkzm_lim
-             !$ser data pbl_xkgdx=Model%xkgdx pbl_rlmn=Model%rlmn pbl_rlmx=Model%rlmx pbl_dkt=dkt
-             !$ser data pbl_cap_k0_land=Model%cap_k0_land
+             !$ser data pbl_dspheat=dspheat pbl_dusfc=dusfc1 pbl_dvsfc=dvsfc1 pbl_dtsfc=dtsfc1
+             !$ser data pbl_dqsfc=dqsfc1 pbl_hpbl=Diag%hpbl pbl_kinver=kinver pbl_xkzm_m=xkzm_m
+             !$ser data pbl_xkzm_h=xkzm_h pbl_xkzm_ml=xkzm_ml pbl_xkzm_hl=xkzm_hl
+             !$ser data pbl_xkzm_mi=xkzm_mi pbl_xkzm_hi=xkzm_hi pbl_xkzm_s=xkzm_s
+             !$ser data pbl_xkzminv=xkzminv pbl_do_dk_hb19=do_dk_hb19 pbl_xkzm_lim=xkzm_lim
+             !$ser data pbl_xkgdx=xkgdx pbl_rlmn=rlmn pbl_rlmx=rlmx pbl_dkt=dkt
+             !$ser data pbl_cap_k0_land=cap_k0_land
              call satmedmfvdif(ix, im, levs, nvdiff,                            & 
                    Model%ntcw, Model%ntiw, Model%ntke,                          &
                    dvdt, dudt, dtdt, dqdt,                                      &
