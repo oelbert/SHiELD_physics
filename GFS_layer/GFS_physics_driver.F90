@@ -1461,7 +1461,7 @@ module module_physics_driver
           !$ser savepoint sfc_sice-in-iter2
         !$ser verbatim end if
         !$ser data sice_ps=Statein%pgr sice_wind=wind sice_u1=Statein%ugrs sice_v1=Statein%vgrs
-        !$ser data sice_t1=Statein%tgrs sice_q1=Statein%qgrs sice_delt=dtf sfcemis=semis
+        !$ser data sice_t1=Statein%tgrs sice_q1=Statein%qgrs sice_delt=dtf sfcemis=Radtend%semis
         !$ser data sice_dlwflx=gabsbdlw sice_sfcnsw=adjsfcnsw_for_coupling sice_sfcdsw=adjsfcdsw_for_coupling
         !$ser data sice_srflag=Sfcprop%srflag sice_cm=cd sice_ch=cdq sice_prsl1=Statein%prsl(1,1)
         !$ser data sice_prslki=work3 sice_islmsk=islmsk sice_flag_iter=flag_iter sice_mom4ice=Model%mom4ice
