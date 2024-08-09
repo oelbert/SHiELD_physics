@@ -457,8 +457,9 @@ module module_physics_driver
            crain, csnow,                                                &
            z0fun, diag_water, diag_rain, diag_rain1
 
-      !$ser verbatim real(kind=kind_phys) :: wind_th_hwrf, pertvegf, xkzm_m, xkzm_h, xkzm_ml, rlmn, rlmx
+      !$ser verbatim real(kind=kind_phys) :: wind_th_hwrf, xkzm_m, xkzm_h, xkzm_ml, rlmn, rlmx
       !$ser verbatim real(kind=kind_phys) :: xkzm_hl, xkzm_mi, xkzm_hi, xkzm_s, xkzminv, xkzm_lim, xkgdx
+      !$ser verbatim real (kind=kind_phys), dimension(5) :: pertvegf
 
       real(kind=kind_phys), dimension(Model%ntrac-Model%ncld+2) ::      &
            fscav, fswtr
