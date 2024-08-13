@@ -1799,6 +1799,7 @@ module module_physics_driver
         elseif (Model%satmedmf) then
 
           if (Model%isatmedmf == 0) then   
+             !$ser verbatim print *, 'INFO: Serialize PBL scheme'
              ! initial version of satmedmfvdif (Nov 2018) modified by kgao
              !$ser savepoint PBL-In
              !$ser data pbl_ntrac=nvdiff pbl_ntcw=ntcw pbl_ntiw=ntiw pbl_ntke=ntke
