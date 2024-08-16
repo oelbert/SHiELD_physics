@@ -435,7 +435,7 @@ module module_physics_driver
 
       !--- LOGICAL VARIABLES
       logical :: lprnt, revap, do_awdd, trans_aero
-      !$ser verbatim logical :: mp_consv_te, mp_last_step
+      !$ser verbatim logical :: mp_consv_te, mp_last_step,
       !$ser verbatim logical :: redrag, do_z0_moon, do_z0_hwrf15, do_z0_hwrf17, do_dk_hb19
       !$ser verbatim logical :: do_z0_hwrf17_hwonly, mom4ice, lheatstrg, dspheat, cap_k0_land
       
@@ -595,8 +595,9 @@ module module_physics_driver
       integer :: nwat
       !$ser verbatim integer :: mpi_rank,ier
       !$ser verbatim logical :: ser_on
+      !$ser verbatim ser_on=fs_is_serialization_on()
       !$ser verbatim  call mpi_comm_rank(MPI_COMM_WORLD, mpi_rank,ier)
-      !$ser verbatim print *, 'INFO: inside GFS_physics_driver'
+      !$ser verbatim print *, 'INFO: inside GFS_physics_driver, serialization is ', ser_on
 !
 !
 !===> ...  begin here
