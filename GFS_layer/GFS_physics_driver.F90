@@ -457,7 +457,7 @@ module module_physics_driver
            crain, csnow,                                                &
            z0fun, diag_water, diag_rain, diag_rain1
 
-      !$ser verbatim real(kind=kind_phys) :: wind_th_hwrf, xkzm_m, xkzm_h, xkzm_ml, rlmn, rlmx
+      !$ser verbatim real(kind=kind_phys) :: wind_th_hwrf, xkzm_m, xkzm_h, xkzm_ml, rlmn, rlmx, z0s_max
       !$ser verbatim real(kind=kind_phys) :: xkzm_hl, xkzm_mi, xkzm_hi, xkzm_s, xkzminv, xkzm_lim, xkgdx
       !$ser verbatim real (kind=kind_phys), dimension(5) :: pertvegf
 
@@ -633,6 +633,7 @@ module module_physics_driver
       !$ser verbatim rlmx = Model%rlmx
       !$ser verbatim cap_k0_land = Model%cap_k0_land
       !$ser verbatim do_dk_hb19 = Model%do_dk_hb19
+      !$ser verbatim z0s_max = Model%z0s_max
 
       me     = Model%me
       ix     = size(Grid%xlon,1)
@@ -1242,7 +1243,7 @@ module module_physics_driver
             !$ser data fh=Sfcprop%ffhh ustar=Sfcprop%uustar wind=wind ddvel=Tbd%phy_f2d(1,Model%num_p2d) fm10=fm10
             !$ser data fh2=fh2 sigmaf=sigmaf vegtype=vegtype shdmax=Sfcprop%shdmax ivegsrc=ivegsrc tsurf=tsurf
             !$ser data flag_iter=flag_iter redrag=redrag do_z0_moon=do_z0_moon
-            !$ser data do_z0_hwrf15=do_z0_hwrf15 do_z0_hwrf17=do_z0_hwrf17 
+            !$ser data do_z0_hwrf15=do_z0_hwrf15 do_z0_hwrf17=do_z0_hwrf17 z0s_max=z0s_max
             !$ser data do_z0_hwrf17_hwonly=do_z0_hwrf17_hwonly wind_th_hwrf=wind_th_hwrf
             call sfc_diff_gfdl(im,Statein%pgr, Statein%ugrs, Statein%vgrs,&
                  Statein%tgrs, Statein%qgrs, Diag%zlvl, Sfcprop%snowd, &
