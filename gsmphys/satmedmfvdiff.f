@@ -38,6 +38,8 @@
      &     xkzm_s,xkzinv,do_dk_hb19,xkzm_lim,xkgdx,
      &     rlmn, rlmx, cap_k0_land, dkt_out)
 !
+      !$ser verbatim use mpi
+      !$ser verbatim USE m_serialize, ONLY: fs_is_serialization_on
       use machine  , only : kind_phys
       use funcphys , only : fpvs
       use physcons, grav => con_g, rd => con_rd, cp => con_cp
@@ -203,6 +205,11 @@
       parameter(h1=0.33333333)
       parameter(ck0=0.4,ck1=0.15,ch0=0.4,ch1=0.15,ce0=0.4)
       parameter(rchck=1.5,cdtn=25.)
+      !$ser verbatim integer :: mpi_rank,ier
+      !$ser verbatim logical :: ser_on
+      !$ser verbatim ser_on=fs_is_serialization_on()
+      !$ser verbatim  call mpi_comm_rank(MPI_COMM_WORLD, mpi_rank,ier)
+      !$ser verbatim print *, 'INFO: inside PBL scheme, serialization is ', ser_on
 
       elmx = rlmx
 !
@@ -772,16 +779,33 @@
          ntcw_new = ntcw-1
       endif
 ! EDMF parameterization Siebesma et al.(2007) 
+      !$ser savepoint MFPBLT-In
+      !$ser data kmpbl=kmpbl ntcw=ntcw_new ntrac1=ntrac1 dt2=dt2 pcnvflg=pcnvflg zl=zl
+      !$ser data zm=zm q1=q1 t1=t1 u1=u1 v1=v1 plyr=plyr pix=pix thlx=thlx thvx=thvx
+      !$ser data gdx=gdx hpbl=hpbl kpbl=kpbl vpert=vpert buou=buou xmf=xmf tcko=tcko
+      !$ser data qcko=qcko ucko=ucko vcko=vcko xlamue=xlamue
       call mfpblt(im,ix,km,kmpbl,ntcw_new,ntrac1,dt2,
      &    pcnvflg,zl,zm,q1,t1,u1,v1,plyr,pix,thlx,thvx,
      &    gdx,hpbl,kpbl,vpert,buou,xmf,
      &    tcko,qcko,ucko,vcko,xlamue)
+      !$ser savepoint MFPBLT-Out
+      !$ser data hpbl=hpbl kpbl=kpbl buo=buou xmf=xmf tcko=tcko qcko=qcko ucko=ucko
+      !$ser data vcko=vcko xlamue=xlamue
 ! mass-flux parameterization for stratocumulus-top-induced turbulence mixing
+      !$ser savepoint MFSCU-In
+      !$ser data kmscu=kmscu ntcw=ntcw_new ntrac1=ntrac1 dt2=dt2 scuflg=scuflg zl=zl
+      !$ser data zm=zm q1=q1 t1=t1 u1=u1 v1=v1 plyr=plyr pix=pix thlx=thlx thvx=thvx
+      !$ser data thlvx=thlvx gdx=gdx thetae=thetae radj=radj krad=krad mrad=mrad
+      !$ser data radmin=radmin buo=buod xmfd=xmfd tcdo=tcdo qcdo=qcdo ucdo=ucdo
+      !$ser data vcdo=vcdo xlamde=xlamde
       call mfscu(im,ix,km,kmscu,ntcw_new,ntrac1,dt2,
      &    scuflg,zl,zm,q1,t1,u1,v1,plyr,pix,
      &    thlx,thvx,thlvx,gdx,thetae,radj,
      &    krad,mrad,radmin,buod,xmfd,
      &    tcdo,qcdo,ucdo,vcdo,xlamde)
+      !$ser savepoint MFSCU-Out
+      !$ser data radj=radj krad=krad mrad=mrad buo=buod xmfd=xmfd tcko=tcko qcko=qcko
+      !$ser data ucko=ucko vcdo=vcdo xlamde=xlamde
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !   compute prandtl number and exchange coefficient varying with height
@@ -823,7 +847,6 @@
             if(mlenflg) then
               dz = zl(i,n+1) - zl(i,n)
               ptem = gotvx(i,n)*(thvx(i,n+1)-thvx(i,k))*dz
-!             ptem = gotvx(i,n)*(thlvx(i,n+1)-thlvx(i,k))*dz
               bsum = bsum + ptem
               zlup = zlup + dz
               if(bsum >= tke(i,k)) then
