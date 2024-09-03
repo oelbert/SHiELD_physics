@@ -779,6 +779,7 @@
          ntcw_new = ntcw-1
       endif
 ! EDMF parameterization Siebesma et al.(2007) 
+      !$ser verbatim print *, 'INFO: SERIALIZE PBL/SCU, serialization is ', ser_on
       !$ser savepoint MFPBLT-In
       !$ser data kmpbl=kmpbl ntcw=ntcw_new ntrac1=ntrac1 dt2=dt2 pcnvflg=pcnvflg zl=zl
       !$ser data zm=zm q1=q1 t1=t1 u1=u1 v1=v1 plyr=plyr pix=pix thlx=thlx thvx=thvx
