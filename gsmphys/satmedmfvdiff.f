@@ -353,12 +353,12 @@
           xkzo(i,k)  = 0.0
           xkzmo(i,k) = 0.0
           if (k < kinver(i)) then
-            ! vertical background diffusivity
+!                                  vertical background diffusivity
             ptem      = prsi(i,k+1) * tx1(i)
             tem1      = 1.0 - ptem
             tem1      = tem1 * tem1 * 10.0
             xkzo(i,k) = xkzm_hx(i) * min(1.0, exp(-tem1))
-            ! vertical background diffusivity for momentum
+!                                 vertical background diffusivity for momentum
             if (ptem >= xkzm_s) then
               xkzmo(i,k) = xkzm_mx(i)
               kx1(i)     = k + 1
@@ -453,7 +453,7 @@
       do k = 1, km
         do i = 1, im
           plyr(i,k)   = 0.01 * prsl(i,k)   ! pa to mb (hpa)
-          !  --- ...  compute relative humidity
+!  --- ...  compute relative humidity
           es  = 0.01 * fpvs(t1(i,k))       ! fpvs in pa
           qs  = max(qmin, eps * es / (plyr(i,k) + epsm1*es))
           rhly(i,k) = max(0.0, min(1.0, max(qmin, q1(i,k,1))/qs))
@@ -520,7 +520,7 @@
 !
       do i = 1,im
         if(pblflg(i)) then
-          ! thermal(i) = thvx(i,1)
+!         thermal(i) = thvx(i,1)
           thermal(i) = thlvx(i,1)
           crb(i) = rbcr
         else
@@ -545,12 +545,13 @@
 !  compute buoyancy (bf) and winshear square
 !
       do k = 1, km1
-        do i = 1, im
-          rdz  = rdzt(i,k)
-          ! bf(i,k) = gotvx(i,k)*(thvx(i,k+1)-thvx(i,k))*rdz
-          dw2  = (u1(i,k)-u1(i,k+1))**2 + (v1(i,k)-v1(i,k+1))**2
-          shr2(i,k) = max(dw2,dw2min)*rdz*rdz
-        enddo
+      do i = 1, im
+         rdz  = rdzt(i,k)
+!        bf(i,k) = gotvx(i,k)*(thvx(i,k+1)-thvx(i,k))*rdz
+         dw2  = (u1(i,k)-u1(i,k+1))**2
+     &        + (v1(i,k)-v1(i,k+1))**2
+         shr2(i,k) = max(dw2,dw2min)*rdz*rdz
+      enddo
       enddo
 !
 ! find pbl height based on bulk richardson number (mrf pbl scheme)
@@ -562,17 +563,18 @@
       enddo
 !
       do k = 1, kmpbl
-        do i = 1, im
-          if(.not.flg(i)) then
-            rbdn(i) = rbup(i)
-            spdk2   = max((u1(i,k)**2+v1(i,k)**2),1.)
-            !         rbup(i) = (thvx(i,k)-thermal(i))*
-            !    &              (g*zl(i,k)/thvx(i,1))/spdk2
-            rbup(i) = (thlvx(i,k)-thermal(i))*(g*zl(i,k)/thlvx(i,1))/spdk2
-            kpblx(i) = k
-            flg(i)  = rbup(i) > crb(i)
-          endif
-        enddo
+      do i = 1, im
+        if(.not.flg(i)) then
+          rbdn(i) = rbup(i)
+          spdk2   = max((u1(i,k)**2+v1(i,k)**2),1.)
+!         rbup(i) = (thvx(i,k)-thermal(i))*
+!    &              (g*zl(i,k)/thvx(i,1))/spdk2
+          rbup(i) = (thlvx(i,k)-thermal(i))*
+     &              (g*zl(i,k)/thlvx(i,1))/spdk2
+          kpblx(i) = k
+          flg(i)  = rbup(i) > crb(i)
+        endif
+      enddo
       enddo
       do i = 1,im
         if(kpblx(i) > 1) then
@@ -604,6 +606,7 @@
          else
            zol(i) = max(zol(i),zfmin)
          endif
+!
          zol1 = zol(i)*sfcfrac*hpbl(i)/zl(i,1)
          if(sfcflg(i)) then
            tem     = 1.0 / (1. - aphi16*zol1)
@@ -653,15 +656,16 @@
          endif
       enddo
       do k = 2, kmpbl
-        do i = 1, im
-          if(.not.flg(i)) then
-            rbdn(i) = rbup(i)
-            spdk2   = max((u1(i,k)**2+v1(i,k)**2),1.)
-            rbup(i) = (thlvx(i,k)-thermal(i))*(g*zl(i,k)/thlvx(i,1))/spdk2
-            kpbl(i) = k
-            flg(i)  = rbup(i) > crb(i)
-          endif
-        enddo
+      do i = 1, im
+        if(.not.flg(i)) then
+          rbdn(i) = rbup(i)
+          spdk2   = max((u1(i,k)**2+v1(i,k)**2),1.)
+          rbup(i) = (thlvx(i,k)-thermal(i))*
+     &              (g*zl(i,k)/thlvx(i,1))/spdk2
+          kpbl(i) = k
+          flg(i)  = rbup(i) > crb(i)
+        endif
+      enddo
       enddo
       do i = 1,im
         if(pcnvflg(i)) then
@@ -702,14 +706,14 @@
         flg(i)=scuflg(i)
       enddo
       do k = kmscu,1,-1
-        do i = 1, im
-          if(flg(i) .and. k <= lcld(i)) then
-            if(qlx(i,k) >= qlcr) then
-              kcld(i)=k
-              flg(i)=.false.
-            endif
+      do i = 1, im
+        if(flg(i) .and. k <= lcld(i)) then
+          if(qlx(i,k) >= qlcr) then
+             kcld(i)=k
+             flg(i)=.false.
           endif
-        enddo
+        endif
+      enddo
       enddo
       do i = 1, im
         if(scuflg(i) .and. kcld(i)==km1) scuflg(i)=.false.
@@ -719,18 +723,18 @@
         flg(i)=scuflg(i)
       enddo
       do k = kmscu,1,-1
-        do i = 1, im
-          if(flg(i) .and. k <= kcld(i)) then
-            if(qlx(i,k) >= qlcr) then
-              if(radx(i,k) < radmin(i)) then
-                radmin(i)=radx(i,k)
-                krad(i)=k
-              endif
-            else
-              flg(i)=.false.
+      do i = 1, im
+        if(flg(i) .and. k <= kcld(i)) then
+          if(qlx(i,k) >= qlcr) then
+            if(radx(i,k) < radmin(i)) then
+              radmin(i)=radx(i,k)
+              krad(i)=k
             endif
+          else
+            flg(i)=.false.
           endif
-        enddo
+        endif
+      enddo
       enddo
       do i = 1, im
         if(scuflg(i) .and. krad(i) <= 1) scuflg(i)=.false.
@@ -756,16 +760,16 @@
         enddo
       enddo
       do kk = 1, ntrac1
-        do k = 1, km
-          do i = 1, im
-            if(pcnvflg(i)) then
-              qcko(i,k,kk) = q1(i,k,kk)
-            endif
-            if(scuflg(i)) then
-              qcdo(i,k,kk) = q1(i,k,kk)
-            endif
-          enddo
+      do k = 1, km
+        do i = 1, im
+          if(pcnvflg(i)) then
+            qcko(i,k,kk) = q1(i,k,kk)
+          endif
+          if(scuflg(i)) then
+            qcdo(i,k,kk) = q1(i,k,kk)
+          endif
         enddo
+      enddo
       enddo
 
 ! kgao note - change ntcw if q1 is rearranged
