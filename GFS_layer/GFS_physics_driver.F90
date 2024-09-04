@@ -1239,8 +1239,8 @@ module module_physics_driver
             !$ser verbatim end if
             !$ser data u1=Statein%ugrs v1=Statein%vgrs t1=Statein%tgrs q1=Statein%qgrs z1=Diag%zlvl
             !$ser data snowdepth=Sfcprop%snowd tsfc=Sfcprop%tsfc z0rl=Sfcprop%zorl ztrl=Sfcprop%ztrl cm=cd ch=cdq
-            !$ser data rb=rb prsl1=Statein%prsl(1,1) prslki=work3 islmsk=islmsk stress=stress fm=Sfcprop%ffmm
-            !$ser data fh=Sfcprop%ffhh ustar=Sfcprop%uustar wind=wind ddvel=Tbd%phy_f2d(1,Model%num_p2d) fm10=fm10
+            !$ser data rb=rb prsl1=Statein%prsl(:,1) prslki=work3 islmsk=islmsk stress=stress fm=Sfcprop%ffmm
+            !$ser data fh=Sfcprop%ffhh ustar=Sfcprop%uustar wind=wind ddvel=Tbd%phy_f2d(:,Model%num_p2d) fm10=fm10
             !$ser data fh2=fh2 sigmaf=sigmaf vegtype=vegtype shdmax=Sfcprop%shdmax ivegsrc=ivegsrc tsurf=tsurf
             !$ser data flag_iter=flag_iter redrag=redrag do_z0_moon=do_z0_moon
             !$ser data do_z0_hwrf15=do_z0_hwrf15 do_z0_hwrf17=do_z0_hwrf17 z0s_max=z0s_max
@@ -1357,7 +1357,7 @@ module module_physics_driver
           !$ser data ocean_ps=Statein%pgr ocean_u1=Statein%ugrs ocean_v1=Statein%vgrs ocean_t1=Statein%tgrs
           !$ser data ocean_q1=Statein%qgrs ocean_tskin=Sfcprop%tsfc ocean_cm=cd ocean_ch=cdq
           !$ser data ocean_prsl1=Statein%prsl(:,1) ocean_prslki=work3 ocean_islmsk=islmsk ocean_ep=ep1d
-          !$ser data ocean_ddvel=Tbd%phy_f2d(1,Model%num_p2d) ocean_flag_iter=flag_iter ocean_qsurf=qss
+          !$ser data ocean_ddvel=Tbd%phy_f2d(:,Model%num_p2d) ocean_flag_iter=flag_iter ocean_qsurf=qss
           !$ser data ocean_cmm=Diag%cmm ocean_chh=Diag%chh ocean_gflux=gflx ocean_evap=evap ocean_hflx=hflx
 
           call sfc_ocean                                                &
@@ -1504,7 +1504,7 @@ module module_physics_driver
         !$ser data sice_ps=Statein%pgr sice_wind=wind sice_u1=Statein%ugrs sice_v1=Statein%vgrs
         !$ser data sice_t1=Statein%tgrs sice_q1=Statein%qgrs sice_delt=dtf sfcemis=Radtend%semis
         !$ser data sice_dlwflx=gabsbdlw sice_sfcnsw=adjsfcnsw_for_coupling sice_sfcdsw=adjsfcdsw_for_coupling
-        !$ser data sice_srflag=Sfcprop%srflag sice_cm=cd sice_ch=cdq sice_prsl1=Statein%prsl(1,1)
+        !$ser data sice_srflag=Sfcprop%srflag sice_cm=cd sice_ch=cdq sice_prsl1=Statein%prsl(:,1)
         !$ser data sice_prslki=work3 sice_islmsk=islmsk sice_flag_iter=flag_iter sice_mom4ice=mom4ice
         !$ser data sice_lsm=lsm sice_hice=zice sice_fice=cice sice_tice=tice sice_weasd=Sfcprop%weasd
         !$ser data sice_tskin=Sfcprop%tsfc sice_tprcp=Sfcprop%tprcp sice_stc0=stsoil(:,1) sice_stc1=stsoil(:,2) sice_ep=ep1d
