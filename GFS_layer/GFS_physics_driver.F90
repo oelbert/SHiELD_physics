@@ -1507,7 +1507,7 @@ module module_physics_driver
         !$ser data sice_srflag=Sfcprop%srflag sice_cm=cd sice_ch=cdq sice_prsl1=Statein%prsl(1,1)
         !$ser data sice_prslki=work3 sice_islmsk=islmsk sice_flag_iter=flag_iter sice_mom4ice=mom4ice
         !$ser data sice_lsm=lsm sice_hice=zice sice_fice=cice sice_tice=tice sice_weasd=Sfcprop%weasd
-        !$ser data sice_tskin=Sfcprop%tsfc sice_tprcp=Sfcprop%tprcp sice_stc=stsoil sice_ep=ep1d
+        !$ser data sice_tskin=Sfcprop%tsfc sice_tprcp=Sfcprop%tprcp sice_stc0=stsoil(:,1) sice_stc1=stsoil(:,2) sice_ep=ep1d
         !$ser data sice_snowd=Sfcprop%snowd sice_qsurf=qss sice_snowmt=snowmt sice_gflux=gflx sice_cmm=Diag%cmm
         !$ser data sice_chh%chh=Diag%chh sice_evap=evap sice_hflx=hflx
         call sfc_sice                                                   &
@@ -1530,7 +1530,7 @@ module module_physics_driver
           !$ser savepoint sfc_sice-out-iter2
         !$ser verbatim end if
         !$ser data sice_hice=zice sice_fice=cice sice_tice=tice sice_weasd=Sfcprop%weasd sice_tskin=Sfcprop%tsfc
-        !$ser data sice_tprcp=Sfcprop%tprcp sice_stc=stsoil sice_ep=ep1d sice_snowd=Sfcprop%snowd sice_qsurf=qss
+        !$ser data sice_tprcp=Sfcprop%tprcp sice_stc0=stsoil(:,1) sice_stc1=stsoil(:,2) sice_ep=ep1d sice_snowd=Sfcprop%snowd sice_qsurf=qss
         !$ser data sice_snowmt=snowmt sice_gflux=gflx sice_cmm=Diag%cmm sice_chh%chh=Diag%chh sice_evap=evap
         !$ser data sice_hflx=hflx
 
