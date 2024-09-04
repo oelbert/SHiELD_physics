@@ -1357,7 +1357,7 @@ module module_physics_driver
           !$ser data ocean_ps=Statein%pgr ocean_u1=Statein%ugrs ocean_v1=Statein%vgrs ocean_t1=Statein%tgrs
           !$ser data ocean_q1=Statein%qgrs ocean_tskin=Sfcprop%tsfc ocean_cm=cd ocean_ch=cdq
           !$ser data ocean_prsl1=Statein%prsl(:,1) ocean_prslki=work3 ocean_islmsk=islmsk ocean_ep=ep1d
-          !$ser data ocean_ddvel=Tbd%phy_f2d(:,Model%num_p2d) ocean_flag_iter=flag_iter ocean_qsurf=qss
+          !$ser data ocean_ddvel=Tbd%phy_f2d(1,Model%num_p2d) ocean_flag_iter=flag_iter ocean_qsurf=qss
           !$ser data ocean_cmm=Diag%cmm ocean_chh=Diag%chh ocean_gflux=gflx ocean_evap=evap ocean_hflx=hflx
 
           call sfc_ocean                                                &
