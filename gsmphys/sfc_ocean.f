@@ -99,11 +99,17 @@
 
       integer :: i
       !$ser verbatim integer :: nt, nxpvs
+      !$ser verbatim integer :: mpi_rank,ier
 
       logical :: flag(im)
+      !$ser verbatim logical :: ser_on
+      !$ser verbatim ser_on=fs_is_serialization_on()
+      !$ser verbatim  call mpi_comm_rank(MPI_COMM_WORLD, mpi_rank,ier)
+      !$ser verbatim print *, 'INFO: inside SurfaceOcean, serialization is ', ser_on
 !
 !===> ...  begin here
 !
+      !$ser verbatim print *, 'INFO: inside SurfaceOcean scheme, serialization is ', ser_on
       !$ser verbetim nxpvs = 7501
       !$ser verbetim xmin = 180.
       !$ser verbetim xmax = 330.
