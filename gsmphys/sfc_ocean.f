@@ -63,7 +63,7 @@
 ! ===================================================================== !
 !
       use machine , only : kind_phys
-      use funcphys, only : fpvs, tbpvs
+      use funcphys, only : fpvs, fpvsx
       use physcons, only : cp => con_cp, rd => con_rd, eps => con_eps,  &
      &                     epsm1 => con_epsm1, hvap => con_hvap,        &
      &                     rvrdm1 => con_fvirt
@@ -94,7 +94,7 @@
 
       real (kind=kind_phys) :: q0, qss, rch, rho, wind, tem
       !$ser verbatim real (kind=kind_phys), dimension(im) :: ser_qss, ser_qss0
-      !$ser verbatim real (kind=kind_phys), dimension(7501) :: tab_fpvs, tab_tbpvs
+      !$ser verbatim real (kind=kind_phys), dimension(7501) :: tab_fpvs, tab_fpvsx
       !$ser verbatim real (kind=kind_phys) :: xmin, xmax, xinc, xval
 
       integer :: i
@@ -109,14 +109,14 @@
       !$ser verbetim xmax = 330.
       !$ser verbatim xinc=(xmax-xmin)/(nxpvs-1)
       !$ser savepoint FPVSTable-In
-      !$ser data tab_tbpvs=tab_tbpvs tab_fpvs=tab_fpvs xval=xval xmin=xmin xmax=xmax nxpvs=nxpvs xinc=xinc
+      !$ser data tab_fpvsx=tab_fpvsx tab_fpvs=tab_fpvs xval=xval xmin=xmin xmax=xmax nxpvs=nxpvs xinc=xinc
       !$ser verbatim do nt = 1, nxpvs
         !$ser verbatim xval(nt) = xmin+(nt-1)*xinc
-        !$ser verbatim tab_tbpvs(nt) = tbpvs(nt)
+        !$ser verbatim tab_fpvsx(nt) = fpvsx(xval(nt))
         !$ser verbatim tab_fpvs(nt) = fpvs(xval(nt))
       !$ser verbatim enddo
       !$ser savepoint FPVSTable-Out
-      !$ser data tab_tbpvs=tab_tbpvs tab_fpvs=tab_fpvs xval=xval
+      !$ser data tab_fpvsx=tab_fpvsx tab_fpvs=tab_fpvs xval=xval
 
 !  --- ...  flag for open water
       do i = 1, im
