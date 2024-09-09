@@ -110,9 +110,9 @@
 !===> ...  begin here
 !
       !$ser verbatim print *, 'INFO: inside SurfaceOcean scheme, serialization is ', ser_on
-      !$ser verbetim nxpvs = 7501
-      !$ser verbetim xmin = 180.
-      !$ser verbetim xmax = 330.
+      !$ser verbatim nxpvs = 7501
+      !$ser verbatim xmin = 180.
+      !$ser verbatim xmax = 330.
       !$ser verbatim xinc=(xmax-xmin)/(nxpvs-1)
       !$ser savepoint FPVSTable-In
       !$ser data tab_fpvsx=tab_fpvsx tab_fpvs=tab_fpvs xval=xval xmin=xmin xmax=xmax nxpvs=nxpvs xinc=xinc
