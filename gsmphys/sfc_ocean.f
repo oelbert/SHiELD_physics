@@ -67,6 +67,8 @@
       use physcons, only : cp => con_cp, rd => con_rd, eps => con_eps,  &
      &                     epsm1 => con_epsm1, hvap => con_hvap,        &
      &                     rvrdm1 => con_fvirt
+      !$ser verbatim use mpi
+      !$ser verbatim USE m_serialize, ONLY: fs_is_serialization_on
 !
       implicit none
 !
@@ -91,6 +93,7 @@
 !  ---  locals:
 
       real (kind=kind_phys) :: q0, qss, rch, rho, wind, tem
+      !$ser verbatim real (kind=kind_phys), dimension(im) :: ser_qss, ser_qss0
 
       integer :: i
 
@@ -100,6 +103,8 @@
 !
 !  --- ...  flag for open water
       do i = 1, im
+        !$ser verbatim ser_qss(i) = 0
+        !$ser verbatim ser_qss0(i) = 0
         flag(i) = ( islimsk(i) == 0 .and. flag_iter(i) )
 
 !  --- ...  initialize variables. all units are supposedly m.k.s. unless specified
@@ -115,6 +120,7 @@
           rho      = prsl1(i) / (rd*t1(i)*(1.0 + rvrdm1*q0))
 
           qss      = fpvs( tskin(i) )
+          !$ser verbatim ser_qss(i) = qss
           qss      = eps*qss / (ps(i) + epsm1*qss)
 
           evap(i)  = 0.0
@@ -141,6 +147,10 @@
         endif
       enddo
 !
+      !$ser savepoint FPVS-In
+      !$ser data tskin=tskin qss=ser_qss0
+      !$ser savepoint FPVS-Out
+      !$ser data qss=ser_qss
       return
 !...................................
       end subroutine sfc_ocean
