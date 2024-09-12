@@ -18,7 +18,7 @@ module module_physics_driver
                                    GFS_radtend_type, GFS_diag_type,     &
                                    GFS_overrides_type
   use gfdl_cld_mp_mod,       only: gfdl_cld_mp_driver, cld_sat_adj, c_liq, c_ice
-  use funcphys,              only: ftdp
+  use funcphys,              only: ftdp, fpvs, fpvsx
   use module_ocean,          only: update_ocean
   use myj_pbl_mod,           only: myj_pbl
   use myj_jsfc_mod,          only: myj_jsfc
@@ -425,8 +425,8 @@ module module_physics_driver
                  itc, nn
       integer :: kflip
       integer :: ntsd ! for myj
-      !$ser verbatim integer :: ivegsrc, lsm, lsoil, isot, ntcw, ntiw, ntke
-
+      !$ser verbatim integer :: ivegsrc, lsm, lsoil, isot, ntcw, ntiw, ntke, nxpvs
+      
       integer, dimension(size(Grid%xlon,1)) ::                          &
            kbot, ktop, kcnv, soiltyp, vegtype, kpbl, slopetyp, kinver,  &
            lmh, levshc, islmsk, soilcol,                                &
@@ -458,8 +458,9 @@ module module_physics_driver
            z0fun, diag_water, diag_rain, diag_rain1
 
       !$ser verbatim real(kind=kind_phys) :: wind_th_hwrf, xkzm_m, xkzm_h, xkzm_ml, rlmn, rlmx, z0s_max
-      !$ser verbatim real(kind=kind_phys) :: xkzm_hl, xkzm_mi, xkzm_hi, xkzm_s, xkzminv, xkzm_lim, xkgdx
+      !$ser verbatim real(kind=kind_phys) :: xkzm_hl, xkzm_mi, xkzm_hi, xkzm_s, xkzminv, xkzm_lim, xkgdx, xmin, xmax, xinc
       !$ser verbatim real (kind=kind_phys), dimension(5) :: pertvegf
+      !$ser verbatim real (kind=kind_phys), dimension(7501) :: xval, tab_fpvsx, tab_fpvs
 
       real(kind=kind_phys), dimension(Model%ntrac-Model%ncld+2) ::      &
            fscav, fswtr
@@ -482,7 +483,9 @@ module module_physics_driver
            tisfc_cice, tsea_cice, hice_cice, fice_cice,                 &
            !--- for CS-convection
            wcbmax
-           
+      
+      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1)) :: fp, fpx
+
       logical, dimension(size(Grid%xlon,1))                ::           &
            wet, dry,              icy
 !
@@ -1096,6 +1099,25 @@ module module_physics_driver
       Diag%smcwlt2(:) = 0.0
       Diag%smcref2(:) = 0.0
       
+      !$ser verbatim nxpvs = 7501
+      !$ser verbatim xmin = 180.
+      !$ser verbatim xmax = 330.
+      !$ser verbatim xinc=(xmax-xmin)/(nxpvs-1)
+      !$ser verbatim do nt = 1, nxpvs
+        !$ser verbatim xval(nt) = xmin+(nt-1)*xinc
+      !$ser verbatim enddo
+      !$ser savepoint FPVS-In
+      !$ser data tab_fpvsx=tab_fpvsx tab_fpvs=tab_fpvs xval=xval xmin=xmin xmax=xmax nxpvs=nxpvs xinc=xinc fp=fp fpx=fpx
+      !$ser verbatim do nt = 1, nxpvs
+        !$ser verbatim tab_fpvsx(nt) = fpvsx(xval(nt))
+        !$ser verbatim tab_fpvs(nt) = fpvs(xval(nt))
+      !$ser verbatim enddo
+      !$ser verbatim do i = 1, im
+        !$ser verbatim fp=fpvs(Sfcprop%tsfc(i))
+        !$ser verbatim fpx=fpvsx(Sfcprop%tsfc(i))
+      !$ser verbatim enddo
+      !$ser savepoint FPVS-Out
+      !$ser data tab_fpvsx=tab_fpvsx tab_fpvs=tab_fpvs xval=xval fp=fp fpx=fpx
       
 
 !  --- ...  lu: iter-loop over (sfc_diff,sfc_drv,sfc_ocean,sfc_sice)
