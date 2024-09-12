@@ -1113,8 +1113,8 @@ module module_physics_driver
         !$ser verbatim tab_fpvs(nt) = fpvs(xval(nt))
       !$ser verbatim enddo
       !$ser verbatim do ii = 1, im
-        !$ser verbatim fp=fpvs(Sfcprop%tsfc(i))
-        !$ser verbatim fpx=fpvsx(Sfcprop%tsfc(i))
+        !$ser verbatim fp=fpvs(Sfcprop%tsfc(ii))
+        !$ser verbatim fpx=fpvsx(Sfcprop%tsfc(ii))
       !$ser verbatim enddo
       !$ser savepoint FPVS-Out
       !$ser data tab_fpvsx=tab_fpvsx tab_fpvs=tab_fpvs xval=xval fp=fp fpx=fpx
