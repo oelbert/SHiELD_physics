@@ -425,7 +425,7 @@ module module_physics_driver
                  itc, nn
       integer :: kflip
       integer :: ntsd ! for myj
-      !$ser verbatim integer :: ivegsrc, lsm, lsoil, isot, ntcw, ntiw, ntke, nxpvs
+      !$ser verbatim integer :: ivegsrc, lsm, lsoil, isot, ntcw, ntiw, ntke, nxpvs, nt, ii
       
       integer, dimension(size(Grid%xlon,1)) ::                          &
            kbot, ktop, kcnv, soiltyp, vegtype, kpbl, slopetyp, kinver,  &
@@ -1112,7 +1112,7 @@ module module_physics_driver
         !$ser verbatim tab_fpvsx(nt) = fpvsx(xval(nt))
         !$ser verbatim tab_fpvs(nt) = fpvs(xval(nt))
       !$ser verbatim enddo
-      !$ser verbatim do i = 1, im
+      !$ser verbatim do ii = 1, im
         !$ser verbatim fp=fpvs(Sfcprop%tsfc(i))
         !$ser verbatim fpx=fpvsx(Sfcprop%tsfc(i))
       !$ser verbatim enddo
