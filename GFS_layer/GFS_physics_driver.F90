@@ -460,7 +460,6 @@ module module_physics_driver
       !$ser verbatim real(kind=kind_phys) :: wind_th_hwrf, xkzm_m, xkzm_h, xkzm_ml, rlmn, rlmx, z0s_max
       !$ser verbatim real(kind=kind_phys) :: xkzm_hl, xkzm_mi, xkzm_hi, xkzm_s, xkzminv, xkzm_lim, xkgdx, xmin, xmax, xinc
       !$ser verbatim real (kind=kind_phys), dimension(5) :: pertvegf
-      !$ser verbatim real (kind=kind_phys), dimension(7501) :: xval, tab_fpvsx, tab_fpvs
 
       real(kind=kind_phys), dimension(Model%ntrac-Model%ncld+2) ::      &
            fscav, fswtr
@@ -523,7 +522,7 @@ module module_physics_driver
 
       !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1),1) :: mp_gsize, mp_hs, mp_water, mp_rain, mp_ice, mp_snow, mp_graupel, mp_cond, mp_dep, mp_reevap, mp_sub, mp_dte
 
-      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1),Model%levs) :: mp_qv, mp_ql, mp_qr, mp_qi, mp_qs, mp_qg, mp_qa, mp_qnl, mp_qni, mp_pt, mp_wa, mp_ua, mp_va, mp_delz, mp_delp, mp_q_con, mp_cappa, mp_te, mp_prefluxw, mp_prefluxr, mp_prefluxi, mp_prefluxs, mp_prefluxg, mp_adj_vmr, mp_pcw, mp_edw, mp_oew, mp_rrw, mp_tvw, mp_pci, mp_edi, mp_oei, mp_rri, mp_tvi, mp_pcr, mp_edr, mp_oer, mp_rrr, mp_tvr, mp_pcs, mp_eds, mp_oes, mp_rrs, mp_tvs, mp_pcg, mp_edg, mp_oeg, mp_rrg, mp_tvg
+      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1),Model%levs) :: mp_qv, mp_ql, mp_qr, mp_qi, mp_qs, mp_qg, mp_qa, mp_qnl, mp_qni, mp_pt, mp_wa, mp_ua, mp_va, mp_delz, mp_delp, mp_q_con, mp_cappa, mp_te, mp_prefluxw, mp_prefluxr, mp_prefluxi, mp_prefluxs, mp_prefluxg, mp_adj_vmr, mp_pcw, mp_edw, mp_oew, mp_rrw, mp_tvw, mp_pci, mp_edi, mp_oei, mp_rri, mp_tvi, mp_pcr, mp_edr, mp_oer, mp_rrr, mp_tvr, mp_pcs, mp_eds, mp_oes, mp_rrs, mp_tvs, mp_pcg, mp_edg, mp_oeg, mp_rrg, mp_tvg, xval, tab_fpvsx, tab_fpvs
 
       !--- GFDL modification for FV3 
       real(kind=kind_phys), dimension(size(Grid%xlon,1),Model%levs+1) ::&
@@ -1103,18 +1102,17 @@ module module_physics_driver
       !$ser verbatim xmin = 180.
       !$ser verbatim xmax = 330.
       !$ser verbatim xinc=(xmax-xmin)/(nxpvs-1)
-      !$ser verbatim do nt = 1, nxpvs
-        !$ser verbatim xval(nt) = xmin+(nt-1)*xinc
-      !$ser verbatim enddo
       !$ser savepoint FPVS-In
-      !$ser data tab_fpvsx=tab_fpvsx tab_fpvs=tab_fpvs xval=xval xmin=xmin xmax=xmax nxpvs=nxpvs xinc=xinc fp=fp fpx=fpx
-      !$ser verbatim do nt = 1, nxpvs
-        !$ser verbatim tab_fpvsx(nt) = fpvsx(xval(nt))
-        !$ser verbatim tab_fpvs(nt) = fpvs(xval(nt))
-      !$ser verbatim enddo
+      !$ser data temp=Sfcprop%tsfc tab_fpvsx=tab_fpvsx tab_fpvs=tab_fpvs xval=xval xmin=xmin xmax=xmax nxpvs=nxpvs xinc=xinc fp=fp fpx=fpx
       !$ser verbatim do ii = 1, im
         !$ser verbatim fp=fpvs(Sfcprop%tsfc(ii))
         !$ser verbatim fpx=fpvsx(Sfcprop%tsfc(ii))
+        !$ser verbatim do k = 1, levs
+          !$ser verbatim nt = mod((ii + k - 1), nxpvs)
+          !$ser verbatim xval(ii, k) = xmin+(nt-1)*xinc
+          !$ser verbatim tab_fpvsx(ii, k) = fpvsx(xval(ii, k))
+          !$ser verbatim tab_fpvs(ii, k) = fpvs(xval(ii, k))
+        !$ser verbatim enddo
       !$ser verbatim enddo
       !$ser savepoint FPVS-Out
       !$ser data tab_fpvsx=tab_fpvsx tab_fpvs=tab_fpvs xval=xval fp=fp fpx=fpx
