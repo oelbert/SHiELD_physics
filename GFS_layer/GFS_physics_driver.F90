@@ -1108,7 +1108,7 @@ module module_physics_driver
         !$ser verbatim fp=fpvs(Sfcprop%tsfc(i))
         !$ser verbatim fpx=fpvsx(Sfcprop%tsfc(i))
         !$ser verbatim do k = 1, levs
-          !$ser verbatim ii = ((i - 1) * levs) + k
+          !$ser verbatim ii = (i - 1) * levs + k
           !$ser verbatim nt = mod(ii, nxpvs)
           !$ser verbatim xval(i, k) = xmin+(nt-1)*xinc
           !$ser verbatim tab_fpvsx(i, k) = fpvsx(xval(i, k))
