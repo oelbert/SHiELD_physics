@@ -1104,14 +1104,15 @@ module module_physics_driver
       !$ser verbatim xinc=(xmax-xmin)/(nxpvs-1)
       !$ser savepoint FPVS-In
       !$ser data temp=Sfcprop%tsfc tab_fpvsx=tab_fpvsx tab_fpvs=tab_fpvs xval=xval xmin=xmin xmax=xmax nxpvs=nxpvs xinc=xinc fp=fp fpx=fpx
-      !$ser verbatim do ii = 1, im
-        !$ser verbatim fp=fpvs(Sfcprop%tsfc(ii))
-        !$ser verbatim fpx=fpvsx(Sfcprop%tsfc(ii))
+      !$ser verbatim do i = 1, im
+        !$ser verbatim fp=fpvs(Sfcprop%tsfc(i))
+        !$ser verbatim fpx=fpvsx(Sfcprop%tsfc(i))
         !$ser verbatim do k = 1, levs
-          !$ser verbatim nt = mod((ii + k - 1), nxpvs)
-          !$ser verbatim xval(ii, k) = xmin+(nt-1)*xinc
-          !$ser verbatim tab_fpvsx(ii, k) = fpvsx(xval(ii, k))
-          !$ser verbatim tab_fpvs(ii, k) = fpvs(xval(ii, k))
+          !$ser verbatim ii = ((i - 1) * levs) + k
+          !$ser verbatim nt = mod(ii, nxpvs)
+          !$ser verbatim xval(i, k) = xmin+(nt-1)*xinc
+          !$ser verbatim tab_fpvsx(i, k) = fpvsx(xval(i, k))
+          !$ser verbatim tab_fpvs(i, k) = fpvs(xval(i, k))
         !$ser verbatim enddo
       !$ser verbatim enddo
       !$ser savepoint FPVS-Out
