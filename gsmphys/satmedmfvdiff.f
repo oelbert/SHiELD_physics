@@ -28,14 +28,14 @@
 !     b) use different xkzm_m,xkzm_h for land, ocean and sea ice points
 !     c) add option for turning off HB19 formula for surface backgroud diff. (do_dk_hb19)  
 
-      subroutine satmedmfvdif(ix,im,km,ntrac,ntcw,ntiw,ntke,&
-     &     dv,du,tdt,rtg_in,u1,v1,t1,q1_in,swh,hlw,xmu,garea,islimsk,&
-     &     psk,rbsoil,zorl,u10m,v10m,fm,fh,&
-     &     tsea,heat,evap,stress,spd1,kpbl,&
-     &     prsi,del,prsl,prslk,phii,phil,delt,&
-     &     dspheat,dusfc,dvsfc,dtsfc,dqsfc,hpbl,&
-     &     kinver,xkzm_mo,xkzm_ho,xkzm_ml,xkzm_hl,xkzm_mi,xkzm_hi,&
-     &     xkzm_s,xkzinv,do_dk_hb19,xkzm_lim,xkgdx,&
+      subroutine satmedmfvdif(ix,im,km,ntrac,ntcw,ntiw,ntke,
+     &     dv,du,tdt,rtg_in,u1,v1,t1,q1_in,swh,hlw,xmu,garea,islimsk,
+     &     psk,rbsoil,zorl,u10m,v10m,fm,fh,
+     &     tsea,heat,evap,stress,spd1,kpbl,
+     &     prsi,del,prsl,prslk,phii,phil,delt,
+     &     dspheat,dusfc,dvsfc,dtsfc,dqsfc,hpbl,
+     &     kinver,xkzm_mo,xkzm_ho,xkzm_ml,xkzm_hl,xkzm_mi,xkzm_hi,
+     &     xkzm_s,xkzinv,do_dk_hb19,xkzm_lim,xkgdx,
      &     rlmn, rlmx, cap_k0_land, dkt_out)
 !
       !$ser verbatim use mpi
