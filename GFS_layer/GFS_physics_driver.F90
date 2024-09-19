@@ -1122,6 +1122,10 @@ module module_physics_driver
       !$ser verbatim do i = 1, im
         !$ser verbatim fp=fpvs(Sfcprop%tsfc(i))
         !$ser verbatim fpx=fpvsx(Sfcprop%tsfc(i))
+        !$ser verbatim if (i == 1) :
+          !$ser verbatim xmax = con_ttp / Sfcprop%tsfc(i)
+          !$ser verbatim print *, 'INFO:t *, 'INFO: FPVS vars: ', Sfcprop%tsfc(i), xmax, xponbl*(1.-xmax), exp(xponbl*(1.-xmax)), (xmax**xponal)
+        !$ser verbatim endif
         !$ser verbatim do k = 1, levs
           !$ser verbatim ii = (i - 1) * levs + k
           !$ser verbatim nt = mod(ii, nxpvs)
