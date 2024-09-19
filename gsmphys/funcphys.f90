@@ -846,6 +846,7 @@ contains
     real(krealfp),parameter:: xponbi=-dldti/con_rv+heati/(con_rv*con_ttp)
     real(krealfp) tr,w,pvl,pvi
 ! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    print *, 'INFO: inside FPVS, values are ', tliq, tice, dldtl, heatl, xponal, xponbl, dldti, heati, xponai, xponbi
     tr=con_ttp/t
     if(t.ge.tliq) then
       fpvsx=con_psat*(tr**xponal)*exp(xponbl*(1.-tr))
