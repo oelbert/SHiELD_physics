@@ -5,7 +5,8 @@ module module_physics_driver
   use physcons,              only: con_cp, con_fvirt, con_g, con_rd, &
                                    con_rv, con_hvap, con_hfus,       &
                                    con_rerth, con_pi, rhc_max, dxmin,&
-                                   dxinv, pa2mb, rlapse, con_eps, con_epsm1, con_cvap
+                                   dxinv, pa2mb, rlapse, con_eps,    $
+                                   con_epsm1, con_cvap, con_csol, con_cliq, con_ttp
   use cs_conv,               only: cs_convr
   use ozne_def,              only: levozp,  oz_coeff, oz_pres
   use h2o_def,               only: levh2o, h2o_coeff, h2o_pres
