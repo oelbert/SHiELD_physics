@@ -459,7 +459,7 @@ module module_physics_driver
 
       !$ser verbatim real(kind=kind_phys) :: wind_th_hwrf, xkzm_m, xkzm_h, xkzm_ml, rlmn, rlmx, z0s_max
       !$ser verbatim real(kind=kind_phys) :: xkzm_hl, xkzm_mi, xkzm_hi, xkzm_s, xkzminv, xkzm_lim, xkgdx, xmin, xmax, xinc
-      !$ser verbatim real(kind=kind_phys) :: tliq, tice, dldtl, heatl, xponal, xponbl, dldti, heati, xponai, xponbi
+      !$ser verbatim real(kind=kind_phys) :: tliq, tice2, dldtl, heatl, xponal, xponbl, dldti, heati, xponai, xponbi
       !$ser verbatim real (kind=kind_phys), dimension(5) :: pertvegf
 
       real(kind=kind_phys), dimension(Model%ntrac-Model%ncld+2) ::      &
@@ -639,7 +639,7 @@ module module_physics_driver
       !$ser verbatim z0s_max = Model%z0s_max
 
       !$ser verbatim tliq=con_ttp
-      !$ser verbatim tice=con_ttp-20.0
+      !$ser verbatim tice2=con_ttp-20.0
       !$ser verbatim dldtl=con_cvap-con_cliq
       !$ser verbatim heatl=con_hvap
       !$ser verbatim xponal=-dldtl/con_rv
@@ -649,7 +649,7 @@ module module_physics_driver
       !$ser verbatim xponai=-dldti/con_rv
       !$ser verbatim xponbi=-dldti/con_rv+heati/(con_rv*con_ttp)
 
-      !$ser verbatim print *, 'INFO: FPVS internal values are ', tliq, tice, dldtl, heatl, xponal, xponbl, dldti, heati, xponai, xponbi
+      !$ser verbatim print *, 'INFO: FPVS internal values are ', tliq, tice2, dldtl, heatl, xponal, xponbl, dldti, heati, xponai, xponbi
 
       me     = Model%me
       ix     = size(Grid%xlon,1)
