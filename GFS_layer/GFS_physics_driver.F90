@@ -1120,8 +1120,8 @@ module module_physics_driver
       !$ser savepoint FPVS-In
       !$ser data temp=Sfcprop%tsfc tab_fpvsx=tab_fpvsx tab_fpvs=tab_fpvs xval=xval xmin=xmin xmax=xmax nxpvs=nxpvs xinc=xinc fp=fp fpx=fpx
       !$ser verbatim do i = 1, im
-        !$ser verbatim fp=fpvs(Sfcprop%tsfc(i))
-        !$ser verbatim fpx=fpvsx(Sfcprop%tsfc(i))
+        !$ser verbatim fp(i)=fpvs(Sfcprop%tsfc(i))
+        !$ser verbatim fpx(i)=fpvsx(Sfcprop%tsfc(i))
         !$ser verbatim if (i == 1) then
           !$ser verbatim xmax = con_ttp / Sfcprop%tsfc(i)
           !$ser verbatim print *, 'INFO: FPVS vars: ', Sfcprop%tsfc(i), xmax, xponbl*(1.-xmax), exp(xponbl*(1.-xmax)), (xmax**xponal)
