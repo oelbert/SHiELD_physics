@@ -1533,12 +1533,12 @@
 !-----------------------------------------------------------------------
       subroutine tridit(l,n,nt,cl,cm,cu,rt,au,at)
 !-----------------------------------------------------------------------
-cc
+!!
       use machine     , only : kind_phys
       implicit none
       integer             is,k,kk,n,nt,l,i
       real(kind=kind_phys) fk(l)
-cc
+!!
       real(kind=kind_phys) cl(l,2:n), cm(l,n), cu(l,n-1), &
                            rt(l,n*nt), &
                            au(l,n-1), at(l,n*nt), &
