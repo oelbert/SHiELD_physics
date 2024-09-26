@@ -1254,13 +1254,13 @@
 !
         enddo
       enddo
-c
-c     solve tridiagonal problem for tke
-c
+!
+!     solve tridiagonal problem for tke
+!
       call tridit(im,km,1,al,ad,au,f1,au,f1)
-c
-c     recover tendency of tke
-c
+!
+!     recover tendency of tke
+!
       do k = 1,km
          do i = 1,im
 ! fix negative tke 
@@ -1272,9 +1272,9 @@ c
             rtg(i,k,ntrac) = rtg(i,k,ntrac)+qtend
          enddo
       enddo
-c
-c     compute tridiagonal matrix elements for heat and moisture (and other tracers, except tke)
-c
+!
+!     compute tridiagonal matrix elements for heat and moisture (and other tracers, except tke)
+!
       do i=1,im
          ad(i,1) = 1.
          f1(i,1) = t1(i,1)   + dtdz1(i) * heat(i)
@@ -1288,7 +1288,7 @@ c
           enddo
         enddo
       endif
-c
+!
       do k = 1,km1
         do i = 1,im
           dtodsd  = dt2/del(i,k)
@@ -1383,13 +1383,13 @@ c
           enddo
         enddo
       endif
-c
-c     solve tridiagonal problem for heat and moisture
-c
+!
+!     solve tridiagonal problem for heat and moisture
+!
       call tridin(im,km,ntrac1,al,ad,au,f1,f2,au,f1,f2)
-c
-c     recover tendencies of heat and moisture
-c
+!
+!     recover tendencies of heat and moisture
+!
       do  k = 1,km
          do i = 1,im
             ttend      = (f1(i,k)-t1(i,k))*rdt
@@ -1441,15 +1441,15 @@ c
         enddo
       enddo
       endif
-c
-c     compute tridiagonal matrix elements for momentum
-c
+!
+!     compute tridiagonal matrix elements for momentum
+!
       do i=1,im
          ad(i,1) = 1.0 + dtdz1(i) * stress(i) / spd1(i)
          f1(i,1) = u1(i,1)
          f2(i,1) = v1(i,1)
       enddo
-c
+!
       do k = 1,km1
         do i=1,im
           dtodsd  = dt2/del(i,k)
@@ -1499,13 +1499,13 @@ c
 !
         enddo
       enddo
-c
-c     solve tridiagonal problem for momentum
-c
+!
+!     solve tridiagonal problem for momentum
+!
       call tridi2(im,km,al,ad,au,f1,f2,au,f1,f2)
-c
-c     recover tendencies of momentum
-c
+!
+!     recover tendencies of momentum
+!
       do k = 1,km
          do i = 1,im
             utend = (f1(i,k)-u1(i,k))*rdt
@@ -1543,7 +1543,7 @@ cc
                            rt(l,n*nt), &
                            au(l,n-1), at(l,n*nt), &
                            fkk(l,2:n-1)
-c-----------------------------------------------------------------------
+!-----------------------------------------------------------------------
       do i=1,l
         fk(i)   = 1./cm(i,1)
         au(i,1) = fk(i)*cu(i,1)
