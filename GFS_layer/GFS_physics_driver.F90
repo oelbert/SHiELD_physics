@@ -1434,7 +1434,7 @@ module module_physics_driver
           !$ser verbatim else
             !$ser savepoint NoahLSM_iter2-In
           !$ser verbatim end if
-          !$ser data km=lsoil ps=Statein%pgr t1=Statein%tgrs q1=Statein%qgrs soiltyp=soiltyp
+          !$ser data lsoil=lsoil ps=Statein%pgr t1=Statein%tgrs q1=Statein%qgrs(:, 1, 1) soiltyp=soiltyp
           !$ser data vegtype=vegtype sigmaf=sigmaf sfcemis=Radtend%semis dlwflx=gabsbdlw dswsfc=adjsfcdsw_for_coupling
           !$ser data snet=adjsfcnsw_for_coupling delt=dtf tg3=Sfcprop%tg3 cm=cd ch=cdq prsl1=Statein%prsl(:,1)
           !$ser data prslki=work3 zf=Diag%zlvl land=dry wind=wind slopetyp=slopetyp shdmin=Sfcprop%shdmin
