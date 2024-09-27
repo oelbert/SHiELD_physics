@@ -28,24 +28,24 @@
 !     b) use different xkzm_m,xkzm_h for land, ocean and sea ice points
 !     c) add option for turning off HB19 formula for surface backgroud diff. (do_dk_hb19)  
 
-      subroutine satmedmfvdif(ix,im,km,ntrac,ntcw,ntiw,ntke,
-     &     dv,du,tdt,rtg_in,u1,v1,t1,q1_in,swh,hlw,xmu,garea,islimsk,
-     &     psk,rbsoil,zorl,u10m,v10m,fm,fh,
-     &     tsea,heat,evap,stress,spd1,kpbl,
-     &     prsi,del,prsl,prslk,phii,phil,delt,
-     &     dspheat,dusfc,dvsfc,dtsfc,dqsfc,hpbl,
-     &     kinver,xkzm_mo,xkzm_ho,xkzm_ml,xkzm_hl,xkzm_mi,xkzm_hi,
-     &     xkzm_s,xkzinv,do_dk_hb19,xkzm_lim,xkgdx,
-     &     rlmn, rlmx, cap_k0_land, dkt_out)
+      subroutine satmedmfvdif(ix,im,km,ntrac,ntcw,ntiw,ntke, &
+         dv,du,tdt,rtg_in,u1,v1,t1,q1_in,swh,hlw,xmu,garea,islimsk, &
+         psk,rbsoil,zorl,u10m,v10m,fm,fh, &
+         tsea,heat,evap,stress,spd1,kpbl, &
+         prsi,del,prsl,prslk,phii,phil,delt, &
+         dspheat,dusfc,dvsfc,dtsfc,dqsfc,hpbl, &
+         kinver,xkzm_mo,xkzm_ho,xkzm_ml,xkzm_hl,xkzm_mi,xkzm_hi, &
+         xkzm_s,xkzinv,do_dk_hb19,xkzm_lim,xkgdx, &
+         rlmn, rlmx, cap_k0_land, dkt_out)
 !
       !$ser verbatim use mpi
       !$ser verbatim USE m_serialize, ONLY: fs_is_serialization_on
       use machine  , only : kind_phys
       use funcphys , only : fpvs
-      use physcons, grav => con_g, rd => con_rd, cp => con_cp
-     &,             rv => con_rv, hvap => con_hvap
-     &,             hfus => con_hfus, fv => con_fvirt
-     &,             eps => con_eps, epsm1 => con_epsm1
+      use physcons, grav => con_g, rd => con_rd, cp => con_cp, &
+                    rv => con_rv, hvap => con_hvap, &
+                    hfus => con_hfus, fv => con_fvirt, &
+                    eps => con_eps, epsm1 => con_epsm1
 !
       implicit none
 !
@@ -53,29 +53,29 @@
       integer ix, im, km, ntrac, ntcw, ntiw, ntke, ntcw_new
       integer kpbl(im), kinver(im), islimsk(im)
 !
-      real(kind=kind_phys) delt, xkzm_s, xkzm_lim,
-     &                     xkzm_mo, xkzm_ho, xkzm_ml, xkzm_hl, 
-     &                     xkzm_mi, xkzm_hi
-      real(kind=kind_phys) dv(im,km),     du(im,km),
-     &                     tdt(im,km),    rtg(im,km,ntrac),
-     &                     u1(ix,km),     v1(ix,km),
-     &                     t1(ix,km),     q1(ix,km,ntrac),
-     &                     swh(ix,km),    hlw(ix,km),
-     &                     xmu(im),       garea(im),
-     &                     psk(ix),       rbsoil(im),
-     &                     zorl(im),      tsea(im),
-     &                     u10m(im),      v10m(im),
-     &                     fm(im),        fh(im),
-     &                     evap(im),      heat(im),
-     &                     stress(im),    spd1(im),
-     &                     prsi(ix,km+1), del(ix,km),
-     &                     prsl(ix,km),   prslk(ix,km),
-     &                     phii(ix,km+1), phil(ix,km),
-     &                     dusfc(im),     dvsfc(im),
-     &                     dtsfc(im),     dqsfc(im),
-     &                     hpbl(im),
-     &                     q1_in(ix,km,ntrac),  
-     &                     rtg_in(im,km,ntrac)
+      real(kind=kind_phys) delt, xkzm_s, xkzm_lim, &
+                           xkzm_mo, xkzm_ho, xkzm_ml, xkzm_hl,  &
+                           xkzm_mi, xkzm_hi
+      real(kind=kind_phys) dv(im,km),     du(im,km), &
+                           tdt(im,km),    rtg(im,km,ntrac), &
+                           u1(ix,km),     v1(ix,km), &
+                           t1(ix,km),     q1(ix,km,ntrac), &
+                           swh(ix,km),    hlw(ix,km), &
+                           xmu(im),       garea(im), &
+                           psk(ix),       rbsoil(im), &
+                           zorl(im),      tsea(im), &
+                           u10m(im),      v10m(im), &
+                           fm(im),        fh(im), &
+                           evap(im),      heat(im), &
+                           stress(im),    spd1(im), &
+                           prsi(ix,km+1), del(ix,km), &
+                           prsl(ix,km),   prslk(ix,km), &
+                           phii(ix,km+1), phil(ix,km), &
+                           dusfc(im),     dvsfc(im), &
+                           dtsfc(im),     dqsfc(im), &
+                           hpbl(im), &
+                           q1_in(ix,km,ntrac),   &
+                           rtg_in(im,km,ntrac)
 ! kgao note - q1 and rtg are local var now
 
 !
@@ -94,54 +94,54 @@
 !
       real(kind=kind_phys) tke(im,km),  tkeh(im,km-1)
 !
-      real(kind=kind_phys) theta(im,km),thvx(im,km),  thlvx(im,km),
-     &                     qlx(im,km),  thetae(im,km),thlx(im,km),
-     &                     slx(im,km),  svx(im,km),   qtx(im,km),
-     &                     tvx(im,km),  pix(im,km),   radx(im,km-1),
-     &                     dku(im,km-1),dkt(im,km-1), dkq(im,km-1),
-     &                     cku(im,km-1),ckt(im,km-1)
+      real(kind=kind_phys) theta(im,km),thvx(im,km),  thlvx(im,km), &
+                           qlx(im,km),  thetae(im,km),thlx(im,km), &
+                           slx(im,km),  svx(im,km),   qtx(im,km), &
+                           tvx(im,km),  pix(im,km),   radx(im,km-1), &
+                           dku(im,km-1),dkt(im,km-1), dkq(im,km-1), &
+                           cku(im,km-1),ckt(im,km-1)
 !
-      real(kind=kind_phys) plyr(im,km), rhly(im,km),  cfly(im,km),
-     &                     qstl(im,km)
+      real(kind=kind_phys) plyr(im,km), rhly(im,km),  cfly(im,km), &
+                           qstl(im,km)
 !
-      real(kind=kind_phys) dtdz1(im), gdx(im),
-     &                     phih(im),  phim(im),    prn(im,km-1),
-     &                     rbdn(im),  rbup(im),    thermal(im),
-     &                     ustar(im), wstar(im),   hpblx(im),
-     &                     ust3(im),  wst3(im),
-     &                     z0(im),    crb(im),
-     &                     hgamt(im), hgamq(im),
-     &                     wscale(im),vpert(im),
-     &                     zol(im),   sflux(im),   radj(im),
-     &                     tx1(im),   tx2(im)
+      real(kind=kind_phys) dtdz1(im), gdx(im), &
+                           phih(im),  phim(im),    prn(im,km-1), &
+                           rbdn(im),  rbup(im),    thermal(im), &
+                           ustar(im), wstar(im),   hpblx(im), &
+                           ust3(im),  wst3(im), &
+                           z0(im),    crb(im), &
+                           hgamt(im), hgamq(im), &
+                           wscale(im),vpert(im), &
+                           zol(im),   sflux(im),   radj(im), &
+                           tx1(im),   tx2(im)
 !
       real(kind=kind_phys) radmin(im)
 !
-      real(kind=kind_phys) zi(im,km+1),  zl(im,km),   zm(im,km),
-     &                     xkzo(im,km-1),xkzmo(im,km-1),
-     &                     xkzm_hx(im),  xkzm_mx(im),
-     &                     rdzt(im,km-1),
-     &                     al(im,km-1),  ad(im,km),   au(im,km-1),
-     &                     f1(im,km),    f2(im,km*(ntrac-1))
+      real(kind=kind_phys) zi(im,km+1),  zl(im,km),   zm(im,km), &
+                           xkzo(im,km-1),xkzmo(im,km-1), &
+                           xkzm_hx(im),  xkzm_mx(im), &
+                           rdzt(im,km-1), &
+                           al(im,km-1),  ad(im,km),   au(im,km-1), &
+                           f1(im,km),    f2(im,km*(ntrac-1))
 !
-      real(kind=kind_phys) elm(im,km),   ele(im,km),  rle(im,km-1),
-     &                     ckz(im,km),   chz(im,km), 
-     &                     diss(im,km-1),prod(im,km-1), 
-     &                     bf(im,km-1),  shr2(im,km-1),
-     &                     xlamue(im,km-1), xlamde(im,km-1),
-     &                     gotvx(im,km), rlam(im,km-1)
+      real(kind=kind_phys) elm(im,km),   ele(im,km),  rle(im,km-1), &
+                           ckz(im,km),   chz(im,km),  &
+                           diss(im,km-1),prod(im,km-1),  &
+                           bf(im,km-1),  shr2(im,km-1), &
+                           xlamue(im,km-1), xlamde(im,km-1), &
+                           gotvx(im,km), rlam(im,km-1)
 !
 !   variables for updrafts (thermals)
 !
-      real(kind=kind_phys) tcko(im,km),  qcko(im,km,ntrac),
-     &                     ucko(im,km),  vcko(im,km),
-     &                     buou(im,km),  xmf(im,km)
+      real(kind=kind_phys) tcko(im,km),  qcko(im,km,ntrac), &
+                           ucko(im,km),  vcko(im,km), &
+                           buou(im,km),  xmf(im,km)
 !
 !   variables for stratocumulus-top induced downdrafts
 !
-      real(kind=kind_phys) tcdo(im,km),  qcdo(im,km,ntrac),
-     &                     ucdo(im,km),  vcdo(im,km),
-     &                     buod(im,km),  xmfd(im,km)
+      real(kind=kind_phys) tcdo(im,km),  qcdo(im,km,ntrac), &
+                           ucdo(im,km),  vcdo(im,km), &
+                           buod(im,km),  xmfd(im,km)
 !
       logical  pblflg(im), sfcflg(im), flg(im)
       logical  scuflg(im), pcnvflg(im)
@@ -149,33 +149,33 @@
 !
 !  pcnvflg: true for unstable pbl
 !
-      real(kind=kind_phys) aphi16,  aphi5,
-     &                     wfac,    cfac,
-     &                     gamcrt,  gamcrq, sfcfrac,
-     &                     conq,    cont,   conw,
-     &                     dsdz2,   dsdzt,  dkmax,
-     &                     dsig,    dt2,    dtodsd,
-     &                     dtodsu,  g,      factor, dz,
-     &                     gocp,    gravi,  zol1,   zolcru,
-     &                     buop,    shrp,   dtn,    cdtn,
-     &                     prnum,   prmax,  prmin,  prtke,
-     &                     prscu,   dw2,    dw2min, zk,     
-     &                     elmfac,  elefac, dspmax,
-     &                     alp,     clwt,   cql,
-     &                     f0,      robn,   crbmin, crbmax,
-     &                     es,      qs,     value,  onemrh,
-     &                     cfh,     gamma,  elocp,  el2orc,
-     &                     epsi,    beta,   chx,    cqx,
-     &                     rdt,     rdz,    qmin,   qlmin,
-     &                     ri,      rimin,
-     &                     rbcr,    rbint,  tdzmin,
-     &                     rlmn,    rlmx,   elmx,
-     &                     ttend,   utend,  vtend,  qtend,
-     &                     zfac,    zfmin,  vk,     spdk2,
-     &                     tkmin,   xkzinv, dspfac, xkgdx,
-     &                     zlup,    zldn,   bsum,
-     &                     tem,     tem1,   tem2,
-     &                     ptem,    ptem0,  ptem1,  ptem2
+      real(kind=kind_phys) aphi16,  aphi5, &
+                           wfac,    cfac, &
+                           gamcrt,  gamcrq, sfcfrac, &
+                           conq,    cont,   conw, &
+                           dsdz2,   dsdzt,  dkmax, &
+                           dsig,    dt2,    dtodsd, &
+                           dtodsu,  g,      factor, dz, &
+                           gocp,    gravi,  zol1,   zolcru, &
+                           buop,    shrp,   dtn,    cdtn, &
+                           prnum,   prmax,  prmin,  prtke, &
+                           prscu,   dw2,    dw2min, zk,      &
+                           elmfac,  elefac, dspmax, &
+                           alp,     clwt,   cql, &
+                           f0,      robn,   crbmin, crbmax, &
+                           es,      qs,     value,  onemrh, &
+                           cfh,     gamma,  elocp,  el2orc, &
+                           epsi,    beta,   chx,    cqx, &
+                           rdt,     rdz,    qmin,   qlmin, &
+                           ri,      rimin, &
+                           rbcr,    rbint,  tdzmin, &
+                           rlmn,    rlmx,   elmx, &
+                           ttend,   utend,  vtend,  qtend, &
+                           zfac,    zfmin,  vk,     spdk2, &
+                           tkmin,   xkzinv, dspfac, xkgdx, &
+                           zlup,    zldn,   bsum, &
+                           tem,     tem1,   tem2, &
+                           ptem,    ptem0,  ptem1,  ptem2
 !
       real(kind=kind_phys) ck0, ck1, ch0, ch1, ce0, rchck
 !
@@ -548,8 +548,8 @@
       do i = 1, im
          rdz  = rdzt(i,k)
 !        bf(i,k) = gotvx(i,k)*(thvx(i,k+1)-thvx(i,k))*rdz
-         dw2  = (u1(i,k)-u1(i,k+1))**2
-     &        + (v1(i,k)-v1(i,k+1))**2
+         dw2  = (u1(i,k)-u1(i,k+1))**2 &
+              + (v1(i,k)-v1(i,k+1))**2
          shr2(i,k) = max(dw2,dw2min)*rdz*rdz
       enddo
       enddo
@@ -569,8 +569,8 @@
           spdk2   = max((u1(i,k)**2+v1(i,k)**2),1.)
 !         rbup(i) = (thvx(i,k)-thermal(i))*
 !    &              (g*zl(i,k)/thvx(i,1))/spdk2
-          rbup(i) = (thlvx(i,k)-thermal(i))*
-     &              (g*zl(i,k)/thlvx(i,1))/spdk2
+          rbup(i) = (thlvx(i,k)-thermal(i))* &
+                    (g*zl(i,k)/thlvx(i,1))/spdk2
           kpblx(i) = k
           flg(i)  = rbup(i) > crb(i)
         endif
@@ -660,8 +660,8 @@
         if(.not.flg(i)) then
           rbdn(i) = rbup(i)
           spdk2   = max((u1(i,k)**2+v1(i,k)**2),1.)
-          rbup(i) = (thlvx(i,k)-thermal(i))*
-     &              (g*zl(i,k)/thlvx(i,1))/spdk2
+          rbup(i) = (thlvx(i,k)-thermal(i))* &
+                    (g*zl(i,k)/thlvx(i,1))/spdk2
           kpbl(i) = k
           flg(i)  = rbup(i) > crb(i)
         endif
@@ -785,10 +785,10 @@
       !$ser data zm=zm q1=q1 t1=t1 u1=u1 v1=v1 plyr=plyr pix=pix thlx=thlx thvx=thvx
       !$ser data gdx=gdx hpbl=hpbl kpbl=kpbl vpert=vpert buou=buou xmf=xmf tcko=tcko
       !$ser data qcko=qcko ucko=ucko vcko=vcko xlamue=xlamue
-      call mfpblt(im,ix,km,kmpbl,ntcw_new,ntrac1,dt2,
-     &    pcnvflg,zl,zm,q1,t1,u1,v1,plyr,pix,thlx,thvx,
-     &    gdx,hpbl,kpbl,vpert,buou,xmf,
-     &    tcko,qcko,ucko,vcko,xlamue)
+      call mfpblt(im,ix,km,kmpbl,ntcw_new,ntrac1,dt2, &
+          pcnvflg,zl,zm,q1,t1,u1,v1,plyr,pix,thlx,thvx, &
+          gdx,hpbl,kpbl,vpert,buou,xmf, &
+          tcko,qcko,ucko,vcko,xlamue)
       !$ser savepoint MFPBLT-Out
       !$ser data hpbl=hpbl kpbl=kpbl buo=buou xmf=xmf tcko=tcko qcko=qcko ucko=ucko
       !$ser data vcko=vcko xlamue=xlamue
@@ -799,11 +799,11 @@
       !$ser data thlvx=thlvx gdx=gdx thetae=thetae radj=radj krad=krad mrad=mrad
       !$ser data radmin=radmin buo=buod xmfd=xmfd tcdo=tcdo qcdo=qcdo ucdo=ucdo
       !$ser data vcdo=vcdo xlamde=xlamde
-      call mfscu(im,ix,km,kmscu,ntcw_new,ntrac1,dt2,
-     &    scuflg,zl,zm,q1,t1,u1,v1,plyr,pix,
-     &    thlx,thvx,thlvx,gdx,thetae,radj,
-     &    krad,mrad,radmin,buod,xmfd,
-     &    tcdo,qcdo,ucdo,vcdo,xlamde)
+      call mfscu(im,ix,km,kmscu,ntcw_new,ntrac1,dt2, &
+          scuflg,zl,zm,q1,t1,u1,v1,plyr,pix, &
+          thlx,thvx,thlvx,gdx,thetae,radj, &
+          krad,mrad,radmin,buod,xmfd, &
+          tcdo,qcdo,ucdo,vcdo,xlamde)
       !$ser savepoint MFSCU-Out
       !$ser data radj=radj krad=krad mrad=mrad buo=buod xmfd=xmfd tcko=tcko qcko=qcko
       !$ser data ucko=ucko vcdo=vcdo xlamde=xlamde
@@ -815,8 +815,8 @@
         do i = 1, im
           if(k < kpbl(i)) then
             tem = phih(i)/phim(i)
-            ptem = -3.*(max(zi(i,k+1)-sfcfrac*hpbl(i),0.))**2.
-     &               /hpbl(i)**2.
+            ptem = -3.*(max(zi(i,k+1)-sfcfrac*hpbl(i),0.))**2. &
+                     /hpbl(i)**2.
             if(pcnvflg(i)) then
               prn(i,k) =  1. + (tem-1.)*exp(ptem)
             else
@@ -1179,8 +1179,8 @@
 ! kgao change
 !             qcko(i,k,ntke)=((1.-tem)*qcko(i,k-1,ntke)+tem*
 !     &                (tke(i,k)+tke(i,k-1)))/factor
-             qcko(i,k,ntrac)=((1.-tem)*qcko(i,k-1,ntrac)+tem*
-     &                (tke(i,k)+tke(i,k-1)))/factor
+             qcko(i,k,ntrac)=((1.-tem)*qcko(i,k-1,ntrac)+tem* &
+                      (tke(i,k)+tke(i,k-1)))/factor
 
           endif
         enddo
@@ -1195,8 +1195,8 @@
 ! kgao change
 !              qcdo(i,k,ntke)=((1.-tem)*qcdo(i,k+1,ntke)+tem*
 !     &                 (tke(i,k)+tke(i,k+1)))/factor
-              qcdo(i,k,ntrac)=((1.-tem)*qcdo(i,k+1,ntrac)+tem*
-     &                 (tke(i,k)+tke(i,k+1)))/factor
+              qcdo(i,k,ntrac)=((1.-tem)*qcdo(i,k+1,ntrac)+tem* &
+                       (tke(i,k)+tke(i,k+1)))/factor
             endif
           endif
         enddo
@@ -1254,13 +1254,13 @@
 !
         enddo
       enddo
-c
-c     solve tridiagonal problem for tke
-c
+!
+!     solve tridiagonal problem for tke
+!
       call tridit(im,km,1,al,ad,au,f1,au,f1)
-c
-c     recover tendency of tke
-c
+!
+!     recover tendency of tke
+!
       do k = 1,km
          do i = 1,im
 ! fix negative tke 
@@ -1272,9 +1272,9 @@ c
             rtg(i,k,ntrac) = rtg(i,k,ntrac)+qtend
          enddo
       enddo
-c
-c     compute tridiagonal matrix elements for heat and moisture (and other tracers, except tke)
-c
+!
+!     compute tridiagonal matrix elements for heat and moisture (and other tracers, except tke)
+!
       do i=1,im
          ad(i,1) = 1.
          f1(i,1) = t1(i,1)   + dtdz1(i) * heat(i)
@@ -1288,7 +1288,7 @@ c
           enddo
         enddo
       endif
-c
+!
       do k = 1,km1
         do i = 1,im
           dtodsd  = dt2/del(i,k)
@@ -1383,13 +1383,13 @@ c
           enddo
         enddo
       endif
-c
-c     solve tridiagonal problem for heat and moisture
-c
+!
+!     solve tridiagonal problem for heat and moisture
+!
       call tridin(im,km,ntrac1,al,ad,au,f1,f2,au,f1,f2)
-c
-c     recover tendencies of heat and moisture
-c
+!
+!     recover tendencies of heat and moisture
+!
       do  k = 1,km
          do i = 1,im
             ttend      = (f1(i,k)-t1(i,k))*rdt
@@ -1441,15 +1441,15 @@ c
         enddo
       enddo
       endif
-c
-c     compute tridiagonal matrix elements for momentum
-c
+!
+!     compute tridiagonal matrix elements for momentum
+!
       do i=1,im
          ad(i,1) = 1.0 + dtdz1(i) * stress(i) / spd1(i)
          f1(i,1) = u1(i,1)
          f2(i,1) = v1(i,1)
       enddo
-c
+!
       do k = 1,km1
         do i=1,im
           dtodsd  = dt2/del(i,k)
@@ -1499,13 +1499,13 @@ c
 !
         enddo
       enddo
-c
-c     solve tridiagonal problem for momentum
-c
+!
+!     solve tridiagonal problem for momentum
+!
       call tridi2(im,km,al,ad,au,f1,f2,au,f1,f2)
-c
-c     recover tendencies of momentum
-c
+!
+!     recover tendencies of momentum
+!
       do k = 1,km
          do i = 1,im
             utend = (f1(i,k)-u1(i,k))*rdt
@@ -1533,17 +1533,17 @@ c
 !-----------------------------------------------------------------------
       subroutine tridit(l,n,nt,cl,cm,cu,rt,au,at)
 !-----------------------------------------------------------------------
-cc
+!!
       use machine     , only : kind_phys
       implicit none
       integer             is,k,kk,n,nt,l,i
       real(kind=kind_phys) fk(l)
-cc
-      real(kind=kind_phys) cl(l,2:n), cm(l,n), cu(l,n-1),
-     &                     rt(l,n*nt),
-     &                     au(l,n-1), at(l,n*nt),
-     &                     fkk(l,2:n-1)
-c-----------------------------------------------------------------------
+!!
+      real(kind=kind_phys) cl(l,2:n), cm(l,n), cu(l,n-1), &
+                           rt(l,n*nt), &
+                           au(l,n-1), at(l,n*nt), &
+                           fkk(l,2:n-1)
+!-----------------------------------------------------------------------
       do i=1,l
         fk(i)   = 1./cm(i,1)
         au(i,1) = fk(i)*cu(i,1)
@@ -1585,6 +1585,6 @@ c-----------------------------------------------------------------------
           enddo
         enddo
       enddo
-c-----------------------------------------------------------------------
+!-----------------------------------------------------------------------
       return
       end
