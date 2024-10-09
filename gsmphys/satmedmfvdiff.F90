@@ -805,8 +805,8 @@
           krad,mrad,radmin,buod,xmfd, &
           tcdo,qcdo,ucdo,vcdo,xlamde)
       !$ser savepoint MFSCU-Out
-      !$ser data radj=radj krad=krad mrad=mrad buo=buod xmfd=xmfd tcko=tcko qcko=qcko
-      !$ser data ucko=ucko vcdo=vcdo xlamde=xlamde
+      !$ser data radj=radj krad=krad mrad=mrad buo=buod xmfd=xmfd tcdo=tcdo qcdo=qcdo
+      !$ser data ucdo=ucdo vcdo=vcdo xlamde=xlamde
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !   compute prandtl number and exchange coefficient varying with height
