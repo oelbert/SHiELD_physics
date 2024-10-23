@@ -798,7 +798,7 @@
       !$ser data zm=zm q1=q1 t1=t1 u1=u1 v1=v1 plyr=plyr pix=pix thlx=thlx thvx=thvx
       !$ser data thlvx=thlvx gdx=gdx thetae=thetae radj=radj krad=krad mrad=mrad
       !$ser data radmin=radmin buo=buod xmfd=xmfd tcdo=tcdo qcdo=qcdo ucdo=ucdo
-      !$ser data vcdo=vcdo xlamde=xlamde, ntke=ntke
+      !$ser data vcdo=vcdo xlamde=xlamde ntke=ntke
       call mfscu(im,ix,km,kmscu,ntcw_new,ntrac1,dt2, &
           scuflg,zl,zm,q1,t1,u1,v1,plyr,pix, &
           thlx,thvx,thlvx,gdx,thetae,radj, &
