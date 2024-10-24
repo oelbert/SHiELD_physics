@@ -1257,7 +1257,11 @@
 !
 !     solve tridiagonal problem for tke
 !
+      !$ser savepoint Tridit-In
+      !$ser data cl=al cm=ad cu=au rt=f1 au=au at=f1
       call tridit(im,km,1,al,ad,au,f1,au,f1)
+      !$ser savepoint Tridit-Out
+      !$ser data cl=al cm=ad cu=au rt=f1 au=au at=f1
 !
 !     recover tendency of tke
 !
@@ -1386,7 +1390,11 @@
 !
 !     solve tridiagonal problem for heat and moisture
 !
+      !$ser savepoint Tridin-In
+      !$ser data nt=ntrac1 cl=al cm=ad cu=au r1=f1 r2=f2 au=au a1=f1 a2=f2
       call tridin(im,km,ntrac1,al,ad,au,f1,f2,au,f1,f2)
+      !$ser savepoint Tridin-Out
+      !$ser data cl=al cm=ad cu=au r1=f1 r2=f2 au=au a1=f1 a2=f2
 !
 !     recover tendencies of heat and moisture
 !
@@ -1502,7 +1510,11 @@
 !
 !     solve tridiagonal problem for momentum
 !
+      !$ser savepoint Tridi2-In
+      !$ser data cl=al cm=ad cu=au r1=f1 r2=f2 au=au a1=f1 a2=f2
       call tridi2(im,km,al,ad,au,f1,f2,au,f1,f2)
+      !$ser savepoint Tridi2-Out
+      !$ser data cl=al cm=ad cu=au r1=f1 r2=f2 au=au a1=f1 a2=f2
 !
 !     recover tendencies of momentum
 !
