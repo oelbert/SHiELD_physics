@@ -202,7 +202,7 @@
       real (kind=kind_phys), intent(in) :: ffrozp, dt, zlvl, lwdn,      &
              sldpth(nsoil), swdn, swnet, sfcems, sfcprs, sfctmp,        &
              sfcspd, prcp, q2, q2sat, dqsdt2, th2, shdmin, alb, snoalb, &
-             bexpp, xlaip                                               & !sfc-perts, mgehne
+             bexpp, xlaip !                                             & !sfc-perts, mgehne
 
       logical, intent(in) :: lheatstrg
 
