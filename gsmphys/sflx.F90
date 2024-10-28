@@ -2,20 +2,20 @@
       subroutine sflx                                                   &
 !...................................
 !  ---  inputs:
-     &     ( nsoil, couple, icein, ffrozp, dt, zlvl, sldpth,            &
-     &       swdn, swnet, lwdn, sfcems, sfcprs, sfctmp,                 &
-     &       sfcspd, prcp, q2, q2sat, dqsdt2, th2, ivegsrc,             &
-     &       vegtyp, soiltyp, slopetyp, shdmin, alb, snoalb,            &
-     &       bexpp, xlaip,                                              & !  sfc-perts, mgehne
-     &       lheatstrg,                                                 &
+           ( nsoil, couple, icein, ffrozp, dt, zlvl, sldpth,            &
+             swdn, swnet, lwdn, sfcems, sfcprs, sfctmp,                 &
+             sfcspd, prcp, q2, q2sat, dqsdt2, th2, ivegsrc,             &
+             vegtyp, soiltyp, slopetyp, shdmin, alb, snoalb,            &
+             bexpp, xlaip,                                              & !  sfc-perts, mgehne
+             lheatstrg,                                                 &
 !  ---  input/outputs:
-     &       tbot, cmc, t1, stc, smc, sh2o, sneqv, ch, cm,z0,           &
+             tbot, cmc, t1, stc, smc, sh2o, sneqv, ch, cm,z0,           &
 !  ---  outputs:
-     &       nroot, shdfac, snowh, albedo, eta, sheat, ec,              &
-     &       edir, et, ett, esnow, drip, dew, beta, etp, ssoil,         &
-     &       flx1, flx2, flx3, runoff1, runoff2, runoff3,               &
-     &       snomlt, sncovr, rc, pc, rsmin, xlai, rcs, rct, rcq,        &
-     &       rcsoil, soilw, soilm, smcwlt, smcdry, smcref, smcmax)
+             nroot, shdfac, snowh, albedo, eta, sheat, ec,              &
+             edir, et, ett, esnow, drip, dew, beta, etp, ssoil,         &
+             flx1, flx2, flx3, runoff1, runoff2, runoff3,               &
+             snomlt, sncovr, rc, pc, rsmin, xlai, rcs, rct, rcq,        &
+             rcsoil, soilw, soilm, smcwlt, smcdry, smcref, smcmax)
 
 ! ===================================================================== !
 !  description:                                                         !
@@ -161,8 +161,8 @@
       use machine ,   only : kind_phys
 !
       use physcons,   only : con_cp, con_rd, con_t0c, con_g, con_pi,    &
-     &                       con_cliq, con_csol, con_hvap, con_hfus,    &
-     &                       con_sbc
+                             con_cliq, con_csol, con_hvap, con_hfus,    &
+                             con_sbc
 !
       implicit none
 
@@ -197,37 +197,37 @@
 
 !  ---  inputs:
       integer, intent(in) :: nsoil, couple, icein, vegtyp, soiltyp,     &
-     &       slopetyp, ivegsrc
+             slopetyp, ivegsrc
 
       real (kind=kind_phys), intent(in) :: ffrozp, dt, zlvl, lwdn,      &
-     &       sldpth(nsoil), swdn, swnet, sfcems, sfcprs, sfctmp,        &
-     &       sfcspd, prcp, q2, q2sat, dqsdt2, th2, shdmin, alb, snoalb, &
-     &       bexpp, xlaip                                               & !sfc-perts, mgehne
+             sldpth(nsoil), swdn, swnet, sfcems, sfcprs, sfctmp,        &
+             sfcspd, prcp, q2, q2sat, dqsdt2, th2, shdmin, alb, snoalb, &
+             bexpp, xlaip                                               & !sfc-perts, mgehne
 
       logical, intent(in) :: lheatstrg
 
 !  ---  input/outputs:
       real (kind=kind_phys), intent(inout) :: tbot, cmc, t1, sneqv,     &
-     &       stc(nsoil), smc(nsoil), sh2o(nsoil), ch, cm
+             stc(nsoil), smc(nsoil), sh2o(nsoil), ch, cm
 
 !  ---  outputs:
       integer, intent(out) :: nroot
 
       real (kind=kind_phys), intent(out) :: shdfac, snowh, albedo,      &
-     &       eta, sheat, ec, edir, et(nsoil), ett, esnow, drip, dew,    &
-     &       beta, etp, ssoil, flx1, flx2, flx3, snomlt, sncovr,        &
-     &       runoff1, runoff2, runoff3, rc, pc, rsmin, xlai, rcs,       &
-     &       rct, rcq, rcsoil, soilw, soilm, smcwlt, smcdry, smcref,    &
-     &       smcmax
+             eta, sheat, ec, edir, et(nsoil), ett, esnow, drip, dew,    &
+             beta, etp, ssoil, flx1, flx2, flx3, snomlt, sncovr,        &
+             runoff1, runoff2, runoff3, rc, pc, rsmin, xlai, rcs,       &
+             rct, rcq, rcsoil, soilw, soilm, smcwlt, smcdry, smcref,    &
+             smcmax
 
 !  ---  locals:
 !     real (kind=kind_phys) ::  df1h,
       real (kind=kind_phys) ::  bexp, cfactr, cmcmax, csoil, czil,      &
-     &       df1, df1a, dksat, dwsat, dsoil, dtot, frcsno,              &
-     &       frcsoi, epsca, fdown, f1, fxexp, frzx, hs, kdt, prcp1,     &
-     &       psisat, quartz, rch, refkdt, rr, rgl, rsmax, sndens,       &
-     &       sncond, sbeta, sn_new, slope, snup, salp, soilwm, soilww,  &
-     &       t1v, t24, t2v, th2v, topt, tsnow, zbot, z0
+             df1, df1a, dksat, dwsat, dsoil, dtot, frcsno,              &
+             frcsoi, epsca, fdown, f1, fxexp, frzx, hs, kdt, prcp1,     &
+             psisat, quartz, rch, refkdt, rr, rgl, rsmax, sndens,       &
+             sncond, sbeta, sn_new, slope, snup, salp, soilwm, soilww,  &
+             t1v, t24, t2v, th2v, topt, tsnow, zbot, z0
       
       real (kind=kind_phys) ::  shdfac0
       real (kind=kind_phys), dimension(nsold) :: rtdis, zsoil
@@ -529,10 +529,10 @@
 
         call tdfcnd                                                     &
 !  ---  inputs:
-     &     ( smc(1), quartz, smcmax, sh2o(1),                           &
+           ( smc(1), quartz, smcmax, sh2o(1),                           &
 !  ---  outputs:
-     &       df1                                                        &
-     &     )
+             df1                                                        &
+           )
 !       if(ivegsrc == 1) then
 !only igbp type has urban
 !urban
@@ -546,8 +546,7 @@
 !
 !jhan urban canopy heat storage effect is included in pbl scheme
 !
-        if((.not.lheatstrg) .and. 
-     &      (ivegsrc == 1 .and. vegtyp == 13)) then
+        if((.not.lheatstrg) .and. (ivegsrc == 1 .and. vegtyp == 13)) then
           df1 = 3.24*(1.-shdfac) + shdfac*df1*exp(sbeta*shdfac)
         else
           df1 = df1 * exp( sbeta*shdfac )
@@ -828,10 +827,10 @@
       subroutine alcalc
 !...................................
 !  ---  inputs:
-!    &     ( alb, snoalb, shdfac, shdmin, sncovr, tsnow,                &
+!          ( alb, snoalb, shdfac, shdmin, sncovr, tsnow,                &
 !  ---  outputs:
-!    &       albedo                                                     &
-!    &     )
+!            albedo                                                     &
+!          )
 
 ! ===================================================================== !
 !  description:                                                         !
@@ -858,7 +857,7 @@
 !
 !  ---  inputs:
 !     real (kind=kind_phys), intent(in) :: alb, snoalb, shdfac,         &
-!    &       shdmin, sncovr, tsnow
+!            shdmin, sncovr, tsnow
 
 !  ---  outputs:
 !     real (kind=kind_phys), intent(out) :: albedo
@@ -910,12 +909,12 @@
       subroutine canres
 !...................................
 !  ---  inputs:
-!    &     ( nsoil, nroot, swdn, ch, q2, q2sat, dqsdt2, sfctmp,         &
-!    &       sfcprs, sfcems, sh2o, smcwlt, smcref, zsoil, rsmin,        &
-!    &       rsmax, topt, rgl, hs, xlai,                                &
+!          ( nsoil, nroot, swdn, ch, q2, q2sat, dqsdt2, sfctmp,         &
+!            sfcprs, sfcems, sh2o, smcwlt, smcref, zsoil, rsmin,        &
+!            rsmax, topt, rgl, hs, xlai,                                &
 !  ---  outputs:
-!    &       rc, pc, rcs, rct, rcq, rcsoil                              &
-!    &     )
+!            rc, pc, rcs, rct, rcq, rcsoil                              &
+!          )
 
 ! ===================================================================== !
 !  description:                                                         !
@@ -971,12 +970,12 @@
 !     integer, intent(in) :: nsoil, nroot
 
 !     real (kind=kind_phys), intent(in) :: swdn, ch, q2, q2sat,         &
-!    &       dqsdt2, sfctmp, sfcprs, sfcems, smcwlt, smcref, rsmin,     &
-!    &       rsmax, topt, rgl, hs, xlai, sh2o(nsoil), zsoil(nsoil)
+!            dqsdt2, sfctmp, sfcprs, sfcems, smcwlt, smcref, rsmin,     &
+!            rsmax, topt, rgl, hs, xlai, sh2o(nsoil), zsoil(nsoil)
 
 !  ---  outputs:
 !     real (kind=kind_phys), intent(out) :: rc, pc, rcs, rct, rcq,      &
-!    &       rcsoil
+!            rcsoil
 
 !  ---  locals:
       real (kind=kind_phys) :: delta, ff, gx, rr, part(nsold)
@@ -1238,7 +1237,7 @@
 
 !  ---  locals:
       real (kind=kind_phys) :: df1, eta1, etp1, prcp1, yy, yynum,       &
-     &       zz1, ec1, edir1, et1(nsoil), ett1
+             zz1, ec1, edir1, et1(nsoil), ett1
 
       integer :: k
 
@@ -1269,23 +1268,23 @@
 
         call evapo                                                      &
 !  ---  inputs:
-     &     ( nsoil, nroot, cmc, cmcmax, etp1, dt, zsoil,                &
-     &       sh2o, smcmax, smcwlt, smcref, smcdry, pc,                  &
-     &       shdfac, cfactr, rtdis, fxexp,                              &
+           ( nsoil, nroot, cmc, cmcmax, etp1, dt, zsoil,                &
+             sh2o, smcmax, smcwlt, smcref, smcdry, pc,                  &
+             shdfac, cfactr, rtdis, fxexp,                              &
 !  ---  outputs:
-     &       eta1, edir1, ec1, et1, ett1                                &
-     &     )
+             eta1, edir1, ec1, et1, ett1                                &
+           )
 
         call smflx                                                      &
 !  ---  inputs:
-     &     ( nsoil, dt, kdt, smcmax, smcwlt, cmcmax, prcp1,             &
-     &       zsoil, slope, frzx, bexp, dksat, dwsat, shdfac,            &
-     &       edir1, ec1, et1,                                           &
+           ( nsoil, dt, kdt, smcmax, smcwlt, cmcmax, prcp1,             &
+             zsoil, slope, frzx, bexp, dksat, dwsat, shdfac,            &
+             edir1, ec1, et1,                                           &
 !  ---  input/outputs:
-     &       cmc, sh2o,                                                 &
+             cmc, sh2o,                                                 &
 !  ---  outputs:
-     &       smc, runoff1, runoff2, runoff3, drip                       &
-     &     )
+             smc, runoff1, runoff2, runoff3, drip                       &
+           )
 
       else
 
@@ -1301,14 +1300,14 @@
 
         call smflx                                                      &
 !  ---  inputs:
-     &     ( nsoil, dt, kdt, smcmax, smcwlt, cmcmax, prcp1,             &
-     &       zsoil, slope, frzx, bexp, dksat, dwsat, shdfac,            &
-     &       edir1, ec1, et1,                                           &
+           ( nsoil, dt, kdt, smcmax, smcwlt, cmcmax, prcp1,             &
+             zsoil, slope, frzx, bexp, dksat, dwsat, shdfac,            &
+             edir1, ec1, et1,                                           &
 !  ---  input/outputs:
-     &       cmc, sh2o,                                                 &
+             cmc, sh2o,                                                 &
 !  ---  outputs:
-     &       smc, runoff1, runoff2, runoff3, drip                       &
-     &     )
+             smc, runoff1, runoff2, runoff3, drip                       &
+           )
 
       endif   ! end if_etp_block
 
@@ -1341,10 +1340,10 @@
 
       call tdfcnd                                                       &
 !  ---  inputs:
-     &     ( smc(1), quartz, smcmax, sh2o(1),                           &
+           ( smc(1), quartz, smcmax, sh2o(1),                           &
 !  ---  outputs:
-     &       df1                                                        &
-     &     )
+             df1                                                        &
+           )
 !      if(ivegsrc == 1) then
 !urban
 !        if ( vegtyp == 13 ) df1=3.24
@@ -1359,8 +1358,7 @@
 !
 !jhan urban canopy heat storage effect is included in pbl scheme
 !
-        if((.not.lheatstrg) .and. 
-     &      (ivegsrc == 1 .and. vegtyp == 13)) then
+        if((.not.lheatstrg) .and. (ivegsrc == 1 .and. vegtyp == 13)) then
           df1 = 3.24*(1.-shdfac) + shdfac*df1*exp(sbeta*shdfac)
         else
           df1 = df1 * exp( sbeta*shdfac )
@@ -1375,14 +1373,14 @@
 
       call shflx                                                        &
 !  ---  inputs:
-     &     ( nsoil, smc, smcmax, dt, yy, zz1, zsoil, zbot,              &
-     &       psisat, bexp, df1, ice, quartz, csoil, vegtyp,             &
-     &       shdfac, lheatstrg,                                         &
+           ( nsoil, smc, smcmax, dt, yy, zz1, zsoil, zbot,              &
+             psisat, bexp, df1, ice, quartz, csoil, vegtyp,             &
+             shdfac, lheatstrg,                                         &
 !  ---  input/outputs:
-     &       stc, t1, tbot, sh2o,                                       &
+             stc, t1, tbot, sh2o,                                       &
 !  ---  outputs:
-     &       ssoil                                                      &
-     &     )
+             ssoil                                                      &
+           )
 
 !  --- ...  set flx1 and flx3 (snopack phase change heat fluxes) to zero since
 !           they are not used here in snopac.  flx2 (freezing rain heat flux)
@@ -1479,7 +1477,7 @@
       else
 ! ---- ...  fractional snowfall/rainfall
         rr = rr + (cpice*ffrozp+cph2o1*(1.-ffrozp))                      &
-     &       *prcp/rch
+             *prcp/rch
       endif
 
       fnet = fdown - sfcems*sigma1*t24 - ssoil
@@ -1706,7 +1704,7 @@
 !
       if (soiltyp > defined_soil) then
         write(*,*) 'warning: too many soil types,soiltyp=',soiltyp,     &
-     &   'defined_soil=',defined_soil
+         'defined_soil=',defined_soil
         stop 333
       endif
 
@@ -1863,10 +1861,10 @@
 
 !  ---  locals:
       real (kind=kind_phys) :: zilfc, zu, zt, rdz, cxch, dthv, du2,     &
-     &       btgh, wstar2, ustar, zslu, zslt, rlogu, rlogt, rlmo,       &
-     &       zetalt, zetalu, zetau, zetat, xlu4, xlt4, xu4, xt4,        &
-     &       xlu, xlt, xu, xt, psmz, simm, pshz, simh, ustark,          &
-     &       rlmn, rlma
+             btgh, wstar2, ustar, zslu, zslt, rlogu, rlogt, rlmo,       &
+             zetalt, zetalu, zetau, zetat, xlu4, xlt4, xu4, xt4,        &
+             xlu, xlt, xu, xt, psmz, simm, pshz, simh, ustark,          &
+             rlmn, rlma
 
       integer :: ilech, itr
 
@@ -1885,7 +1883,7 @@
 !  ...  2) paulson's surface functions
 
       pspmu( xx ) = -2.0 * log( (xx + 1.0)*0.5 )                        &
-     &            - log( (xx*xx + 1.0)*0.5 ) + 2.0*atan(xx) - pihf
+                  - log( (xx*xx + 1.0)*0.5 ) + 2.0*atan(xx) - pihf
       pspms( yy ) = 5.0 * yy
       psphu( xx ) = -2.0 * log( (xx*xx + 1.0)*0.5 )
       psphs( yy ) = 5.0 * yy
@@ -2279,9 +2277,9 @@
 
 !  ---  locals:
       real (kind=kind_phys):: denom, dsoil, dtot, etp1, ssoil1,         &
-     &       snoexp, ex, t11, t12, t12a, t12b, yy, zz1, seh, t14,       &
-     &       ec1, edir1, ett1, etns, etns1, esnow1, esnow2, etanrg,     &
-     &       et1(nsoil)
+             snoexp, ex, t11, t12, t12a, t12b, yy, zz1, seh, t14,       &
+             ec1, edir1, ett1, etns, etns1, esnow1, esnow2, etanrg,     &
+             et1(nsoil)
 
       integer k
 
@@ -2352,12 +2350,12 @@
 
             call evapo                                                  &
 !  ---  inputs:
-     &     ( nsoil, nroot, cmc, cmcmax, etp1, dt, zsoil,                &
-     &       sh2o, smcmax, smcwlt, smcref, smcdry, pc,                  &
-     &       shdfac, cfactr, rtdis, fxexp,                              &
+           ( nsoil, nroot, cmc, cmcmax, etp1, dt, zsoil,                &
+             sh2o, smcmax, smcwlt, smcref, smcdry, pc,                  &
+             shdfac, cfactr, rtdis, fxexp,                              &
 !  ---  outputs:
-     &       etns1, edir1, ec1, et1, ett1                               &
-     &     )
+             etns1, edir1, ec1, et1, ett1                               &
+           )
 
             edir1 = edir1 * (1.0 - sncovr)
             ec1 = ec1 * (1.0 - sncovr)
@@ -2400,7 +2398,7 @@
       if ( snowng ) then
 !  --- ... fractional snowfall/rainfall
         flx1 = (cpice* ffrozp + cph2o1*(1.-ffrozp))                     &
-     &         * prcp * (t1 - sfctmp)
+               * prcp * (t1 - sfctmp)
       else
         if (prcp > 0.0) flx1 = cph2o1 * prcp * (t1 - sfctmp)
       endif
@@ -2417,9 +2415,9 @@
       denom = 1.0 + df1 / (dtot * rr * rch)
 
 !     t12a = ( (fdown - flx1 - flx2 - sigma1*t24) / rch                 &
-!    &     + th2 - sfctmp - beta*epsca ) / rr
+!          + th2 - sfctmp - beta*epsca ) / rr
       t12a = ( (fdown - flx1 - flx2 - sfcems*sigma1*t24) / rch          &
-     &     + th2 - sfctmp - etanrg/rch ) / rr
+           + th2 - sfctmp - etanrg/rch ) / rr
 
       t12b = df1 * stc(1) / (dtot * rr * rch)
       t12 = (sfctmp + t12a + t12b) / denom
@@ -2464,7 +2462,7 @@
 
 !       t1 = tfreez * sncovr**snoexp + t12 * (1.0 - sncovr**snoexp)
         t1 = tfreez * max(0.01,sncovr**snoexp) +                          &
-     & 			t12 * (1.0 - max(0.01,sncovr**snoexp))
+       			t12 * (1.0 - max(0.01,sncovr**snoexp))
 
         beta = 1.0
         ssoil = df1 * (t1 - stc(1)) / dtot
@@ -2492,7 +2490,7 @@
           t14 = t14 * t14
 
           flx3 = fdown - flx1 - flx2 - sfcems*sigma1*t14                &
-     &         - ssoil - seh - etanrg
+               - ssoil - seh - etanrg
           if (flx3 <= 0.0) flx3 = 0.0
 
           ex = flx3 * 0.001 / lsubf
@@ -2551,14 +2549,14 @@
 
         call smflx                                                        &
 !  ---  inputs:
-     &     ( nsoil, dt, kdt, smcmax, smcwlt, cmcmax, prcp1,               &
-     &       zsoil, slope, frzx, bexp, dksat, dwsat, shdfac,              &
-     &       edir1, ec1, et1,                                             &
+           ( nsoil, dt, kdt, smcmax, smcwlt, cmcmax, prcp1,               &
+             zsoil, slope, frzx, bexp, dksat, dwsat, shdfac,              &
+             edir1, ec1, et1,                                             &
 !  ---  input/outputs:
-     &       cmc, sh2o,                                                   &
+             cmc, sh2o,                                                   &
 !  ---  outputs:
-     &       smc, runoff1, runoff2, runoff3, drip                         &
-     &     )
+             smc, runoff1, runoff2, runoff3, drip                         &
+           )
 
       endif
 
@@ -2581,14 +2579,14 @@
 
       call shflx                                                        &
 !  ---  inputs:
-     &     ( nsoil, smc, smcmax, dt, yy, zz1, zsoil, zbot,              &
-     &       psisat, bexp, df1, ice, quartz, csoil, vegtyp,             &
-     &       shdfac, lheatstrg,                                         &
+           ( nsoil, smc, smcmax, dt, yy, zz1, zsoil, zbot,              &
+             psisat, bexp, df1, ice, quartz, csoil, vegtyp,             &
+             shdfac, lheatstrg,                                         &
 !  ---  input/outputs:
-     &       stc, t11, tbot, sh2o,                                      &
+             stc, t11, tbot, sh2o,                                      &
 !  ---  outputs:
-     &       ssoil1                                                     &
-     &     )
+             ssoil1                                                     &
+           )
 
 !  --- ...  snow depth and density adjustment based on snow compaction.  yy is
 !           assumed to be the soil temperture at the top of the soil column.
@@ -2599,10 +2597,10 @@
 
           call snowpack                                                 &
 !  ---  inputs:
-     &     ( sneqv, dt, t1, yy,                                         &
+           ( sneqv, dt, t1, yy,                                         &
 !  ---  input/outputs:
-     &       snowh, sndens                                              &
-     &     )
+             snowh, sndens                                              &
+           )
 
         else
 
@@ -2626,10 +2624,10 @@
 
           call snowpack                                                 &
 !  ---  inputs:
-     &     ( sneqv, dt, t1, yy,                                         &
+           ( sneqv, dt, t1, yy,                                         &
 !  ---  input/outputs:
-     &       snowh, sndens                                              &
-     &     )
+             snowh, sndens                                              &
+           )
 
         else
 
@@ -2648,10 +2646,10 @@
 
           call snowpack                                                 &
 !  ---  inputs:
-     &     ( sneqv, dt, t1, yy,                                         &
+           ( sneqv, dt, t1, yy,                                         &
 !  ---  input/outputs:
-     &       snowh, sndens                                              &
-     &     )
+             snowh, sndens                                              &
+           )
 
         else
 
@@ -2799,10 +2797,10 @@
       subroutine tdfcnd                                                 &
 !...................................
 !  ---  inputs:
-     &     ( smc, qz, smcmax, sh2o,                                     &
+           ( smc, qz, smcmax, sh2o,                                     &
 !  ---  outputs:
-     &       df                                                         &
-     &     )
+             df                                                         &
+           )
 
 ! ===================================================================== !
 !  description:                                                         !
@@ -2856,7 +2854,7 @@
 
 !  ---  locals:
       real (kind=kind_phys) :: gammd, thkdry, ake, thkice, thko,        &
-     &       thkqtz, thksat, thks, thkw, satratio, xu, xunfroz
+             thkqtz, thksat, thks, thkw, satratio, xu, xunfroz
 !
 !===> ...  begin here
 !
@@ -2941,12 +2939,12 @@
       subroutine evapo                                                  &
 !...................................
 !  ---  inputs:
-     &     ( nsoil, nroot, cmc, cmcmax, etp1, dt, zsoil,                &
-     &       sh2o, smcmax, smcwlt, smcref, smcdry, pc,                  &
-     &       shdfac, cfactr, rtdis, fxexp,                              &
+           ( nsoil, nroot, cmc, cmcmax, etp1, dt, zsoil,                &
+             sh2o, smcmax, smcwlt, smcref, smcdry, pc,                  &
+             shdfac, cfactr, rtdis, fxexp,                              &
 !  ---  outputs:
-     &       eta1, edir1, ec1, et1, ett1                                &
-     &     )
+             eta1, edir1, ec1, et1, ett1                                &
+           )
 
 ! ===================================================================== !
 !  description:                                                         !
@@ -2994,12 +2992,12 @@
       integer, intent(in) :: nsoil, nroot
 
       real (kind=kind_phys),  intent(in) :: cmc, cmcmax, etp1, dt, pc,  &
-     &       smcmax, smcwlt, smcref, smcdry, shdfac, cfactr, fxexp,     &
-     &       zsoil(nsoil), sh2o(nsoil), rtdis(nsoil)
+             smcmax, smcwlt, smcref, smcdry, shdfac, cfactr, fxexp,     &
+             zsoil(nsoil), sh2o(nsoil), rtdis(nsoil)
 
 !  ---  outputs:
       real (kind=kind_phys),  intent(out) :: eta1, edir1, ec1, ett1,    &
-     &       et1(nsoil)
+             et1(nsoil)
 
 !  ---  locals:
       real (kind=kind_phys) :: cmc2ms
@@ -3030,10 +3028,10 @@
 
           call devap                                                    &
 !  ---  inputs:
-     &     ( etp1, sh2o(1), shdfac, smcmax, smcdry, fxexp,              &
+           ( etp1, sh2o(1), shdfac, smcmax, smcdry, fxexp,              &
 !  ---  outputs:
-     &       edir1                                                      &
-     &     )
+             edir1                                                      &
+           )
 
         endif
 
@@ -3044,11 +3042,11 @@
 
           call transp                                                   &
 !  ---  inputs:
-     &     ( nsoil, nroot, etp1, sh2o, smcwlt, smcref,                   &
-     &       cmc, cmcmax, zsoil, shdfac, pc, cfactr, rtdis,             &
+           ( nsoil, nroot, etp1, sh2o, smcwlt, smcref,                   &
+             cmc, cmcmax, zsoil, shdfac, pc, cfactr, rtdis,             &
 !  ---  outputs:
-     &       et1                                                        &
-     &     )
+             et1                                                        &
+           )
 
           do k = 1, nsoil
             ett1 = ett1 + et1(k)
@@ -3087,14 +3085,14 @@
       subroutine shflx                                                  &
 !...................................
 !  ---  inputs:
-     &     ( nsoil, smc, smcmax, dt, yy, zz1, zsoil, zbot,              &
-     &       psisat, bexp, df1, ice, quartz, csoil, vegtyp,             &
-     &       shdfac, lheatstrg,                                         &
+           ( nsoil, smc, smcmax, dt, yy, zz1, zsoil, zbot,              &
+             psisat, bexp, df1, ice, quartz, csoil, vegtyp,             &
+             shdfac, lheatstrg,                                         &
 !  ---  input/outputs:
-     &       stc, t1, tbot, sh2o,                                       &
+             stc, t1, tbot, sh2o,                                       &
 !  ---  outputs:
-     &       ssoil                                                      &
-     &     )
+             ssoil                                                      &
+           )
 
 ! ===================================================================== !
 !  description:                                                         !
@@ -3147,20 +3145,20 @@
       integer, intent(in) :: nsoil, ice, vegtyp
 
       real (kind=kind_phys), intent(in) :: smc(nsoil), smcmax, dt, yy,  &
-     & zz1, zsoil(nsoil), zbot, psisat, bexp, df1, quartz,csoil,shdfac
+       zz1, zsoil(nsoil), zbot, psisat, bexp, df1, quartz,csoil,shdfac
 !
       logical, intent(in) :: lheatstrg
 !
 !  ---  input/outputs:
       real (kind=kind_phys), intent(inout) :: stc(nsoil), t1, tbot,     &
-     &       sh2o(nsoil)
+             sh2o(nsoil)
 
 !  ---  outputs:
       real (kind=kind_phys), intent(out) :: ssoil
 
 !  ---  locals:
       real (kind=kind_phys) :: ai(nsold), bi(nsold), ci(nsold), oldt1,  &
-     &       rhsts(nsold), stcf(nsold), stsoil(nsoil)
+             rhsts(nsold), stcf(nsold), stsoil(nsoil)
 
       integer :: i
 
@@ -3180,21 +3178,21 @@
 
         call hrtice                                                     &
 !  ---  inputs:
-     &     ( nsoil, stc, zsoil, yy, zz1, df1, ice,                      &
+           ( nsoil, stc, zsoil, yy, zz1, df1, ice,                      &
 !  ---  input/outputs:
-     &       tbot,                                                      &
+             tbot,                                                      &
 !  ---  outputs:
-     &       rhsts, ai, bi, ci                                          &
-     &     )
+             rhsts, ai, bi, ci                                          &
+           )
 
         call hstep                                                      &
 !  ---  inputs:
-     &     ( nsoil, stc, dt,                                            &
+           ( nsoil, stc, dt,                                            &
 !  ---  input/outputs:
-     &       rhsts, ai, bi, ci,                                         &
+             rhsts, ai, bi, ci,                                         &
 !  ---  outputs:
-     &       stcf                                                       &
-     &     )
+             stcf                                                       &
+           )
 
       else
 
@@ -3202,23 +3200,23 @@
 
         call hrt                                                        &
 !  ---  inputs:
-     &     ( nsoil, stc, smc, smcmax, zsoil, yy, zz1, tbot,             &
-     &       zbot, psisat, dt, bexp, df1, quartz, csoil,vegtyp,         &
-     &       shdfac, lheatstrg,                                         &
+           ( nsoil, stc, smc, smcmax, zsoil, yy, zz1, tbot,             &
+             zbot, psisat, dt, bexp, df1, quartz, csoil,vegtyp,         &
+             shdfac, lheatstrg,                                         &
 !  ---  input/outputs:
-     &       sh2o,                                                      &
+             sh2o,                                                      &
 !  ---  outputs:
-     &       rhsts, ai, bi, ci                                          &
-     &     )
+             rhsts, ai, bi, ci                                          &
+           )
 
         call hstep                                                      &
 !  ---  inputs:
-     &     ( nsoil, stc, dt,                                            &
+           ( nsoil, stc, dt,                                            &
 !  ---  input/outputs:
-     &       rhsts, ai, bi, ci,                                         &
+             rhsts, ai, bi, ci,                                         &
 !  ---  outputs:
-     &       stcf                                                       &
-     &     )
+             stcf                                                       &
+           )
 
       endif
 
@@ -3255,14 +3253,14 @@
       subroutine smflx                                                    &
 !...................................
 !  ---  inputs:
-     &     ( nsoil, dt, kdt, smcmax, smcwlt, cmcmax, prcp1,               &
-     &       zsoil, slope, frzx, bexp, dksat, dwsat, shdfac,              &
-     &       edir1, ec1, et1,                                             &
+           ( nsoil, dt, kdt, smcmax, smcwlt, cmcmax, prcp1,               &
+             zsoil, slope, frzx, bexp, dksat, dwsat, shdfac,              &
+             edir1, ec1, et1,                                             &
 !  ---  input/outputs:
-     &       cmc, sh2o,                                                   &
+             cmc, sh2o,                                                   &
 !  ---  outputs:
-     &       smc, runoff1, runoff2, runoff3, drip                         &
-     &     )
+             smc, runoff1, runoff2, runoff3, drip                         &
+           )
 
 ! ===================================================================== !
 !  description:                                                         !
@@ -3314,20 +3312,20 @@
       integer, intent(in) :: nsoil
 
       real (kind=kind_phys),  intent(in) :: dt, kdt, smcmax, smcwlt,    &
-     &       cmcmax, prcp1, slope, frzx, bexp, dksat, dwsat, shdfac,    &
-     &       edir1, ec1, et1(nsoil), zsoil(nsoil)
+             cmcmax, prcp1, slope, frzx, bexp, dksat, dwsat, shdfac,    &
+             edir1, ec1, et1(nsoil), zsoil(nsoil)
 
 !  ---  input/outputs:
       real (kind=kind_phys),  intent(inout) :: cmc, sh2o(nsoil)
 
 !  ---  outputs:
       real (kind=kind_phys),  intent(out) :: smc(nsoil), runoff1,       &
-     &       runoff2, runoff3, drip
+             runoff2, runoff3, drip
 
 !  ---  locals:
       real (kind=kind_phys) :: dummy, excess, pcpdrp, rhsct, trhsct,    &
-     &       rhstt(nsold), sice(nsold), sh2oa(nsold), sh2ofg(nsold),    &
-     &       ai(nsold), bi(nsold), ci(nsold)
+             rhstt(nsold), sice(nsold), sh2oa(nsold), sh2ofg(nsold),    &
+             ai(nsold), bi(nsold), ci(nsold)
 
       integer :: i, k
 !
@@ -3392,20 +3390,20 @@
 
         call srt                                                        &
 !  ---  inputs:
-     &     ( nsoil, edir1, et1, sh2o, sh2o, pcpdrp, zsoil, dwsat,       &
-     &       dksat, smcmax, bexp, dt, smcwlt, slope, kdt, frzx, sice,   &
+           ( nsoil, edir1, et1, sh2o, sh2o, pcpdrp, zsoil, dwsat,       &
+             dksat, smcmax, bexp, dt, smcwlt, slope, kdt, frzx, sice,   &
 !  ---  outputs:
-     &       rhstt, runoff1, runoff2, ai, bi, ci                        &
-     &     )
+             rhstt, runoff1, runoff2, ai, bi, ci                        &
+           )
 
         call sstep                                                      &
 !  ---  inputs:
-     &     ( nsoil, sh2o, rhsct, dt, smcmax, cmcmax, zsoil, sice,       &
+           ( nsoil, sh2o, rhsct, dt, smcmax, cmcmax, zsoil, sice,       &
 !  ---  input/outputs:
-     &       dummy, rhstt, ai, bi, ci,                                  &
+             dummy, rhstt, ai, bi, ci,                                  &
 !  ---  outputs:
-     &       sh2ofg, runoff3, smc                                       &
-     &     )
+             sh2ofg, runoff3, smc                                       &
+           )
 
         do k = 1, nsoil
           sh2oa(k) = (sh2o(k) + sh2ofg(k)) * 0.5
@@ -3413,39 +3411,39 @@
 
         call srt                                                        &
 !  ---  inputs:
-     &     ( nsoil, edir1, et1, sh2o, sh2oa, pcpdrp, zsoil, dwsat,      &
-     &       dksat, smcmax, bexp, dt, smcwlt, slope, kdt, frzx, sice,   &
+           ( nsoil, edir1, et1, sh2o, sh2oa, pcpdrp, zsoil, dwsat,      &
+             dksat, smcmax, bexp, dt, smcwlt, slope, kdt, frzx, sice,   &
 !  ---  outputs:
-     &       rhstt, runoff1, runoff2, ai, bi, ci                        &
-     &     )
+             rhstt, runoff1, runoff2, ai, bi, ci                        &
+           )
 
         call sstep                                                      &
 !  ---  inputs:
-     &     ( nsoil, sh2o, rhsct, dt, smcmax, cmcmax, zsoil, sice,       &
+           ( nsoil, sh2o, rhsct, dt, smcmax, cmcmax, zsoil, sice,       &
 !  ---  input/outputs:
-     &       cmc, rhstt, ai, bi, ci,                                    &
+             cmc, rhstt, ai, bi, ci,                                    &
 !  ---  outputs:
-     &       sh2o, runoff3, smc                                         &
-     &     )
+             sh2o, runoff3, smc                                         &
+           )
 
       else
 
         call srt                                                        &
 !  ---  inputs:
-     &     ( nsoil, edir1, et1, sh2o, sh2o, pcpdrp, zsoil, dwsat,       &
-     &       dksat, smcmax, bexp, dt, smcwlt, slope, kdt, frzx, sice,   &
+           ( nsoil, edir1, et1, sh2o, sh2o, pcpdrp, zsoil, dwsat,       &
+             dksat, smcmax, bexp, dt, smcwlt, slope, kdt, frzx, sice,   &
 !  ---  outputs:
-     &       rhstt, runoff1, runoff2, ai, bi, ci                        &
-     &     )
+             rhstt, runoff1, runoff2, ai, bi, ci                        &
+           )
 
         call sstep                                                      &
 !  ---  inputs:
-     &     ( nsoil, sh2o, rhsct, dt, smcmax, cmcmax, zsoil, sice,       &
+           ( nsoil, sh2o, rhsct, dt, smcmax, cmcmax, zsoil, sice,       &
 !  ---  input/outputs:
-     &       cmc, rhstt, ai, bi, ci,                                    &
+             cmc, rhstt, ai, bi, ci,                                    &
 !  ---  outputs:
-     &       sh2o, runoff3, smc                                         &
-     &     )
+             sh2o, runoff3, smc                                         &
+           )
 
       endif
 
@@ -3461,10 +3459,10 @@
       subroutine snowpack                                               &
 !...................................
 !  ---  inputs:
-     &     ( esd, dtsec, tsnow, tsoil,                                  &
+           ( esd, dtsec, tsnow, tsoil,                                  &
 !  ---  input/outputs:
-     &       snowh, sndens                                              &
-     &     )
+             snowh, sndens                                              &
+           )
 
 ! ===================================================================== !
 !  description:                                                         !
@@ -3506,7 +3504,7 @@
 
 !  ---  locals:
       real (kind=kind_phys) :: bfac, dsx, dthr, dw, snowhc, pexp,       &
-     &       tavgc, tsnowc, tsoilc, esdc, esdcx
+             tavgc, tsnowc, tsoilc, esdc, esdcx
 
       integer :: ipol, j
 !
@@ -3623,10 +3621,10 @@
       subroutine devap                                                  &
 !...................................
 !  ---  inputs:
-     &     ( etp1, smc, shdfac, smcmax, smcdry, fxexp,                  &
+           ( etp1, smc, shdfac, smcmax, smcdry, fxexp,                  &
 !  ---  outputs:
-     &       edir1                                                      &
-     &     )
+             edir1                                                      &
+           )
 
 ! ===================================================================== !
 !  description:                                                         !
@@ -3654,7 +3652,7 @@
 !
 !  ---  inputs:
       real (kind=kind_phys), intent(in) :: etp1, smc, shdfac, smcmax,   &
-     &       smcdry, fxexp
+             smcdry, fxexp
 
 !  ---  outputs:
       real (kind=kind_phys), intent(out) :: edir1
@@ -3692,10 +3690,10 @@
       subroutine frh2o                                                  &
 !...................................
 !  ---  inputs:
-     &     ( tkelv, smc, sh2o, smcmax, bexp, psis,                      &
+           ( tkelv, smc, sh2o, smcmax, bexp, psis,                      &
 !  ---  outputs:
-     &       liqwat                                                     &
-     &     )
+             liqwat                                                     &
+           )
 
 ! ===================================================================== !
 !  description:                                                         !
@@ -3739,7 +3737,7 @@
 
 !  ---  inputs:
       real (kind=kind_phys), intent(in) :: tkelv, smc, sh2o, smcmax,    &
-     &       bexp, psis
+             bexp, psis
 
 !  ---  outputs:
       real (kind=kind_phys), intent(out) :: liqwat
@@ -3790,7 +3788,7 @@
             nlog = nlog + 1
 
             df = alog( (psis*gs2/lsubf) * ( (1.0 + ck*swl)**2.0 )       &
-     &         * (smcmax/(smc-swl))**bx ) - alog(-(tkelv-tfreez)/tkelv)
+               * (smcmax/(smc-swl))**bx ) - alog(-(tkelv-tfreez)/tkelv)
 
             denom = 2.0*ck/(1.0 + ck*swl) + bx/(smc - swl)
             swlk  = swl - df/denom
@@ -3824,7 +3822,7 @@
 
         if (kcount == 0) then
           fk = ( ( (lsubf/(gs2*(-psis)))                                &
-     &       * ((tkelv-tfreez)/tkelv) )**(-1/bx) ) * smcmax
+             * ((tkelv-tfreez)/tkelv) )**(-1/bx) ) * smcmax
 
           fk = max( fk, 0.02 )
 
@@ -3843,14 +3841,14 @@
       subroutine hrt                                                    &
 !...................................
 !  ---  inputs:
-     &     ( nsoil, stc, smc, smcmax, zsoil, yy, zz1, tbot,             &
-     &       zbot, psisat, dt, bexp, df1, quartz, csoil, vegtyp,        &
-     &       shdfac, lheatstrg,                                         &
+           ( nsoil, stc, smc, smcmax, zsoil, yy, zz1, tbot,             &
+             zbot, psisat, dt, bexp, df1, quartz, csoil, vegtyp,        &
+             shdfac, lheatstrg,                                         &
 !  ---  input/outputs:
-     &       sh2o,                                                      &
+             sh2o,                                                      &
 !  ---  outputs:
-     &       rhsts, ai, bi, ci                                          &
-     &     )
+             rhsts, ai, bi, ci                                          &
+           )
 
 ! ===================================================================== !
 !  description:                                                         !
@@ -3901,8 +3899,8 @@
       integer, intent(in) :: nsoil, vegtyp
 
       real (kind=kind_phys),  intent(in) :: stc(nsoil), smc(nsoil),     &
-     &       smcmax, zsoil(nsoil), yy, zz1, tbot, zbot, psisat, dt,     &
-     &       bexp, df1, quartz, csoil, shdfac
+             smcmax, zsoil(nsoil), yy, zz1, tbot, zbot, psisat, dt,     &
+             bexp, df1, quartz, csoil, shdfac
 
       logical, intent(in) :: lheatstrg
 
@@ -3911,12 +3909,12 @@
 
 !  ---  outputs:
       real (kind=kind_phys),  intent(out) :: rhsts(nsoil), ai(nsold),   &
-     &       bi(nsold), ci(nsold)
+             bi(nsold), ci(nsold)
 
 !  ---  locals:
       real (kind=kind_phys) :: ddz, ddz2, denom, df1n, df1k, dtsdz,     &
-     &       dtsdz2, hcpct, qtot, ssoil, sice, tavg, tbk, tbk1,         &
-     &       tsnsr, tsurf, csoil_loc
+             dtsdz2, hcpct, qtot, ssoil, sice, tavg, tbk, tbk1,         &
+             tsnsr, tsurf, csoil_loc
 
       integer :: i, k
 
@@ -3948,7 +3946,7 @@
 !  --- ...  calc the heat capacity of the top soil layer
 
       hcpct = sh2o(1)*cph2o2 + (1.0 - smcmax)*csoil_loc                 &
-     &      + (smcmax - smc(1))*cp2 + (smc(1) - sh2o(1))*cpice1
+            + (smcmax - smc(1))*cp2 + (smc(1) - sh2o(1))*cpice1
 
 !  --- ...  calc the matrix coefficients ai, bi, and ci for the top layer
 
@@ -3987,10 +3985,10 @@
 
         call tbnd                                                       &
 !  ---  inputs:
-     &     ( stc(1), stc(2), zsoil, zbot, 1, nsoil,                     &
+           ( stc(1), stc(2), zsoil, zbot, 1, nsoil,                     &
 !  ---  outputs:
-     &       tbk                                                        &
-     &     )
+             tbk                                                        &
+           )
 
       endif
 
@@ -4004,16 +4002,16 @@
 !           due to possible soil water phase change
 
       if ( (sice > 0.0) .or. (tsurf < tfreez) .or.                      &
-     &     (stc(1) < tfreez) .or. (tbk < tfreez) ) then
+           (stc(1) < tfreez) .or. (tbk < tfreez) ) then
 
         if (itavg) then
 
           call tmpavg                                                   &
 !  ---  inputs:
-     &     ( tsurf, stc(1), tbk, zsoil, nsoil, 1,                       &
+           ( tsurf, stc(1), tbk, zsoil, nsoil, 1,                       &
 !  ---  outputs:
-     &       tavg                                                       &
-     &     )
+             tavg                                                       &
+           )
 
         else
 
@@ -4023,13 +4021,13 @@
 
         call snksrc                                                     &
 !  ---  inputs:
-     &     ( nsoil, 1, tavg, smc(1), smcmax, psisat, bexp, dt,          &
-     &       qtot, zsoil,                                               &
+           ( nsoil, 1, tavg, smc(1), smcmax, psisat, bexp, dt,          &
+             qtot, zsoil,                                               &
 !  ---  input/outputs:
-     &       sh2o(1),                                                   &
+             sh2o(1),                                                   &
 !  ---  outputs:
-     &       tsnsr                                                      &
-     &     )
+             tsnsr                                                      &
+           )
 
 
         rhsts(1) = rhsts(1) - tsnsr / ( zsoil(1)*hcpct )
@@ -4052,7 +4050,7 @@
 !  --- ...  calculate heat capacity for this soil layer.
 
         hcpct = sh2o(k)*cph2o2 + (1.0 - smcmax)*csoil_loc               &
-     &        + (smcmax - smc(k))*cp2 + (smc(k) - sh2o(k))*cpice1
+              + (smcmax - smc(k))*cp2 + (smc(k) - sh2o(k))*cpice1
 
         if (k /= nsoil) then
 
@@ -4061,10 +4059,10 @@
 
           call tdfcnd                                                   &
 !  ---  inputs:
-     &     ( smc(k), quartz, smcmax, sh2o(k),                           &
+           ( smc(k), quartz, smcmax, sh2o(k),                           &
 !  ---  outputs:
-     &       df1n                                                       &
-     &     )
+             df1n                                                       &
+           )
 !urban
 !     if (ivegsrc == 1)then
 !      if ( vegtyp == 13 ) df1n = 3.24
@@ -4073,8 +4071,7 @@
 !
 !jhan urban canopy heat storage effect is included in pbl scheme
 !
-        if((.not.lheatstrg) .and. 
-     &      (ivegsrc == 1 .and. vegtyp == 13)) then
+        if((.not.lheatstrg) .and. (ivegsrc == 1 .and. vegtyp == 13)) then
           df1n = 3.24*(1.-shdfac) + shdfac*df1n
         endif
 
@@ -4095,10 +4092,10 @@
 
             call tbnd                                                   &
 !  ---  inputs:
-     &     ( stc(k), stc(k+1), zsoil, zbot, k, nsoil,                   &
+           ( stc(k), stc(k+1), zsoil, zbot, k, nsoil,                   &
 !  ---  outputs:
-     &       tbk1                                                       &
-     &     )
+             tbk1                                                       &
+           )
 
           endif
 
@@ -4109,10 +4106,10 @@
 
           call tdfcnd                                                   &
 !  ---  inputs:
-     &     ( smc(k), quartz, smcmax, sh2o(k),                           &
+           ( smc(k), quartz, smcmax, sh2o(k),                           &
 !  ---  outputs:
-     &       df1n                                                       &
-     &     )
+             df1n                                                       &
+           )
 !urban
 !     if (ivegsrc == 1)then
 !      if ( vegtyp == 13 ) df1n = 3.24
@@ -4121,8 +4118,7 @@
 !
 !jhan urban canopy heat storage effect is included in pbl scheme
 !
-        if((.not.lheatstrg) .and. 
-     &      (ivegsrc == 1 .and. vegtyp == 13)) then
+        if((.not.lheatstrg) .and. (ivegsrc == 1 .and. vegtyp == 13)) then
           df1n = 3.24*(1.-shdfac) + shdfac*df1n
         endif
 
@@ -4142,10 +4138,10 @@
 
             call tbnd                                                   &
 !  ---  inputs:
-     &     ( stc(k), tbot, zsoil, zbot, k, nsoil,                       &
+           ( stc(k), tbot, zsoil, zbot, k, nsoil,                       &
 !  ---  outputs:
-     &       tbk1                                                       &
-     &     )
+             tbk1                                                       &
+           )
 
           endif
 
@@ -4160,16 +4156,16 @@
         sice = smc(k) - sh2o(k)
 
         if ( (sice > 0.0) .or. (tbk < tfreez) .or.                      &
-     &       (stc(k) < tfreez) .or. (tbk1 < tfreez) ) then
+             (stc(k) < tfreez) .or. (tbk1 < tfreez) ) then
 
           if (itavg) then
 
             call tmpavg                                                 &
 !  ---  inputs:
-     &     ( tbk, stc(k), tbk1, zsoil, nsoil, k,                        &
+           ( tbk, stc(k), tbk1, zsoil, nsoil, k,                        &
 !  ---  outputs:
-     &       tavg                                                       &
-     &     )
+             tavg                                                       &
+           )
 
           else
             tavg = stc(k)
@@ -4177,13 +4173,13 @@
 
           call snksrc                                                   &
 !  ---  inputs:
-     &     ( nsoil, k, tavg, smc(k), smcmax, psisat, bexp, dt,          &
-     &       qtot, zsoil,                                               &
+           ( nsoil, k, tavg, smc(k), smcmax, psisat, bexp, dt,          &
+             qtot, zsoil,                                               &
 !  ---  input/outputs:
-     &       sh2o(k),                                                   &
+             sh2o(k),                                                   &
 !  ---  outputs:
-     &       tsnsr                                                      &
-     &     )
+             tsnsr                                                      &
+           )
 
           rhsts(k) = rhsts(k) - tsnsr/denom
         endif
@@ -4213,12 +4209,12 @@
       subroutine hrtice                                                 &
 !...................................
 !  ---  inputs:
-     &     ( nsoil, stc, zsoil, yy, zz1, df1, ice,                      &
+           ( nsoil, stc, zsoil, yy, zz1, df1, ice,                      &
 !  ---  input/outputs:
-     &       tbot,                                                      &
+             tbot,                                                      &
 !  ---  outputs:
-     &       rhsts, ai, bi, ci                                          &
-     &     )
+             rhsts, ai, bi, ci                                          &
+           )
 
 ! ===================================================================== !
 !  description:                                                         !
@@ -4259,18 +4255,18 @@
       integer, intent(in) :: nsoil, ice
 
       real (kind=kind_phys), intent(in) :: stc(nsoil), zsoil(nsoil),    &
-     &       yy, zz1, df1
+             yy, zz1, df1
 
 !  ---  input/outputs:
       real (kind=kind_phys), intent(inout) :: tbot
 
 !  ---  outputs:
       real (kind=kind_phys), intent(out) :: rhsts(nsoil), ai(nsold),    &
-     &       bi(nsold), ci(nsold)
+             bi(nsold), ci(nsold)
 
 !  ---  locals:
       real (kind=kind_phys) :: ddz, ddz2, denom, dtsdz, dtsdz2,         &
-     &       hcpct, ssoil, zbot
+             hcpct, ssoil, zbot
 
       integer :: k
 
@@ -4350,7 +4346,7 @@
 !  --- ...  calc the vertical soil temp gradient thru the lowest layer.
 
           dtsdz2 = (stc(k) - tbot)                                      &
-     &           / (0.5*(zsoil(k-1) + zsoil(k)) - zbot)
+                 / (0.5*(zsoil(k-1) + zsoil(k)) - zbot)
 
 !  --- ...  set matrix coef, ci to zero.
 
@@ -4385,12 +4381,12 @@
       subroutine hstep                                                  &
 !...................................
 !  ---  inputs:
-     &     ( nsoil, stcin, dt,                                          &
+           ( nsoil, stcin, dt,                                          &
 !  ---  input/outputs:
-     &       rhsts, ai, bi, ci,                                         &
+             rhsts, ai, bi, ci,                                         &
 !  ---  outputs:
-     &       stcout                                                     &
-     &     )
+             stcout                                                     &
+           )
 
 ! ===================================================================== !
 !  description:                                                         !
@@ -4425,7 +4421,7 @@
 
 !  ---  input/outputs:
       real (kind=kind_phys),  intent(inout) :: rhsts(nsoil),            &
-     &      ai(nsold), bi(nsold), ci(nsold)
+            ai(nsold), bi(nsold), ci(nsold)
 
 !  ---  outputs:
       real (kind=kind_phys),  intent(out) :: stcout(nsoil)
@@ -4461,12 +4457,12 @@
 
       call rosr12                                                       &
 !  ---  inputs:
-     &     ( nsoil, ai, bi, rhstsin,                                    &
+           ( nsoil, ai, bi, rhstsin,                                    &
 !  ---  input/outputs:
-     &       ciin,                                                      &
+             ciin,                                                      &
 !  ---  outputs:
-     &       ci, rhsts                                                  &
-     &     )
+             ci, rhsts                                                  &
+           )
 
 !  --- ...  calc/update the soil temps using matrix solution
 
@@ -4484,12 +4480,12 @@
       subroutine rosr12                                                 &
 !...................................
 !  ---  inputs:
-     &     ( nsoil, a, b, d,                                            &
+           ( nsoil, a, b, d,                                            &
 !  ---  input/outputs:
-     &       c,                                                         &
+             c,                                                         &
 !  ---  outputs:
-     &       p, delta                                                   &
-     &     )
+             p, delta                                                   &
+           )
 
 ! ===================================================================== !
 !  description:                                                         !
@@ -4562,7 +4558,7 @@
       do k = 2, nsoil
         p(k) = -c(k) * ( 1.0 / (b(k) + a (k)*p(k-1)) )
         delta(k) = (d(k) - a(k)*delta(k-1))                              &
-     &           * ( 1.0 / (b(k) + a(k)*p(k-1)) )
+                 * ( 1.0 / (b(k) + a(k)*p(k-1)) )
       enddo
 
 !  --- ...  set p to delta for lowest soil layer
@@ -4586,13 +4582,13 @@
       subroutine snksrc                                                 &
 !...................................
 !  ---  inputs:
-     &     ( nsoil, k, tavg, smc, smcmax, psisat, bexp, dt,             &
-     &       qtot, zsoil,                                               &
+           ( nsoil, k, tavg, smc, smcmax, psisat, bexp, dt,             &
+             qtot, zsoil,                                               &
 !  ---  input/outputs:
-     &       sh2o,                                                      &
+             sh2o,                                                      &
 !  ---  outputs:
-     &       tsrc                                                       &
-     &     )
+             tsrc                                                       &
+           )
 
 ! ===================================================================== !
 !  description:                                                         !
@@ -4632,7 +4628,7 @@
       integer, intent(in) :: nsoil, k
 
       real (kind=kind_phys), intent(in) :: tavg, smc, smcmax, psisat,   &
-     &       bexp, dt, qtot, zsoil(nsoil)
+             bexp, dt, qtot, zsoil(nsoil)
 
 !  ---  input/outputs:
       real (kind=kind_phys), intent(inout) :: sh2o
@@ -4665,10 +4661,10 @@
 
       call frh2o                                                        &
 !  ---  inputs:
-     &     ( tavg, smc, sh2o, smcmax, bexp, psisat,                     &
+           ( tavg, smc, sh2o, smcmax, bexp, psisat,                     &
 !  ---  outputs:
-     &       free                                                       &
-     &     )
+             free                                                       &
+           )
 
 
 !  --- ...  in next block of code, invoke eqn 18 of v. koren et al (1999, jgr,
@@ -4723,11 +4719,11 @@
       subroutine srt                                                    &
 !...................................
 !  ---  inputs:
-     &     ( nsoil, edir, et, sh2o, sh2oa, pcpdrp, zsoil, dwsat,        &
-     &       dksat, smcmax, bexp, dt, smcwlt, slope, kdt, frzx, sice,   &
+           ( nsoil, edir, et, sh2o, sh2oa, pcpdrp, zsoil, dwsat,        &
+             dksat, smcmax, bexp, dt, smcwlt, slope, kdt, frzx, sice,   &
 !  ---  outputs:
-     &       rhstt, runoff1, runoff2, ai, bi, ci                        &
-     &     )
+             rhstt, runoff1, runoff2, ai, bi, ci                        &
+           )
 
 ! ===================================================================== !
 !  description:                                                         !
@@ -4774,21 +4770,21 @@
       integer, intent(in) :: nsoil
 
       real (kind=kind_phys), dimension(nsoil), intent(in) :: et,        &
-     &       sh2o, sh2oa, zsoil, sice
+             sh2o, sh2oa, zsoil, sice
 
       real (kind=kind_phys), intent(in) :: edir, pcpdrp, dwsat, dksat,  &
-     &       smcmax, smcwlt, bexp, dt, slope, kdt, frzx
+             smcmax, smcwlt, bexp, dt, slope, kdt, frzx
 
 !  --- outputs:
       real (kind=kind_phys), intent(out) :: runoff1, runoff2,           &
-     &      rhstt(nsoil), ai(nsold), bi(nsold), ci(nsold)
+            rhstt(nsoil), ai(nsold), bi(nsold), ci(nsold)
 
 
 !  ---  locals:
       real (kind=kind_phys) :: acrt, dd, ddt, ddz, ddz2, denom, denom2, &
-     &       dice, dsmdz, dsmdz2, dt1, fcr, infmax, mxsmc, mxsmc2, px,  &
-     &       numer, pddum, sicemax, slopx, smcav, sstt, sum, val, wcnd, &
-     &       wcnd2, wdf, wdf2, dmax(nsold)
+             dice, dsmdz, dsmdz2, dt1, fcr, infmax, mxsmc, mxsmc2, px,  &
+             numer, pddum, sicemax, slopx, smcav, sstt, sum, val, wcnd, &
+             wcnd2, wdf, wdf2, dmax(nsold)
 
       integer :: cvfrz, ialp1, iohinf, j, jj, k, ks
 !
@@ -4896,10 +4892,10 @@ c ----------------------------------------------------------------------
 
         call wdfcnd                                                     &
 !  ---  inputs:
-     &     ( mxsmc, smcmax, bexp, dksat, dwsat, sicemax,                &
+           ( mxsmc, smcmax, bexp, dksat, dwsat, sicemax,                &
 !  ---  outputs:
-     &       wdf, wcnd                                                  &
-     &     )
+             wdf, wcnd                                                  &
+           )
 
         infmax = max( infmax, wcnd )
         infmax = min( infmax, px )
@@ -4919,10 +4915,10 @@ c ----------------------------------------------------------------------
 
       call wdfcnd                                                       &
 !  ---  inputs:
-     &     ( mxsmc, smcmax, bexp, dksat, dwsat, sicemax,                &
+           ( mxsmc, smcmax, bexp, dksat, dwsat, sicemax,                &
 !  ---  outputs:
-     &       wdf, wcnd                                                  &
-     &     )
+             wdf, wcnd                                                  &
+           )
 
 !  --- ...  calc the matrix coefficients ai, bi, and ci for the top layer
 
@@ -4958,10 +4954,10 @@ c ----------------------------------------------------------------------
 
           call wdfcnd                                                   &
 !  ---  inputs:
-     &     ( mxsmc2, smcmax, bexp, dksat, dwsat, sicemax,               &
+           ( mxsmc2, smcmax, bexp, dksat, dwsat, sicemax,               &
 !  ---  outputs:
-     &       wdf2, wcnd2                                                &
-     &     )
+             wdf2, wcnd2                                                &
+           )
 
 !  --- ...  calc some partial products for later use in calc'ng rhstt
 
@@ -4984,10 +4980,10 @@ c ----------------------------------------------------------------------
 
           call wdfcnd                                                   &
 !  ---  inputs:
-     &     ( sh2oa(nsoil), smcmax, bexp, dksat, dwsat, sicemax,         &
+           ( sh2oa(nsoil), smcmax, bexp, dksat, dwsat, sicemax,         &
 !  ---  outputs:
-     &       wdf2, wcnd2                                                &
-     &     )
+             wdf2, wcnd2                                                &
+           )
 
 !  --- ...  calc a partial product for later use in calc'ng rhstt
           dsmdz2 = 0.0
@@ -5033,12 +5029,12 @@ c ----------------------------------------------------------------------
       subroutine sstep                                                  &
 !...................................
 !  ---  inputs:
-     &     ( nsoil, sh2oin, rhsct, dt, smcmax, cmcmax, zsoil, sice,     &
+           ( nsoil, sh2oin, rhsct, dt, smcmax, cmcmax, zsoil, sice,     &
 !  ---  input/outputs:
-     &       cmc, rhstt, ai, bi, ci,                                    &
+             cmc, rhstt, ai, bi, ci,                                    &
 !  ---  outputs:
-     &       sh2oout, runoff3, smc                                      &
-     &     )
+             sh2oout, runoff3, smc                                      &
+           )
 
 ! ===================================================================== !
 !  description:                                                         !
@@ -5078,21 +5074,21 @@ c ----------------------------------------------------------------------
       integer, intent(in) :: nsoil
 
       real (kind=kind_phys), dimension(nsoil), intent(in) :: sh2oin,    &
-     &       zsoil, sice
+             zsoil, sice
 
       real (kind=kind_phys), intent(in) :: rhsct, dt, smcmax, cmcmax
 
 !  ---  inout/outputs:
       real (kind=kind_phys), intent(inout) :: cmc, rhstt(nsoil),        &
-     &       ai(nsold), bi(nsold), ci(nsold)
+             ai(nsold), bi(nsold), ci(nsold)
 
 !  ---  outputs:
       real (kind=kind_phys), intent(out) :: sh2oout(nsoil), runoff3,    &
-     &       smc(nsoil)
+             smc(nsoil)
 
 !  ---  locals:
       real (kind=kind_phys) :: ciin(nsold), rhsttin(nsoil), ddz, stot,  &
-     &       wplus
+             wplus
 
       integer :: i, k, kk11
 !
@@ -5122,12 +5118,12 @@ c ----------------------------------------------------------------------
 
       call rosr12                                                       &
 !  ---  inputs:
-     &     ( nsoil, ai, bi, rhsttin,                                    &
+           ( nsoil, ai, bi, rhsttin,                                    &
 !  ---  input/outputs:
-     &       ciin,                                                      &
+             ciin,                                                      &
 !  ---  outputs:
-     &       ci, rhstt                                                  &
-     &     )
+             ci, rhstt                                                  &
+           )
 
 !  --- ...  sum the previous smc value and the matrix solution to get
 !           a new value.  min allowable value of smc will be 0.02.
@@ -5179,10 +5175,10 @@ c ----------------------------------------------------------------------
       subroutine tbnd                                                   &
 !...................................
 !  ---  inputs:
-     &     ( tu, tb, zsoil, zbot, k, nsoil,                             &
+           ( tu, tb, zsoil, zbot, k, nsoil,                             &
 !  ---  outputs:
-     &       tbnd1                                                      &
-     &     )
+             tbnd1                                                      &
+           )
 
 ! ===================================================================== !
 !  description:                                                         !
@@ -5249,10 +5245,10 @@ c ----------------------------------------------------------------------
       subroutine tmpavg                                                 &
 !...................................
 !  ---  inputs:
-     &     ( tup, tm, tdn, zsoil, nsoil, k,                             &
+           ( tup, tm, tdn, zsoil, nsoil, k,                             &
 !  ---  outputs:
-     &       tavg                                                       &
-     &     )
+             tavg                                                       &
+           )
 
 ! ===================================================================== !
 !  description:                                                         !
@@ -5353,11 +5349,11 @@ c ----------------------------------------------------------------------
       subroutine transp                                                    &
 !...................................
 !  ---  inputs:
-     &     ( nsoil, nroot, etp1, smc, smcwlt, smcref,                   &
-     &       cmc, cmcmax, zsoil, shdfac, pc, cfactr, rtdis,             &
+           ( nsoil, nroot, etp1, smc, smcwlt, smcref,                   &
+             cmc, cmcmax, zsoil, shdfac, pc, cfactr, rtdis,             &
 !  ---  outputs:
-     &       et1                                                        &
-     &     )
+             et1                                                        &
+           )
 
 ! ===================================================================== !
 !  description:                                                         !
@@ -5392,10 +5388,10 @@ c ----------------------------------------------------------------------
       integer, intent(in) :: nsoil, nroot
 
       real (kind=kind_phys), intent(in) :: etp1, smcwlt, smcref,        &
-     &       cmc, cmcmax, shdfac, pc, cfactr
+             cmc, cmcmax, shdfac, pc, cfactr
 
       real (kind=kind_phys), dimension(nsoil), intent(in) :: smc,       &
-     &       zsoil, rtdis
+             zsoil, rtdis
 
 !  ---  output:
       real (kind=kind_phys), dimension(nsoil), intent(out) :: et1
@@ -5485,10 +5481,10 @@ c ----------------------------------------------------------------------
       subroutine wdfcnd                                                 &
 !...................................
 !  ---  inputs:
-     &     ( smc, smcmax, bexp, dksat, dwsat, sicemax,                  &
+           ( smc, smcmax, bexp, dksat, dwsat, sicemax,                  &
 !  ---  outputs:
-     &       wdf, wcnd                                                  &
-     &     )
+             wdf, wcnd                                                  &
+           )
 
 ! ===================================================================== !
 !  description:                                                         !
@@ -5516,7 +5512,7 @@ c ----------------------------------------------------------------------
 !
 !  ---  input:
       real (kind=kind_phys), intent(in)  :: smc, smcmax, bexp, dksat,   &
-     &       dwsat, sicemax
+             dwsat, sicemax
 
 !  ---  output:
       real (kind=kind_phys), intent(out) :: wdf, wcnd
