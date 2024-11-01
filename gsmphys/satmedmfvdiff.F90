@@ -123,7 +123,7 @@
                            rdzt(im,km-1), &
                            al(im,km-1),  ad(im,km),   au(im,km-1), &
                            f1(im,km),    f2(im,km*(ntrac-1))
-      !$ser verbatim real(kind=kind_phys) al_ser(im,km)
+      !$ser verbatim real(kind=kind_phys) f2_ser(im,km,ntrac-1)
 !
       real(kind=kind_phys) elm(im,km),   ele(im,km),  rle(im,km-1), &
                            ckz(im,km),   chz(im,km),  &
@@ -1258,22 +1258,11 @@
 !
 !     solve tridiagonal problem for tke
 !
-      !$ser verbatim do i = 1,im
-        !$ser verbatim al_ser(i,1) = 0.
-        !$ser verbatim do k = 2,km
-          !$ser verbatim al_ser(i, k) = al(i, k-1)
-        !$ser verbatim enddo
-      !$ser verbatim enddo
       !$ser savepoint Tridit-In
-      !$ser data al=al_ser ad=ad au=au f1=f1
+      !$ser data al=al ad=ad au=au f1=f1
       call tridit(im,km,1,al,ad,au,f1,au,f1)
-      !$ser verbatim do i = 1,im
-        !$ser verbatim do k = 2,km
-          !$ser verbatim al_ser(i, k) = al(i, k-1)
-        !$ser verbatim enddo
-      !$ser verbatim enddo
       !$ser savepoint Tridit-Out
-      !$ser data al=al_ser ad=ad au=au f1=f1
+      !$ser data al=al ad=ad au=au f1=f1
 !
 !     recover tendency of tke
 !
@@ -1403,8 +1392,11 @@
 !     solve tridiagonal problem for heat and moisture
 !
       !$ser verbatim do i = 1,im
-        !$ser verbatim do k = 2,km
-          !$ser verbatim al_ser(i, k) = al(i, k-1)
+        !$ser verbatim do k = 1,km
+          !$ser verbatim do kk = 2, ntrac1
+            !$ser verbatim is = (kk-1) * km
+            !$ser verbatim f2_ser(i, k, kk) = f2(i, k + is)
+          !$ser verbatim enddo
         !$ser verbatim enddo
       !$ser verbatim enddo
       !$ser savepoint Tridin-In
@@ -1412,7 +1404,10 @@
       call tridin(im,km,ntrac1,al,ad,au,f1,f2,au,f1,f2)
       !$ser verbatim do i = 1,im
         !$ser verbatim do k = 2,km
-          !$ser verbatim al_ser(i, k) = al(i, k-1)
+          !$ser verbatim do kk = 2, ntrac1
+            !$ser verbatim is = (kk-1) * km
+            !$ser verbatim f2_ser(i, k, kk) = f2(i, k + is)
+          !$ser verbatim enddo
         !$ser verbatim enddo
       !$ser verbatim enddo
       !$ser savepoint Tridin-Out
@@ -1534,7 +1529,7 @@
 !
       !$ser verbatim do i = 1,im
         !$ser verbatim do k = 2,km
-          !$ser verbatim al_ser(i, k) = al(i, k-1)
+          !$ser verbatim f2_ser(i, k, 1) = f2(i, k)
         !$ser verbatim enddo
       !$ser verbatim enddo
       !$ser savepoint Tridi2-In
@@ -1542,7 +1537,7 @@
       call tridi2(im,km,al,ad,au,f1,f2,au,f1,f2)
       !$ser verbatim do i = 1,im
         !$ser verbatim do k = 2,km
-          !$ser verbatim al_ser(i, k) = al(i, k-1)
+          !$ser verbatim f2_ser(i, k, 1) = f2(i, k)
         !$ser verbatim enddo
       !$ser verbatim enddo
       !$ser savepoint Tridi2-Out
