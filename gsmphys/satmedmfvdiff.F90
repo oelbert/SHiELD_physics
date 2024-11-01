@@ -1400,7 +1400,7 @@
         !$ser verbatim enddo
       !$ser verbatim enddo
       !$ser savepoint Tridin-In
-      !$ser data nt=ntrac1 al=al_ser ad=ad au=au f1=f1 f2=f2
+      !$ser data nt=ntrac1 al=al ad=ad au=au f1=f1 f2=f2
       call tridin(im,km,ntrac1,al,ad,au,f1,f2,au,f1,f2)
       !$ser verbatim do i = 1,im
         !$ser verbatim do k = 2,km
@@ -1411,7 +1411,7 @@
         !$ser verbatim enddo
       !$ser verbatim enddo
       !$ser savepoint Tridin-Out
-      !$ser data al=al_ser ad=ad au=au f1=f1 f2=f2
+      !$ser data al=al ad=ad au=au f1=f1 f2=f2
 !
 !     recover tendencies of heat and moisture
 !
@@ -1533,7 +1533,7 @@
         !$ser verbatim enddo
       !$ser verbatim enddo
       !$ser savepoint Tridi2-In
-      !$ser data al=al_ser ad=ad au=au f1=f1 f2=f2
+      !$ser data al=al ad=ad au=au f1=f1 f2=f2
       call tridi2(im,km,al,ad,au,f1,f2,au,f1,f2)
       !$ser verbatim do i = 1,im
         !$ser verbatim do k = 2,km
@@ -1541,7 +1541,7 @@
         !$ser verbatim enddo
       !$ser verbatim enddo
       !$ser savepoint Tridi2-Out
-      !$ser data al=al_ser ad=ad au=au f1=f1 f2=f2
+      !$ser data al=al ad=ad au=au f1=f1 f2=f2
 !
 !     recover tendencies of momentum
 !

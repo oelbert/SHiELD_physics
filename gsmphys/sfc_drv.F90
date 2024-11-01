@@ -139,27 +139,27 @@
       subroutine sfc_drv                                                &
 !...................................
 !  ---  inputs:
-     &     ( im, km, ps, t1, q1, soiltyp, vegtype, sigmaf,              &
-     &       sfcemis, dlwflx, dswsfc, snet, delt, tg3, cm, ch,          &
-     &       prsl1, prslki, zf, land, wind, slopetyp,                   &
-     &       shdmin, shdmax, snoalb, sfalb, flag_iter, flag_guess,      &
-     &       lheatstrg, isot, ivegsrc,                                  &
-     &       bexppert, xlaipert, vegfpert,pertvegf,                     &  ! sfc perts, mgehne
+           ( im, km, ps, t1, q1, soiltyp, vegtype, sigmaf,              &
+             sfcemis, dlwflx, dswsfc, snet, delt, tg3, cm, ch,          &
+             prsl1, prslki, zf, land, wind, slopetyp,                   &
+             shdmin, shdmax, snoalb, sfalb, flag_iter, flag_guess,      &
+             lheatstrg, isot, ivegsrc,                                  &
+             bexppert, xlaipert, vegfpert,pertvegf,                     &  ! sfc perts, mgehne
 !  ---  in/outs:
-     &       weasd, snwdph, tskin, tprcp, srflag, smc, stc, slc,        &
-     &       canopy, trans, tsurf, zorl,                                &
+             weasd, snwdph, tskin, tprcp, srflag, smc, stc, slc,        &
+             canopy, trans, tsurf, zorl,                                &
 !  ---  outputs:
-     &       sncovr1, qsurf, gflux, drain, evap, hflx, ep, runoff,      &
-     &       cmm, chh, evbs, evcw, sbsno, snowc, stm, snohf,            &
-     &       smcwlt2, smcref2, wet1                                     &
-     &     )
+             sncovr1, qsurf, gflux, drain, evap, hflx, ep, runoff,      &
+             cmm, chh, evbs, evcw, sbsno, snowc, stm, snohf,            &
+             smcwlt2, smcref2, wet1                                     &
+           )
 !
       use machine , only : kind_phys
       use funcphys, only : fpvs
       use physcons, only : grav   => con_g,    cp   => con_cp,          &
-     &                     hvap   => con_hvap, rd   => con_rd,          &
-     &                     eps    => con_eps, epsm1 => con_epsm1,       &
-     &                     rvrdm1 => con_fvirt
+                           hvap   => con_hvap, rd   => con_rd,          &
+                           eps    => con_eps, epsm1 => con_epsm1,       &
+                           rvrdm1 => con_fvirt
 
       use surface_perturbation, only : ppfbet
 
@@ -185,10 +185,9 @@
       integer, dimension(im), intent(in) :: soiltyp, vegtype, slopetyp
 
       real (kind=kind_phys), dimension(im), intent(in) :: ps,           &
-     &       t1, q1, sigmaf, sfcemis, dlwflx, dswsfc, snet, tg3, cm,    &
-     &       ch, prsl1, prslki, wind, shdmin, shdmax,                   &
-     &       snoalb, sfalb, zf,
-     &       bexppert, xlaipert, vegfpert
+             t1, q1, sigmaf, sfcemis, dlwflx, dswsfc, snet, tg3, cm,    &
+             ch, prsl1, prslki, wind, shdmin, shdmax,                   &
+             snoalb, sfalb, zf, bexppert, xlaipert, vegfpert
 
       real (kind=kind_phys),  intent(in) :: delt
 
@@ -198,38 +197,38 @@
 
 !  ---  in/out:
       real (kind=kind_phys), dimension(im), intent(inout) :: weasd,     &
-     &       snwdph, tskin, tprcp, srflag, canopy, trans, tsurf, zorl
+             snwdph, tskin, tprcp, srflag, canopy, trans, tsurf, zorl
 
       real (kind=kind_phys), dimension(im,km), intent(inout) ::         &
-     &       smc, stc, slc
+             smc, stc, slc
 
 !  ---  output:
       real (kind=kind_phys), dimension(im), intent(out) :: sncovr1,     &
-     &       qsurf, gflux, drain, evap, hflx, ep, runoff, cmm, chh,     &
-     &       evbs, evcw, sbsno, snowc, stm, snohf, smcwlt2, smcref2,    &
-     &       wet1
+             qsurf, gflux, drain, evap, hflx, ep, runoff, cmm, chh,     &
+             evbs, evcw, sbsno, snowc, stm, snohf, smcwlt2, smcref2,    &
+             wet1
 
 !  ---  locals:
       real (kind=kind_phys), dimension(im) :: rch, rho,                 &
-     &       q0, qs1, theta1,       weasd_old, snwdph_old,              &
-     &       tprcp_old, srflag_old, tskin_old, canopy_old
+             q0, qs1, theta1,       weasd_old, snwdph_old,              &
+             tprcp_old, srflag_old, tskin_old, canopy_old
 
       real (kind=kind_phys), dimension(km) :: et, sldpth, stsoil,       &
-     &       smsoil, slsoil
+             smsoil, slsoil
 
       real (kind=kind_phys), dimension(im,km) :: zsoil, smc_old,        &
-     &       stc_old, slc_old
+             stc_old, slc_old
 
       real (kind=kind_phys) :: alb, albedo, beta, chx, cmx, cmc,        &
-     &       dew, drip, dqsdt2, ec, edir, ett, eta, esnow, etp,         &
-     &       flx1, flx2, flx3, ffrozp, lwdn, pc, prcp, ptu, q2,         &
-     &       q2sat, solnet, rc, rcs, rct, rcq, rcsoil, rsmin,           &
-     &       runoff1, runoff2, runoff3, sfcspd, sfcprs, sfctmp,         &
-     &       sfcems, sheat, shdfac, shdmin1d, shdmax1d, smcwlt,         &
-     &       smcdry, smcref, smcmax, sneqv, snoalb1d, snowh,            &
-     &       snomlt, sncovr, soilw, soilm, ssoil, tsea, th2, tbot,      &
-     &       xlai, zlvl, swdn, tem, z0, bexpp, xlaip, vegfp,            &
-     &       mv,sv,alphav,betav,vegftmp
+             dew, drip, dqsdt2, ec, edir, ett, eta, esnow, etp,         &
+             flx1, flx2, flx3, ffrozp, lwdn, pc, prcp, ptu, q2,         &
+             q2sat, solnet, rc, rcs, rct, rcq, rcsoil, rsmin,           &
+             runoff1, runoff2, runoff3, sfcspd, sfcprs, sfctmp,         &
+             sfcems, sheat, shdfac, shdmin1d, shdmax1d, smcwlt,         &
+             smcdry, smcref, smcmax, sneqv, snoalb1d, snowh,            &
+             snomlt, sncovr, soilw, soilm, ssoil, tsea, th2, tbot,      &
+             xlai, zlvl, swdn, tem, z0, bexpp, xlaip, vegfp,            &
+             mv,sv,alphav,betav,vegftmp
 
       integer :: couple, ice, nsoil, nroot, slope, stype, vtype
       integer :: i, k, iflag
@@ -445,21 +444,21 @@
 
           call sflx                                                     &
 !  ---  inputs:
-     &     ( nsoil, couple, ice, ffrozp, delt, zlvl, sldpth,            &
-     &       swdn, solnet, lwdn, sfcems, sfcprs, sfctmp,                &
-     &       sfcspd, prcp, q2, q2sat, dqsdt2, th2, ivegsrc,             &
-     &       vtype, stype, slope, shdmin1d, alb, snoalb1d,              &
-     &       bexpp, xlaip,                                              & ! sfc-perts, mgehne
-     &       lheatstrg,                                                 &
+           ( nsoil, couple, ice, ffrozp, delt, zlvl, sldpth,            &
+             swdn, solnet, lwdn, sfcems, sfcprs, sfctmp,                &
+             sfcspd, prcp, q2, q2sat, dqsdt2, th2, ivegsrc,             &
+             vtype, stype, slope, shdmin1d, alb, snoalb1d,              &
+             bexpp, xlaip,                                              & ! sfc-perts, mgehne
+             lheatstrg,                                                 &
 !  ---  input/outputs:
-     &       tbot, cmc, tsea, stsoil, smsoil, slsoil, sneqv, chx, cmx,  &
-     &       z0,                                                        &
+             tbot, cmc, tsea, stsoil, smsoil, slsoil, sneqv, chx, cmx,  &
+             z0,                                                        &
 !  ---  outputs:
-     &       nroot, shdfac, snowh, albedo, eta, sheat, ec,              &
-     &       edir, et, ett, esnow, drip, dew, beta, etp, ssoil,         &
-     &       flx1, flx2, flx3, runoff1, runoff2, runoff3,               &
-     &       snomlt, sncovr, rc, pc, rsmin, xlai, rcs, rct, rcq,        &
-     &       rcsoil, soilw, soilm, smcwlt, smcdry, smcref, smcmax)
+             nroot, shdfac, snowh, albedo, eta, sheat, ec,              &
+             edir, et, ett, esnow, drip, dew, beta, etp, ssoil,         &
+             flx1, flx2, flx3, runoff1, runoff2, runoff3,               &
+             snomlt, sncovr, rc, pc, rsmin, xlai, rcs, rct, rcq,        &
+             rcsoil, soilw, soilm, smcwlt, smcdry, smcref, smcmax)
 
 !  --- ...  noah: prepare variables for return to parent mode
 !   6. output (o):
