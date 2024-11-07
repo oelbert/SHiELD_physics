@@ -517,10 +517,10 @@
              edir, et, ett, esnow, drip, dew, beta, etp, ssoil,         &
              flx1, flx2, flx3, runoff1, runoff2, runoff3,               &
              snomlt, sncovr, rc, pc, rsmin, xlai, rcs, rct, rcq,        &
-             !$ser verbatim cn_nroot, cn_ch, cn_zsoil, cn_rcsoil,       &
-             !$ser verbatim cn_sh2o, cn_smcwlt, cn_smcref, cn_rsmin,    &
-             !$ser verbatim cn_rsmax, cn_topt, cn_rgl, cn_hs, cn_xlai,  &
-             !$ser verbatim cn_rc, cn_pc, cn_rcs, cn_rct, cn_rcq,       & 
+             !$ser verbatim cn_nroot, cn_ch, cn_zsoil, cn_rcsoil,&
+             !$ser verbatim cn_sh2o, cn_smcwlt, cn_smcref, cn_rsmin,&
+             !$ser verbatim cn_rsmax, cn_topt, cn_rgl, cn_hs, cn_xlai,&
+             !$ser verbatim cn_rc, cn_pc, cn_rcs, cn_rct, cn_rcq,& 
              rcsoil, soilw, soilm, smcwlt, smcdry, smcref, smcmax)
 
              !$ser verbatim do k = 1, km
