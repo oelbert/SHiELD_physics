@@ -264,7 +264,7 @@
       !$ser verbatim cn_rct = 0.
       !$ser verbatim cn_rcq = 0.
       !$ser verbatim cn_nroot = 0
-      !$ser verbatin do k = 1, km
+      !$ser verbatim do k = 1, km
         !$ser verbatim cn_zsoil(k) = 0.
         !$ser verbatim cn_sh2o(k) = 0.
       !$ser verbatim enddo
@@ -293,7 +293,7 @@
         !$ser verbatim can_rcq(i) = 0.
         !$ser verbatim can_rcsoil(i) = 0.
         !$ser verbatim zerobuff_2d(i) = 0.
-        !$ser verbatin do k = 1, km
+        !$ser verbatim do k = 1, km
           !$ser verbatim can_zsoil(i, k) = 0.
           !$ser verbatim can_sh2o(i, k) = 0.
           !$ser verbatim zerobuff_3d(i, k) = 0.
