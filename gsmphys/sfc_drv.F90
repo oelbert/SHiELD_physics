@@ -224,7 +224,7 @@
 
       real (kind=kind_phys), dimension(im,km) :: zsoil, smc_old,        &
              stc_old, slc_old
-      !$ser verbatm real (kind=kind_phys), dimension(im,km) :: can_zsoil, can_sh2o, zerobuff_3d
+      !$ser verbatim real (kind=kind_phys), dimension(im,km) :: can_zsoil, can_sh2o, zerobuff_3d
 
       real (kind=kind_phys) :: alb, albedo, beta, chx, cmx, cmc,        &
              dew, drip, dqsdt2, ec, edir, ett, eta, esnow, etp,         &
