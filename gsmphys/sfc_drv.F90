@@ -213,20 +213,18 @@
 !  ---  locals:
       real (kind=kind_phys), dimension(im) :: rch, rho,                 &
              q0, qs1, theta1,       weasd_old, snwdph_old,              &
-             !$ser verbatim can_swdn, can_ch, can_q2, &
-             !$ser verbatim can_q2sat, can_dqsdt2, can_sfctmp, can_sfcprs, can_sfcems, &
-             !$ser verbatim can_smcwlt, can_smcref, can_rsmin, can_rsmax, can_topt, &
-             !$ser verbatim can_rgl, can_hs, can_xlai, can_rc, can_pc, can_rcs, can_rct, &
-             !$ser verbatim can_rcq, can_rcsoil, zerobuff_2d, &
              tprcp_old, srflag_old, tskin_old, canopy_old
 
+      !$ser verbatim real (kind=kind_phys), dimension(im) :: can_swdn, can_ch, can_q2, can_q2sat, can_dqsdt2, can_sfctmp, can_sfcprs, can_sfcems, can_smcwlt, can_smcref, can_rsmin, can_rsmax, can_topt, can_rgl, can_hs, can_xlai, can_rc, can_pc, can_rcs, can_rct, can_rcq, can_rcsoil, zerobuff_2d
+
       real (kind=kind_phys), dimension(km) :: et, sldpth, stsoil,       &
-            !$ser verbatim cn_zsoil, cn_sh2o, &
              smsoil, slsoil
 
+      !$ser verbatim real (kind=kind_phys), dimension(km) :: cn_zsoil, cn_sh2o
+
       real (kind=kind_phys), dimension(im,km) :: zsoil, smc_old,        &
-            !$ser verbatm can_zsoil, can_sh2o, zerobuff_3d, &
              stc_old, slc_old
+      !$ser verbatm real (kind=kind_phys), dimension(im,km) :: can_zsoil, can_sh2o, zerobuff_3d
 
       real (kind=kind_phys) :: alb, albedo, beta, chx, cmx, cmc,        &
              dew, drip, dqsdt2, ec, edir, ett, eta, esnow, etp,         &
@@ -237,18 +235,14 @@
              smcdry, smcref, smcmax, sneqv, snoalb1d, snowh,            &
              snomlt, sncovr, soilw, soilm, ssoil, tsea, th2, tbot,      &
              xlai, zlvl, swdn, tem, z0, bexpp, xlaip, vegfp,            &
-             !$ser verbatim cn_ch, cn_rcsoil,       &
-             !$ser verbatim cn_smcwlt, cn_smcref, cn_rsmin,    &
-             !$ser verbatim cn_rsmax, cn_topt, cn_rgl, cn_hs, cn_xlai,  &
-             !$ser verbatim cn_rc, cn_pc, cn_rcs, cn_rct, cn_rcq,
              mv,sv,alphav,betav,vegftmp
 
-      integer :: couple, ice, nsoil, nroot, slope, stype,               &
-             !$ser verbatim cn_nroot, &
-             vtype
-      integer :: i, k, &
-             !$ser verbatim can_nroot, &
-             iflag
+      !$ser verbatim real (kind=kind_phys) :: cn_ch, cn_rcsoil, cn_smcwlt, cn_smcref, cn_rsmin, cn_rsmax, cn_topt, cn_rgl, cn_hs, cn_xlai, cn_rc, cn_pc, cn_rcs, cn_rct, cn_rcq,
+
+      !$ser verbatim integer :: cn_nroot
+      integer :: couple, ice, nsoil, nroot, slope, stype, vtype
+      integer :: i, k, iflag
+      !$ser verbatim integer, dimension(im) :: can_nroot
 !
 !===> ...  begin here
 !
