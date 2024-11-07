@@ -218,7 +218,7 @@
 
 !  ---  outputs:
       integer, intent(out) :: nroot
-      !$ser verbatim integer, intent(out) :: cn_nroot, 
+      !$ser verbatim integer, intent(out) :: cn_nroot
 
       real (kind=kind_phys), intent(out) :: shdfac, snowh, albedo,      &
              eta, sheat, ec, edir, et(nsoil), ett, esnow, drip, dew,    &
