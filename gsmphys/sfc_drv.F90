@@ -154,6 +154,8 @@
              smcwlt2, smcref2, wet1                                     &
            )
 !
+      !$ser verbatim use mpi
+      !$ser verbatim USE m_serialize, ONLY: fs_is_serialization_on
       use machine , only : kind_phys
       use funcphys, only : fpvs
       use physcons, only : grav   => con_g,    cp   => con_cp,          &
@@ -213,11 +215,20 @@
              q0, qs1, theta1,       weasd_old, snwdph_old,              &
              tprcp_old, srflag_old, tskin_old, canopy_old
 
+      !$ser verbatim real (kind=kind_phys), dimension(im) :: can_swdn, can_ch, can_q2, &
+             !$ser verbatim can_q2sat, can_dqsdt2, can_sfctmp, can_sfcprs, can_sfcems, &
+             !$ser verbatim can_smcwlt, can_smcref, can_rsmin, can_rsmax, can_topt, &
+             !$ser verbatim can_rgl, can_hs, can_xlai, can_rc, can_pc, can_rcs, can_rct, &
+             !$ser verbatim can_rcq, can_rcsoil, zerobuff_2d
+
       real (kind=kind_phys), dimension(km) :: et, sldpth, stsoil,       &
              smsoil, slsoil
 
+      !$ser verbatim real (kind=kind_phys), dimension(km) :: cn_zsoil, cn_sh2o
+
       real (kind=kind_phys), dimension(im,km) :: zsoil, smc_old,        &
              stc_old, slc_old
+      !$ser verbatm real (kind=kind_phys), dimension(im,km) :: can_zsoil, can_sh2o, zerobuff_3d
 
       real (kind=kind_phys) :: alb, albedo, beta, chx, cmx, cmc,        &
              dew, drip, dqsdt2, ec, edir, ett, eta, esnow, etp,         &
@@ -230,15 +241,71 @@
              xlai, zlvl, swdn, tem, z0, bexpp, xlaip, vegfp,            &
              mv,sv,alphav,betav,vegftmp
 
+      !$ser verbatim real (kind=kind_phys) :: cn_ch, cn_rcsoil,       &
+             !$ser verbatim cn_smcwlt, cn_smcref, cn_rsmin,    &
+             !$ser verbatim cn_rsmax, cn_topt, cn_rgl, cn_hs, cn_xlai,  &
+             !$ser verbatim cn_rc, cn_pc, cn_rcs, cn_rct, cn_rcq,
+
+      !$ser verbatim integer :: cn_nroot, 
       integer :: couple, ice, nsoil, nroot, slope, stype, vtype
       integer :: i, k, iflag
-
+      !$ser verbatim integer, dimension(im) :: can_nroot
 !
 !===> ...  begin here
 !
 !  --- ...  save land-related prognostic fields for guess run
 
+      !$ser verbatim cn_ch = 0.
+      !$ser verbatim cn_rcsoil = 0.
+      !$ser verbatim cn_smcwlt = 0.
+      !$ser verbatim cn_smcref = 0.
+      !$ser verbatim cn_rsmin = 0.
+      !$ser verbatim cn_rsmax = 0.
+      !$ser verbatim cn_topt = 0.
+      !$ser verbatim cn_rgl = 0.
+      !$ser verbatim cn_hs = 0.
+      !$ser verbatim cn_xlai = 0.
+      !$ser verbatim cn_rc = 0.
+      !$ser verbatim cn_pc = 0.
+      !$ser verbatim cn_rcs = 0.
+      !$ser verbatim cn_rct = 0.
+      !$ser verbatim cn_rcq = 0.
+      !$ser verbatim cn_nroot = 0
+      !$ser verbatin do k = 1, km
+        !$ser verbatim cn_zsoil(k) = 0.
+        !$ser verbatim cn_sh2o(k) = 0.
+      !$ser verbatim enddo
       do i = 1, im
+        !$ser verbatim can_nroot(i) = 0
+        !$ser verbatim can_swdn(i) = 0.
+        !$ser verbatim can_ch(i) = 0.
+        !$ser verbatim can_q2(i) = 0.
+        !$ser verbatim can_q2sat(i) = 0.
+        !$ser verbatim can_dqsdt2(i) = 0.
+        !$ser verbatim can_sfctmp(i) = 0.
+        !$ser verbatim can_sfcprs(i) = 0.
+        !$ser verbatim can_sfcems(i) = 0.
+        !$ser verbatim can_smcwlt(i) = 0.
+        !$ser verbatim can_smcref(i) = 0.
+        !$ser verbatim can_rsmin(i) = 0.
+        !$ser verbatim can_rsmax(i) = 0.
+        !$ser verbatim can_topt(i) = 0.
+        !$ser verbatim can_rgl(i) = 0.
+        !$ser verbatim can_hs(i) = 0.
+        !$ser verbatim can_xlai(i) = 0.
+        !$ser verbatim can_rc(i) = 0.
+        !$ser verbatim can_pc(i) = 0.
+        !$ser verbatim can_rcs(i) = 0.
+        !$ser verbatim can_rct(i) = 0.
+        !$ser verbatim can_rcq(i) = 0.
+        !$ser verbatim can_rcsoil(i) = 0.
+        !$ser verbatim zerobuff_2d(i) = 0.
+        !$ser verbatin do k = 1, km
+          !$ser verbatim can_zsoil(i, k) = 0.
+          !$ser verbatim can_sh2o(i, k) = 0.
+          !$ser verbatim zerobuff_3d(i, k) = 0.
+        !$ser verbatim enddo
+
         if (land(i) .and. flag_guess(i)) then
           weasd_old(i)  = weasd(i)
           snwdph_old(i) = snwdph(i)
@@ -441,7 +508,6 @@
           xlaip  = xlaipert(i)                   ! sfc perts, mgehne
 
 !  --- ...  call noah lsm
-
           call sflx                                                     &
 !  ---  inputs:
            ( nsoil, couple, ice, ffrozp, delt, zlvl, sldpth,            &
@@ -458,7 +524,40 @@
              edir, et, ett, esnow, drip, dew, beta, etp, ssoil,         &
              flx1, flx2, flx3, runoff1, runoff2, runoff3,               &
              snomlt, sncovr, rc, pc, rsmin, xlai, rcs, rct, rcq,        &
+             !$ser verbatim cn_nroot, cn_ch, cn_zsoil, cn_rcsoil,       &
+             !$ser verbatim cn_sh2o, cn_smcwlt, cn_smcref, cn_rsmin,    &
+             !$ser verbatim cn_rsmax, cn_topt, cn_rgl, cn_hs, cn_xlai,  &
+             !$ser verbatim cn_rc, cn_pc, cn_rcs, cn_rct, cn_rcq,       & 
              rcsoil, soilw, soilm, smcwlt, smcdry, smcref, smcmax)
+
+             !$ser verbatim do k = 1, km
+                !$ser verbatim can_zsoil(i, k) = cn_zsoil(k)
+                !$ser verbatom can_sh2o(i, k) = cn_sh2o(k)
+             !$ser verbatim enddo
+             !$ser verbatim can_nroot(i) = cn_nroot
+             !$ser verbatim can_rcsoil(i) = cn_rcsoil
+             !$ser verbatim can_rc(i) = cn_rc
+             !$ser verbatim can_pc(i) = cn_pc
+             !$ser verbatim can_rcs(i) = cn_rcs
+             !$ser verbatim can_rct(i) = cn_rct
+             !$ser verbatim can_rcq(i) = cn_rcq
+             !$ser verbatim can_ch(i) = cn_ch
+             !$ser verbatim can_smcwlt(i) = cn_smcwlt
+             !$ser verbatim can_smcref(i) = cn_smcref
+             !$ser verbatim can_rsmin(i) = cn_rsmin
+             !$ser verbatim can_rsmax(i) = cn_rsmax
+             !$ser verbatim can_topt(i) = cn_topt
+             !$ser verbatim can_rgl(i) = cn_rgl
+             !$ser verbatim can_hs(i) = cn_hs
+             !$ser verbatim can_xlai(i) = cn_xlai
+
+             !$ser verbatim can_swdn = swdn
+             !$ser verbatim can_q2 = q2
+             !$ser verbatim can_q2sat = q2sat
+             !$ser verbatim can_dqsdt2 = dqsdt2
+             !$ser verbatim can_sfctmp = sfctmp
+             !$ser verbatim can_sfcems = sfcems
+             !$ser verbatim can_sfcprs = sfcprs
 
 !  --- ...  noah: prepare variables for return to parent mode
 !   6. output (o):
@@ -551,6 +650,23 @@
         endif   ! flag_iter and flag
       enddo   ! end do_i_loop
 
+      !$ser savepoint Canres-In
+      !$ser data nsoil=nsoil nroot=can_nroot swdn=can_swdn ch=can_ch q2=can_q2
+      !$ser data q2sat=can_q2sat dqsdt2=can_dqsdt2 sfctmp=can_sfctmp sfcprs=can_sfcprs
+      !$ser data sfcems=can_sfcems sh2o=can_sh2o smcwlt=can_smcwlt smcref=can_smcref
+      !$ser data zsoil=can_zsoil rsmin=can_rsmin rsmax=can_rsmax topt=can_topt
+      !$ser data rgl=can_rgl hs=can_hs xlai=can_xlai rc=zerobuff_2d pc=zerobuff_2d
+      !$ser data rcs=zerobuff_2d rct=zerobuff_2d rcq=zerobuff_2d rcsoil=zerobuff_2d
+
+      !$ser savepoint Canres-Out
+      !$ser data rc=can_rc pc=can_pc rcs=can_rcs rct=can_rct rcq=can_rcq rcsoil=can_rcsoil
+!  ---  inputs:
+!          ( nsoil, nroot, swdn, ch, q2, q2sat, dqsdt2, sfctmp,         &
+!            sfcprs, sfcems, sh2o, smcwlt, smcref, zsoil, rsmin,        &
+!            rsmax, topt, rgl, hs, xlai,                                &
+!  ---  outputs:
+!            rc, pc, rcs, rct, rcq, rcsoil                              &
+!          )
 !   --- ...  compute qsurf (specific humidity at sfc)
 
       do i = 1, im
