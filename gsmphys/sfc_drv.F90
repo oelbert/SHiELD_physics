@@ -237,7 +237,7 @@
              xlai, zlvl, swdn, tem, z0, bexpp, xlaip, vegfp,            &
              mv,sv,alphav,betav,vegftmp
 
-      !$ser verbatim real (kind=kind_phys) :: cn_ch, cn_rcsoil, cn_smcwlt, cn_smcref, cn_rsmin, cn_rsmax, cn_topt, cn_rgl, cn_hs, cn_xlai, cn_rc, cn_pc, cn_rcs, cn_rct, cn_rcq,
+      !$ser verbatim real (kind=kind_phys) :: cn_ch, cn_rcsoil, cn_smcwlt, cn_smcref, cn_rsmin, cn_rsmax, cn_topt, cn_rgl, cn_hs, cn_xlai, cn_rc, cn_pc, cn_rcs, cn_rct, cn_rcq
 
       !$ser verbatim integer :: cn_nroot
       integer :: couple, ice, nsoil, nroot, slope, stype, vtype
