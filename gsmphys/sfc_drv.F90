@@ -525,7 +525,7 @@
 
              !$ser verbatim do k = 1, km
                 !$ser verbatim can_zsoil(i, k) = cn_zsoil(k)
-                !$ser verbatom can_sh2o(i, k) = cn_sh2o(k)
+                !$ser verbatim can_sh2o(i, k) = cn_sh2o(k)
              !$ser verbatim enddo
              !$ser verbatim can_nroot(i) = cn_nroot
              !$ser verbatim can_rcsoil(i) = cn_rcsoil
