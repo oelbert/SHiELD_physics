@@ -650,6 +650,7 @@
       !$ser data zsoil=can_zsoil rsmin=can_rsmin rsmax=can_rsmax topt=can_topt
       !$ser data rgl=can_rgl hs=can_hs xlai=can_xlai rc=zerobuff_2d pc=zerobuff_2d
       !$ser data rcs=zerobuff_2d rct=zerobuff_2d rcq=zerobuff_2d rcsoil=zerobuff_2d
+      !$ser data lsm_mask=land
 
       !$ser savepoint Canres-Out
       !$ser data rc=can_rc pc=can_pc rcs=can_rcs rct=can_rct rcq=can_rcq rcsoil=can_rcsoil
