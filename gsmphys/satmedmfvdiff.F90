@@ -1393,7 +1393,7 @@
 !
       !$ser verbatim do i = 1,im
         !$ser verbatim do k = 1,km
-          !$ser verbatim do kk = 2, ntrac1
+          !$ser verbatim do kk = 1, ntrac1
             !$ser verbatim is = (kk-1) * km
             !$ser verbatim f2_ser(i, k, kk) = f2(i, k + is)
           !$ser verbatim enddo
@@ -1403,8 +1403,8 @@
       !$ser data nt=ntrac1 al=al ad=ad au=au f1=f1 f2=f2_ser
       call tridin(im,km,ntrac1,al,ad,au,f1,f2,au,f1,f2)
       !$ser verbatim do i = 1,im
-        !$ser verbatim do k = 2,km
-          !$ser verbatim do kk = 2, ntrac1
+        !$ser verbatim do k = 1,km
+          !$ser verbatim do kk = 1, ntrac1
             !$ser verbatim is = (kk-1) * km
             !$ser verbatim f2_ser(i, k, kk) = f2(i, k + is)
           !$ser verbatim enddo
@@ -1528,7 +1528,7 @@
 !     solve tridiagonal problem for momentum
 !
       !$ser verbatim do i = 1,im
-        !$ser verbatim do k = 2,km
+        !$ser verbatim do k = 1,km
           !$ser verbatim f2_ser(i, k, 1) = f2(i, k)
         !$ser verbatim enddo
       !$ser verbatim enddo
