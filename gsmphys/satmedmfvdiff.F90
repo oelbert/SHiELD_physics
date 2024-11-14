@@ -247,6 +247,18 @@
       kmpbl = km / 2
       kmscu = km / 2
 !
+      !$ser savepoint PBLInit-In
+      !$ser data zi=zi zl=zl zm=zm phii=phii phil=phil chz=chz ckz=ckz area=garea gdx=gdx
+      !$ser data tke=tke q1=q1 rdzt=rdzt prn=prn kx1=kx1 prsi=prsi kinver=kinver tx1=tx1
+      !$ser data tx2=tx2 xkzo=xkzo xkzmo=xkzmo kpblx=kpblx hpblx=hpblx pblflg=pblflg 
+      !$ser data sfcflg=sfcflg pcnvflg=pcnvflg scuflg=scuflg zorl=zorl dusfc=dusfc dvsfc=dvsfc
+      !$ser data dtsfc=dtsfc dqsfc=dqsfc kpbl=kpbl hpbl=hpbl rbsoil=rbsoil radmin=radmin
+      !$ser data mrad=mrad krad=krad lcld=lcld kcld=kcld theta=theta prslk=prslk psk=psk t1=t1
+      !$ser data pix=pix qlx=qlx slx=slx thvx=thvx qtx=qtx thlx=thlx thlvx=thlvx svx=svx
+      !$ser data thetae=thetae gotvx=gotvx prsl=prsl plyr=plyr rhly=rhly qstl=qstl bf=bf
+      !$ser data cfly=cfly crb=crb dtdz1=dtdz1 evap=evap heat=heat hlw=hlw radx=radx
+      !$ser data sflux=sflux shr2=shr2 stress=stress hsw=hsw thermal=thermal tsea=tsea
+      !$ser data u10m=u10m ustar=ustar u1=u1 v1=v1 v10m=v10m xmu=xmu
       do k=1,km
         do i=1,im
           zi(i,k) = phii(i,k) * gravi
@@ -554,10 +566,28 @@
          shr2(i,k) = max(dw2,dw2min)*rdz*rdz
       enddo
       enddo
+      !$ser savepoint PBLInit-Out
+      !$ser data zi=zi zl=zl zm=zm phii=phii phil=phil chz=chz ckz=ckz area=garea gdx=gdx
+      !$ser data tke=tke q1=q1 rdzt=rdzt prn=prn kx1=kx1 prsi=prsi kinver=kinver tx1=tx1
+      !$ser data tx2=tx2 xkzo=xkzo xkzmo=xkzmo kpblx=kpblx hpblx=hpblx pblflg=pblflg 
+      !$ser data sfcflg=sfcflg pcnvflg=pcnvflg scuflg=scuflg zorl=zorl dusfc=dusfc dvsfc=dvsfc
+      !$ser data dtsfc=dtsfc dqsfc=dqsfc kpbl=kpbl hpbl=hpbl rbsoil=rbsoil radmin=radmin
+      !$ser data mrad=mrad krad=krad lcld=lcld kcld=kcld theta=theta prslk=prslk psk=psk t1=t1
+      !$ser data pix=pix qlx=qlx slx=slx thvx=thvx qtx=qtx thlx=thlx thlvx=thlvx svx=svx
+      !$ser data thetae=thetae gotvx=gotvx prsl=prsl plyr=plyr rhly=rhly qstl=qstl bf=bf
+      !$ser data cfly=cfly crb=crb dtdz1=dtdz1 evap=evap heat=heat hlw=hlw radx=radx
+      !$ser data sflux=sflux shr2=shr2 stress=stress hsw=hsw thermal=thermal tsea=tsea
+      !$ser data u10m=u10m ustar=ustar u1=u1 v1=v1 v10m=v10m xmu=xmu
 !
 ! find pbl height based on bulk richardson number (mrf pbl scheme)
 !   and also for diagnostic purpose
 !
+      !$ser savepoint MRF-In
+      !$ser data crb=crb flg=flg kpblx=kpblx rbdn=rbdn rbup=rbup rbsoil=rbsoil thermal=thermal
+      !$ser data thlvx=thlvx u1=u1 v1=v1 zl=zl evap=evap fh=fh fm=fm gotvx=gotvx zol=zol
+      !$ser data heat=heat hpbl=hpbl hpblx=hpblx kpbl=kpbl pblflg=pblflg pcnvflg=pcnvflg phih=phih
+      !$ser data phim=phim sfcflg=sfcflg sflux=sflux theta=theta ustar=ustar vpert=vpert zi=zi
+
       do i=1,im
          flg(i) = .false.
          rbup(i) = rbsoil(i)
@@ -656,6 +686,16 @@
            rbup(i) = rbsoil(i)
          endif
       enddo
+      !$ser savepoint MRF-Out
+      !$ser data crb=crb flg=flg kpblx=kpblx rbdn=rbdn rbup=rbup rbsoil=rbsoil thermal=thermal
+      !$ser data thlvx=thlvx u1=u1 v1=v1 zl=zl evap=evap fh=fh fm=fm gotvx=gotvx zol=zol
+      !$ser data heat=heat hpbl=hpbl hpblx=hpblx kpbl=kpbl pblflg=pblflg pcnvflg=pcnvflg phih=phih
+      !$ser data phim=phim sfcflg=sfcflg sflux=sflux theta=theta ustar=ustar vpert=vpert zi=zi
+
+      !$ser savepoint ThermalPBL-In
+      !$ser data crb=crb flg=flg kpbl=kpbl rbdn=rbdn rbup=rbup thermal=thermal thlvx=thlvx
+      !$ser data u1=u1 v1=v1 zl=zl hpbl=hpbl pblflg=pblflg pcnvflg=pcnvflg zi=zi
+
       do k = 2, kmpbl
       do i = 1, im
         if(.not.flg(i)) then
@@ -688,10 +728,15 @@
            endif
         endif
       enddo
+      !$ser savepoint ThermalPBL-Out
+      !$ser data crb=crb flg=flg kpbl=kpbl rbdn=rbdn rbup=rbup thermal=thermal thlvx=thlvx
+      !$ser data u1=u1 v1=v1 zl=zl hpbl=hpbl pblflg=pblflg pcnvflg=pcnvflg zi=zi
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !  look for stratocumulus
 !
+      !$ser savepoint Stratocumulus-In
+      !$ser data flg=flg kcld=kcld krad=krad lcld=lcld radmin=radmin radx=radx qlx=qlx scuflg=scuflg zl=zl
       do i=1,im
          flg(i)  = scuflg(i)
       enddo
@@ -741,6 +786,8 @@
         if(scuflg(i) .and. krad(i) <= 1) scuflg(i)=.false.
         if(scuflg(i) .and. radmin(i)>=0.) scuflg(i)=.false.
       enddo
+      !$ser savepoint Stratocumulus-Out
+      !$ser data flg=flg kcld=kcld krad=krad lcld=lcld radmin=radmin radx=radx qlx=qlx scuflg=scuflg zl=zl
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !  compute components for mass flux mixing by large thermals
@@ -840,6 +887,9 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !  compute an asymtotic mixing length
 !
+      !$ser savepoint PBLAML-In
+      !$ser data zldn=zldn thvx=thvx tke=tke gotvx=gotvx zl=zl tsea=tsea q1=q1
+      !$ser data zi=zi rlam=rlam ele=ele zol=zol gdx=gdx phii=phii
       do k = 1, km1
         do i = 1, im
           zlup = 0.0
@@ -937,6 +987,9 @@
         elm(i,km) = elm(i,km1)
         ele(i,km) = ele(i,km1)
       enddo
+      !$ser savepoint PBLAML-Out
+      !$ser data zldn=zldn thvx=thvx tke=tke gotvx=gotvx zl=zl tsea=tsea q1=q1
+      !$ser data zi=zi rlam=rlam ele=ele zol=zol gdx=gdx phii=phii
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !  compute eddy diffusivities
@@ -1206,6 +1259,10 @@
 !----------------------------------------------------------------------
 !     compute tridiagonal matrix elements for turbulent kinetic energy
 !
+      !$ser savepoint TKETridiagEle-In
+      !$ser savepoint ad=ad al=al au=au delta=del dkq=dkq f1=f1 kpbl=kpbl krad=krad mrad=mrad
+      !$ser data pcnvflg=pcnvflg prsl=prsl qcdo=qcdo qcko=qcko rdzt=rdzt scuflg=scuflg
+      !$ser data tke=tke xmf=xmf xmfd=xmfd
       do i=1,im
          ad(i,1) = 1.0
          f1(i,1) = tke(i,1)
@@ -1255,6 +1312,10 @@
 !
         enddo
       enddo
+      !$ser savepoint TKETridiagEle-Out
+      !$ser savepoint ad=ad al=al au=au delta=del dkq=dkq f1=f1 kpbl=kpbl krad=krad mrad=mrad
+      !$ser data pcnvflg=pcnvflg prsl=prsl qcdo=qcdo qcko=qcko rdzt=rdzt scuflg=scuflg
+      !$ser data tke=tke xmf=xmf xmfd=xmfd
 !
 !     solve tridiagonal problem for tke
 !
@@ -1400,7 +1461,7 @@
         !$ser verbatim enddo
       !$ser verbatim enddo
       !$ser savepoint Tridin-In
-      !$ser data nt=ntrac1 al=al ad=ad au=au f1=f1 f2=f2_ser
+      !$ser data nt1=ntrac1 al=al ad=ad au=au f1=f1 f2=f2_ser
       call tridin(im,km,ntrac1,al,ad,au,f1,f2,au,f1,f2)
       !$ser verbatim do i = 1,im
         !$ser verbatim do k = 1,km
@@ -1536,7 +1597,7 @@
       !$ser data al=al ad=ad au=au f1=f1 f2=f2_ser
       call tridi2(im,km,al,ad,au,f1,f2,au,f1,f2)
       !$ser verbatim do i = 1,im
-        !$ser verbatim do k = 2,km
+        !$ser verbatim do k = 1,km
           !$ser verbatim f2_ser(i, k, 1) = f2(i, k)
         !$ser verbatim enddo
       !$ser verbatim enddo
