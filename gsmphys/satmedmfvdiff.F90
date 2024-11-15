@@ -1313,7 +1313,7 @@
         enddo
       enddo
       !$ser savepoint TKETridiagEle-Out
-      !$ser savepoint ad=ad al=al au=au delta=del dkq=dkq f1=f1 kpbl=kpbl krad=krad mrad=mrad
+      !$ser data ad=ad al=al au=au delta=del dkq=dkq f1=f1 kpbl=kpbl krad=krad mrad=mrad
       !$ser data pcnvflg=pcnvflg prsl=prsl qcdo=qcdo qcko=qcko rdzt=rdzt scuflg=scuflg
       !$ser data tke=tke xmf=xmf xmfd=xmfd
 !
