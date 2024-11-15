@@ -257,7 +257,7 @@
       !$ser data pix=pix qlx=qlx slx=slx thvx=thvx qtx=qtx thlx=thlx thlvx=thlvx svx=svx
       !$ser data thetae=thetae gotvx=gotvx prsl=prsl plyr=plyr rhly=rhly qstl=qstl bf=bf
       !$ser data cfly=cfly crb=crb dtdz1=dtdz1 evap=evap heat=heat hlw=hlw radx=radx
-      !$ser data sflux=sflux shr2=shr2 stress=stress hsw=hsw thermal=thermal tsea=tsea
+      !$ser data sflux=sflux shr2=shr2 stress=stress hsw=swh thermal=thermal tsea=tsea
       !$ser data u10m=u10m ustar=ustar u1=u1 v1=v1 v10m=v10m xmu=xmu
       do k=1,km
         do i=1,im
@@ -576,7 +576,7 @@
       !$ser data pix=pix qlx=qlx slx=slx thvx=thvx qtx=qtx thlx=thlx thlvx=thlvx svx=svx
       !$ser data thetae=thetae gotvx=gotvx prsl=prsl plyr=plyr rhly=rhly qstl=qstl bf=bf
       !$ser data cfly=cfly crb=crb dtdz1=dtdz1 evap=evap heat=heat hlw=hlw radx=radx
-      !$ser data sflux=sflux shr2=shr2 stress=stress hsw=hsw thermal=thermal tsea=tsea
+      !$ser data sflux=sflux shr2=shr2 stress=stress hsw=swh thermal=thermal tsea=tsea
       !$ser data u10m=u10m ustar=ustar u1=u1 v1=v1 v10m=v10m xmu=xmu
 !
 ! find pbl height based on bulk richardson number (mrf pbl scheme)
