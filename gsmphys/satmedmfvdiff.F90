@@ -259,6 +259,7 @@
       !$ser data cfly=cfly crb=crb dtdz1=dtdz1 evap=evap heat=heat hlw=hlw radx=radx
       !$ser data sflux=sflux shr2=shr2 stress=stress hsw=swh thermal=thermal tsea=tsea
       !$ser data u10m=u10m ustar=ustar u1=u1 v1=v1 v10m=v10m xmu=xmu islimsk=islimsk
+      !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke
       do k=1,km
         do i=1,im
           zi(i,k) = phii(i,k) * gravi
@@ -587,6 +588,7 @@
       !$ser data thlvx=thlvx u1=u1 v1=v1 zl=zl evap=evap fh=fh fm=fm gotvx=gotvx zol=zol
       !$ser data heat=heat hpbl=hpbl hpblx=hpblx kpbl=kpbl pblflg=pblflg pcnvflg=pcnvflg phih=phih
       !$ser data phim=phim sfcflg=sfcflg sflux=sflux theta=theta ustar=ustar vpert=vpert zi=zi
+      !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke
 
       do i=1,im
          flg(i) = .false.
@@ -695,6 +697,7 @@
       !$ser savepoint ThermalPBL-In
       !$ser data crb=crb flg=flg kpbl=kpbl rbdn=rbdn rbup=rbup thermal=thermal thlvx=thlvx
       !$ser data u1=u1 v1=v1 zl=zl hpbl=hpbl pblflg=pblflg pcnvflg=pcnvflg zi=zi
+      !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke
 
       do k = 2, kmpbl
       do i = 1, im
@@ -737,6 +740,7 @@
 !
       !$ser savepoint Stratocumulus-In
       !$ser data flg=flg kcld=kcld krad=krad lcld=lcld radmin=radmin radx=radx qlx=qlx scuflg=scuflg zl=zl
+      !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke
       do i=1,im
          flg(i)  = scuflg(i)
       enddo
@@ -890,6 +894,7 @@
       !$ser savepoint PBLAML-In
       !$ser data zldn=zldn thvx=thvx tke=tke gotvx=gotvx zl=zl tsea=tsea q1=q1
       !$ser data zi=zi rlam=rlam ele=ele zol=zol gdx=gdx phii=phii
+      !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke
       do k = 1, km1
         do i = 1, im
           zlup = 0.0
@@ -1263,6 +1268,7 @@
       !$ser data ad=ad al=al au=au delta=del dkq=dkq f1=f1 kpbl=kpbl krad=krad mrad=mrad
       !$ser data pcnvflg=pcnvflg prsl=prsl qcdo=qcdo qcko=qcko rdzt=rdzt scuflg=scuflg
       !$ser data tke=tke xmf=xmf xmfd=xmfd
+      !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke
       do i=1,im
          ad(i,1) = 1.0
          f1(i,1) = tke(i,1)
