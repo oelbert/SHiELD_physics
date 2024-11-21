@@ -258,7 +258,7 @@
       !$ser data thetae=thetae gotvx=gotvx prsl=prsl plyr=plyr rhly=rhly qstl=qstl bf=bf
       !$ser data cfly=cfly crb=crb dtdz1=dtdz1 evap=evap heat=heat hlw=hlw radx=radx
       !$ser data sflux=sflux shr2=shr2 stress=stress hsw=swh thermal=thermal tsea=tsea
-      !$ser data u10m=u10m ustar=ustar u1=u1 v1=v1 v10m=v10m xmu=xmu
+      !$ser data u10m=u10m ustar=ustar u1=u1 v1=v1 v10m=v10m xmu=xmu islimsk=islimsk
       do k=1,km
         do i=1,im
           zi(i,k) = phii(i,k) * gravi
