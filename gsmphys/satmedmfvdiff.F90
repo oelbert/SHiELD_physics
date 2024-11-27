@@ -93,6 +93,7 @@
       integer kx1(im), kpblx(im)
 !
       real(kind=kind_phys) tke(im,km),  tkeh(im,km-1)
+      !$ser verbatim real(kind=kind_phys) zldn_ser(im,km)
 !
       real(kind=kind_phys) theta(im,km),thvx(im,km),  thlvx(im,km), &
                            qlx(im,km),  thetae(im,km),thlx(im,km), &
@@ -884,6 +885,7 @@
             chz(i,k) = min(chz(i,k),ch0)
             chz(i,k) = max(chz(i,k),ch1)
           endif
+        !$ser verbatim zldn_ser(i,k) = 0.0
         enddo
       enddo
 
@@ -892,7 +894,7 @@
 !  compute an asymtotic mixing length
 !
       !$ser savepoint PBLAML-In
-      !$ser data zldn=zldn thvx=thvx tke=tke gotvx=gotvx zl=zl tsea=tsea q1=q1
+      !$ser data zldn=zldn_ser thvx=thvx tke=tke gotvx=gotvx zl=zl tsea=tsea q1=q1
       !$ser data zi=zi rlam=rlam ele=ele zol=zol gdx=gdx phii=phii
       !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke
       do k = 1, km1
@@ -985,6 +987,7 @@
           tem = max(gdx(i),dz)
           elm(i,k) = min(elm(i,k), tem)
           ele(i,k) = min(ele(i,k), tem)
+          !$ser verbatim zldn_ser(i,k) = zldn
 !
         enddo
       enddo
@@ -993,7 +996,7 @@
         ele(i,km) = ele(i,km1)
       enddo
       !$ser savepoint PBLAML-Out
-      !$ser data zldn=zldn thvx=thvx tke=tke gotvx=gotvx zl=zl tsea=tsea q1=q1
+      !$ser data zldn=zldn_ser thvx=thvx tke=tke gotvx=gotvx zl=zl tsea=tsea q1=q1
       !$ser data zi=zi rlam=rlam ele=ele zol=zol gdx=gdx phii=phii
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
