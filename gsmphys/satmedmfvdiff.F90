@@ -260,7 +260,7 @@
       !$ser data cfly=cfly crb=crb dtdz1=dtdz1 evap=evap heat=heat hlw=hlw radx=radx
       !$ser data sflux=sflux shr2=shr2 stress=stress hsw=swh thermal=thermal tsea=tsea
       !$ser data u10m=u10m ustar=ustar u1=u1 v1=v1 v10m=v10m xmu=xmu islimsk=islimsk
-      !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke xkzm_hx=xkzm_hx xkzm_mx=xkzm_mx
+      !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke xkzm_hx=xkzm_hx xkzm_mx=xkzm_mx tvx=tvx
       do k=1,km
         do i=1,im
           zi(i,k) = phii(i,k) * gravi
@@ -579,7 +579,7 @@
       !$ser data thetae=thetae gotvx=gotvx prsl=prsl plyr=plyr rhly=rhly qstl=qstl bf=bf
       !$ser data cfly=cfly crb=crb dtdz1=dtdz1 evap=evap heat=heat hlw=hlw radx=radx
       !$ser data sflux=sflux shr2=shr2 stress=stress hsw=swh thermal=thermal tsea=tsea
-      !$ser data u10m=u10m ustar=ustar u1=u1 v1=v1 v10m=v10m xmu=xmu xkzm_hx=xkzm_hx xkzm_mx=xkzm_mx
+      !$ser data u10m=u10m ustar=ustar u1=u1 v1=v1 v10m=v10m xmu=xmu xkzm_hx=xkzm_hx xkzm_mx=xkzm_mx tvx=tvx
 !
 ! find pbl height based on bulk richardson number (mrf pbl scheme)
 !   and also for diagnostic purpose
