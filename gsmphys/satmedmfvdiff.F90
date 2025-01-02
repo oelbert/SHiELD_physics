@@ -578,8 +578,13 @@
       !$ser data pix=pix qlx=qlx slx=slx thvx=thvx qtx=qtx thlx=thlx thlvx=thlvx svx=svx
       !$ser data thetae=thetae gotvx=gotvx prsl=prsl plyr=plyr rhly=rhly qstl=qstl bf=bf
       !$ser data cfly=cfly crb=crb dtdz1=dtdz1 evap=evap heat=heat hlw=hlw radx=radx
+<<<<<<< HEAD
       !$ser data sflux=sflux shr2=shr2 stress=stress hsw=swh thermal=thermal tsea=tsea tvx=tvx
       !$ser data u10m=u10m ustar=ustar u1=u1 v1=v1 v10m=v10m xmu=xmu xkzm_hx=xkzm_hx xkzm_mx=xkzm_mx
+=======
+      !$ser data sflux=sflux shr2=shr2 stress=stress hsw=swh thermal=thermal tsea=tsea
+      !$ser data u10m=u10m ustar=ustar u1=u1 v1=v1 v10m=v10m xmu=xmu xkzm_hx=xkzm_hx xkzm_mx=xkzm_mx tvx=tvx
+>>>>>>> 146ec3381d6b749c9c322fd667bc46c63ab9e5df
 !
 ! find pbl height based on bulk richardson number (mrf pbl scheme)
 !   and also for diagnostic purpose
