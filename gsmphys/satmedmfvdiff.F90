@@ -895,7 +895,7 @@
 !
       !$ser savepoint PBLAML-In
       !$ser data zldn=zldn_ser thvx=thvx tke=tke gotvx=gotvx zl=zl tsea=tsea q1=q1
-      !$ser data zi=zi rlam=rlam ele=ele zol=zol gdx=gdx phii=phii
+      !$ser data zi=zi rlam=rlam ele=ele elm=elm zol=zol gdx=gdx phii=phii
       !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke
       do k = 1, km1
         do i = 1, im
@@ -997,7 +997,7 @@
       enddo
       !$ser savepoint PBLAML-Out
       !$ser data zldn=zldn_ser thvx=thvx tke=tke gotvx=gotvx zl=zl tsea=tsea q1=q1
-      !$ser data zi=zi rlam=rlam ele=ele zol=zol gdx=gdx phii=phii
+      !$ser data zi=zi rlam=rlam ele=ele elm=elm zol=zol gdx=gdx phii=phii
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !  compute eddy diffusivities
