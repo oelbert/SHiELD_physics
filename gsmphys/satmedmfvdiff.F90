@@ -93,7 +93,7 @@
       integer kx1(im), kpblx(im)
 !
       real(kind=kind_phys) tke(im,km),  tkeh(im,km-1)
-      !$ser verbatim real(kind=kind_phys) zldn_ser(im,km), zlup_ser
+      !$ser verbatim real(kind=kind_phys) zldn_ser(im,km), zlup_ser(im,km)
 !
       real(kind=kind_phys) theta(im,km),thvx(im,km),  thlvx(im,km), &
                            qlx(im,km),  thetae(im,km),thlx(im,km), &
