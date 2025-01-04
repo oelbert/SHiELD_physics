@@ -965,6 +965,8 @@
           ele(i,k) = elefac * ptem2
           ele(i,k) = max(ele(i,k), tem1)
           ele(i,k) = min(ele(i,k), elmx)
+          !$ser verbatim zldn_ser(i,k) = zldn
+          !$ser verbatim zlup_ser(i,k) = zlup
 !
         enddo
       enddo
@@ -988,8 +990,6 @@
           tem = max(gdx(i),dz)
           elm(i,k) = min(elm(i,k), tem)
           ele(i,k) = min(ele(i,k), tem)
-          !$ser verbatim zldn_ser(i,k) = zldn
-          !$ser verbatim zlup_ser(i,k) = zlup
 !
         enddo
       enddo
