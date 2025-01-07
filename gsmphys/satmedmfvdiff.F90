@@ -864,7 +864,7 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !   compute prandtl number and exchange coefficient varying with height
 !
-    !$ser verbatimn Prandtl-In
+    !$ser savepoint Prandtl-In
     !$ser data ckz=ckz chz=chz hpbl=hpbl kpbl=kpbl pcnvflg=pcnvflg zi=zi phih=phih
     !$ser data phim=phim prn=prn
       do k = 1, kmpbl
@@ -892,7 +892,7 @@
         !$ser verbatim zlup_ser(i,k) = 0.0
         enddo
       enddo
-    !$ser verbatimn Prandtl-Out
+    !$ser savepoint Prandtl-Out
     !$ser data ckz=ckz chz=chz hpbl=hpbl kpbl=kpbl pcnvflg=pcnvflg zi=zi phih=phih
     !$ser data phim=phim prn=prn
 
