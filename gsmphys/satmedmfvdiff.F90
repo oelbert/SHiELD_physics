@@ -1243,7 +1243,7 @@
 !     compute updraft & downdraft properties for tke
 !
       !$ser savepoint UpDownTKE-In
-      !ser data pcnvflg=pcnvflg qcdo=qcdo qcko=qcko scuflg=scuflg tke=tke kpbl=kpbl
+      !$ser data pcnvflg=pcnvflg qcdo=qcdo qcko=qcko scuflg=scuflg tke=tke kpbl=kpbl
       !$ser data xlamue=xlamue zl=zl krad=krad mrad=mrad xlamde=xlamde
       do k = 1, km
         do i = 1, im
@@ -1291,7 +1291,7 @@
         enddo
       enddo
       !$ser savepoint UpDownTKE-Out
-      !ser data pcnvflg=pcnvflg qcdo=qcdo qcko=qcko scuflg=scuflg tke=tke kpbl=kpbl
+      !$ser data pcnvflg=pcnvflg qcdo=qcdo qcko=qcko scuflg=scuflg tke=tke kpbl=kpbl
       !$ser data xlamue=xlamue zl=zl krad=krad mrad=mrad xlamde=xlamde
 !
 !----------------------------------------------------------------------
