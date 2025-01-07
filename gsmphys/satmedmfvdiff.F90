@@ -864,6 +864,9 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !   compute prandtl number and exchange coefficient varying with height
 !
+    !$ser verbatimn Prandtl-In
+    !$ser data ckz=ckz chz=chz hpbl=hpbl kpbl=kpbl pcnvflg=pcnvflg zi=zi phih=phih
+    !$ser data phim=phim prn=prn
       do k = 1, kmpbl
         do i = 1, im
           if(k < kpbl(i)) then
@@ -889,6 +892,9 @@
         !$ser verbatim zlup_ser(i,k) = 0.0
         enddo
       enddo
+    !$ser verbatimn Prandtl-Out
+    !$ser data ckz=ckz chz=chz hpbl=hpbl kpbl=kpbl pcnvflg=pcnvflg zi=zi phih=phih
+    !$ser data phim=phim prn=prn
 
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -1005,6 +1011,12 @@
 !  compute eddy diffusivities
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !
+      !$ser savepoint EdDiffShear-In
+      !$ser data bf=bf buod=buod buou=buou chz=chz ckz=ckz dku=dku dkt=dkt dkq=dkq elm=elm
+      !$ser data gotvx=gotvx kpbl=kpbl mrad=mrad krad=krad pblflg=pblflg pcnvflg=pcnvflg
+      !$ser data phim=phim prn=prn prod=prod radj=radj rdzt=rdzt scuflg=scuflg sflux=sflux
+      !$ser data shr2=shr2 stress=stress tke=tke u1=u1 ucdo=ucdo ucko=ucko ustar=ustar
+      !$ser data v1=v1 vcdo=vcdo vcko=vcko xkzo=xkzo xkzmo=xkzmo xmf=xmf xmfd=xmfd zl=zl
       do k = 1, km1
         do i = 1, im
            tem = 0.5 * (elm(i,k) + elm(i,k+1))
@@ -1194,10 +1206,18 @@
           prod(i,k) = buop + shrp
         enddo
       enddo
+      !$ser savepoint EdDiffShear-Out
+      !$ser data bf=bf buod=buod buou=buou chz=chz ckz=ckz dku=dku dkt=dkt dkq=dkq elm=elm
+      !$ser data gotvx=gotvx kpbl=kpbl mrad=mrad krad=krad pblflg=pblflg pcnvflg=pcnvflg
+      !$ser data phim=phim prn=prn prod=prod radj=radj rdzt=rdzt scuflg=scuflg sflux=sflux
+      !$ser data shr2=shr2 stress=stress tke=tke u1=u1 ucdo=ucdo ucko=ucko ustar=ustar
+      !$ser data v1=v1 vcdo=vcdo vcko=vcko xkzo=xkzo xkzmo=xkzmo xmf=xmf xmfd=xmfd zl=zl
 !
 !----------------------------------------------------------------------
 !     first predict tke due to tke production & dissipation(diss) 
 !
+      !$ser savepoint TKEPredict-In
+      !$ser data rle=rle ele=ele tke=tke diss=diss prod=prod
       do k = 1,km1
         do i=1,im
            rle(i,k) = ce0 / ele(i,k)
@@ -1217,9 +1237,14 @@
         enddo
       enddo
       enddo
+      !$ser savepoint TKEPredict-Out
+      !$ser data rle=rle ele=ele tke=tke diss=diss prod=prod
 !
 !     compute updraft & downdraft properties for tke
 !
+      !$ser savepoint UpDownTKE-In
+      !ser data pcnvflg=pcnvflg qcdo=qcdo qcko=qcko scuflg=scuflg tke=tke kpbl=kpbl
+      !$ser data xlamue=xlamue zl=zl krad=krad mrad=mrad xlamde=xlamde
       do k = 1, km
         do i = 1, im
           if(pcnvflg(i)) then
@@ -1265,6 +1290,9 @@
           endif
         enddo
       enddo
+      !$ser savepoint UpDownTKE-Out
+      !ser data pcnvflg=pcnvflg qcdo=qcdo qcko=qcko scuflg=scuflg tke=tke kpbl=kpbl
+      !$ser data xlamue=xlamue zl=zl krad=krad mrad=mrad xlamde=xlamde
 !
 !----------------------------------------------------------------------
 !     compute tridiagonal matrix elements for turbulent kinetic energy
@@ -1528,6 +1556,11 @@
 !
 !     add tke dissipative heating to temperature tendency
 !
+      !$ser savepoint MomentTridiagComp-In
+      !$ser data ad=ad al=al au=au delta=del diss=diss dku=dku dtdz1=dtdz1 f1=f1 f2=f2
+      !$ser data kpbl=kpbl krad=krad mrad=mrad pcnvflg=pcnvflg prsl=prsl rdzt=rdzt scuflg=scuflg
+      !$ser data spd1=spd1 stress=stress tdt=tdt u1=u1 ucdo=ucdo ucko=ucko v1=v1 vcdo=vcdo
+      !$ser data vcko=vcko xmf=xmf xmfd=xmfd
       if(dspheat) then
       do k = 1,km1
         do i = 1,im
@@ -1596,6 +1629,11 @@
 !
         enddo
       enddo
+      !$ser savepoint MomentTridiagComp-In
+      !$ser data ad=ad al=al au=au delta=del diss=diss dku=dku dtdz1=dtdz1 f1=f1 f2=f2
+      !$ser data kpbl=kpbl krad=krad mrad=mrad pcnvflg=pcnvflg prsl=prsl rdzt=rdzt scuflg=scuflg
+      !$ser data spd1=spd1 stress=stress tdt=tdt u1=u1 ucdo=ucdo ucko=ucko v1=v1 vcdo=vcdo
+      !$ser data vcko=vcko xmf=xmf xmfd=xmfd
 !
 !     solve tridiagonal problem for momentum
 !
