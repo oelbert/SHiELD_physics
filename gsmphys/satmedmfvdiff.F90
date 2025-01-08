@@ -1380,6 +1380,10 @@
 !
 !     compute tridiagonal matrix elements for heat and moisture (and other tracers, except tke)
 !
+      !$ser savepoint HeatTracerTridiagEle-In
+      !$ser data ad=ad al=al au=au delta=del dkq=dkq f1=f1 kpbl=kpbl krad=krad mrad=mrad
+      !$ser data pcnvflg=pcnvflg prsl=prsl qcdo=qcdo qcko=qcko rdzt=rdzt scuflg=scuflg
+      !$ser data tcdo=tcdo tcko=tcko xmf=xmf xmfd=xmfd t1=t1 q1=q1
       do i=1,im
          ad(i,1) = 1.
          f1(i,1) = t1(i,1)   + dtdz1(i) * heat(i)
@@ -1488,6 +1492,10 @@
           enddo
         enddo
       endif
+      !$ser savepoint HeatTracerTridiagEle-Out
+      !$ser data ad=ad al=al au=au delta=del dkq=dkq f1=f1 kpbl=kpbl krad=krad mrad=mrad
+      !$ser data pcnvflg=pcnvflg prsl=prsl qcdo=qcdo qcko=qcko rdzt=rdzt scuflg=scuflg
+      !$ser data tcdo=tcdo tcko=tcko xmf=xmf xmfd=xmfd t1=t1 q1=q1
 !
 !     solve tridiagonal problem for heat and moisture
 !
