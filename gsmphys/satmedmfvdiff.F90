@@ -1629,7 +1629,7 @@
 !
         enddo
       enddo
-      !$ser savepoint MomentTridiagComp-In
+      !$ser savepoint MomentTridiagComp-Out
       !$ser data ad=ad al=al au=au delta=del diss=diss dku=dku dtdz1=dtdz1 f1=f1 f2=f2
       !$ser data kpbl=kpbl krad=krad mrad=mrad pcnvflg=pcnvflg prsl=prsl rdzt=rdzt scuflg=scuflg
       !$ser data spd1=spd1 stress=stress tdt=tdt u1=u1 ucdo=ucdo ucko=ucko v1=v1 vcdo=vcdo
