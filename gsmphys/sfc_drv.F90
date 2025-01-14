@@ -855,11 +855,11 @@
       !$ser data epsca=nop_epsca bexp=nop_bexp pc=nop_pc rch=nop_rch rr=nop_rr cfactr=nop_cfactr
       !$ser data slope=nop_slope kdt=nop_kdt frzx=nop_frzx psisat=nop_psisat dksat=nop_dksat
       !$ser data dwsat=nop_dwsat zbot=nop_zbot quartz=nop_quartz fxexp=nop_fxexp csoil=nop_csoil
-      !$ser data cmc=sop_cmc_in t1=sop_t1_in tbot=sop_tbot_in beta=sop_beta_in flx2=sop_flx2
+      !$ser data cmc=nop_cmc_in t1=nop_t1_in tbot=nop_tbot_in beta=nop_beta_in flx2=sop_flx2
       !$ser data ssoil=zerobuff_2d runoff1=zerobuff_2d runoff2=zerobuff_2d runoff3=zerobuff_2d edir=zerobuff_2d
       !$ser data ec=zerobuff_2d ett=zerobuff_2d drip=zerobuff_2d dew=zerobuff_2d flx1=zerobuff_2d flx3=zerobuff_2d
       !$ser data eta=zerobuff_2d prcp1=sop_prcp1_in sncovr=sop_sncovr_in sneqv=sop_sneqv_in sndens=sop_sndens_in
-      !$ser data snowh=sop_snowh_in zsoil=nop_zsoil rtdis=nop_rtdis stc=sop_stc_in sh2o=sop_sh2o_in
+      !$ser data snowh=sop_snowh_in zsoil=nop_zsoil rtdis=nop_rtdis stc=nop_stc_in sh2o=nop_sh2o_in
       !$ser data smc=zerobuff_3d et=zerobuff_3d snomlt=zerobuff_2d esnow=zerobuff_2d
 
       !$ser verbatim if (sfc_iter == 1) then
