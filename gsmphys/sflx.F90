@@ -32,11 +32,11 @@
              !$ser verbatim sp_flx2, sp_prcp1_in, sp_sncovr_in, sp_sneqv_in,&
              !$ser verbatim sp_sndens_in, sp_snowh_in, sp_snomlt, sp_esnow,&
              !$ser verbatim np_cmc_out, np_t1_out, np_tbot_out, np_beta_out,&
-             !$ser verbatim sp_snomlt, sp_esnow, sp_cmc_out, sp_t1_out, sp_prcp1_out,&
+             !$ser verbatim sp_cmc_out, sp_t1_out, sp_prcp1_out,&
              !$ser verbatim sp_sncovr_out, sp_sneqv_out, sp_sndens_out, sp_snowh_out,&
              !$ser verbatim sp_tbot_out, sp_beta_out, sp_eta, sp_ssoil, sp_runoff1,&
              !$ser verbatim sp_runoff2, sp_runoff3, sp_edir, sp_ec, sp_ett, sp_drip,&
-             !$ser verbatim sp_dew, sp_flx1, sp_flx3, sp_snomlt, sp_esnow
+             !$ser verbatim sp_dew, sp_flx1, sp_flx3,&
              !$ser verbatim np_zsoil, np_rtdis, np_stc_in, np_sh2o_in, np_stc_out, np_sh2o_out,&
              !$ser verbatim np_smc, np_et, sp_stc_out, sp_sh2o_out, sp_smc, sp_et,&
              rcsoil, soilw, soilm, smcwlt, smcdry, smcref, smcmax)
@@ -264,11 +264,11 @@
              !$ser verbatim sp_flx2, sp_prcp1_in, sp_sncovr_in, sp_sneqv_in,&
              !$ser verbatim sp_sndens_in, sp_snowh_in, sp_snomlt, sp_esnow,&
              !$ser verbatim np_cmc_out, np_t1_out, np_tbot_out, np_beta_out,&
-             !$ser verbatim sp_snomlt, sp_esnow, sp_cmc_out, sp_t1_out, sp_prcp1_out,&
+             !$ser verbatim sp_cmc_out, sp_t1_out, sp_prcp1_out,&
              !$ser verbatim sp_sncovr_out, sp_sneqv_out, sp_sndens_out, sp_snowh_out,&
              !$ser verbatim sp_tbot_out, sp_beta_out, sp_eta, sp_ssoil, sp_runoff1,&
              !$ser verbatim sp_runoff2, sp_runoff3, sp_edir, sp_ec, sp_ett, sp_drip,&
-             !$ser verbatim sp_dew, sp_flx1, sp_flx3, sp_snomlt, sp_esnow
+             !$ser verbatim sp_dew, sp_flx1, sp_flx3
 
       !$ser verbatim real (kind=kind_phys), dimension(nsold), intent(out) :: cn_zsoil, cn_sh2o,&
              !$ser verbatim np_zsoil, np_rtdis, np_stc_in, np_sh2o_in, np_stc_out, np_sh2o_out,&
@@ -842,8 +842,6 @@
       !$ser verbatim sp_sneqv_in = sneqv
       !$ser verbatim sp_sndens_in = sndens
       !$ser verbatim sp_snowh_in = snowh
-      !$ser verbatim sp_snomlt = snomlt
-      !$ser verbatim sp_esnow = esnow
       
       !$ser verbatim np_cmc_out = 0.0
       !$ser verbatim np_t1_out = 0.0

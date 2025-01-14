@@ -238,7 +238,7 @@
              !$ser verbatim sop_sncovr_out, sop_sneqv_out, sop_sndens_out, sop_snowh_out,&
              !$ser verbatim sop_tbot_out, sop_beta_out, sop_eta, sop_ssoil, sop_runoff1,&
              !$ser verbatim sop_runoff2, sop_runoff3, sop_edir, sop_ec, sop_ett, sop_drip,&
-             !$ser verbatim sop_dew, sop_flx1, sop_flx3, sop_snomlt, sop_esnow
+             !$ser verbatim sop_dew, sop_flx1, sop_flx3
 
       real (kind=kind_phys), dimension(km) :: et, sldpth, stsoil,       &
              smsoil, slsoil
@@ -279,11 +279,11 @@
              !$ser verbatim sp_flx2, sp_prcp1_in, sp_sncovr_in, sp_sneqv_in,&
              !$ser verbatim sp_sndens_in, sp_snowh_in, sp_snomlt, sp_esnow,&
              !$ser verbatim np_cmc_out, np_t1_out, np_tbot_out, np_beta_out,&
-             !$ser verbatim sp_snomlt, sp_esnow, sp_cmc_out, sp_t1_out, sp_prcp1_out,&
+             !$ser verbatim sp_cmc_out, sp_t1_out, sp_prcp1_out,&
              !$ser verbatim sp_sncovr_out, sp_sneqv_out, sp_sndens_out, sp_snowh_out,&
              !$ser verbatim sp_tbot_out, sp_beta_out, sp_eta, sp_ssoil, sp_runoff1,&
              !$ser verbatim sp_runoff2, sp_runoff3, sp_edir, sp_ec, sp_ett, sp_drip,&
-             !$ser verbatim sp_dew, sp_flx1, sp_flx3, sp_snomlt, sp_esnow
+             !$ser verbatim sp_dew, sp_flx1, sp_flx3
 
       !$ser verbatim integer :: cn_nroot, np_nroot, np_ice
       integer :: couple, ice, nsoil, nroot, slope, stype, vtype
@@ -583,11 +583,11 @@
              !$ser verbatim sp_flx2, sp_prcp1_in, sp_sncovr_in, sp_sneqv_in,&
              !$ser verbatim sp_sndens_in, sp_snowh_in, sp_snomlt, sp_esnow,&
              !$ser verbatim np_cmc_out, np_t1_out, np_tbot_out, np_beta_out,&
-             !$ser verbatim sp_snomlt, sp_esnow, sp_cmc_out, sp_t1_out, sp_prcp1_out,&
+             !$ser verbatim sp_cmc_out, sp_t1_out, sp_prcp1_out,&
              !$ser verbatim sp_sncovr_out, sp_sneqv_out, sp_sndens_out, sp_snowh_out,&
              !$ser verbatim sp_tbot_out, sp_beta_out, sp_eta, sp_ssoil, sp_runoff1,&
              !$ser verbatim sp_runoff2, sp_runoff3, sp_edir, sp_ec, sp_ett, sp_drip,&
-             !$ser verbatim sp_dew, sp_flx1, sp_flx3, sp_snomlt, sp_esnow
+             !$ser verbatim sp_dew, sp_flx1, sp_flx3,&
              !$ser verbatim np_zsoil, np_rtdis, np_stc_in, np_sh2o_in, np_stc_out, np_sh2o_out,&
              !$ser verbatim np_smc, np_et, sp_stc_out, sp_sh2o_out, sp_smc, sp_et,&
              rcsoil, soilw, soilm, smcwlt, smcdry, smcref, smcmax)
@@ -691,14 +691,10 @@
              !$ser verbatim sop_sneqv_in(i) = sp_sneqv_in
              !$ser verbatim sop_sndens_in(i) = sp_sndens_in
              !$ser verbatim sop_snowh_in(i) = sp_snowh_in
-             !$ser verbatim sop_snomlt(i) = sp_snomlt
-             !$ser verbatim sop_esnow(i) = sp_esnow
              !$ser verbatim nop_cmc_out(i) = np_cmc_out
              !$ser verbatim nop_t1_out(i) = np_t1_out
              !$ser verbatim nop_tbot_out(i) = np_tbot_out
              !$ser verbatim nop_beta_out(i) = np_beta_out
-             !$ser verbatim sop_snomlt(i) = sp_snomlt
-             !$ser verbatim sop_esnow(i) = sp_esnow
              
              !$ser verbatim sop_cmc_out(i) = sp_cmc_out
              !$ser verbatim sop_t1_out(i) = sp_t1_out
