@@ -145,6 +145,7 @@
              shdmin, shdmax, snoalb, sfalb, flag_iter, flag_guess,      &
              lheatstrg, isot, ivegsrc,                                  &
              bexppert, xlaipert, vegfpert,pertvegf,                     &  ! sfc perts, mgehne
+             !$ser verbatim sfc_iter,&
 !  ---  in/outs:
              weasd, snwdph, tskin, tprcp, srflag, smc, stc, slc,        &
              canopy, trans, tsurf, zorl,                                &
@@ -182,6 +183,7 @@
 
 !  ---  input:
       integer, intent(in) :: im, km, isot, ivegsrc
+      !$ser verbatim integer, intent(in) :: sfc_iter
       real (kind=kind_phys), dimension(5), intent(in) :: pertvegf
 
       integer, dimension(im), intent(in) :: soiltyp, vegtype, slopetyp
@@ -643,7 +645,11 @@
         endif   ! flag_iter and flag
       enddo   ! end do_i_loop
 
-      !$ser savepoint Canres-In
+      !$ser verbatim if (sfc_iter == 1) then
+          !$ser savepoint Canres1-In
+        !$ser verbatim else
+          !$ser savepoint Canres2-In
+        !$ser verbatim end if
       !$ser data nsoil=nsoil nroot=can_nroot swdn=can_swdn ch=can_ch q2=can_q2
       !$ser data q2sat=can_q2sat dqsdt2=can_dqsdt2 sfctmp=can_sfctmp sfcprs=can_sfcprs
       !$ser data sfcems=can_sfcems sh2o=can_sh2o smcwlt=can_smcwlt smcref=can_smcref
@@ -652,7 +658,11 @@
       !$ser data rcs=zerobuff_2d rct=zerobuff_2d rcq=zerobuff_2d rcsoil=zerobuff_2d
       !$ser data lsm_mask=land
 
-      !$ser savepoint Canres-Out
+      !$ser verbatim if (sfc_iter == 1) then
+          !$ser savepoint Canres1-Out
+        !$ser verbatim else
+          !$ser savepoint Canres2-Out
+        !$ser verbatim end if
       !$ser data rc=can_rc pc=can_pc rcs=can_rcs rct=can_rct rcq=can_rcq rcsoil=can_rcsoil
 !  ---  inputs:
 !          ( nsoil, nroot, swdn, ch, q2, q2sat, dqsdt2, sfctmp,         &
