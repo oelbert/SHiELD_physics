@@ -233,7 +233,7 @@
              !$ser verbatim nop_ec, nop_ett, nop_drip, nop_dew, nop_flx1, nop_flx3, sop_df1,&
              !$ser verbatim sop_flx2, sop_prcp1_in, sop_sncovr_in, sop_sneqv_in,&
              !$ser verbatim sop_sndens_in, sop_snowh_in, sop_snomlt, sop_esnow,&
-             !$ser verbatim nop_cmc_out, nop_t1_out, nop_tbot_out, nop_beta_out, nop_eta,&
+             !$ser verbatim nop_cmc_out, nop_t1_out, nop_tbot_out, nop_beta_out,&
              !$ser verbatim sop_cmc_out, sop_t1_out, sop_prcp1_out,&
              !$ser verbatim sop_sncovr_out, sop_sneqv_out, sop_sndens_out, sop_snowh_out,&
              !$ser verbatim sop_tbot_out, sop_beta_out, sop_eta, sop_ssoil, sop_runoff1,&
