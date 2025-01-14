@@ -217,16 +217,41 @@
              q0, qs1, theta1,       weasd_old, snwdph_old,              &
              tprcp_old, srflag_old, tskin_old, canopy_old
 
-      !$ser verbatim real (kind=kind_phys), dimension(im) :: can_swdn, can_ch, can_q2, can_q2sat, can_dqsdt2, can_sfctmp, can_sfcprs, can_sfcems, can_smcwlt, can_smcref, can_rsmin, can_rsmax, can_topt, can_rgl, can_hs, can_xlai, can_rc, can_pc, can_rcs, can_rct, can_rcq, can_rcsoil, zerobuff_2d
+      !$ser verbatim real (kind=kind_phys), dimension(im) :: can_swdn, can_ch,&
+             !$ser verbatim can_q2, can_q2sat, can_dqsdt2, can_sfctmp, can_sfcprs,&
+             !$ser verbatim can_sfcems, can_smcwlt, can_smcref, can_rsmin,&
+             !$ser verbatim can_rsmax, can_topt, can_rgl, can_hs, can_xlai, can_rc,&
+             !$ser verbatim can_pc, can_rcs, can_rct, can_rcq, can_rcsoil, zerobuff_2d,&
+             !$ser verbatim nop_etp, nop_prcp, nop_smcmax, nop_smcwlt, nop_smcref,&
+             !$ser verbatim nop_smcdry, nop_cmcmax, nop_shdfac, nop_sbeta,&
+             !$ser verbatim nop_sfctmp, nop_sfcems, nop_t24, nop_th2, nop_fdown,&
+             !$ser verbatim nop_epsca, nop_bexp, nop_pc, nop_rch, nop_rr, nop_cfactr,&
+             !$ser verbatim nop_slope, nop_kdt, nop_frzx, nop_psisat, nop_dksat,&
+             !$ser verbatim nop_dwsat, nop_zbot, nop_quartz, nop_fxexp, nop_csoil,&
+             !$ser verbatim nop_cmc_in, nop_t1_in, nop_tbot_in, nop_beta_in, nop_eta,&
+             !$ser verbatim nop_ssoil, nop_runoff1, nop_runoff2, nop_runoff3, nop_edir,&
+             !$ser verbatim nop_ec, nop_ett, nop_drip, nop_dew, nop_flx1, nop_flx3, sop_df1,&
+             !$ser verbatim sop_flx2, sop_prcp1_in, sop_sncovr_in, sop_sneqv_in,&
+             !$ser verbatim sop_sndens_in, sop_snowh_in, sop_snomlt, sop_esnow,&
+             !$ser verbatim nop_cmc_out, nop_t1_out, nop_tbot_out, nop_beta_out, nop_eta,&
+             !$ser verbatim sop_cmc_out, sop_t1_out, sop_prcp1_out,&
+             !$ser verbatim sop_sncovr_out, sop_sneqv_out, sop_sndens_out, sop_snowh_out,&
+             !$ser verbatim sop_tbot_out, sop_beta_out, sop_eta, sop_ssoil, sop_runoff1,&
+             !$ser verbatim sop_runoff2, sop_runoff3, sop_edir, sop_ec, sop_ett, sop_drip,&
+             !$ser verbatim sop_dew, sop_flx1, sop_flx3, sop_snomlt, sop_esnow
 
       real (kind=kind_phys), dimension(km) :: et, sldpth, stsoil,       &
              smsoil, slsoil
 
-      !$ser verbatim real (kind=kind_phys), dimension(km) :: cn_zsoil, cn_sh2o
+      !$ser verbatim real (kind=kind_phys), dimension(km) :: cn_zsoil, cn_sh2o,&
+             !$ser verbatim np_zsoil, np_rtdis, np_stc_in, np_sh2o_in, np_stc_out, np_sh2o_out,&
+             !$ser verbatim np_smc, np_et, sp_stc_out, sp_sh2o_out, sp_smc, sp_et
 
       real (kind=kind_phys), dimension(im,km) :: zsoil, smc_old,        &
              stc_old, slc_old
-      !$ser verbatim real (kind=kind_phys), dimension(im,km) :: can_zsoil, can_sh2o, zerobuff_3d
+      !$ser verbatim real (kind=kind_phys), dimension(im,km) :: can_zsoil, can_sh2o, zerobuff_3d,&
+             !$ser verbatim nop_zsoil, nop_rtdis, nop_stc_in, nop_sh2o_in, nop_stc_out, nop_sh2o_out,&
+             !$ser verbatim nop_smc, nop_et, sop_stc_out, sop_sh2o_out, sop_smc, sop_et
 
       real (kind=kind_phys) :: alb, albedo, beta, chx, cmx, cmc,        &
              dew, drip, dqsdt2, ec, edir, ett, eta, esnow, etp,         &
@@ -239,12 +264,34 @@
              xlai, zlvl, swdn, tem, z0, bexpp, xlaip, vegfp,            &
              mv,sv,alphav,betav,vegftmp
 
-      !$ser verbatim real (kind=kind_phys) :: cn_ch, cn_rcsoil, cn_smcwlt, cn_smcref, cn_rsmin, cn_rsmax, cn_topt, cn_rgl, cn_hs, cn_xlai, cn_rc, cn_pc, cn_rcs, cn_rct, cn_rcq
+      !$ser verbatim real (kind=kind_phys) :: cn_ch, cn_rcsoil, cn_smcwlt, cn_smcref,&
+             !$ser verbatim cn_rsmin, cn_rsmax, cn_topt, cn_rgl, cn_hs, cn_xlai, cn_rc,&
+             !$ser verbatim cn_pc, cn_rcs, cn_rct, cn_rcq,&
+             !$ser verbatim np_etp, np_prcp, np_smcmax, np_smcwlt, np_smcref,&
+             !$ser verbatim np_smcdry, np_cmcmax, np_shdfac, np_sbeta,&
+             !$ser verbatim np_sfctmp, np_sfcems, np_t24, np_th2, np_fdown,&
+             !$ser verbatim np_epsca, np_bexp, np_pc, np_rch, np_rr, np_cfactr,&
+             !$ser verbatim np_slope, np_kdt, np_frzx, np_psisat, np_dksat,&
+             !$ser verbatim np_dwsat, np_zbot, np_quartz, np_fxexp, np_csoil,&
+             !$ser verbatim np_cmc_in, np_t1_in, np_tbot_in, np_beta_in, np_eta,&
+             !$ser verbatim np_ssoil, np_runoff1, np_runoff2, np_runoff3, np_edir,&
+             !$ser verbatim np_ec, np_ett, np_drip, np_dew, np_flx1, np_flx3, sp_df1,&
+             !$ser verbatim sp_flx2, sp_prcp1_in, sp_sncovr_in, sp_sneqv_in,&
+             !$ser verbatim sp_sndens_in, sp_snowh_in, sp_snomlt, sp_esnow,&
+             !$ser verbatim np_cmc_out, np_t1_out, np_tbot_out, np_beta_out,&
+             !$ser verbatim sp_snomlt, sp_esnow, sp_cmc_out, sp_t1_out, sp_prcp1_out,&
+             !$ser verbatim sp_sncovr_out, sp_sneqv_out, sp_sndens_out, sp_snowh_out,&
+             !$ser verbatim sp_tbot_out, sp_beta_out, sp_eta, sp_ssoil, sp_runoff1,&
+             !$ser verbatim sp_runoff2, sp_runoff3, sp_edir, sp_ec, sp_ett, sp_drip,&
+             !$ser verbatim sp_dew, sp_flx1, sp_flx3, sp_snomlt, sp_esnow
 
-      !$ser verbatim integer :: cn_nroot
+      !$ser verbatim integer :: cn_nroot, np_nroot, np_ice
       integer :: couple, ice, nsoil, nroot, slope, stype, vtype
       integer :: i, k, iflag
-      !$ser verbatim integer, dimension(im) :: can_nroot
+      !$ser verbatim integer, dimension(im) :: can_nroot, nop_nroot, nop_ice
+
+      !$ser verbatim logical :: np_mask, np_lheatstrg, sp_snowng
+      !$ser verbatim logical, dimension(im) :: nop_mask, nop_lheatstrg, sop_snowng
 !
 !===> ...  begin here
 !
@@ -523,11 +570,43 @@
              !$ser verbatim cn_sh2o, cn_smcwlt, cn_smcref, cn_rsmin,&
              !$ser verbatim cn_rsmax, cn_topt, cn_rgl, cn_hs, cn_xlai,&
              !$ser verbatim cn_rc, cn_pc, cn_rcs, cn_rct, cn_rcq,& 
+             !$ser verbatim np_mask, np_lheatstrg, sp_snowng, np_nroot,&
+             !$ser verbatim np_ice, np_etp, np_prcp, np_smcmax, np_smcwlt, np_smcref,&
+             !$ser verbatim np_smcdry, np_cmcmax, np_shdfac, np_sbeta,&
+             !$ser verbatim np_sfctmp, np_sfcems, np_t24, np_th2, np_fdown,&
+             !$ser verbatim np_epsca, np_bexp, np_pc, np_rch, np_rr, np_cfactr,&
+             !$ser verbatim np_slope, np_kdt, np_frzx, np_psisat, np_dksat,&
+             !$ser verbatim np_dwsat, np_zbot, np_quartz, np_fxexp, np_csoil,&
+             !$ser verbatim np_cmc_in, np_t1_in, np_tbot_in, np_beta_in, np_eta,&
+             !$ser verbatim np_ssoil, np_runoff1, np_runoff2, np_runoff3, np_edir,&
+             !$ser verbatim np_ec, np_ett, np_drip, np_dew, np_flx1, np_flx3, sp_df1,&
+             !$ser verbatim sp_flx2, sp_prcp1_in, sp_sncovr_in, sp_sneqv_in,&
+             !$ser verbatim sp_sndens_in, sp_snowh_in, sp_snomlt, sp_esnow,&
+             !$ser verbatim np_cmc_out, np_t1_out, np_tbot_out, np_beta_out,&
+             !$ser verbatim sp_snomlt, sp_esnow, sp_cmc_out, sp_t1_out, sp_prcp1_out,&
+             !$ser verbatim sp_sncovr_out, sp_sneqv_out, sp_sndens_out, sp_snowh_out,&
+             !$ser verbatim sp_tbot_out, sp_beta_out, sp_eta, sp_ssoil, sp_runoff1,&
+             !$ser verbatim sp_runoff2, sp_runoff3, sp_edir, sp_ec, sp_ett, sp_drip,&
+             !$ser verbatim sp_dew, sp_flx1, sp_flx3, sp_snomlt, sp_esnow
+             !$ser verbatim np_zsoil, np_rtdis, np_stc_in, np_sh2o_in, np_stc_out, np_sh2o_out,&
+             !$ser verbatim np_smc, np_et, sp_stc_out, sp_sh2o_out, sp_smc, sp_et,&
              rcsoil, soilw, soilm, smcwlt, smcdry, smcref, smcmax)
 
              !$ser verbatim do k = 1, km
                 !$ser verbatim can_zsoil(i, k) = cn_zsoil(k)
                 !$ser verbatim can_sh2o(i, k) = cn_sh2o(k)
+                !$ser verbatim nop_zsoil(i, k) = np_zsoil(k)
+                !$ser verbatim nop_rtdis(i, k) = np_rtdis(k)
+                !$ser verbatim nop_stc_in(i, k) = np_stc_in(k)
+                !$ser verbatim nop_sh2o_in(i, k) = np_sh2o_in(k)
+                !$ser verbatim nop_stc_out(i, k) = np_stc_out(k)
+                !$ser verbatim nop_sh2o_out(i, k) = np_sh2o_out(k)
+                !$ser verbatim nop_smc(i, k) = np_smc(k)
+                !$ser verbatim nop_et(i, k) = np_et(k)
+                !$ser verbatim sop_stc_out(i, k) = sp_stc_out(k)
+                !$ser verbatim sop_sh2o_out(i, k) = sp_sh2o_out(k)
+                !$ser verbatim sop_smc(i, k) = sp_smc(k)
+                !$ser verbatim sop_et(i, k) = sp_et(k)
              !$ser verbatim enddo
              !$ser verbatim can_nroot(i) = cn_nroot
              !$ser verbatim can_rcsoil(i) = cn_rcsoil
@@ -553,6 +632,97 @@
              !$ser verbatim can_sfctmp = sfctmp
              !$ser verbatim can_sfcems = sfcems
              !$ser verbatim can_sfcprs = sfcprs
+
+             !$ser verbatim nop_mask(i) = np_mask
+             !$ser verbatim nop_lheatstrg(i) = np_lheatstrg
+             !$ser verbatim sop_snowng(i) = sp_snowng
+             !$ser verbatim nop_nroot(i) = np_nroot
+             !$ser verbatim nop_ice(i) = np_ice
+             !$ser verbatim nop_etp(i) = np_etp
+             !$ser verbatim nop_prcp(i) = np_prcp
+             !$ser verbatim nop_smcmax(i) = np_smcmax
+             !$ser verbatim nop_smcwlt(i) = np_smcwlt
+             !$ser verbatim nop_smcref(i) = np_smcref
+             !$ser verbatim nop_smcdry(i) = np_smcdry
+             !$ser verbatim nop_cmcmax(i) = np_cmcmax
+             !$ser verbatim nop_shdfac(i) = np_shdfac
+             !$ser verbatim nop_sbeta(i) = np_sbeta
+             !$ser verbatim nop_sfctmp(i) = np_sfctmp
+             !$ser verbatim nop_sfcems(i) = np_sfcems
+             !$ser verbatim nop_t24(i) = np_t24
+             !$ser verbatim nop_th2(i) = np_th2
+             !$ser verbatim nop_fdown(i) = np_fdown
+             !$ser verbatim nop_epsca(i) = np_epsca
+             !$ser verbatim nop_bexp(i) = np_bexp
+             !$ser verbatim nop_pc(i) = np_pc
+             !$ser verbatim nop_rch(i) = np_rch
+             !$ser verbatim nop_rr(i) = np_rr
+             !$ser verbatim nop_cfactr(i) = np_cfactr
+             !$ser verbatim nop_slope(i) = np_slope
+             !$ser verbatim nop_kdt(i) = np_kdt
+             !$ser verbatim nop_frzx(i) = np_frzx
+             !$ser verbatim nop_psisat(i) = np_psisat
+             !$ser verbatim nop_dksat(i) = np_dksat
+             !$ser verbatim nop_dwsat(i) = np_dwsat
+             !$ser verbatim nop_zbot(i) = np_zbot
+             !$ser verbatim nop_quartz(i) = np_quartz
+             !$ser verbatim nop_fxexp(i) = np_fxexp
+             !$ser verbatim nop_csoil(i) = np_csoil
+             !$ser verbatim nop_cmc_in(i) = np_cmc_in
+             !$ser verbatim nop_t1_in(i) = np_t1_in
+             !$ser verbatim nop_tbot_in(i) = np_tbot_in
+             !$ser verbatim nop_beta_in(i) = np_beta_in
+             !$ser verbatim nop_eta(i) = np_eta
+             !$ser verbatim nop_ssoil(i) = np_ssoil
+             !$ser verbatim nop_runoff1(i) = np_runoff1
+             !$ser verbatim nop_runoff2(i) = np_runoff2
+             !$ser verbatim nop_runoff3(i) = np_runoff3
+             !$ser verbatim nop_edir(i) = np_edir
+             !$ser verbatim nop_ec(i) = np_ec
+             !$ser verbatim nop_ett(i) = np_ett
+             !$ser verbatim nop_drip(i) = np_drip
+             !$ser verbatim nop_dew(i) = np_dew
+             !$ser verbatim nop_flx1(i) = np_flx1
+             !$ser verbatim nop_flx3(i) = np_flx3
+             !$ser verbatim sop_df1(i) = sp_df1
+             !$ser verbatim sop_flx2(i) = sp_flx2
+             !$ser verbatim sop_prcp1_in(i) = sp_prcp1_in
+             !$ser verbatim sop_sncovr_in(i) = sp_sncovr_in
+             !$ser verbatim sop_sneqv_in(i) = sp_sneqv_in
+             !$ser verbatim sop_sndens_in(i) = sp_sndens_in
+             !$ser verbatim sop_snowh_in(i) = sp_snowh_in
+             !$ser verbatim sop_snomlt(i) = sp_snomlt
+             !$ser verbatim sop_esnow(i) = sp_esnow
+             !$ser verbatim nop_cmc_out(i) = np_cmc_out
+             !$ser verbatim nop_t1_out(i) = np_t1_out
+             !$ser verbatim nop_tbot_out(i) = np_tbot_out
+             !$ser verbatim nop_beta_out(i) = np_beta_out
+             !$ser verbatim sop_snomlt(i) = sp_snomlt
+             !$ser verbatim sop_esnow(i) = sp_esnow
+             
+             !$ser verbatim sop_cmc_out(i) = sp_cmc_out
+             !$ser verbatim sop_t1_out(i) = sp_t1_out
+             !$ser verbatim sop_prcp1_out(i) = sp_prcp1_out
+             !$ser verbatim sop_sncovr_out(i) = sp_sncovr_out
+             !$ser verbatim sop_sneqv_out(i) = sp_sneqv_out
+             !$ser verbatim sop_sndens_out(i) = sp_sndens_out
+             !$ser verbatim sop_snowh_out(i) = sp_snowh_out
+             !$ser verbatim sop_tbot_out(i) = sp_tbot_out
+             !$ser verbatim sop_beta_out(i) = sp_beta_out
+             !$ser verbatim sop_eta(i) = sp_eta
+             !$ser verbatim sop_ssoil(i) = sp_ssoil
+             !$ser verbatim sop_runoff1(i) = sp_runoff1
+             !$ser verbatim sop_runoff2(i) = sp_runoff2
+             !$ser verbatim sop_runoff3(i) = sp_runoff3
+             !$ser verbatim sop_edir(i) = sp_edir
+             !$ser verbatim sop_ec(i) = sp_ec
+             !$ser verbatim sop_ett(i) = sp_ett
+             !$ser verbatim sop_drip(i) = sp_drip
+             !$ser verbatim sop_dew(i) = sp_dew
+             !$ser verbatim sop_flx1(i) = sp_flx1
+             !$ser verbatim sop_flx3(i) = sp_flx3
+             !$ser verbatim sop_snomlt(i) = sp_snomlt
+             !$ser verbatim sop_esnow(i) = sp_esnow
 
 !  --- ...  noah: prepare variables for return to parent mode
 !   6. output (o):
@@ -659,12 +829,74 @@
       !$ser data lsm_mask=land
 
       !$ser verbatim if (sfc_iter == 1) then
-          !$ser savepoint Canres1-Out
-        !$ser verbatim else
-          !$ser savepoint Canres2-Out
-        !$ser verbatim end if
+        !$ser savepoint Nopack1-In
+      !$ser verbatim else
+        !$ser savepoint Nopack2-In
+      !$ser verbatim end if
+      !$ser data nsoil=nsoil nopac_mask=nop_mask lheatstrg=nop_lheatstrg nroot=nop_nroot
+      !$ser data ice=nop_ice etp=nop_etp prcp=nop_prcp smcmax=nop_smcmax smcwlt=nop_smcwlt smcref=nop_smcref
+      !$ser data smcdry=nop_smcdry dt=delt cmcmax=nop_cmcmax shdfac=nop_shdfac sbeta=nop_sbeta
+      !$ser data sfctmp=nop_sfctmp sfcems=nop_sfcems t24=nop_t24 th2=nop_th2 fdown=nop_fdown
+      !$ser data epsca=nop_epsca bexp=nop_bexp pc=nop_pc rch=nop_rch rr=nop_rr cfactr=nop_cfactr
+      !$ser data slope=nop_slope kdt=nop_kdt frzx=nop_frzx psisat=nop_psisat dksat=nop_dksat
+      !$ser data dwsat=nop_dwsat zbot=nop_zbot quartz=nop_quartz fxexp=nop_fxexp csoil=nop_csoil
+      !$ser data cmc=nop_cmc_in t1=nop_t1_in tbot=nop_tbot_in beta=nop_beta_in
+      !$ser data ssoil=zerobuff_2d runoff1=zerobuff_2d runoff2=zerobuff_2d runoff3=zerobuff_2d edir=zerobuff_2d
+      !$ser data ec=zerobuff_2d ett=zerobuff_2d drip=zerobuff_2d dew=zerobuff_2d flx1=zerobuff_2d flx3=zerobuff_2d
+      !$ser data eta=zerobuff_2d
+      !$ser data zsoil=nop_zsoil rtdis=nop_rtdis stc=nop_stc_in sh2o=nop_sh2o_in
+      !$ser data smc=zerobuff_3d et=zerobuff_3d
+
+      !$ser verbatim if (sfc_iter == 1) then
+        !$ser savepoint Snopack1-In
+      !$ser verbatim else
+        !$ser savepoint Snopack2-In
+      !$ser verbatim end if
+      !$ser data nsoil=nsoil nopac_mask=nop_mask lheatstrg=nop_lheatstrg snowng=sop_snowng nroot=nop_nroot
+      !$ser data ice=nop_ice etp=nop_etp prcp=nop_prcp smcmax=nop_smcmax smcwlt=nop_smcwlt smcref=nop_smcref
+      !$ser data smcdry=nop_smcdry cmcmax=nop_cmcmax dt=delt df1=sop_df1 shdfac=nop_shdfac
+      !$ser data sfctmp=nop_sfctmp sfcems=nop_sfcems t24=nop_t24 th2=nop_th2 fdown=nop_fdown
+      !$ser data epsca=nop_epsca bexp=nop_bexp pc=nop_pc rch=nop_rch rr=nop_rr cfactr=nop_cfactr
+      !$ser data slope=nop_slope kdt=nop_kdt frzx=nop_frzx psisat=nop_psisat dksat=nop_dksat
+      !$ser data dwsat=nop_dwsat zbot=nop_zbot quartz=nop_quartz fxexp=nop_fxexp csoil=nop_csoil
+      !$ser data cmc=sop_cmc_in t1=sop_t1_in tbot=sop_tbot_in beta=sop_beta_in flx2=sop_flx2
+      !$ser data ssoil=zerobuff_2d runoff1=zerobuff_2d runoff2=zerobuff_2d runoff3=zerobuff_2d edir=zerobuff_2d
+      !$ser data ec=zerobuff_2d ett=zerobuff_2d drip=zerobuff_2d dew=zerobuff_2d flx1=zerobuff_2d flx3=zerobuff_2d
+      !$ser data eta=zerobuff_2d prcp1=sop_prcp1_in sncovr=sop_sncovr_in sneqv=sop_sneqv_in sndens=sop_sndens_in
+      !$ser data snowh=sop_snowh_in zsoil=nop_zsoil rtdis=nop_rtdis stc=sop_stc_in sh2o=sop_sh2o_in
+      !$ser data smc=zerobuff_3d et=zerobuff_3d snomlt=zerobuff_2d esnow=zerobuff_2d
+
+      !$ser verbatim if (sfc_iter == 1) then
+        !$ser savepoint Canres1-Out
+      !$ser verbatim else
+        !$ser savepoint Canres2-Out
+      !$ser verbatim end if
       !$ser data rc=can_rc pc=can_pc rcs=can_rcs rct=can_rct rcq=can_rcq rcsoil=can_rcsoil
-!  ---  inputs:
+
+      !$ser verbatim if (sfc_iter == 1) then
+        !$ser savepoint Nopack1-Out
+      !$ser verbatim else
+        !$ser savepoint Nopack2-Out
+      !$ser verbatim end if
+      !$ser data cmc=nop_cmc_out t1=nop_t1_out tbot=nop_tbot_out beta=nop_beta_out et=nop_et
+      !$ser data stc=nop_stc_out sh2o=nop_sh2o_out eta=nop_eta smc=nop_smc ssoil=nop_ssoil
+      !$ser data runoff1=nop_runoff1 runoff2=nop_runoff2 runoff3=nop_runoff3 edir=nop_edir
+      !$ser data ec=nop_ec ett=nop_ett drip=nop_drip dew=nop_dew flx1=nop_flx1 flx3=nop_flx3
+
+      !$ser verbatim if (sfc_iter == 1) then
+        !$ser savepoint Snopack1-Out
+      !$ser verbatim else
+        !$ser savepoint Snopack2-Out
+      !$ser verbatim end if
+      !$ser data prcp1=sop_prcp1_out cmc=sop_cmc_out t1=sop_t1_out stc=sop_stc_out
+      !$ser data sncovr=sop_sncovr_out sneqv=sop_sneqv_out sndens=sop_sndens_out
+      !$ser data snowh=sop_snowh_out sh2o=sop_sh2o_out tbot=sop_tbot_out beta=sop_beta_out
+      !$ser data smc=sop_smc ssoil=sop_ssoil runoff1=sop_runoff1 runoff2=sop_runoff2
+      !$ser data runoff3=sop_runoff3 edir=sop_edir ec=sop_ec et=sop_et ett=sop_ett
+      !$ser data snomlt=sop_snomlt drip=sop_drip dew=sop_dew flx1=sop_flx1 flx3=sop_flx3
+      !$ser data esnow=sop_esnow
+
+      !  ---  inputs:
 !          ( nsoil, nroot, swdn, ch, q2, q2sat, dqsdt2, sfctmp,         &
 !            sfcprs, sfcems, sh2o, smcwlt, smcref, zsoil, rsmin,        &
 !            rsmax, topt, rgl, hs, xlai,                                &
