@@ -38,7 +38,7 @@
              !$ser verbatim sp_runoff2, sp_runoff3, sp_edir, sp_ec, sp_ett, sp_drip,&
              !$ser verbatim sp_dew, sp_flx1, sp_flx3,&
              !$ser verbatim np_zsoil, np_rtdis, np_stc_in, np_sh2o_in, np_stc_out, np_sh2o_out,&
-             !$ser verbatim np_smc, np_et, sp_stc_out, sp_sh2o_out, sp_smc, sp_et,&
+             !$ser verbatim np_smc, np_et, sp_stc_out, sp_sh2o_out, sp_smc, sp_et, sp_ffrozp,&
              rcsoil, soilw, soilm, smcwlt, smcdry, smcref, smcmax)
 
 ! ===================================================================== !
@@ -268,7 +268,7 @@
              !$ser verbatim sp_sncovr_out, sp_sneqv_out, sp_sndens_out, sp_snowh_out,&
              !$ser verbatim sp_tbot_out, sp_beta_out, sp_eta, sp_ssoil, sp_runoff1,&
              !$ser verbatim sp_runoff2, sp_runoff3, sp_edir, sp_ec, sp_ett, sp_drip,&
-             !$ser verbatim sp_dew, sp_flx1, sp_flx3
+             !$ser verbatim sp_dew, sp_flx1, sp_flx3, ffrozp
 
       !$ser verbatim real (kind=kind_phys), dimension(nsold), intent(out) :: cn_zsoil, cn_sh2o,&
              !$ser verbatim np_zsoil, np_rtdis, np_stc_in, np_sh2o_in, np_stc_out, np_sh2o_out,&
@@ -882,6 +882,7 @@
       !$ser verbatim sp_flx3 = 0.0
       !$ser verbatim sp_snomlt = 0.0
       !$ser verbatim sp_esnow = 0.0
+      !$ser verbatim sp_ffrozp = ffrozp
       if (sneqv .eq. 0.0) then
         !$ser verbatim np_mask = .true.
         call nopac

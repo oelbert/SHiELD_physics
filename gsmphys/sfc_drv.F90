@@ -238,7 +238,7 @@
              !$ser verbatim sop_sncovr_out, sop_sneqv_out, sop_sndens_out, sop_snowh_out,&
              !$ser verbatim sop_tbot_out, sop_beta_out, sop_eta, sop_ssoil, sop_runoff1,&
              !$ser verbatim sop_runoff2, sop_runoff3, sop_edir, sop_ec, sop_ett, sop_drip,&
-             !$ser verbatim sop_dew, sop_flx1, sop_flx3
+             !$ser verbatim sop_dew, sop_flx1, sop_flx3, sop_ffrozp
 
       real (kind=kind_phys), dimension(km) :: et, sldpth, stsoil,       &
              smsoil, slsoil
@@ -283,7 +283,7 @@
              !$ser verbatim sp_sncovr_out, sp_sneqv_out, sp_sndens_out, sp_snowh_out,&
              !$ser verbatim sp_tbot_out, sp_beta_out, sp_eta, sp_ssoil, sp_runoff1,&
              !$ser verbatim sp_runoff2, sp_runoff3, sp_edir, sp_ec, sp_ett, sp_drip,&
-             !$ser verbatim sp_dew, sp_flx1, sp_flx3
+             !$ser verbatim sp_dew, sp_flx1, sp_flx3, sp_ffrozp
 
       !$ser verbatim integer :: cn_nroot, np_nroot, np_ice
       integer :: couple, ice, nsoil, nroot, slope, stype, vtype
@@ -589,7 +589,7 @@
              !$ser verbatim sp_runoff2, sp_runoff3, sp_edir, sp_ec, sp_ett, sp_drip,&
              !$ser verbatim sp_dew, sp_flx1, sp_flx3,&
              !$ser verbatim np_zsoil, np_rtdis, np_stc_in, np_sh2o_in, np_stc_out, np_sh2o_out,&
-             !$ser verbatim np_smc, np_et, sp_stc_out, sp_sh2o_out, sp_smc, sp_et,&
+             !$ser verbatim np_smc, np_et, sp_stc_out, sp_sh2o_out, sp_smc, sp_et, sp_ffrozp,&
              rcsoil, soilw, soilm, smcwlt, smcdry, smcref, smcmax)
 
              !$ser verbatim do k = 1, km
@@ -719,6 +719,7 @@
              !$ser verbatim sop_flx3(i) = sp_flx3
              !$ser verbatim sop_snomlt(i) = sp_snomlt
              !$ser verbatim sop_esnow(i) = sp_esnow
+             !$ser verbatim sop_ffrozp(i) = sp_ffrozp
 
 !  --- ...  noah: prepare variables for return to parent mode
 !   6. output (o):
@@ -841,7 +842,7 @@
       !$ser data ec=zerobuff_2d ett=zerobuff_2d drip=zerobuff_2d dew=zerobuff_2d flx1=zerobuff_2d flx3=zerobuff_2d
       !$ser data eta=zerobuff_2d
       !$ser data zsoil=nop_zsoil rtdis=nop_rtdis stc=nop_stc_in sh2o=nop_sh2o_in
-      !$ser data smc=zerobuff_3d et=zerobuff_3d
+      !$ser data smc=zerobuff_3d et=zerobuff_3d vegtype=vegtype
 
       !$ser verbatim if (sfc_iter == 1) then
         !$ser savepoint Snopack1-In
@@ -850,7 +851,7 @@
       !$ser verbatim end if
       !$ser data nsoil=nsoil nopac_mask=nop_mask lheatstrg=nop_lheatstrg snowng=sop_snowng nroot=nop_nroot
       !$ser data ice=nop_ice etp=nop_etp prcp=nop_prcp smcmax=nop_smcmax smcwlt=nop_smcwlt smcref=nop_smcref
-      !$ser data smcdry=nop_smcdry cmcmax=nop_cmcmax dt=delt df1=sop_df1 shdfac=nop_shdfac
+      !$ser data smcdry=nop_smcdry cmcmax=nop_cmcmax dt=delt df1=sop_df1 shdfac=nop_shdfac vegtype=vegtype
       !$ser data sfctmp=nop_sfctmp sfcems=nop_sfcems t24=nop_t24 th2=nop_th2 fdown=nop_fdown
       !$ser data epsca=nop_epsca bexp=nop_bexp pc=nop_pc rch=nop_rch rr=nop_rr cfactr=nop_cfactr
       !$ser data slope=nop_slope kdt=nop_kdt frzx=nop_frzx psisat=nop_psisat dksat=nop_dksat
@@ -860,7 +861,7 @@
       !$ser data ec=zerobuff_2d ett=zerobuff_2d drip=zerobuff_2d dew=zerobuff_2d flx1=zerobuff_2d flx3=zerobuff_2d
       !$ser data eta=zerobuff_2d prcp1=sop_prcp1_in sncovr=sop_sncovr_in sneqv=sop_sneqv_in sndens=sop_sndens_in
       !$ser data snowh=sop_snowh_in zsoil=nop_zsoil rtdis=nop_rtdis stc=nop_stc_in sh2o=nop_sh2o_in
-      !$ser data smc=zerobuff_3d et=zerobuff_3d snomlt=zerobuff_2d esnow=zerobuff_2d
+      !$ser data smc=zerobuff_3d et=zerobuff_3d snomlt=zerobuff_2d esnow=zerobuff_2d, ffrozp=sop_ffrozp
 
       !$ser verbatim if (sfc_iter == 1) then
         !$ser savepoint Canres1-Out
