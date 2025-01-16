@@ -650,8 +650,6 @@ module module_physics_driver
       !$ser verbatim xponai=-dldti/con_rv
       !$ser verbatim xponbi=-dldti/con_rv+heati/(con_rv*con_ttp)
 
-      !$ser verbatim print *, 'INFO: FPVS internal values are ', tliq, tice2, dldtl, heatl, xponal, xponbl, dldti, heati, xponai, xponbi
-
       me     = Model%me
       ix     = size(Grid%xlon,1)
       im     = size(Grid%xlon,1)
@@ -1124,7 +1122,6 @@ module module_physics_driver
         !$ser verbatim fpx(i)=fpvsx(Sfcprop%tsfc(i))
         !$ser verbatim if (i == 1) then
           !$ser verbatim xmax = con_ttp / Sfcprop%tsfc(i)
-          !$ser verbatim print *, 'INFO: FPVS vars: ', Sfcprop%tsfc(i), xmax, xponbl*(1.-xmax), exp(xponbl*(1.-xmax)), (xmax**xponal)
         !$ser verbatim endif
         !$ser verbatim do k = 1, levs
           !$ser verbatim ii = (i - 1) * levs + k
@@ -1841,8 +1838,7 @@ module module_physics_driver
 
         elseif (Model%satmedmf) then
 
-          if (Model%isatmedmf == 0) then   
-             !$ser verbatim print *, 'INFO: Serialize PBL scheme'
+          if (Model%isatmedmf == 0) then
              ! initial version of satmedmfvdif (Nov 2018) modified by kgao
              !$ser savepoint PBL-In
              !$ser data pbl_ntrac=nvdiff pbl_ntcw=ntcw pbl_ntiw=ntiw pbl_ntke=ntke

@@ -839,8 +839,7 @@
       else
          ntcw_new = ntcw-1
       endif
-! EDMF parameterization Siebesma et al.(2007) 
-      !$ser verbatim print *, 'INFO: SERIALIZE PBL SCU, serialization is ', ser_on
+! EDMF parameterization Siebesma et al.(2007)
       !$ser savepoint MFPBLT-In
       !$ser data kmpbl=kmpbl ntcw=ntcw_new ntrac1=ntrac1 dt2=dt2 pcnvflg=pcnvflg zl=zl
       !$ser data zm=zm q1=q1 t1=t1 u1=u1 v1=v1 plyr=plyr pix=pix thlx=thlx thvx=thvx
@@ -1389,7 +1388,7 @@
 !     compute tridiagonal matrix elements for heat and moisture (and other tracers, except tke)
 !
       !$ser savepoint HeatTracerTridiagEle-In
-      !$ser data ad=ad al=al au=au delta=del dkq=dkq f1=f1 f2=f2 kpbl=kpbl krad=krad mrad=mrad
+      !$ser data ad=ad al=al au=au delta=del dkq=dkq f1=f1 f2_ser=f2_ser kpbl=kpbl krad=krad mrad=mrad
       !$ser data pcnvflg=pcnvflg prsl=prsl qcdo=qcdo qcko=qcko rdzt=rdzt scuflg=scuflg
       !$ser data tcdo=tcdo tcko=tcko xmf=xmf xmfd=xmfd t1=t1 q1=q1
       do i=1,im
@@ -1509,14 +1508,14 @@
         !$ser verbatim enddo
       !$ser verbatim enddo
       !$ser savepoint HeatTracerTridiagEle-Out
-      !$ser data ad=ad al=al au=au delta=del dkq=dkq f1=f1 f2=f2_ser kpbl=kpbl krad=krad mrad=mrad
+      !$ser data ad=ad al=al au=au delta=del dkq=dkq f1=f1 f2_ser=f2_ser kpbl=kpbl krad=krad mrad=mrad
       !$ser data pcnvflg=pcnvflg prsl=prsl qcdo=qcdo qcko=qcko rdzt=rdzt scuflg=scuflg
       !$ser data tcdo=tcdo tcko=tcko xmf=xmf xmfd=xmfd t1=t1 q1=q1
 !
 !     solve tridiagonal problem for heat and moisture
 !
       !$ser savepoint Tridin-In
-      !$ser data nt1=ntrac1 al=al ad=ad au=au f1=f1 f2=f2_ser
+      !$ser data nt1=ntrac1 al=al ad=ad au=au f1=f1 f2_ser=f2_ser
       call tridin(im,km,ntrac1,al,ad,au,f1,f2,au,f1,f2)
       !$ser verbatim do i = 1,im
         !$ser verbatim do k = 1,km
@@ -1527,7 +1526,7 @@
         !$ser verbatim enddo
       !$ser verbatim enddo
       !$ser savepoint Tridin-Out
-      !$ser data al=al ad=ad au=au f1=f1 f2=f2_ser
+      !$ser data al=al ad=ad au=au f1=f1 f2_ser=f2_ser
 !
 !     recover tendencies of heat and moisture
 !
@@ -1581,7 +1580,7 @@
         !$ser verbatim enddo
       !$ser verbatim enddo
       !$ser savepoint MomentTridiagComp-In
-      !$ser data ad=ad al=al au=au delta=del diss=diss dku=dku dtdz1=dtdz1 f1=f1 f2=f2_ser
+      !$ser data ad=ad al=al au=au delta=del diss=diss dku=dku dtdz1=dtdz1 f1=f1 f2_ser=f2_ser
       !$ser data kpbl=kpbl krad=krad mrad=mrad pcnvflg=pcnvflg prsl=prsl rdzt=rdzt scuflg=scuflg
       !$ser data spd1=spd1 stress=stress tdt=tdt u1=u1 ucdo=ucdo ucko=ucko v1=v1 vcdo=vcdo
       !$ser data vcko=vcko xmf=xmf xmfd=xmfd
@@ -1662,7 +1661,7 @@
         !$ser verbatim enddo
       !$ser verbatim enddo
       !$ser savepoint MomentTridiagComp-Out
-      !$ser data ad=ad al=al au=au delta=del diss=diss dku=dku dtdz1=dtdz1 f1=f1 f2=f2_ser
+      !$ser data ad=ad al=al au=au delta=del diss=diss dku=dku dtdz1=dtdz1 f1=f1 f2_ser=f2_ser
       !$ser data kpbl=kpbl krad=krad mrad=mrad pcnvflg=pcnvflg prsl=prsl rdzt=rdzt scuflg=scuflg
       !$ser data spd1=spd1 stress=stress tdt=tdt u1=u1 ucdo=ucdo ucko=ucko v1=v1 vcdo=vcdo
       !$ser data vcko=vcko xmf=xmf xmfd=xmfd
@@ -1675,7 +1674,7 @@
         !$ser verbatim enddo
       !$ser verbatim enddo
       !$ser savepoint Tridi2-In
-      !$ser data al=al ad=ad au=au f1=f1 f2=f2_ser
+      !$ser data al=al ad=ad au=au f1=f1 f2_ser=f2_ser
       call tridi2(im,km,al,ad,au,f1,f2,au,f1,f2)
       !$ser verbatim do i = 1,im
         !$ser verbatim do k = 1,km
@@ -1683,7 +1682,7 @@
         !$ser verbatim enddo
       !$ser verbatim enddo
       !$ser savepoint Tridi2-Out
-      !$ser data al=al ad=ad au=au f1=f1 f2=f2_ser
+      !$ser data al=al ad=ad au=au f1=f1 f2_ser=f2_ser
 !
 !     recover tendencies of momentum
 !
