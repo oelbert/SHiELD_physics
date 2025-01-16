@@ -268,7 +268,7 @@
              !$ser verbatim sp_sncovr_out, sp_sneqv_out, sp_sndens_out, sp_snowh_out,&
              !$ser verbatim sp_tbot_out, sp_beta_out, sp_eta, sp_ssoil, sp_runoff1,&
              !$ser verbatim sp_runoff2, sp_runoff3, sp_edir, sp_ec, sp_ett, sp_drip,&
-             !$ser verbatim sp_dew, sp_flx1, sp_flx3, ffrozp
+             !$ser verbatim sp_dew, sp_flx1, sp_flx3, sp_ffrozp
 
       !$ser verbatim real (kind=kind_phys), dimension(nsold), intent(out) :: cn_zsoil, cn_sh2o,&
              !$ser verbatim np_zsoil, np_rtdis, np_stc_in, np_sh2o_in, np_stc_out, np_sh2o_out,&
