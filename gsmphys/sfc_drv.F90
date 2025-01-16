@@ -861,7 +861,7 @@
       !$ser data ec=zerobuff_2d ett=zerobuff_2d drip=zerobuff_2d dew=zerobuff_2d flx1=zerobuff_2d flx3=zerobuff_2d
       !$ser data eta=zerobuff_2d prcp1=sop_prcp1_in sncovr=sop_sncovr_in sneqv=sop_sneqv_in sndens=sop_sndens_in
       !$ser data snowh=sop_snowh_in zsoil=nop_zsoil rtdis=nop_rtdis stc=nop_stc_in sh2o=nop_sh2o_in
-      !$ser data smc=zerobuff_3d et=zerobuff_3d snomlt=zerobuff_2d esnow=zerobuff_2d, ffrozp=sop_ffrozp
+      !$ser data smc=zerobuff_3d et=zerobuff_3d snomlt=zerobuff_2d esnow=zerobuff_2d ffrozp=sop_ffrozp
 
       !$ser verbatim if (sfc_iter == 1) then
         !$ser savepoint Canres1-Out
