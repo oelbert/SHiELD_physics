@@ -1389,8 +1389,8 @@
 !
       !$ser savepoint HeatTracerTridiagEle-In
       !$ser data ad=ad al=al au=au delta=del dkq=dkq f1=f1 f2_ser=f2_ser kpbl=kpbl krad=krad mrad=mrad
-      !$ser data pcnvflg=pcnvflg prsl=prsl qcdo=qcdo qcko=qcko rdzt=rdzt scuflg=scuflg
-      !$ser data tcdo=tcdo tcko=tcko xmf=xmf xmfd=xmfd t1=t1 q1=q1
+      !$ser data pcnvflg=pcnvflg prsl=prsl qcdo=qcdo qcko=qcko rdzt=rdzt scuflg=scuflg evap=evap
+      !$ser data tcdo=tcdo tcko=tcko xmf=xmf xmfd=xmfd t1=t1 q1=q1 dtdz1=dtdz1 heat=heat
       do i=1,im
          ad(i,1) = 1.
          f1(i,1) = t1(i,1)   + dtdz1(i) * heat(i)
