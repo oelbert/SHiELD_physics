@@ -124,7 +124,7 @@
                            rdzt(im,km-1), &
                            al(im,km-1),  ad(im,km),   au(im,km-1), &
                            f1(im,km),    f2(im,km*(ntrac-1))
-      !$ser verbatim real(kind=kind_phys) f2_ser(im,km,ntrac-1)
+      !$ser verbatim real(kind=kind_phys) f2_ser(im,km,ntrac)
 !
       real(kind=kind_phys) elm(im,km),   ele(im,km),  rle(im,km-1), &
                            ckz(im,km),   chz(im,km),  &
@@ -250,7 +250,7 @@
 !
       !$ser verbatim do i = 1,im
         !$ser verbatim do k = 1,km
-          !$ser verbatim do kk = 1, ntrac1
+          !$ser verbatim do kk = 1, ntrac
             !$ser verbatim f2_ser(i, k, kk) = 0.
           !$ser verbatim enddo
         !$ser verbatim enddo
