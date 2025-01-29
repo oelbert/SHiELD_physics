@@ -290,8 +290,8 @@
       integer :: i, k, iflag
       !$ser verbatim integer, dimension(im) :: can_nroot, nop_nroot, nop_ice
 
-      !$ser verbatim logical :: np_mask, np_lheatstrg, sp_snowng
-      !$ser verbatim logical, dimension(im) :: nop_mask, nop_lheatstrg, sop_snowng
+      !$ser verbatim logical :: np_mask, np_lheatstrg, sp_snowng, sp_mask
+      !$ser verbatim logical, dimension(im) :: nop_mask, nop_lheatstrg, sop_snowng, sop_mask
 !
 !===> ...  begin here
 !
@@ -347,6 +347,8 @@
           !$ser verbatim can_sh2o(i, k) = 0.
           !$ser verbatim zerobuff_3d(i, k) = 0.
         !$ser verbatim enddo
+        !$ser verbatim nop_mask = .false.
+        !$ser verbatim sop_mask = .false.
 
         if (land(i) .and. flag_guess(i)) then
           weasd_old(i)  = weasd(i)
@@ -570,7 +572,7 @@
              !$ser verbatim cn_sh2o, cn_smcwlt, cn_smcref, cn_rsmin,&
              !$ser verbatim cn_rsmax, cn_topt, cn_rgl, cn_hs, cn_xlai,&
              !$ser verbatim cn_rc, cn_pc, cn_rcs, cn_rct, cn_rcq,& 
-             !$ser verbatim np_mask, np_lheatstrg, sp_snowng, np_nroot,&
+             !$ser verbatim np_mask, sp_mask, np_lheatstrg, sp_snowng, np_nroot,&
              !$ser verbatim np_ice, np_etp, np_prcp, np_smcmax, np_smcwlt, np_smcref,&
              !$ser verbatim np_smcdry, np_cmcmax, np_shdfac, np_sbeta,&
              !$ser verbatim np_sfctmp, np_sfcems, np_t24, np_th2, np_fdown,&
@@ -634,6 +636,7 @@
              !$ser verbatim can_sfcprs = sfcprs
 
              !$ser verbatim nop_mask(i) = np_mask
+             !$ser verbatim sop_mask(i) = sp_mask
              !$ser verbatim nop_lheatstrg(i) = np_lheatstrg
              !$ser verbatim sop_snowng(i) = sp_snowng
              !$ser verbatim nop_nroot(i) = np_nroot
@@ -849,7 +852,7 @@
       !$ser verbatim else
         !$ser savepoint Snopack2-In
       !$ser verbatim end if
-      !$ser data nsoil=nsoil nopac_mask=nop_mask lheatstrg=nop_lheatstrg snowng=sop_snowng nroot=nop_nroot
+      !$ser data nsoil=nsoil snopac_mask=sop_mask lheatstrg=nop_lheatstrg snowng=sop_snowng nroot=nop_nroot
       !$ser data ice=nop_ice etp=nop_etp prcp=nop_prcp smcmax=nop_smcmax smcwlt=nop_smcwlt smcref=nop_smcref
       !$ser data smcdry=nop_smcdry cmcmax=nop_cmcmax dt=delt df1=sop_df1 shdfac=nop_shdfac vegtype=vegtype
       !$ser data sfctmp=nop_sfctmp sfcems=nop_sfcems t24=nop_t24 th2=nop_th2 fdown=nop_fdown

@@ -19,7 +19,7 @@
              !$ser verbatim cn_sh2o, cn_smcwlt, cn_smcref, cn_rsmin,&
              !$ser verbatim cn_rsmax, cn_topt, cn_rgl, cn_hs, cn_xlai,&
              !$ser verbatim cn_rc, cn_pc, cn_rcs, cn_rct, cn_rcq,& 
-             !$ser verbatim np_mask, np_lheatstrg, sp_snowng, np_nroot,&
+             !$ser verbatim np_mask, sp_mask, np_lheatstrg, sp_snowng, np_nroot,&
              !$ser verbatim np_ice, np_etp, np_prcp, np_smcmax, np_smcwlt, np_smcref,&
              !$ser verbatim np_smcdry, np_cmcmax, np_shdfac, np_sbeta,&
              !$ser verbatim np_sfctmp, np_sfcems, np_t24, np_th2, np_fdown,&
@@ -237,7 +237,7 @@
              stc(nsoil), smc(nsoil), sh2o(nsoil), ch, cm
 
 !  ---  outputs:
-      !$ser verbatim logical, intent(out) :: np_mask, np_lheatstrg, sp_snowng
+      !$ser verbatim logical, intent(out) :: np_mask, np_lheatstrg, sp_snowng, sp_mask
       integer, intent(out) :: nroot
       !$ser verbatim integer, intent(out) :: cn_nroot, np_nroot, np_ice
 
@@ -885,6 +885,7 @@
       !$ser verbatim sp_ffrozp = ffrozp
       if (sneqv .eq. 0.0) then
         !$ser verbatim np_mask = .true.
+        !$ser verbatim sp_mask = .false.
         call nopac
 !  ---  inputs:                                                         !
 !          ( nsoil, nroot, etp, prcp, smcmax, smcwlt, smcref,           !
@@ -922,6 +923,7 @@
         !$ser verbatim np_flx3 = flx3
       else
         !$ser verbatim np_mask = .false.
+        !$ser verbatim sp_mask = .true.
 
         call snopac
 !  ---  inputs:                                                         !
