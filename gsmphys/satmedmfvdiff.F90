@@ -1304,6 +1304,12 @@
 !----------------------------------------------------------------------
 !     compute tridiagonal matrix elements for turbulent kinetic energy
 !
+      !$ser savepoint TKETendencyCalc-In
+      !$ser data ad=ad al=al au=au delta=del dkq=dkq f1=f1 kpbl=kpbl krad=krad mrad=mrad
+      !$ser data pcnvflg=pcnvflg prsl=prsl qcdo=qcdo qcko=qcko rdzt=rdzt scuflg=scuflg
+      !$ser data tke=tke xmf=xmf xmfd=xmfd
+      !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke rtg=rtg
+
       !$ser savepoint TKETridiagEle-In
       !$ser data ad=ad al=al au=au delta=del dkq=dkq f1=f1 kpbl=kpbl krad=krad mrad=mrad
       !$ser data pcnvflg=pcnvflg prsl=prsl qcdo=qcdo qcko=qcko rdzt=rdzt scuflg=scuflg
@@ -1384,9 +1390,17 @@
             rtg(i,k,ntrac) = rtg(i,k,ntrac)+qtend
          enddo
       enddo
+      !$ser savepoint TKETendencyCalc-Out
+      !$ser data al=al ad=ad au=au f1=f1 rtg=rtg
 !
 !     compute tridiagonal matrix elements for heat and moisture (and other tracers, except tke)
 !
+      !$ser saveponint HeatTracerTendencyCalc-In
+      !$ser data ad=ad al=al au=au delta=del dkq=dkq f1=f1 f2_ser=f2_ser kpbl=kpbl krad=krad mrad=mrad
+      !$ser data pcnvflg=pcnvflg prsl=prsl qcdo=qcdo qcko=qcko rdzt=rdzt scuflg=scuflg evap=evap
+      !$ser data tcdo=tcdo tcko=tcko xmf=xmf xmfd=xmfd t1=t1 q1=q1 dtdz1=dtdz1 heat=heat
+      !$ser data rtg=rtg dtsfc=dtsfc dqsfc=dqsfc
+
       !$ser savepoint HeatTracerTridiagEle-In
       !$ser data ad=ad al=al au=au delta=del dkq=dkq f1=f1 f2_ser=f2_ser kpbl=kpbl krad=krad mrad=mrad
       !$ser data pcnvflg=pcnvflg prsl=prsl qcdo=qcdo qcko=qcko rdzt=rdzt scuflg=scuflg evap=evap
@@ -1552,6 +1566,9 @@
           enddo
         enddo
       endif
+
+      !$ser savepoint HeatTracerTendencyCalc-Out
+      !$ser data rtg=rtg tdt=tdt dtsfc=dtsfc dqsfc=dqsfc al=al ad=ad au=au f1=f1 f2_ser=f2_ser
 !
 ! kgao note - rearrange tracer tendencies 
 !
@@ -1568,10 +1585,8 @@
           enddo
         endif
       !endif
-!
-!     add tke dissipative heating to temperature tendency
-!
-      !$ser verbatim do i = 1,im
+
+        !$ser verbatim do i = 1,im
         !$ser verbatim do k = 1,km
           !$ser verbatim do kk = 1, ntrac1
             !$ser verbatim is = (kk-1) * km
@@ -1579,12 +1594,21 @@
           !$ser verbatim enddo
         !$ser verbatim enddo
       !$ser verbatim enddo
+      !$ser savepoint MomentTendencyCalc-In
+      !$ser data delta=del diss=diss dku=dku dtdz1=dtdz1 vcko=vcko xmf=xmf xmfd=xmfd delt=delt
+      !$ser data du=du dv=dv dusfc=dusfc dvsfc=dvsfc f1=f1 f2_ser=f2_ser al=al ad=ad au=au
+      !$ser data kpbl=kpbl krad=krad mrad=mrad pcnvflg=pcnvflg prsl=prsl rdzt=rdzt scuflg=scuflg
+      !$ser data spd1=spd1 stress=stress tdt=tdt u1=u1 ucdo=ucdo ucko=ucko v1=v1 vcdo=vcdo
+
       !$ser savepoint MomentTridiagComp-In
       !$ser data ad=ad al=al au=au delta=del diss=diss dku=dku dtdz1=dtdz1 f1=f1 f2_ser=f2_ser
       !$ser data kpbl=kpbl krad=krad mrad=mrad pcnvflg=pcnvflg prsl=prsl rdzt=rdzt scuflg=scuflg
       !$ser data spd1=spd1 stress=stress tdt=tdt u1=u1 ucdo=ucdo ucko=ucko v1=v1 vcdo=vcdo
       !$ser data vcko=vcko xmf=xmf xmfd=xmfd
-      if(dspheat) then
+!
+!     add tke dissipative heating to temperature tendency
+!
+        if(dspheat) then
       do k = 1,km1
         do i = 1,im
 !         tem = min(diss(i,k), dspmax)
@@ -1696,6 +1720,8 @@
             dvsfc(i) = dvsfc(i)+conw*del(i,k)*vtend
          enddo
       enddo
+      !$ser savepoint MomentTendencyCalc-Out
+      !$ser data du=du dv=dv dusfc=dusfc dvsfc=dvsfc f1=f1 f2_ser=f2_ser al=al ad=ad au=au
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !  pbl height for diagnostic purpose
