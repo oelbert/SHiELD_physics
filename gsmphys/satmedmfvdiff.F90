@@ -1307,7 +1307,7 @@
       !$ser savepoint TKETendencyCalc-In
       !$ser data ad=ad al=al au=au delta=del dkq=dkq f1=f1 kpbl=kpbl krad=krad mrad=mrad
       !$ser data pcnvflg=pcnvflg prsl=prsl qcdo=qcdo qcko=qcko rdzt=rdzt scuflg=scuflg
-      !$ser data tke=tke xmf=xmf xmfd=xmfd
+      !$ser data tke=tke xmf=xmf xmfd=xmfd q1=q1
       !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke rtg=rtg
 
       !$ser savepoint TKETridiagEle-In
@@ -1396,13 +1396,13 @@
 !     compute tridiagonal matrix elements for heat and moisture (and other tracers, except tke)
 !
       !$ser savepoint HeatTracerTendencyCalc-In
-      !$ser data ad=ad al=al au=au delta=del dkq=dkq f1=f1 f2_ser=f2_ser kpbl=kpbl krad=krad mrad=mrad
+      !$ser data ad=ad al=al au=au delta=del dkt=dkt f1=f1 f2_ser=f2_ser kpbl=kpbl krad=krad mrad=mrad
       !$ser data pcnvflg=pcnvflg prsl=prsl qcdo=qcdo qcko=qcko rdzt=rdzt scuflg=scuflg evap=evap
       !$ser data tcdo=tcdo tcko=tcko xmf=xmf xmfd=xmfd t1=t1 q1=q1 dtdz1=dtdz1 heat=heat
-      !$ser data rtg=rtg dtsfc=dtsfc dqsfc=dqsfc
+      !$ser data rtg=rtg dtsfc=dtsfc dqsfc=dqsfc tdt=tdt
 
       !$ser savepoint HeatTracerTridiagEle-In
-      !$ser data ad=ad al=al au=au delta=del dkq=dkq f1=f1 f2_ser=f2_ser kpbl=kpbl krad=krad mrad=mrad
+      !$ser data ad=ad al=al au=au delta=del dkt=dkt f1=f1 f2_ser=f2_ser kpbl=kpbl krad=krad mrad=mrad
       !$ser data pcnvflg=pcnvflg prsl=prsl qcdo=qcdo qcko=qcko rdzt=rdzt scuflg=scuflg evap=evap
       !$ser data tcdo=tcdo tcko=tcko xmf=xmf xmfd=xmfd t1=t1 q1=q1 dtdz1=dtdz1 heat=heat
       do i=1,im
@@ -1597,8 +1597,9 @@
       !$ser savepoint MomentTendencyCalc-In
       !$ser data delta=del diss=diss dku=dku dtdz1=dtdz1 vcko=vcko xmf=xmf xmfd=xmfd delt=delt
       !$ser data du=du dv=dv dusfc=dusfc dvsfc=dvsfc f1=f1 f2_ser=f2_ser al=al ad=ad au=au
-      !$ser data kpbl=kpbl krad=krad mrad=mrad pcnvflg=pcnvflg prsl=prsl rdzt=rdzt scuflg=scuflg
+      !$ser data krad=krad mrad=mrad pcnvflg=pcnvflg prsl=prsl rdzt=rdzt scuflg=scuflg
       !$ser data spd1=spd1 stress=stress tdt=tdt u1=u1 ucdo=ucdo ucko=ucko v1=v1 vcdo=vcdo
+      !$ser data hpbl=hpbl hpblx=hpblx kpbl=kpbl kpblx=kpblx
 
       !$ser savepoint MomentTridiagComp-In
       !$ser data ad=ad al=al au=au delta=del diss=diss dku=dku dtdz1=dtdz1 f1=f1 f2_ser=f2_ser
@@ -1720,8 +1721,6 @@
             dvsfc(i) = dvsfc(i)+conw*del(i,k)*vtend
          enddo
       enddo
-      !$ser savepoint MomentTendencyCalc-Out
-      !$ser data du=du dv=dv dusfc=dusfc dvsfc=dvsfc f1=f1 f2_ser=f2_ser al=al ad=ad au=au
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !  pbl height for diagnostic purpose
@@ -1732,6 +1731,8 @@
       enddo
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !$ser savepoint MomentTendencyCalc-Out
+      !$ser data du=du dv=dv dusfc=dusfc dvsfc=dvsfc f1=f1 f2_ser=f2_ser al=al ad=ad au=au hpbl=hpbl kpbl=kpbl
       return
       end
 !
