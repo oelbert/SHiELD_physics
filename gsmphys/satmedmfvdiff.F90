@@ -841,7 +841,41 @@
       else
          ntcw_new = ntcw-1
       endif
-! EDMF parameterization Siebesma et al.(2007)
+          !$ser verbatim do i = 1,im
+        !$ser verbatim do k = 1,km
+          !$ser verbatim zldn_ser(i,k) = 0.0
+          !$ser verbatim zlup_ser(i,k) = 0.0
+          !$ser verbatim do kk = 1, ntrac1
+            !$ser verbatim is = (kk-1) * km
+            !$ser verbatim f2_ser(i, k, kk) = 0.0
+          !$ser verbatim enddo
+        !$ser verbatim enddo
+      !$ser verbatim enddo
+        
+    !$ser savepoint Half2-In
+    !$ser data ckz=ckz chz=chz hpbl=hpbl kpbl=kpbl pcnvflg=pcnvflg zi=zi phih=phih
+    !$ser data zldn=zldn_ser zlup=zlup_ser thvx=thvx tke=tke gotvx=gotvx zl=zl tsea=tsea q1=q1
+    !$ser data rlam=rlam ele=ele elm=elm zol=zol gdx=gdx phii=phii
+    !$ser data ntcw=ntcw_new ntiw=ntiw ntke=ntke phim=phim prn=prn
+    !$ser data bf=bf buod=buod buou=buou dku=dku dkt=dkt dkq=dkq
+    !$ser data mrad=mrad krad=krad pblflg=pblflg
+    !$ser data prod=prod radj=radj rdzt=rdzt scuflg=scuflg sflux=sflux
+    !$ser data shr2=shr2 stress=stress u1=u1 ucdo=ucdo ucko=ucko ustar=ustar
+    !$ser data v1=v1 vcdo=vcdo vcko=vcko xkzo=xkzo xkzmo=xkzmo xmf=xmf xmfd=xmfd
+    !$ser data rle=rle diss=diss prsl=prsl rtg=rtg delt=delt
+    !$ser data qcdo=qcdo qcko=qcko f2_ser=f2_ser spd1=spd1
+    !$ser data xlamue=xlamue xlamde=xlamde evap=evap
+    !$ser data ad=ad al=al au=au delta=del f1=f1 hpblx=hpblx kpblx=kpblx
+    !$ser data tcdo=tcdo tcko=tcko t1=t1 dtdz1=dtdz1 heat=heat
+    !$ser data dtsfc=dtsfc dqsfc=dqsfc tdt=tdt
+    !$ser data du=du dv=dv dusfc=dusfc dvsfc=dvsfc
+    !$ser data kmpbl=kmpbl ntrac1=ntrac1
+    !$ser data zm=zm plyr=plyr pix=pix thlx=thlx vpert=vpert
+    !$ser data kmscu=kmscu
+    !$ser data thlvx=thlvx thetae=thetae
+    !$ser data radmin=radmin
+
+      ! EDMF parameterization Siebesma et al.(2007)
       !$ser savepoint MFPBLT-In
       !$ser data kmpbl=kmpbl ntcw=ntcw_new ntrac1=ntrac1 dt2=dt2 pcnvflg=pcnvflg zl=zl
       !$ser data zm=zm q1=q1 t1=t1 u1=u1 v1=v1 plyr=plyr pix=pix thlx=thlx thvx=thvx
@@ -871,35 +905,6 @@
       !$ser data ucdo=ucdo vcdo=vcdo xlamde=xlamde
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-    !$ser verbatim do i = 1,im
-        !$ser verbatim do k = 1,km
-          !$ser verbatim zldn_ser(i,k) = 0.0
-          !$ser verbatim zlup_ser(i,k) = 0.0
-          !$ser verbatim do kk = 1, ntrac1
-            !$ser verbatim is = (kk-1) * km
-            !$ser verbatim f2_ser(i, k, kk) = 0.0
-          !$ser verbatim enddo
-        !$ser verbatim enddo
-      !$ser verbatim enddo
-        
-    !$ser savepoint Half2-In
-    !$ser data ckz=ckz chz=chz hpbl=hpbl kpbl=kpbl pcnvflg=pcnvflg zi=zi phih=phih
-    !$ser data zldn=zldn_ser zlup=zlup_ser thvx=thvx tke=tke gotvx=gotvx zl=zl tsea=tsea q1=q1
-    !$ser data rlam=rlam ele=ele elm=elm zol=zol gdx=gdx phii=phii
-    !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke phim=phim prn=prn
-    !$ser data bf=bf buod=buod buou=buou dku=dku dkt=dkt dkq=dkq
-    !$ser data mrad=mrad krad=krad pblflg=pblflg
-    !$ser data prod=prod radj=radj rdzt=rdzt scuflg=scuflg sflux=sflux
-    !$ser data shr2=shr2 stress=stress u1=u1 ucdo=ucdo ucko=ucko ustar=ustar
-    !$ser data v1=v1 vcdo=vcdo vcko=vcko xkzo=xkzo xkzmo=xkzmo xmf=xmf xmfd=xmfd
-    !$ser data rle=rle diss=diss prsl=prsl rtg=rtg delt=delt
-    !$ser data qcdo=qcdo qcko=qcko f2_ser=f2_ser spd1=spd1
-    !$ser data xlamue=xlamue xlamde=xlamde evap=evap
-    !$ser data ad=ad al=al au=au delta=del f1=f1 hpblx=hpblx kpblx=kpblx
-    !$ser data tcdo=tcdo tcko=tcko t1=t1 dtdz1=dtdz1 heat=heat
-    !$ser data dtsfc=dtsfc dqsfc=dqsfc tdt=tdt
-    !$ser data du=du dv=dv dusfc=dusfc dvsfc=dvsfc
 
           !   compute prandtl number and exchange coefficient varying with height
 !
