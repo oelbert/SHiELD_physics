@@ -93,7 +93,7 @@
       integer kx1(im), kpblx(im)
 !
       real(kind=kind_phys) tke(im,km),  tkeh(im,km-1)
-      !$ser verbatim real(kind=kind_phys) zldn_ser(im,km), zlup_ser(im,km)
+      !$ser verbatim real(kind=kind_phys) zldn_ser(im,km), zlup_ser(im,km), ser_tem(im, km)
 !
       real(kind=kind_phys) theta(im,km),thvx(im,km),  thlvx(im,km), &
                            qlx(im,km),  thetae(im,km),thlx(im,km), &
@@ -250,6 +250,7 @@
 !
       !$ser verbatim do i = 1,im
         !$ser verbatim do k = 1,km
+          !$ser verbatim ser_tem(i, k) = 0.0
           !$ser verbatim do kk = 1, ntrac
             !$ser verbatim f2_ser(i, k, kk) = 0.
           !$ser verbatim enddo
@@ -268,7 +269,7 @@
       !$ser data cfly=cfly crb=crb dtdz1=dtdz1 evap=evap heat=heat hlw=hlw radx=radx
       !$ser data sflux=sflux shr2=shr2 stress=stress hsw=swh thermal=thermal tsea=tsea
       !$ser data u10m=u10m ustar=ustar u1=u1 v1=v1 v10m=v10m xmu=xmu islimsk=islimsk
-      !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke xkzm_hx=xkzm_hx xkzm_mx=xkzm_mx tvx=tvx
+      !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke xkzm_hx=xkzm_hx xkzm_mx=xkzm_mx tvx=tvx ser_tem=ser_tem
       do k=1,km
         do i=1,im
           zi(i,k) = phii(i,k) * gravi
@@ -452,6 +453,7 @@
       do k = 1,km1
         do i=1,im
           tem1 = (tvx(i,k+1)-tvx(i,k)) * rdzt(i,k)
+          !$ser verbatim ser_tem(i, k) = tem1
 
           if (cap_k0_land) then
             if(tem1 > 1.e-5) then
@@ -586,7 +588,7 @@
       !$ser data pix=pix qlx=qlx slx=slx thvx=thvx qtx=qtx thlx=thlx thlvx=thlvx svx=svx
       !$ser data thetae=thetae gotvx=gotvx prsl=prsl plyr=plyr rhly=rhly qstl=qstl bf=bf
       !$ser data cfly=cfly crb=crb dtdz1=dtdz1 evap=evap heat=heat hlw=hlw radx=radx
-      !$ser data sflux=sflux shr2=shr2 stress=stress hsw=swh thermal=thermal tsea=tsea
+      !$ser data sflux=sflux shr2=shr2 stress=stress hsw=swh thermal=thermal tsea=tsea ser_tem=ser_tem
       !$ser data u10m=u10m ustar=ustar u1=u1 v1=v1 v10m=v10m xmu=xmu xkzm_hx=xkzm_hx xkzm_mx=xkzm_mx tvx=tvx
 !
 ! find pbl height based on bulk richardson number (mrf pbl scheme)
