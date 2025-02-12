@@ -292,10 +292,12 @@
 
       !$ser verbatim logical :: np_mask, np_lheatstrg, sp_snowng, sp_mask
       !$ser verbatim logical, dimension(im) :: nop_mask, nop_lheatstrg, sop_snowng, sop_mask
+      !$ser verbatim logical :: ser_on
 !
 !===> ...  begin here
 !
 !  --- ...  save land-related prognostic fields for guess run
+      !$ser verbatim ser_on=fs_is_serialization_on()
       !$ser verbatim print *, 'INFO: inside LSM, serialization is ', ser_on
 
       !$ser verbatim cn_ch = 0.
