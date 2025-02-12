@@ -2373,8 +2373,6 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     !$ser data mpsub_den=mpf_den mpsub_denfac=mpf_denfac mpsub_delp=mpf_delp mpsub_delz=mpf_delz mpsub_h_var=mpf_h_var mpsub_rh_adj=mpf_rh_adj convt=convt dt=dts 
 
 
-    !$ser verbatim print *, 'INFO: serialized microphysics subroutine inputs'
-
 
     !$ser savepoint ConfigInit-Out
     !$ser data ini_c_air=ini_c_air ini_c_vap=ini_c_vap ini_d0_vap=ini_d0_vap ini_lv00=ini_lv00 ini_li00=ini_li00 ini_li20=ini_li20 ini_d1_vap=ini_d1_vap ini_d1_ice=ini_d1_ice

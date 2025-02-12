@@ -741,22 +741,22 @@
 !  --- ...  call canres to calculate the canopy resistance and convert it
 !           into pc if nonzero greenness fraction
 
-      if (shdfac > 0.) then
-            !$ser verbatim cn_nroot = nroot
-            !$ser verbatim cn_ch = ch
-            !$ser verbatim cn_smcwlt=smcwlt
-            !$ser verbatim cn_smcref=smcref
-            !$ser verbatim cn_rsmin=rsmin
-            !$ser verbatim cn_rsmax=rsmax
-            !$ser verbatim cn_topt=topt
-            !$ser verbatim cn_rgl = rgl
-            !$ser verbatim cn_hs = hs
-            !$ser verbatim cn_xlai = xlai
+      !$ser verbatim cn_nroot = nroot
+      !$ser verbatim cn_ch = ch
+      !$ser verbatim cn_smcwlt=smcwlt
+      !$ser verbatim cn_smcref=smcref
+      !$ser verbatim cn_rsmin=rsmin
+      !$ser verbatim cn_rsmax=rsmax
+      !$ser verbatim cn_topt=topt
+      !$ser verbatim cn_rgl = rgl
+      !$ser verbatim cn_hs = hs
+      !$ser verbatim cn_xlai = xlai
 
-            !$ser verbatim do k = 1, nsoil
-                  !$ser verbatim cn_zsoil(k) = zsoil(k)
-                  !$ser verbatim cn_sh2o(k) = sh2o(k)
-            !$ser verbatim enddo
+      !$ser verbatim do k = 1, nsoil
+            !$ser verbatim cn_zsoil(k) = zsoil(k)
+            !$ser verbatim cn_sh2o(k) = sh2o(k)
+      !$ser verbatim enddo
+      if (shdfac > 0.) then
 
 !  --- ...  frozen ground extension: total soil water "smc" was replaced 
 !           by unfrozen soil water "sh2o" in call to canres below
@@ -769,14 +769,13 @@
 !  ---  outputs:                                                        !
 !            rc, pc, rcs, rct, rcq, rcsoil )                            !
 
-
-            !$ser verbatim cn_rc = rc
-            !$ser verbatim cn_pc = pc
-            !$ser verbatim cn_rcs = rcs
-            !$ser verbatim cn_rct = rct
-            !$ser verbatim cn_rcq = rcq
-            !$ser verbatim cn_rcsoil = rcsoil
       endif
+      !$ser verbatim cn_rc = rc
+      !$ser verbatim cn_pc = pc
+      !$ser verbatim cn_rcs = rcs
+      !$ser verbatim cn_rct = rct
+      !$ser verbatim cn_rcq = rcq
+      !$ser verbatim cn_rcsoil = rcsoil
 
 !  --- ...  now decide major pathway branch to take depending on whether
 !           snowpack exists or not:

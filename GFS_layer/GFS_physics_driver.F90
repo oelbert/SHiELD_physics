@@ -3770,7 +3770,6 @@ module module_physics_driver
           delp (:,k) = del(:,levs-k+1)
           dz   (:,k) = (Statein%phii(:,levs-k+1)-Statein%phii(:,levs-k+2))/con_g
         enddo
-        !$ser verbatim print *, 'INFO: assign in data for serialization'
         !$ser verbatim mp_qv(:,:)=Stateout%gq0(:,levs:1:-1,1)
         !$ser verbatim mp_ql(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntcw)
         !$ser verbatim mp_qr(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntrw)
@@ -3803,7 +3802,7 @@ module module_physics_driver
         !$ser verbatim mp_prefluxg(:,:)=prefluxg(:,levs:1:-1)
         !$ser verbatim mp_consv_te=.false.
         !$ser verbatim mp_last_step=.true.
-        !$ser verbatim print *, 'INFO: serialize microphysics in'
+
         !$ser savepoint Microphysics3-In
         !$ser data mp_qv=mp_qv mp_ql=mp_ql mp_qr=mp_qr mp_qi=mp_qi
         !$ser data mp_qs=mp_qs mp_qg=mp_qg mp_qa=mp_qa mp_qnl=mp_qnl
@@ -3811,7 +3810,7 @@ module module_physics_driver
         !$ser data mp_gsize=mp_gsize timestep=dtp mp_hs=mp_hs mp_water=mp_water mp_rain=mp_rain mp_ice=mp_ice mp_snow=mp_snow mp_graupel=mp_graupel mp_q_con=mp_q_con mp_cappa=mp_cappa
         !$ser data mp_te=mp_te mp_prefluxw=mp_prefluxw mp_prefluxr=mp_prefluxr mp_prefluxi=mp_prefluxi mp_prefluxs=mp_prefluxs
         !$ser data mp_prefluxg=mp_prefluxg mp_cond=mp_cond mp_dep=mp_dep mp_reevap=mp_reevap mp_sub=mp_sub consv_te=mp_consv_te last_step=mp_last_step
-        !$ser verbatim print *, 'INFO: calling microphysics'
+
         call gfdl_cld_mp_driver(Stateout%gq0(:,levs:1:-1,1), Stateout%gq0(:,levs:1:-1,Model%ntcw), &
                                 Stateout%gq0(:,levs:1:-1,Model%ntrw), Stateout%gq0(:,levs:1:-1,Model%ntiw), &
                                 Stateout%gq0(:,levs:1:-1,Model%ntsw), Stateout%gq0(:,levs:1:-1,Model%ntgl), &
@@ -3824,7 +3823,6 @@ module module_physics_driver
                                 prefluxi(:,levs:1:-1), prefluxs(:,levs:1:-1), prefluxg(:,levs:1:-1), &
                                 .true., Model%do_inline_mp)
 
-        !$ser verbatim print *, 'INFO: assign out data for serialization'
         !$ser verbatim mp_qv(:,:)=Stateout%gq0(:,levs:1:-1,1)
         !$ser verbatim mp_ql(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntcw)
         !$ser verbatim mp_qr(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntrw)
@@ -3855,7 +3853,6 @@ module module_physics_driver
         !$ser verbatim mp_prefluxs(:,:)=prefluxs(:,levs:1:-1)
         !$ser verbatim mp_prefluxg(:,:)=prefluxg(:,levs:1:-1)
 
-        !$ser verbatim print *, 'INFO: serialize microphysics out'
         !$ser savepoint Microphysics3-Out
         !$ser data mp_qv=mp_qv mp_ql=mp_ql mp_qr=mp_qr mp_qi=mp_qi
         !$ser data mp_qs=mp_qs mp_qg=mp_qg mp_qa=mp_qa

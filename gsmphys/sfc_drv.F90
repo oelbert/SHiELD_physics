@@ -296,6 +296,7 @@
 !===> ...  begin here
 !
 !  --- ...  save land-related prognostic fields for guess run
+      !$ser verbatim print *, 'INFO: inside LSM, serialization is ', ser_on
 
       !$ser verbatim cn_ch = 0.
       !$ser verbatim cn_rcsoil = 0.
@@ -826,7 +827,7 @@
       !$ser data zsoil=can_zsoil rsmin=can_rsmin rsmax=can_rsmax topt=can_topt
       !$ser data rgl=can_rgl hs=can_hs xlai=can_xlai rc=zerobuff_2d pc=zerobuff_2d
       !$ser data rcs=zerobuff_2d rct=zerobuff_2d rcq=zerobuff_2d rcsoil=zerobuff_2d
-      !$ser data lsm_mask=land
+      !$ser data lsm_mask=land can_shdfac=nop_shdfac
 
       !$ser verbatim if (sfc_iter == 1) then
         !$ser savepoint Nopack1-In
@@ -834,13 +835,13 @@
         !$ser savepoint Nopack2-In
       !$ser verbatim end if
       !$ser data nsoil=nsoil nopac_mask=nop_mask lheatstrg=nop_lheatstrg nroot=nop_nroot
-      !$ser data ice=nop_ice etp=nop_etp prcp=nop_prcp smcmax=nop_smcmax smcwlt=nop_smcwlt smcref=nop_smcref
-      !$ser data smcdry=nop_smcdry dt=delt cmcmax=nop_cmcmax shdfac=nop_shdfac sbeta=nop_sbeta
+      !$ser data ice=nop_ice etp=nop_etp nop_prcp=nop_prcp smcmax=nop_smcmax smcwlt=nop_smcwlt smcref=nop_smcref
+      !$ser data smcdry=nop_smcdry dt=delt cmcmax=nop_cmcmax nop_shdfac=nop_shdfac sbeta=nop_sbeta
       !$ser data sfctmp=nop_sfctmp sfcems=nop_sfcems t24=nop_t24 th2=nop_th2 fdown=nop_fdown
       !$ser data epsca=nop_epsca bexp=nop_bexp pc=nop_pc rch=nop_rch rr=nop_rr cfactr=nop_cfactr
       !$ser data slope=nop_slope kdt=nop_kdt frzx=nop_frzx psisat=nop_psisat dksat=nop_dksat
       !$ser data dwsat=nop_dwsat zbot=nop_zbot quartz=nop_quartz fxexp=nop_fxexp csoil=nop_csoil
-      !$ser data cmc=nop_cmc_in t1=nop_t1_in tbot=nop_tbot_in beta=nop_beta_in
+      !$ser data cmc=nop_cmc_in nop_t1=nop_t1_in tbot=nop_tbot_in beta=nop_beta_in
       !$ser data ssoil=zerobuff_2d runoff1=zerobuff_2d runoff2=zerobuff_2d runoff3=zerobuff_2d edir=zerobuff_2d
       !$ser data ec=zerobuff_2d ett=zerobuff_2d drip=zerobuff_2d dew=zerobuff_2d flx1=zerobuff_2d flx3=zerobuff_2d
       !$ser data eta=zerobuff_2d
@@ -853,13 +854,13 @@
         !$ser savepoint Snopack2-In
       !$ser verbatim end if
       !$ser data nsoil=nsoil snopac_mask=sop_mask lheatstrg=nop_lheatstrg snowng=sop_snowng nroot=nop_nroot
-      !$ser data ice=nop_ice etp=nop_etp prcp=nop_prcp smcmax=nop_smcmax smcwlt=nop_smcwlt smcref=nop_smcref
-      !$ser data smcdry=nop_smcdry cmcmax=nop_cmcmax dt=delt df1=sop_df1 shdfac=nop_shdfac vegtype=vegtype
+      !$ser data ice=nop_ice etp=nop_etp nop_prcp=nop_prcp smcmax=nop_smcmax smcwlt=nop_smcwlt smcref=nop_smcref
+      !$ser data smcdry=nop_smcdry cmcmax=nop_cmcmax dt=delt df1=sop_df1 sop_shdfac=nop_shdfac vegtype=vegtype
       !$ser data sfctmp=nop_sfctmp sfcems=nop_sfcems t24=nop_t24 th2=nop_th2 fdown=nop_fdown
       !$ser data epsca=nop_epsca bexp=nop_bexp pc=nop_pc rch=nop_rch rr=nop_rr cfactr=nop_cfactr
       !$ser data slope=nop_slope kdt=nop_kdt frzx=nop_frzx psisat=nop_psisat dksat=nop_dksat
       !$ser data dwsat=nop_dwsat zbot=nop_zbot quartz=nop_quartz fxexp=nop_fxexp csoil=nop_csoil
-      !$ser data cmc=nop_cmc_in t1=nop_t1_in tbot=nop_tbot_in beta=nop_beta_in flx2=sop_flx2
+      !$ser data cmc=nop_cmc_in nop_t1=nop_t1_in tbot=nop_tbot_in beta=nop_beta_in flx2=sop_flx2
       !$ser data ssoil=zerobuff_2d runoff1=zerobuff_2d runoff2=zerobuff_2d runoff3=zerobuff_2d edir=zerobuff_2d
       !$ser data ec=zerobuff_2d ett=zerobuff_2d drip=zerobuff_2d dew=zerobuff_2d flx1=zerobuff_2d flx3=zerobuff_2d
       !$ser data eta=zerobuff_2d prcp1=sop_prcp1_in sncovr=sop_sncovr_in sneqv=sop_sneqv_in sndens=sop_sndens_in
@@ -878,7 +879,7 @@
       !$ser verbatim else
         !$ser savepoint Nopack2-Out
       !$ser verbatim end if
-      !$ser data cmc=nop_cmc_out t1=nop_t1_out tbot=nop_tbot_out beta=nop_beta_out et=nop_et
+      !$ser data cmc=nop_cmc_out nop_t1=nop_t1_out tbot=nop_tbot_out beta=nop_beta_out et=nop_et
       !$ser data stc=nop_stc_out sh2o=nop_sh2o_out eta=nop_eta smc=nop_smc ssoil=nop_ssoil
       !$ser data runoff1=nop_runoff1 runoff2=nop_runoff2 runoff3=nop_runoff3 edir=nop_edir
       !$ser data ec=nop_ec ett=nop_ett drip=nop_drip dew=nop_dew flx1=nop_flx1 flx3=nop_flx3
@@ -888,7 +889,7 @@
       !$ser verbatim else
         !$ser savepoint Snopack2-Out
       !$ser verbatim end if
-      !$ser data prcp1=sop_prcp1_out cmc=sop_cmc_out t1=sop_t1_out stc=sop_stc_out
+      !$ser data prcp1=sop_prcp1_out cmc=sop_cmc_out sop_t1=sop_t1_out stc=sop_stc_out
       !$ser data sncovr=sop_sncovr_out sneqv=sop_sneqv_out sndens=sop_sndens_out
       !$ser data snowh=sop_snowh_out sh2o=sop_sh2o_out tbot=sop_tbot_out beta=sop_beta_out
       !$ser data smc=sop_smc ssoil=sop_ssoil runoff1=sop_runoff1 runoff2=sop_runoff2
