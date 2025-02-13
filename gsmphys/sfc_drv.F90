@@ -238,20 +238,24 @@
              !$ser verbatim sop_sncovr_out, sop_sneqv_out, sop_sndens_out, sop_snowh_out,&
              !$ser verbatim sop_tbot_out, sop_beta_out, sop_eta, sop_ssoil, sop_runoff1,&
              !$ser verbatim sop_runoff2, sop_runoff3, sop_edir, sop_ec, sop_ett, sop_drip,&
-             !$ser verbatim sop_dew, sop_flx1, sop_flx3, sop_ffrozp
+             !$ser verbatim sop_dew, sop_flx1, sop_flx3, sop_ffrozp,&
+             !$ser verbatim par_zroot, par_sldpth, par_zsoil, par_slope, par_snup,&
+             !$ser verbatim par_rsmin, par_rgl, par_hs, par_xlai, par_bexp, par_dksat, par_dwsat, par_f1,&
+             !$ser verbatim par_kdt, par_psisat, par_quartz, par_smcdry, par_smcmax, par_smcref,&
+             !$ser verbatim par_smcwlt, par_shdfac, par_frzx, par_rtdis
 
       real (kind=kind_phys), dimension(km) :: et, sldpth, stsoil,       &
              smsoil, slsoil
 
       !$ser verbatim real (kind=kind_phys), dimension(km) :: cn_zsoil, cn_sh2o,&
              !$ser verbatim np_zsoil, np_rtdis, np_stc_in, np_sh2o_in, np_stc_out, np_sh2o_out,&
-             !$ser verbatim np_smc, np_et, sp_stc_out, sp_sh2o_out, sp_smc, sp_et
+             !$ser verbatim np_smc, np_et, sp_stc_out, sp_sh2o_out, sp_smc, sp_et, pr_sldpth, pr_zsoil, pr_rtdis
 
       real (kind=kind_phys), dimension(im,km) :: zsoil, smc_old,        &
              stc_old, slc_old
       !$ser verbatim real (kind=kind_phys), dimension(im,km) :: can_zsoil, can_sh2o, zerobuff_3d,&
              !$ser verbatim nop_zsoil, nop_rtdis, nop_stc_in, nop_sh2o_in, nop_stc_out, nop_sh2o_out,&
-             !$ser verbatim nop_smc, nop_et, sop_stc_out, sop_sh2o_out, sop_smc, sop_et
+             !$ser verbatim nop_smc, nop_et, sop_stc_out, sop_sh2o_out, sop_smc, sop_et, par_sldpth, par_zsoil, par_rtdis
 
       real (kind=kind_phys) :: alb, albedo, beta, chx, cmx, cmc,        &
              dew, drip, dqsdt2, ec, edir, ett, eta, esnow, etp,         &
@@ -283,15 +287,19 @@
              !$ser verbatim sp_sncovr_out, sp_sneqv_out, sp_sndens_out, sp_snowh_out,&
              !$ser verbatim sp_tbot_out, sp_beta_out, sp_eta, sp_ssoil, sp_runoff1,&
              !$ser verbatim sp_runoff2, sp_runoff3, sp_edir, sp_ec, sp_ett, sp_drip,&
-             !$ser verbatim sp_dew, sp_flx1, sp_flx3, sp_ffrozp
+             !$ser verbatim sp_dew, sp_flx1, sp_flx3, sp_ffrozp,&
+             !$ser verbatim pr_zroot, pr_sldpth, pr_zsoil, pr_slope, pr_snup,&
+             !$ser verbatim pr_rsmin, pr_rgl, pr_hs, pr_xlai, pr_bexp, pr_dksat, pr_dwsat, pr_f1,&
+             !$ser verbatim pr_kdt, pr_psisat, pr_quartz, pr_smcdry, pr_smcmax, pr_smcref,&
+             !$ser verbatim pr_smcwlt, pr_shdfac, pr_frzx, pr_rtdis
 
-      !$ser verbatim integer :: cn_nroot, np_nroot, np_ice
+      !$ser verbatim integer :: cn_nroot, np_nroot, np_ice, pr_nroot
       integer :: couple, ice, nsoil, nroot, slope, stype, vtype
       integer :: i, k, iflag
-      !$ser verbatim integer, dimension(im) :: can_nroot, nop_nroot, nop_ice
+      !$ser verbatim integer, dimension(im) :: can_nroot, nop_nroot, nop_ice, par_nroot
 
       !$ser verbatim logical :: np_mask, np_lheatstrg, sp_snowng, sp_mask
-      !$ser verbatim logical, dimension(im) :: nop_mask, nop_lheatstrg, sop_snowng, sop_mask
+      !$ser verbatim logical, dimension(im) :: nop_mask, nop_lheatstrg, sop_snowng, sop_mask, par_land_mask
       !$ser verbatim logical :: ser_on
 !
 !===> ...  begin here
@@ -595,6 +603,10 @@
              !$ser verbatim sp_dew, sp_flx1, sp_flx3,&
              !$ser verbatim np_zsoil, np_rtdis, np_stc_in, np_sh2o_in, np_stc_out, np_sh2o_out,&
              !$ser verbatim np_smc, np_et, sp_stc_out, sp_sh2o_out, sp_smc, sp_et, sp_ffrozp,&
+             !$ser verbatim pr_nroot, pr_zroot, pr_sldpth, pr_zsoil, pr_slope, pr_snup,&
+             !$ser verbatim pr_rsmin, pr_rgl, pr_hs, pr_xlai, pr_bexp, pr_dksat, pr_dwsat, pr_f1,&
+             !$ser verbatim pr_kdt, pr_psisat, pr_quartz, pr_smcdry, pr_smcmax, pr_smcref,&
+             !$ser verbatim pr_smcwlt, pr_shdfac, pr_frzx, pr_rtdis,&
              rcsoil, soilw, soilm, smcwlt, smcdry, smcref, smcmax)
 
              !$ser verbatim do k = 1, km
@@ -612,6 +624,9 @@
                 !$ser verbatim sop_sh2o_out(i, k) = sp_sh2o_out(k)
                 !$ser verbatim sop_smc(i, k) = sp_smc(k)
                 !$ser verbatim sop_et(i, k) = sp_et(k)
+                !$ser verbatim par_sldpth(i, k) = pr_sldpth(k)
+                !$ser verbatim par_zsoil(i, k) = pr_zsoil(k)
+                !$ser verbatim par_rtdis(i, k) = pr_rtdis(k)
              !$ser verbatim enddo
              !$ser verbatim can_nroot(i) = cn_nroot
              !$ser verbatim can_rcsoil(i) = cn_rcsoil
@@ -726,6 +741,28 @@
              !$ser verbatim sop_snomlt(i) = sp_snomlt
              !$ser verbatim sop_esnow(i) = sp_esnow
              !$ser verbatim sop_ffrozp(i) = sp_ffrozp
+             !$ser verbatim par_land_mask(i) = land(i)
+             !$ser verbatim par_nroot(i) = pr_nroot
+             !$ser verbatim par_zroot(i) = pr_zroot
+             !$ser verbatim par_slope(i) = pr_slope
+             !$ser verbatim par_snup(i) = pr_snup
+             !$ser verbatim par_rsmin(i) = pr_rsmin
+             !$ser verbatim par_rgl(i) = pr_rgl
+             !$ser verbatim par_hs(i) = pr_hs
+             !$ser verbatim par_xlai(i) = pr_xlai
+             !$ser verbatim par_bexp(i) = pr_bexp
+             !$ser verbatim par_dksat(i) = pr_dksat
+             !$ser verbatim par_dwsat(i) = pr_dwsat
+             !$ser verbatim par_f1(i) = pr_f1
+             !$ser verbatim par_kdt(i) = pr_kdt
+             !$ser verbatim par_psisat(i) = pr_psisat
+             !$ser verbatim par_quartz(i) = pr_quartz
+             !$ser verbatim par_smcdry(i) = pr_smcdry
+             !$ser verbatim par_smcmax(i) = pr_smcmax
+             !$ser verbatim par_smcref(i) = pr_smcref
+             !$ser verbatim par_smcwlt(i) = pr_smcwlt
+             !$ser verbatim par_shdfac(i) = pr_shdfac
+             !$ser verbatim par_frzx(i) = pr_frzx
 
 !  --- ...  noah: prepare variables for return to parent mode
 !   6. output (o):

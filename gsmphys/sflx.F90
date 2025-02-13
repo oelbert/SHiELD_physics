@@ -39,6 +39,10 @@
              !$ser verbatim sp_dew, sp_flx1, sp_flx3,&
              !$ser verbatim np_zsoil, np_rtdis, np_stc_in, np_sh2o_in, np_stc_out, np_sh2o_out,&
              !$ser verbatim np_smc, np_et, sp_stc_out, sp_sh2o_out, sp_smc, sp_et, sp_ffrozp,&
+             !$ser verbatim pr_nroot, pr_zroot, pr_sldpth, pr_zsoil, pr_slope, pr_snup,&
+             !$ser verbatim pr_rsmin, pr_rgl, pr_hs, pr_xlai, pr_bexp, pr_dksat, pr_dwsat, pr_f1,&
+             !$ser verbatim pr_kdt, pr_psisat, pr_quartz, pr_smcdry, pr_smcmax, pr_smcref,&
+             !$ser verbatim pr_smcwlt, pr_shdfac, pr_frzx, pr_rtdis,&
              rcsoil, soilw, soilm, smcwlt, smcdry, smcref, smcmax)
 
 ! ===================================================================== !
@@ -239,7 +243,7 @@
 !  ---  outputs:
       !$ser verbatim logical, intent(out) :: np_mask, np_lheatstrg, sp_snowng, sp_mask
       integer, intent(out) :: nroot
-      !$ser verbatim integer, intent(out) :: cn_nroot, np_nroot, np_ice
+      !$ser verbatim integer, intent(out) :: cn_nroot, np_nroot, np_ice, pr_nroot
 
       real (kind=kind_phys), intent(out) :: shdfac, snowh, albedo,      &
              eta, sheat, ec, edir, et(nsoil), ett, esnow, drip, dew,    &
@@ -269,10 +273,14 @@
              !$ser verbatim sp_tbot_out, sp_beta_out, sp_eta, sp_ssoil, sp_runoff1,&
              !$ser verbatim sp_runoff2, sp_runoff3, sp_edir, sp_ec, sp_ett, sp_drip,&
              !$ser verbatim sp_dew, sp_flx1, sp_flx3, sp_ffrozp
+             !$ser verbatim pr_zroot, pr_slope, pr_snup,&
+             !$ser verbatim pr_rsmin, pr_rgl, pr_hs, pr_xlai, pr_bexp, pr_dksat, pr_dwsat, pr_f1,&
+             !$ser verbatim pr_kdt, pr_psisat, pr_quartz, pr_smcdry, pr_smcmax, pr_smcref,&
+             !$ser verbatim pr_smcwlt, pr_shdfac, pr_frzx
 
       !$ser verbatim real (kind=kind_phys), dimension(nsold), intent(out) :: cn_zsoil, cn_sh2o,&
              !$ser verbatim np_zsoil, np_rtdis, np_stc_in, np_sh2o_in, np_stc_out, np_sh2o_out,&
-             !$ser verbatim np_smc, np_et, sp_stc_out, sp_sh2o_out, sp_smc, sp_et
+             !$ser verbatim np_smc, np_et, sp_stc_out, sp_sh2o_out, sp_smc, sp_et, pr_sldpth, pr_zsoil, pr_rtdis
 
 !  ---  locals:
 !     real (kind=kind_phys) ::  df1h,
@@ -354,7 +362,34 @@
 !           set shdfac=0.0 for bare soil surfaces
 
       call redprm
-        if(ivegsrc == 1) then
+      !$ser verbatim do k = 1, nsoil
+            !$ser verbatim pr_zsoil(k) = zsoil(k)
+            !$ser verbatim pr_rtdis(k) = rtdis(k)
+            !$ser verbatim pr_sldpth(k) = sldpth(k)
+      !$ser verbatim enddo
+
+      !$ser verbatim pr_nroot = nroot
+      !$ser verbatim pr_zroot = zsoil(nroot)
+      !$ser verbatim pr_slope = slope
+      !$ser verbatim pr_snup =  snup 
+      !$ser verbatim pr_rsmin = rsmin
+      !$ser verbatim pr_rgl = rgl
+      !$ser verbatim pr_hs = hs
+      !$ser verbatim pr_xlai = xlai
+      !$ser verbatim pr_bexp = bexp
+      !$ser verbatim pr_dksat = dksat
+      !$ser verbatim pr_dwsat = dwsat
+      !$ser verbatim pr_f1 = f1
+      !$ser verbatim pr_kdt = kdt
+      !$ser verbatim pr_psisat = psisat
+      !$ser verbatim pr_quartz = quartz
+      !$ser verbatim pr_smcdry = smcdry
+      !$ser verbatim pr_smcmax = smcmax
+      !$ser verbatim pr_smcref = smcref
+      !$ser verbatim pr_smcwlt = smcwlt
+      !$ser verbatim pr_shdfac = shdfac
+      !$ser verbatim pr_frzx = frzx
+      if(ivegsrc == 1) then
 !only igbp type has urban
 !urban
          if(vegtyp == 13)then
