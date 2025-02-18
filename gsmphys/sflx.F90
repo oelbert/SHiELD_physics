@@ -272,7 +272,7 @@
              !$ser verbatim sp_sncovr_out, sp_sneqv_out, sp_sndens_out, sp_snowh_out,&
              !$ser verbatim sp_tbot_out, sp_beta_out, sp_eta, sp_ssoil, sp_runoff1,&
              !$ser verbatim sp_runoff2, sp_runoff3, sp_edir, sp_ec, sp_ett, sp_drip,&
-             !$ser verbatim sp_dew, sp_flx1, sp_flx3, sp_ffrozp
+             !$ser verbatim sp_dew, sp_flx1, sp_flx3, sp_ffrozp,&
              !$ser verbatim pr_zroot, pr_slope, pr_snup,&
              !$ser verbatim pr_rsmin, pr_rgl, pr_hs, pr_xlai, pr_bexp, pr_dksat, pr_dwsat, pr_f1,&
              !$ser verbatim pr_kdt, pr_psisat, pr_quartz, pr_smcdry, pr_smcmax, pr_smcref,&
