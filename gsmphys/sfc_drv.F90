@@ -239,10 +239,10 @@
              !$ser verbatim sop_tbot_out, sop_beta_out, sop_eta, sop_ssoil, sop_runoff1,&
              !$ser verbatim sop_runoff2, sop_runoff3, sop_edir, sop_ec, sop_ett, sop_drip,&
              !$ser verbatim sop_dew, sop_flx1, sop_flx3, sop_ffrozp,&
-             !$ser verbatim par_zroot, par_sldpth, par_zsoil, par_slope, par_snup,&
+             !$ser verbatim par_zroot, par_slope, par_snup,&
              !$ser verbatim par_rsmin, par_rgl, par_hs, par_xlai, par_bexp, par_dksat, par_dwsat, par_f1,&
              !$ser verbatim par_kdt, par_psisat, par_quartz, par_smcdry, par_smcmax, par_smcref,&
-             !$ser verbatim par_smcwlt, par_shdfac, par_frzx, par_rtdis
+             !$ser verbatim par_smcwlt, par_shdfac, par_frzx
 
       real (kind=kind_phys), dimension(km) :: et, sldpth, stsoil,       &
              smsoil, slsoil
@@ -296,7 +296,7 @@
       !$ser verbatim integer :: cn_nroot, np_nroot, np_ice, pr_nroot
       integer :: couple, ice, nsoil, nroot, slope, stype, vtype
       integer :: i, k, iflag
-      !$ser verbatim integer, dimension(im) :: can_nroot, nop_nroot, nop_ice, par_nroot
+      !$ser verbatim integer, dimension(im) :: can_nroot, nop_nroot, nop_ice, par_nroot, zeroint_2d
 
       !$ser verbatim logical :: np_mask, np_lheatstrg, sp_snowng, sp_mask
       !$ser verbatim logical, dimension(im) :: nop_mask, nop_lheatstrg, sop_snowng, sop_mask, par_land_mask
@@ -854,6 +854,32 @@
 
         endif   ! flag_iter and flag
       enddo   ! end do_i_loop
+
+      !$ser verbatim if (sfc_iter == 1) then
+          !$ser savepoint SoilVeg1-In
+        !$ser verbatim else
+          !$ser savepoint SoilVeg2-In
+        !$ser verbatim end if
+      !$ser data par_zroot=zerobuff_2d par_slope=zerobuff_2d
+      !$ser data par_rsmin=zerobuff_2d par_rgl=zerobuff_2d par_hs=zerobuff_2d par_xlai=zerobuff_2d par_bexp=zerobuff_2d
+      !$ser data par_dksat=zerobuff_2d par_dwsat=zerobuff_2d par_f1=zerobuff_2d par_smcmax=zerobuff_2d
+      !$ser data par_kdt=zerobuff_2d par_psisat=zerobuff_2d par_quartz=zerobuff_2d par_smcdry=zerobuff_2d
+      !$ser data par_smcwlt=zerobuff_2d par_shdfac=zerobuff_2d par_frzx=zerobuff_2d par_rtdis=zerobuff_2d par_smcref=zerobuff_2d
+      !$ser data par_snup=zerobuff_2d par_nroot=zeroint_2d
+      !$ser data par_land_mask=par_land_mask vegtype=vegtype soiltype=soiltyp slopetyp=slopetyp par_sldpth=par_sldpth par_zsoil=par_zsoil
+
+      !$ser verbatim if (sfc_iter == 1) then
+          !$ser savepoint SoilVeg1-Out
+        !$ser verbatim else
+          !$ser savepoint SoilVeg2-Out
+        !$ser verbatim end if
+      !$ser data par_zroot=par_zroot par_sldpth=par_sldpth par_zsoil=par_zsoil par_slope=par_slope
+      !$ser data par_rsmin par_rgl=par_rgl par_hs=par_hs par_xlai=par_xlai par_bexp=par_bexp
+      !$ser data par_dksat=par_dksat par_dwsat=par_dwsat par_f1=par_f1 par_smcmax=par_smcmax
+      !$ser data par_kdt par_psisat=par_psisat par_quartz=par_quartz par_smcdry=par_smcdry
+      !$ser data par_smcwlt par_shdfac=par_shdfac par_frzx=par_frzx par_rtdis=par_rtdis par_smcref=par_smcref
+      !$ser data par_snup=par_snup par_nroot=par_nroot
+      !$ser data par_land_mask=par_land_mask vegtype=vegtype soiltype=soiltyp slopetyp=slopetyp
 
       !$ser verbatim if (sfc_iter == 1) then
           !$ser savepoint Canres1-In
