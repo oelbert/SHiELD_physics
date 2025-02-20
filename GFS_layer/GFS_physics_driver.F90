@@ -930,7 +930,19 @@ module module_physics_driver
            )
 
       else
-
+        !$ser savepoint RadInterp-In
+        !$ser data solhr=Model%solhr slag=Model%slag sdec=Model%sdec cdec=Model%cdec
+        !$ser data coslat=Grid%coslat xlon=Grid%xlon coszen=Radtend%coszen tsurf=Sfcprop%tsfc
+        !$ser data tgrs=Statein%tgrs(1,1) tsflw=Radtend%tsflw semis=Radtend%semis
+        !$ser data sfcdsw=Coupling%sfcdsw sfcnsw=Coupling%sfcnsw sfcdlw=Coupling%sfcdlw
+        !$ser data htrsw=Radtend%htrsw swhc=Radtend%swhc htrlw=Radtend%htrlw lwhc=Radtend%lwhc
+        !$ser data nirbmui=Coupling%nirbmui nirdfui=Coupling%nirdfui visbmui=Coupling%visbmui
+        !$ser data visdfui=Coupling%visdfui nirbmdi=Coupling%nirbmdi nirdfdi=Coupling%nirdfdi
+        !$ser data visbmdi=Coupling%visbmdi visdfdi=Coupling%visdfdi daily_mean=Model%daily_mean
+        !$ser data dtdt=dtdt dtdtc=dtdtc xmu=xmu xcosz=xcosz
+        !$ser data adjsfcdsw=adjsfcdsw adjsfcnsw=adjsfcnsw adjsfcdlw=adjsfcdlw adjsfculw=adjsfculw
+        !$ser data adjnirbmu=adjnirbmu adjnirdfu=adjnirdfu adjvisbmu=adjvisbmu adjvisdfu=adjvisdfu
+        !$ser data adjnirbmd=adjnirbmd adjnirdfd=adjnirdfd adjvisbmd=adjvisbmd adjvisdfd=adjvisdfd
         call dcyc2t3                                                        &
 !  ---  inputs:
            ( Model%solhr, Model%slag, Model%sdec, Model%cdec, Grid%sinlat,  &
@@ -949,6 +961,11 @@ module module_physics_driver
              adjnirbmu, adjnirdfu, adjvisbmu, adjvisdfu,                    &
              adjnirbmd, adjnirdfd, adjvisbmd, adjvisdfd                     &
            )
+        !$ser savepoint RadInterp-Out
+        !$ser data dtdt=dtdt dtdtc=dtdtc xmu=xmu xcosz=xcosz
+        !$ser data adjsfcdsw=adjsfcdsw adjsfcnsw=adjsfcnsw adjsfcdlw=adjsfcdlw adjsfculw=adjsfculw
+        !$ser data adjnirbmu=adjnirbmu adjnirdfu=adjnirdfu adjvisbmu=adjvisbmu adjvisdfu=adjvisdfu
+        !$ser data adjnirbmd=adjnirbmd adjnirdfd=adjnirdfd adjvisbmd=adjvisbmd adjvisdfd=adjvisdfd
 
         if (Model%do_diagnostic_radiation_with_scaled_co2) then
            call compute_diagnostics_with_scaled_co2(                        &
@@ -1985,6 +2002,7 @@ module module_physics_driver
           !Discarded arguments: STDH (currently not used), CT
           !output variables: MIXHT, PBLH, EL_MYJ, tendencies, AKHS, AKMS, *Z0, EXCH_H, tke, KPBL
           !NOTE: Look at mixing length (mixh1)
+          !$ser verbatim print *, 'INFO: call myj_pbl'
           call myj_pbl(DT=dtp,NPHS=1,EPSL=epsL,EPSQ2=epsQ2,HT=ht,DZ=dz  &
                ,PMID=phmid,PINH=phint,TH=th,T=pt,EXNER=exner,Q=qv1 &
                ,CWM=ql1,U=uin,V=vin &
