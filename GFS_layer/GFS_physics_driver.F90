@@ -436,7 +436,7 @@ module module_physics_driver
 
       !--- LOGICAL VARIABLES
       logical :: lprnt, revap, do_awdd, trans_aero
-      !$ser verbatim logical :: mp_consv_te, mp_last_step
+      !$ser verbatim logical :: mp_consv_te, mp_last_step rad_daily_mean
       !$ser verbatim logical :: redrag, do_z0_moon, do_z0_hwrf15, do_z0_hwrf17, do_dk_hb19
       !$ser verbatim logical :: do_z0_hwrf17_hwonly, mom4ice, lheatstrg, dspheat, cap_k0_land
       
@@ -461,6 +461,7 @@ module module_physics_driver
       !$ser verbatim real(kind=kind_phys) :: wind_th_hwrf, xkzm_m, xkzm_h, xkzm_ml, rlmn, rlmx, z0s_max
       !$ser verbatim real(kind=kind_phys) :: xkzm_hl, xkzm_mi, xkzm_hi, xkzm_s, xkzminv, xkzm_lim, xkgdx, xmin, xmax, xinc
       !$ser verbatim real(kind=kind_phys) :: tliq, tice2, dldtl, heatl, xponal, xponbl, dldti, heati, xponai, xponbi
+      !$ser verbatim real(kind=kind_phys) :: rad_solhr, rad_slag, rad_sdec, rad_cdec
       !$ser verbatim real (kind=kind_phys), dimension(5) :: pertvegf
 
       real(kind=kind_phys), dimension(Model%ntrac-Model%ncld+2) ::      &
@@ -930,15 +931,20 @@ module module_physics_driver
            )
 
       else
+        !$ser verbatim rad_solhr = Model%solhr
+        !$ser verbatim rad_slag = Model%slag
+        !$ser verbatim rad_sdec = Model%sdec
+        !$ser verbatim rad_cdec = Model%cdec
+        !$ser verbatim rad_daily_mean = Model%daily_mean
         !$ser savepoint RadInterp-In
-        !$ser data solhr=Model%solhr slag=Model%slag sdec=Model%sdec cdec=Model%cdec
+        !$ser data solhr=rad_solhr slag=rad_slag sdec=rad_sdec cdec=rad_cdec
         !$ser data coslat=Grid%coslat xlon=Grid%xlon coszen=Radtend%coszen tsurf=Sfcprop%tsfc
-        !$ser data tgrs=Statein%tgrs(1,1) tsflw=Radtend%tsflw semis=Radtend%semis
+        !$ser data tgrs=Statein%tgrs tsflw=Radtend%tsflw semis=Radtend%semis
         !$ser data sfcdsw=Coupling%sfcdsw sfcnsw=Coupling%sfcnsw sfcdlw=Coupling%sfcdlw
         !$ser data htrsw=Radtend%htrsw swhc=Radtend%swhc htrlw=Radtend%htrlw lwhc=Radtend%lwhc
         !$ser data nirbmui=Coupling%nirbmui nirdfui=Coupling%nirdfui visbmui=Coupling%visbmui
         !$ser data visdfui=Coupling%visdfui nirbmdi=Coupling%nirbmdi nirdfdi=Coupling%nirdfdi
-        !$ser data visbmdi=Coupling%visbmdi visdfdi=Coupling%visdfdi daily_mean=Model%daily_mean
+        !$ser data visbmdi=Coupling%visbmdi visdfdi=Coupling%visdfdi daily_mean=rad_daily_mean
         !$ser data dtdt=dtdt dtdtc=dtdtc xmu=xmu xcosz=xcosz
         !$ser data adjsfcdsw=adjsfcdsw adjsfcnsw=adjsfcnsw adjsfcdlw=adjsfcdlw adjsfculw=adjsfculw
         !$ser data adjnirbmu=adjnirbmu adjnirdfu=adjnirdfu adjvisbmu=adjvisbmu adjvisdfu=adjvisdfu
