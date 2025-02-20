@@ -486,7 +486,7 @@ module module_physics_driver
            !--- for CS-convection
            wcbmax
       
-      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1)) :: fp, fpx
+      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1)) :: fp, fpx, rad_t_surface
 
       logical, dimension(size(Grid%xlon,1))                ::           &
            wet, dry,              icy
@@ -936,10 +936,11 @@ module module_physics_driver
         !$ser verbatim rad_sdec = Model%sdec
         !$ser verbatim rad_cdec = Model%cdec
         !$ser verbatim rad_daily_mean = Model%daily_mean
+        !$ser verbatim rad_t_surface = Statein%tgrs(1,:)
         !$ser savepoint RadInterp-In
-        !$ser data solhr=rad_solhr slag=rad_slag sdec=rad_sdec cdec=rad_cdec
+        !$ser data solhr=rad_solhr slag=rad_slag sdec=rad_sdec cdec=rad_cdec sinlat=Grid%sinlat
         !$ser data coslat=Grid%coslat xlon=Grid%xlon coszen=Radtend%coszen tsurf=Sfcprop%tsfc
-        !$ser data tgrs=Statein%tgrs tsflw=Radtend%tsflw semis=Radtend%semis
+        !$ser data tgrs=rad_t_surface tsflw=Radtend%tsflw semis=Radtend%semis
         !$ser data sfcdsw=Coupling%sfcdsw sfcnsw=Coupling%sfcnsw sfcdlw=Coupling%sfcdlw
         !$ser data htrsw=Radtend%htrsw swhc=Radtend%swhc htrlw=Radtend%htrlw lwhc=Radtend%lwhc
         !$ser data nirbmui=Coupling%nirbmui nirdfui=Coupling%nirdfui visbmui=Coupling%visbmui
