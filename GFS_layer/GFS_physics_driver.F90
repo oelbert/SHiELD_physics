@@ -931,6 +931,7 @@ module module_physics_driver
            )
 
       else
+        !$ser verbatim print *, 'INFO: serialize rad'
         !$ser verbatim rad_solhr = Model%solhr
         !$ser verbatim rad_slag = Model%slag
         !$ser verbatim rad_sdec = Model%sdec
