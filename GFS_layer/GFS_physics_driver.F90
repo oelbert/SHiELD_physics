@@ -486,7 +486,7 @@ module module_physics_driver
            !--- for CS-convection
            wcbmax
       
-      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1)) :: fp, fpx
+      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1)) :: fp, fpx, rad_t_surface
 
       logical, dimension(size(Grid%xlon,1))                ::           &
            wet, dry,              icy
@@ -525,7 +525,7 @@ module module_physics_driver
 
       !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1),1) :: mp_gsize, mp_hs, mp_water, mp_rain, mp_ice, mp_snow, mp_graupel, mp_cond, mp_dep, mp_reevap, mp_sub, mp_dte
 
-      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1),Model%levs) :: mp_qv, mp_ql, mp_qr, mp_qi, mp_qs, mp_qg, mp_qa, mp_qnl, mp_qni, mp_pt, mp_wa, mp_ua, mp_va, mp_delz, mp_delp, mp_q_con, mp_cappa, mp_te, mp_prefluxw, mp_prefluxr, mp_prefluxi, mp_prefluxs, mp_prefluxg, mp_adj_vmr, mp_pcw, mp_edw, mp_oew, mp_rrw, mp_tvw, mp_pci, mp_edi, mp_oei, mp_rri, mp_tvi, mp_pcr, mp_edr, mp_oer, mp_rrr, mp_tvr, mp_pcs, mp_eds, mp_oes, mp_rrs, mp_tvs, mp_pcg, mp_edg, mp_oeg, mp_rrg, mp_tvg, xval, tab_fpvsx, tab_fpvs, rad_t_surface
+      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1),Model%levs) :: mp_qv, mp_ql, mp_qr, mp_qi, mp_qs, mp_qg, mp_qa, mp_qnl, mp_qni, mp_pt, mp_wa, mp_ua, mp_va, mp_delz, mp_delp, mp_q_con, mp_cappa, mp_te, mp_prefluxw, mp_prefluxr, mp_prefluxi, mp_prefluxs, mp_prefluxg, mp_adj_vmr, mp_pcw, mp_edw, mp_oew, mp_rrw, mp_tvw, mp_pci, mp_edi, mp_oei, mp_rri, mp_tvi, mp_pcr, mp_edr, mp_oer, mp_rrr, mp_tvr, mp_pcs, mp_eds, mp_oes, mp_rrs, mp_tvs, mp_pcg, mp_edg, mp_oeg, mp_rrg, mp_tvg, xval, tab_fpvsx, tab_fpvs
 
       !--- GFDL modification for FV3 
       real(kind=kind_phys), dimension(size(Grid%xlon,1),Model%levs+1) ::&
@@ -938,9 +938,7 @@ module module_physics_driver
         !$ser verbatim rad_cdec = Model%cdec
         !$ser verbatim rad_daily_mean = Model%daily_mean
         !$ser verbatim do i = 1, im
-          !$ser verbatim do k = 1, levs
-            !$ser verbatim rad_t_surface(i, k) = Statein%tgrs(i, k)
-          !$ser verbatim enddo
+          !$ser verbatim rad_t_surface(i) = Statein%tgrs(i, 1)
         !$ser verbatim enddo
         !$ser savepoint RadInterp-In
         !$ser data solhr=rad_solhr slag=rad_slag sdec=rad_sdec cdec=rad_cdec sinlat=Grid%sinlat
