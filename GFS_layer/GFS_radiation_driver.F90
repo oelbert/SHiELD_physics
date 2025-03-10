@@ -1204,6 +1204,8 @@
       integer :: n
       integer, dimension(size(Grid%xlon,1)) :: idxday
       integer, dimension(size(Grid%xlon,1),3) :: mbota, mtopa
+      !$ser verbatim integer :: mpi_rank,ier
+      !$ser verbatim logical :: ser_on
 
       !--- REAL VARIABLES
       real(kind=kind_phys) :: raddt, es, qs, delt, tem0d 
@@ -1233,7 +1235,7 @@
       type (cmpfsw_type),    dimension(size(Grid%xlon,1)) :: scmpsw
 !
 !===> ...  begin here
-      print *,' LCRICK=',lcrick,' LCNORM=',lcnorm,' LNOPREC=',lnoprec
+      !$ser verbatim call mpi_comm_rank(MPI_COMM_WORLD, mpi_rank,ier)
       !$ser verbatim print *, 'INFO: inside GFS_radiation_driver rank=',mpi_rank,' SER is ',ser_on,' lsswr=',Model%lsswr
 !only call GFS_radiation_driver at radiation time step
       if (.not. (Model%lsswr .or. Model%lslwr )) return
@@ -1841,7 +1843,7 @@
           call lwrad (plyr, plvl, tlyr, tlvl, qlyr, olyr, gasvmr,  &        !  ---  inputs
                       clouds, Tbd%icsdlw, faerlw, Radtend%semis,   &
                       tsfg, im, lmk, lmp, Model%lprnt,             &
-                      htlwc, Diag%topflw, Radtend%htlwc,          &        !  ---  outputs
+                      htlwc, Diag%topflw, Radtend%sfcflw,          &        !  ---  outputs
                       hlw0=htlw0, tau110=tau110)                            !  ---  optional
         else
           call lwrad (plyr, plvl, tlyr, tlvl, qlyr, olyr, gasvmr,  &        !  ---  inputs
