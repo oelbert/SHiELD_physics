@@ -1216,8 +1216,8 @@
            tsfa, cvt1, cvb1, tem1d, tsfg, tskn
       !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1)) :: coszen, semis
       !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1),2) :: topflw
-      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1),3) :: topfsw
-      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1),4) :: sfcfsw, sfcflw
+      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1),3) :: topfsw sfcflw
+      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1),4) :: sfcfsw
 
       real(kind=kind_phys), dimension(size(Grid%xlon,1),5)       :: cldsa
       real(kind=kind_phys), dimension(size(Grid%xlon,1),NSPC1)   :: aerodp
@@ -1706,12 +1706,19 @@
 !> -# Approximate mean surface albedo from vis- and nir-  diffuse values.
         Radtend%sfalb(:) = max(0.01, 0.5 * (sfcalb(:,2) + sfcalb(:,4)))
 
-        !$ser verbatim icsdsw(:)=Tbd%icsdsw(:)
-        !$ser verbatim coszen(:)=Radtend%coszen(:)
+        !$ser verbatim do i = 1, IM
+          !$ser verbatim icsdsw(i)=Tbd%icsdsw(i)
+          !$ser verbatim coszen(i)=Radtend%coszen(i)
+          !$ser verbatim topfsw(i,1)=Diag%topfsw(i)%upfxc
+          !$ser verbatim topfsw(i,2)=Diag%topfsw(i)%dnfxc
+          !$ser verbatim topfsw(i,3)=Diag%topfsw(i)%upfx0
+          !$ser verbatim sfcfsw(i,1)=Radtend%sfcfsw(i)%upfxc
+          !$ser verbatim sfcfsw(i,2)=Radtend%sfcfsw(i)%dnfxc
+          !$ser verbatim sfcfsw(i,3)=Radtend%sfcfsw(i)%upfx0
+          !$ser verbatim sfcfsw(i,4)=Radtend%sfcfsw(i)%dnfx0
+        !$ser verbatim enddo
         !$ser verbatim solcon=Model%solcon
         !$ser verbatim lprnt=Model%lprnt
-        !$ser verbatim topfsw(:)=Diag%topfsw(:)
-        !$ser verbatim sfcfsw(:)=Radtend%sfcfsw(:)
         !$ser savepoint SWRAD-In
         !$ser data plyr=plyr plvl=plvl tlyr=tlyr tlvl=tlvl qlyr=qlyr olyr=olyr
         !$ser data gasvmr=gasvmr clouds=clouds icsdsw=icsdsw faersw=faersw
@@ -1815,12 +1822,19 @@
           endif
 
         endif                  ! end_if_nday
-        !$ser verbatim icsdsw(:)=Tbd%icsdsw(:)
-        !$ser verbatim coszen(:)=Radtend%coszen(:)
+        !$ser verbatim do i = 1, IM
+          !$ser verbatim icsdsw(i)=Tbd%icsdsw(i)
+          !$ser verbatim coszen(i)=Radtend%coszen(i)
+          !$ser verbatim topfsw(i,1)=Diag%topfsw(i)%upfxc
+          !$ser verbatim topfsw(i,2)=Diag%topfsw(i)%dnfxc
+          !$ser verbatim topfsw(i,3)=Diag%topfsw(i)%upfx0
+          !$ser verbatim sfcfsw(i,1)=Radtend%sfcfsw(i)%upfxc
+          !$ser verbatim sfcfsw(i,2)=Radtend%sfcfsw(i)%dnfxc
+          !$ser verbatim sfcfsw(i,3)=Radtend%sfcfsw(i)%upfx0
+          !$ser verbatim sfcfsw(i,4)=Radtend%sfcfsw(i)%dnfx0
+        !$ser verbatim enddo
         !$ser verbatim solcon=Model%solcon
         !$ser verbatim lprnt=Model%lprnt
-        !$ser verbatim topfsw(:)=Diag%topfsw(:)
-        !$ser verbatim sfcfsw(:)=Radtend%sfcfsw(:)
         !$ser savepoint SWRAD-Out
         !$ser data plyr=plyr plvl=plvl tlyr=tlyr tlvl=tlvl qlyr=qlyr olyr=olyr
         !$ser data gasvmr=gasvmr clouds=clouds icsdsw=icsdsw faersw=faersw
@@ -1850,10 +1864,15 @@
 !>  - Call module_radlw_main::lwrad(), to compute LW heating rates and
 !!    fluxes.
 !     print *,' in grrad : calling lwrad'
-        !$ser verbatim icsdlw(:)=Tbd%icsdlw(:)
-        !$ser verbatim semis(:)=Radtend%semis(:)
-        !$ser verbatim topflw(:)=Diag%topflw(:)
-        !$ser verbatim sfcflw(:)=Radtend%sfcflw(:)
+        !$ser verbatim do i = 1, IM
+          !$ser verbatim icsdlw(i)=Tbd%icsdlw(i)
+          !$ser verbatim semis(i)=Radtend%semis(i)
+          !$ser verbatim topflw(i,1)=Diag%topflw(i)%upfxc
+          !$ser verbatim topflw(i,2)=Diag%topflw(i)%upfx0
+          !$ser verbatim sfcflw(i,1)=Radtend%sfcflw(i)%upfxc
+          !$ser verbatim sfcflw(i,2)=Radtend%sfcflw(i)%dnfxc
+          !$ser verbatim sfcflw(i,3)=Radtend%sfcflw(i)%dnfx0
+        !$ser verbatim enddo
         !$ser savepoint LWRAD-In
         !$ser data plyr=plyr plvl=plvl tlyr=tlyr tlvl=tlvl qlyr=qlyr olyr=olyr
         !$ser data gasvmr=gasvmr clouds=clouds icsdlw=icsdlw faerlw=faerlw
@@ -1874,10 +1893,15 @@
                       htlwc, Diag%topflw, Radtend%sfcflw,          &
                       tau110=tau110)                                        !  ---  outputs
         endif
-        !$ser verbatim icsdlw(:)=Tbd%icsdlw(:)
-        !$ser verbatim semis(:)=Radtend%semis(:)
-        !$ser verbatim topflw(:)=Diag%topflw(:)
-        !$ser verbatim sfcflw(:)=Radtend%sfcflw(:)
+        !$ser verbatim do i = 1, IM
+          !$ser verbatim icsdlw(i)=Tbd%icsdlw(i)
+          !$ser verbatim semis(i)=Radtend%semis(i)
+          !$ser verbatim topflw(i,1)=Diag%topflw(i)%upfxc
+          !$ser verbatim topflw(i,2)=Diag%topflw(i)%upfx0
+          !$ser verbatim sfcflw(i,1)=Radtend%sfcflw(i)%upfxc
+          !$ser verbatim sfcflw(i,2)=Radtend%sfcflw(i)%dnfxc
+          !$ser verbatim sfcflw(i,3)=Radtend%sfcflw(i)%dnfx0
+        !$ser verbatim enddo
         !$ser savepoint LWRAD-Out
         !$ser data plyr=plyr plvl=plvl tlyr=tlyr tlvl=tlvl qlyr=qlyr olyr=olyr
         !$ser data gasvmr=gasvmr clouds=clouds icsdlw=icsdlw faerlw=faerlw
