@@ -1854,7 +1854,7 @@
         !$ser data sfcalb=sfcalb coszen=coszen solcon=solcon
         !$ser data nday=nday idxday=idxday im=im lmk=lmk lmp=lmp lprnt=lprnt
         !$ser data htswc=htswc topfsw=topfsw sfcfsw=sfcfsw
-        !$ser data htsw0=htsw0 scmpsw=scmpsw tau067=tau067
+        !$ser data htsw0=htsw0 ser_scmpsw=ser_scmpsw tau067=tau067
 
 ! --- radiation fluxes for other physics processes
         Coupling%sfcnsw(:) = Radtend%sfcfsw(:)%dnfxc - Radtend%sfcfsw(:)%upfxc
