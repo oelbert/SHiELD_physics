@@ -1216,7 +1216,7 @@
            tsfa, cvt1, cvb1, tem1d, tsfg, tskn
       !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1)) :: coszen, semis
       !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1),2) :: topflw
-      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1),3) :: topfsw sfcflw
+      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1),3) :: topfsw, sfcflw
       !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1),4) :: sfcfsw
 
       real(kind=kind_phys), dimension(size(Grid%xlon,1),5)       :: cldsa
