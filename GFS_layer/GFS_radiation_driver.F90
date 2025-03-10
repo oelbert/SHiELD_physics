@@ -1239,6 +1239,7 @@
 
       !--- TYPED VARIABLES
       type (cmpfsw_type),    dimension(size(Grid%xlon,1)) :: scmpsw
+      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1),6) :: ser_scmpsw
 !
 !===> ...  begin here
       !$ser verbatim call mpi_comm_rank(MPI_COMM_WORLD, mpi_rank,ier)
@@ -1716,6 +1717,12 @@
           !$ser verbatim sfcfsw(i,2)=Radtend%sfcfsw(i)%dnfxc
           !$ser verbatim sfcfsw(i,3)=Radtend%sfcfsw(i)%upfx0
           !$ser verbatim sfcfsw(i,4)=Radtend%sfcfsw(i)%dnfx0
+          !$ser verbatim ser_scmpsw(i,1)=scmpsw(i)%uvbfc
+          !$ser verbatim ser_scmpsw(i,2)=scmpsw(:)%uvbf0
+          !$ser verbatim ser_scmpsw(i,3)=scmpsw(:)%nirbm
+          !$ser verbatim ser_scmpsw(i,4)=scmpsw(:)%nirdf
+          !$ser verbatim ser_scmpsw(i,5)=scmpsw(:)%visbm
+          !$ser verbatim ser_scmpsw(i,6)=scmpsw(:)%visdf
         !$ser verbatim enddo
         !$ser verbatim solcon=Model%solcon
         !$ser verbatim lprnt=Model%lprnt
@@ -1725,7 +1732,7 @@
         !$ser data sfcalb=sfcalb coszen=coszen solcon=solcon
         !$ser data nday=nday idxday=idxday im=im lmk=lmk lmp=lmp lprnt=lprnt
         !$ser data htswc=htswc topfsw=topfsw sfcfsw=sfcfsw
-        !$ser data htsw0=htsw0 scmpsw=scmpsw tau067=tau067
+        !$ser data htsw0=htsw0 ser_scmpsw=ser_scmpsw tau067=tau067
         if (nday > 0) then
 
 !>  - Call module_radsw_main::swrad(), to compute SW heating rates and
@@ -1832,6 +1839,12 @@
           !$ser verbatim sfcfsw(i,2)=Radtend%sfcfsw(i)%dnfxc
           !$ser verbatim sfcfsw(i,3)=Radtend%sfcfsw(i)%upfx0
           !$ser verbatim sfcfsw(i,4)=Radtend%sfcfsw(i)%dnfx0
+          !$ser verbatim ser_scmpsw(i,1)=scmpsw(i)%uvbfc
+          !$ser verbatim ser_scmpsw(i,2)=scmpsw(:)%uvbf0
+          !$ser verbatim ser_scmpsw(i,3)=scmpsw(:)%nirbm
+          !$ser verbatim ser_scmpsw(i,4)=scmpsw(:)%nirdf
+          !$ser verbatim ser_scmpsw(i,5)=scmpsw(:)%visbm
+          !$ser verbatim ser_scmpsw(i,6)=scmpsw(:)%visdf
         !$ser verbatim enddo
         !$ser verbatim solcon=Model%solcon
         !$ser verbatim lprnt=Model%lprnt
