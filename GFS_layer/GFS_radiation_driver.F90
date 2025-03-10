@@ -1215,9 +1215,9 @@
       real(kind=kind_phys), dimension(size(Grid%xlon,1)) ::             &
            tsfa, cvt1, cvb1, tem1d, tsfg, tskn
       !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1)) :: coszen, semis
-      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,3)) :: topflw
-      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,3)) :: topfsw
-      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,4)) :: sfcfsw, sfcflw
+      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1),2) :: topflw
+      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1),3) :: topfsw
+      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1),4) :: sfcfsw, sfcflw
 
       real(kind=kind_phys), dimension(size(Grid%xlon,1),5)       :: cldsa
       real(kind=kind_phys), dimension(size(Grid%xlon,1),NSPC1)   :: aerodp
