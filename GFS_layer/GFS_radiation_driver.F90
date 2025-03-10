@@ -1233,7 +1233,8 @@
       type (cmpfsw_type),    dimension(size(Grid%xlon,1)) :: scmpsw
 !
 !===> ...  begin here
-      !$ser verbatim print *, 'INFO: rank=',mpi_rank,' inside GFS_radiation_driver, SER is ,'ser_on,' lsswr=',Model%lsswr
+      print *,' LCRICK=',lcrick,' LCNORM=',lcnorm,' LNOPREC=',lnoprec
+      !$ser verbatim print *, 'INFO: inside GFS_radiation_driver rank=',mpi_rank,' SER is ',ser_on,' lsswr=',Model%lsswr
 !only call GFS_radiation_driver at radiation time step
       if (.not. (Model%lsswr .or. Model%lslwr )) return
 !
