@@ -1718,11 +1718,11 @@
           !$ser verbatim sfcfsw(i,3)=Radtend%sfcfsw(i)%upfx0
           !$ser verbatim sfcfsw(i,4)=Radtend%sfcfsw(i)%dnfx0
           !$ser verbatim ser_scmpsw(i,1)=scmpsw(i)%uvbfc
-          !$ser verbatim ser_scmpsw(i,2)=scmpsw(:)%uvbf0
-          !$ser verbatim ser_scmpsw(i,3)=scmpsw(:)%nirbm
-          !$ser verbatim ser_scmpsw(i,4)=scmpsw(:)%nirdf
-          !$ser verbatim ser_scmpsw(i,5)=scmpsw(:)%visbm
-          !$ser verbatim ser_scmpsw(i,6)=scmpsw(:)%visdf
+          !$ser verbatim ser_scmpsw(i,2)=scmpsw(i)%uvbf0
+          !$ser verbatim ser_scmpsw(i,3)=scmpsw(i)%nirbm
+          !$ser verbatim ser_scmpsw(i,4)=scmpsw(i)%nirdf
+          !$ser verbatim ser_scmpsw(i,5)=scmpsw(i)%visbm
+          !$ser verbatim ser_scmpsw(i,6)=scmpsw(i)%visdf
         !$ser verbatim enddo
         !$ser verbatim solcon=Model%solcon
         !$ser verbatim lprnt=Model%lprnt
@@ -1840,11 +1840,11 @@
           !$ser verbatim sfcfsw(i,3)=Radtend%sfcfsw(i)%upfx0
           !$ser verbatim sfcfsw(i,4)=Radtend%sfcfsw(i)%dnfx0
           !$ser verbatim ser_scmpsw(i,1)=scmpsw(i)%uvbfc
-          !$ser verbatim ser_scmpsw(i,2)=scmpsw(:)%uvbf0
-          !$ser verbatim ser_scmpsw(i,3)=scmpsw(:)%nirbm
-          !$ser verbatim ser_scmpsw(i,4)=scmpsw(:)%nirdf
-          !$ser verbatim ser_scmpsw(i,5)=scmpsw(:)%visbm
-          !$ser verbatim ser_scmpsw(i,6)=scmpsw(:)%visdf
+          !$ser verbatim ser_scmpsw(i,2)=scmpsw(i)%uvbf0
+          !$ser verbatim ser_scmpsw(i,3)=scmpsw(i)%nirbm
+          !$ser verbatim ser_scmpsw(i,4)=scmpsw(i)%nirdf
+          !$ser verbatim ser_scmpsw(i,5)=scmpsw(i)%visbm
+          !$ser verbatim ser_scmpsw(i,6)=scmpsw(i)%visdf
         !$ser verbatim enddo
         !$ser verbatim solcon=Model%solcon
         !$ser verbatim lprnt=Model%lprnt
