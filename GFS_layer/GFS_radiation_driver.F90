@@ -305,6 +305,8 @@
       module module_radiation_driver        !
 !........................................!
 !
+      !$ser verbatim use mpi
+      !$ser verbatim USE m_serialize, ONLY: fs_is_serialization_on
       use physparam
       use physcons,                  only: eps   => con_eps,            &
      &                                     epsm1 => con_epsm1,          &
@@ -1231,9 +1233,12 @@
       type (cmpfsw_type),    dimension(size(Grid%xlon,1)) :: scmpsw
 !
 !===> ...  begin here
+      !$ser verbatim print *, 'INFO: rank=',mpi_rank,' inside GFS_radiation_driver, SER is ,'ser_on,' lsswr=',Model%lsswr
 !only call GFS_radiation_driver at radiation time step
       if (.not. (Model%lsswr .or. Model%lslwr )) return
 !
+      !!$ser verbatim print *, 'INFO: inside GFS_radiation_driver, serialization is ', ser_on
+      
       !--- set commonly used integers
       me = Model%me
       LM = Model%levr
@@ -1692,6 +1697,13 @@
 !> -# Approximate mean surface albedo from vis- and nir-  diffuse values.
         Radtend%sfalb(:) = max(0.01, 0.5 * (sfcalb(:,2) + sfcalb(:,4)))
 
+        !$ser savepoint SWRAD-In
+        !$ser data plyr=plyr plvl=plvl tlyr=tlyr tlvl=tlvl qlyr=qlyr olyr=olyr
+        !$ser data gasvmr=gasvmr clouds=clouds icsdsw=Tbd%icsdsw faersw=faersw
+        !$ser data sfcalb=sfcalb coszen=Radtend%coszen solcon=Model%solcon
+        !$ser data nday=nday idxday=idxday im=im lmk=lmk lmp=lmp lprnt=Model%lprnt
+        !$ser data htswc=htswc topfsw=Diag%topfsw sfcfsw=Radtend%sfcfsw
+        !$ser data htsw0=htsw0 scmpsw=scmpsw tau067=tau067
         if (nday > 0) then
 
 !>  - Call module_radsw_main::swrad(), to compute SW heating rates and
@@ -1788,6 +1800,13 @@
           endif
 
         endif                  ! end_if_nday
+        !$ser savepoint SWRAD-Out
+        !$ser data plyr=plyr plvl=plvl tlyr=tlyr tlvl=tlvl qlyr=qlyr olyr=olyr
+        !$ser data gasvmr=gasvmr clouds=clouds icsdsw=Tbd%icsdsw faersw=faersw
+        !$ser data sfcalb=sfcalb coszen=Radtend%coszen solcon=Model%solcon
+        !$ser data nday=nday idxday=idxday im=im lmk=lmk lmp=lmp lprnt=Model%lprnt
+        !$ser data htswc=htswc topfsw=Diag%topfsw sfcfsw=Radtend%sfcfsw
+        !$ser data htsw0=htsw0 scmpsw=scmpsw tau067=tau067
 
 ! --- radiation fluxes for other physics processes
         Coupling%sfcnsw(:) = Radtend%sfcfsw(:)%dnfxc - Radtend%sfcfsw(:)%upfxc
@@ -1810,12 +1829,18 @@
 !>  - Call module_radlw_main::lwrad(), to compute LW heating rates and
 !!    fluxes.
 !     print *,' in grrad : calling lwrad'
-
+        !$ser savepoint LWRAD-In
+        !$ser data plyr=plyr plvl=plvl tlyr=tlyr tlvl=tlvl qlyr=qlyr olyr=olyr
+        !$ser data gasvmr=gasvmr clouds=clouds Tbd%icsdlw=Tbd%icsdlw faerlw=faerlw
+        !$ser data semis=Radtend%semis tsfg=tsfg
+        !$ser data idxday=idxday im=im lmk=lmk lmp=lmp Model%lprnt=Model%lprnt
+        !$ser data htlwc=htlwc topflw=Diag%topflw sfcflw=Radtend%sfcflw
+        !$ser data htlw0=htlw0 tau110=tau110
         if (Model%lwhtr) then
           call lwrad (plyr, plvl, tlyr, tlvl, qlyr, olyr, gasvmr,  &        !  ---  inputs
                       clouds, Tbd%icsdlw, faerlw, Radtend%semis,   &
                       tsfg, im, lmk, lmp, Model%lprnt,             &
-                      htlwc, Diag%topflw, Radtend%sfcflw,          &        !  ---  outputs
+                      htlwc, Diag%topflw, Radtend%htlwc,          &        !  ---  outputs
                       hlw0=htlw0, tau110=tau110)                            !  ---  optional
         else
           call lwrad (plyr, plvl, tlyr, tlvl, qlyr, olyr, gasvmr,  &        !  ---  inputs
@@ -1824,6 +1849,13 @@
                       htlwc, Diag%topflw, Radtend%sfcflw,          &
                       tau110=tau110)                                        !  ---  outputs
         endif
+        !$ser savepoint LWRAD-Out
+        !$ser data plyr=plyr plvl=plvl tlyr=tlyr tlvl=tlvl qlyr=qlyr olyr=olyr
+        !$ser data gasvmr=gasvmr clouds=clouds Tbd%icsdlw=Tbd%icsdlw faerlw=faerlw
+        !$ser data semis=Radtend%semis tsfg=tsfg
+        !$ser data idxday=idxday im=im lmk=lmk lmp=lmp Model%lprnt=Model%lprnt
+        !$ser data htlwc=htlwc topflw=Diag%topflw sfcflw=Radtend%sfcflw
+        !$ser data htlw0=htlw0 tau110=tau110
 
         if (Model%do_diagnostic_radiation_with_scaled_co2) then
            call diagnostic_longwave_radiation_with_scaled_co2(                &
