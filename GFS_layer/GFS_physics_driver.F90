@@ -426,7 +426,8 @@ module module_physics_driver
                  itc, nn
       integer :: kflip
       integer :: ntsd ! for myj
-      !$ser verbatim integer :: ivegsrc, lsm, lsoil, isot, ntcw, ntiw, ntke, nxpvs, nt, ii
+      !$ser verbatim integer :: ivegsrc, lsm, lsoil, isot, ntcw, ntiw
+      !$ser verbatim integer :: ntke, nxpvs, nt, ii, ntchm, ncld
       
       integer, dimension(size(Grid%xlon,1)) ::                          &
            kbot, ktop, kcnv, soiltyp, vegtype, kpbl, slopetyp, kinver,  &
@@ -462,10 +463,12 @@ module module_physics_driver
       !$ser verbatim real(kind=kind_phys) :: xkzm_hl, xkzm_mi, xkzm_hi, xkzm_s, xkzminv, xkzm_lim, xkgdx, xmin, xmax, xinc
       !$ser verbatim real(kind=kind_phys) :: tliq, tice2, dldtl, heatl, xponal, xponbl, dldti, heati, xponai, xponbi
       !$ser verbatim real(kind=kind_phys) :: rad_solhr, rad_slag, rad_sdec, rad_cdec
+      !$ser verbatim real(kind=kind_phys) :: clam_shal, c0s_shal, c1_shal, pgcon_shal, asolfac_shal
       !$ser verbatim real (kind=kind_phys), dimension(5) :: pertvegf
 
       real(kind=kind_phys), dimension(Model%ntrac-Model%ncld+2) ::      &
            fscav, fswtr
+      !$ser verbatim real (kind=kind_phys), dimension(Model%ntrac-Model%ncld+2) :: fscav
 
       real(kind=kind_phys), dimension(size(Grid%xlon,1))  ::            &
            ccwfac, garea, dlength, cumabs, cice, zice, tice, gflx,      &
@@ -3199,6 +3202,24 @@ module module_physics_driver
             else
                nsamftrac = tottracer
             endif
+            !$ser verbatim ntchm = Model%ntchm
+            !$ser verbatim ser_fscav = Model%fscav
+            !$ser verbatim ncld = Model%ncld
+            !$ser verbatim clam_shal = Model%clam_shal
+            !$ser verbatim c0s_shal = Model%c0s_shal
+            !$ser verbatim c1_shal = Model%c1_shal
+            !$ser verbatim pgcon_shal = Model%pgcon_shal
+            !$ser verbatim asolfac_shal = Model%asolfac_shal
+            !$ser savepoint ShalConv-In
+            !$ser data dtp=dtp itc=itc ntchm=ntchm ntk=ntk nsamftrac=nsamftrac
+            !$ser data delta=del prsl=Statein%prsl pgr=Statein%pgr phil=Statein%phil clw=clw(:,:,1:nsamftrac+2)
+            !$ser data gq0(:,:,1)=Stateout%gq0(:,:,1) gt0=Stateout%gt0
+            !$ser data gu0=Stateout%gu0 gv0=Stateout%gv0 ser_fscav=ser_fscav
+            !$ser data rain1=rain1 kbot=kbot ktop=ktop kcnv=kcnv islmsk=islmsk garea=garea
+            !$ser data vvl=Statein%vvl ncld=ncld hpbl=Diag%hpbl ud_mf=ud_mf
+            !$ser data dt_mf=dt_mf cnvw=cnvw cnvc=cnvc
+            !$ser data clam_shal=clam_shal c0s_shal=c0s_shal c1_shal=c1_shal
+            !$ser data pgcon_shal=pgcon_shal asolfac_shal=asolfac_shal
             call samfshalcnv (im, ix, levs, dtp, itc, Model%ntchm, ntk, nsamftrac, &
                               del, Statein%prsl, Statein%pgr, Statein%phil, clw(:,:,1:nsamftrac+2),   &
                               Stateout%gq0(:,:,1), Stateout%gt0,                   &
@@ -3210,6 +3231,16 @@ module module_physics_driver
                               Model%pgcon_shal, Model%asolfac_shal)
 
 
+            !$ser savepoint ShalConv-Out
+            !$ser data dtp=dtp itc=itc ntchm=ntchm ntk=ntk nsamftrac=nsamftrac
+            !$ser data delta=del prsl=Statein%prsl pgr=Statein%pgr phil=Statein%phil clw=clw(:,:,1:nsamftrac+2)
+            !$ser data gq0(:,:,1)=Stateout%gq0(:,:,1) gt0=Stateout%gt0
+            !$ser data gu0=Stateout%gu0 gv0=Stateout%gv0 ser_fscav=ser_fscav
+            !$ser data rain1=rain1 kbot=kbot ktop=ktop kcnv=kcnv islmsk=islmsk garea=garea
+            !$ser data vvl=Statein%vvl ncld=ncld hpbl=Diag%hpbl ud_mf=ud_mf
+            !$ser data dt_mf=dt_mf cnvw=cnvw cnvc=cnvc
+            !$ser data clam_shal=clam_shal c0s_shal=c0s_shal c1_shal=c1_shal
+            !$ser data pgcon_shal=pgcon_shal asolfac_shal=asolfac_shal
             raincs(:)     = frain * rain1(:)
             Diag%rainc(:) = Diag%rainc(:) + raincs(:)
 ! in  mfshalcnv,  'cnvw' and 'cnvc' are set to zero before computation starts:
