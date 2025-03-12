@@ -1243,11 +1243,11 @@
 !
 !===> ...  begin here
       !$ser verbatim call mpi_comm_rank(MPI_COMM_WORLD, mpi_rank,ier)
-      !$ser verbatim print *, 'INFO: inside GFS_radiation_driver rank=',mpi_rank,' SER is ',ser_on,' lsswr=',Model%lsswr
+      !$ser verbatim print *, 'INFO: inside GFS_radiation_driver start rank=',mpi_rank,' SER is ',ser_on,' lsswr=',Model%lsswr
 !only call GFS_radiation_driver at radiation time step
       if (.not. (Model%lsswr .or. Model%lslwr )) return
 !
-      !!$ser verbatim print *, 'INFO: inside GFS_radiation_driver, serialization is ', ser_on
+      !!$ser verbatim print *, 'INFO: running GFS_radiation_driver, serialization is ', ser_on
       
       !--- set commonly used integers
       me = Model%me

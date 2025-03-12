@@ -934,7 +934,7 @@ module module_physics_driver
            )
 
       else
-        !$ser verbatim print *, 'INFO: serialize rad'
+        !!$ser verbatim print *, 'INFO: serialize rad'
         !$ser verbatim rad_solhr = Model%solhr
         !$ser verbatim rad_slag = Model%slag
         !$ser verbatim rad_sdec = Model%sdec
@@ -2015,7 +2015,6 @@ module module_physics_driver
           !Discarded arguments: STDH (currently not used), CT
           !output variables: MIXHT, PBLH, EL_MYJ, tendencies, AKHS, AKMS, *Z0, EXCH_H, tke, KPBL
           !NOTE: Look at mixing length (mixh1)
-          !$ser verbatim print *, 'INFO: call myj_pbl'
           call myj_pbl(DT=dtp,NPHS=1,EPSL=epsL,EPSQ2=epsQ2,HT=ht,DZ=dz  &
                ,PMID=phmid,PINH=phint,TH=th,T=pt,EXNER=exner,Q=qv1 &
                ,CWM=ql1,U=uin,V=vin &
@@ -3920,7 +3919,7 @@ module module_physics_driver
         !$ser data mp_adj_vmr=mp_adj_vmr mp_te=mp_te mp_dte=mp_dte
         !$ser data mp_prefluxw=mp_prefluxw mp_prefluxr=mp_prefluxr mp_prefluxi=mp_prefluxi mp_prefluxs=mp_prefluxs
         !$ser data mp_prefluxg=mp_prefluxg
-        !$ser verbatim print *, 'INFO: end serialize microphysics'
+        !!$ser verbatim print *, 'INFO: end serialize microphysics'
         tem = dtp * con_p001 / con_day
         water0(:)   = water0(:)   * tem
         rain0(:)    = rain0(:)    * tem
