@@ -468,7 +468,7 @@ module module_physics_driver
 
       real(kind=kind_phys), dimension(Model%ntrac-Model%ncld+2) ::      &
            fscav, fswtr
-      !$ser verbatim real (kind=kind_phys), dimension(Model%ntrac-Model%ncld+2) :: fscav
+      !$ser verbatim real (kind=kind_phys), dimension(Model%ntrac-Model%ncld+2) :: ser_fscav
 
       real(kind=kind_phys), dimension(size(Grid%xlon,1))  ::            &
            ccwfac, garea, dlength, cumabs, cice, zice, tice, gflx,      &
