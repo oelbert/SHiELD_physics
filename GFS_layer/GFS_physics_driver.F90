@@ -3203,14 +3203,21 @@ module module_physics_driver
             endif
             !$ser verbatim print *, 'INFO: shalconv'
             !$ser verbatim ntchm = Model%ntchm
+            !$ser verbatim print *, 'INFO: ntchm'
             !$ser verbatim ser_fscav = Model%fscav
+            !$ser verbatim print *, 'INFO: fscav'
             !$ser verbatim ncld = Model%ncld
+            !$ser verbatim print *, 'INFO: ncld'
             !$ser verbatim clam_shal = Model%clam_shal
+            !$ser verbatim print *, 'INFO: clam_shal'
             !$ser verbatim c0s_shal = Model%c0s_shal
+            !$ser verbatim print *, 'INFO: c0s_shal'
             !$ser verbatim c1_shal = Model%c1_shal
+            !$ser verbatim print *, 'INFO: c1_shal'
             !$ser verbatim pgcon_shal = Model%pgcon_shal
+            !$ser verbatim print *, 'INFO: pgcon_shal'
             !$ser verbatim asolfac_shal = Model%asolfac_shal
-            !$ser verbatim print *, 'INFO: initial savepoint'
+            !$ser verbatim print *, 'INFO: asolfac_shal'
             !$ser savepoint ShalConv-In
             !$ser data dtp=dtp itc=itc ntchm=ntchm ntk=ntk nsamftrac=nsamftrac
             !$ser data delta=del prsl=Statein%prsl pgr=Statein%pgr phil=Statein%phil clw=clw(:,:,1:nsamftrac+2)
@@ -3221,7 +3228,6 @@ module module_physics_driver
             !$ser data dt_mf=dt_mf cnvw=cnvw cnvc=cnvc
             !$ser data clam_shal=clam_shal c0s_shal=c0s_shal c1_shal=c1_shal
             !$ser data pgcon_shal=pgcon_shal asolfac_shal=asolfac_shal
-            !$ser verbatim print *, 'INFO: do shalconv'
             call samfshalcnv (im, ix, levs, dtp, itc, Model%ntchm, ntk, nsamftrac, &
                               del, Statein%prsl, Statein%pgr, Statein%phil, clw(:,:,1:nsamftrac+2),   &
                               Stateout%gq0(:,:,1), Stateout%gt0,                   &
@@ -3233,7 +3239,6 @@ module module_physics_driver
                               Model%pgcon_shal, Model%asolfac_shal)
 
 
-            !$ser verbatim print *, 'INFO: shalconv save out'
             !$ser savepoint ShalConv-Out
             !$ser data dtp=dtp itc=itc ntchm=ntchm ntk=ntk nsamftrac=nsamftrac
             !$ser data delta=del prsl=Statein%prsl pgr=Statein%pgr phil=Statein%phil clw=clw(:,:,1:nsamftrac+2)
@@ -3244,7 +3249,6 @@ module module_physics_driver
             !$ser data dt_mf=dt_mf cnvw=cnvw cnvc=cnvc
             !$ser data clam_shal=clam_shal c0s_shal=c0s_shal c1_shal=c1_shal
             !$ser data pgcon_shal=pgcon_shal asolfac_shal=asolfac_shal
-            !$ser verbatim print *, 'INFO: finish shalconv'
             raincs(:)     = frain * rain1(:)
             Diag%rainc(:) = Diag%rainc(:) + raincs(:)
 ! in  mfshalcnv,  'cnvw' and 'cnvc' are set to zero before computation starts:
