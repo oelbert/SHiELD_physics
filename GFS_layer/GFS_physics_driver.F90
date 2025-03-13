@@ -3137,7 +3137,7 @@ module module_physics_driver
 
             raincs(:)     = frain * rain1(:)
             Diag%rainc(:) = Diag%rainc(:) + raincs(:)
-! in shalcnv,  'cnvw' and 'cnvc' are not set to zero:
+              ! in shalcnv,  'cnvw' and 'cnvc' are not set to zero:
             if ((Model%shcnvcw) .and. (Model%num_p3d == 4) .and. (Model%npdf3d == 3)) then
               Tbd%phy_f3d(:,:,num2) = cnvw(:,:)
               Tbd%phy_f3d(:,:,num3) = cnvc(:,:)
@@ -3201,6 +3201,7 @@ module module_physics_driver
             else
                nsamftrac = tottracer
             endif
+            !$ser verbatim print *, 'INFO: shalconv'
             !$ser verbatim ntchm = Model%ntchm
             !$ser verbatim ser_fscav = Model%fscav
             !$ser verbatim ncld = Model%ncld
@@ -3209,6 +3210,7 @@ module module_physics_driver
             !$ser verbatim c1_shal = Model%c1_shal
             !$ser verbatim pgcon_shal = Model%pgcon_shal
             !$ser verbatim asolfac_shal = Model%asolfac_shal
+            !$ser verbatim print *, 'INFO: initial savepoint'
             !$ser savepoint ShalConv-In
             !$ser data dtp=dtp itc=itc ntchm=ntchm ntk=ntk nsamftrac=nsamftrac
             !$ser data delta=del prsl=Statein%prsl pgr=Statein%pgr phil=Statein%phil clw=clw(:,:,1:nsamftrac+2)
@@ -3219,6 +3221,7 @@ module module_physics_driver
             !$ser data dt_mf=dt_mf cnvw=cnvw cnvc=cnvc
             !$ser data clam_shal=clam_shal c0s_shal=c0s_shal c1_shal=c1_shal
             !$ser data pgcon_shal=pgcon_shal asolfac_shal=asolfac_shal
+            !$ser verbatim print *, 'INFO: do shalconv'
             call samfshalcnv (im, ix, levs, dtp, itc, Model%ntchm, ntk, nsamftrac, &
                               del, Statein%prsl, Statein%pgr, Statein%phil, clw(:,:,1:nsamftrac+2),   &
                               Stateout%gq0(:,:,1), Stateout%gt0,                   &
@@ -3230,6 +3233,7 @@ module module_physics_driver
                               Model%pgcon_shal, Model%asolfac_shal)
 
 
+            !$ser verbatim print *, 'INFO: shalconv save out'
             !$ser savepoint ShalConv-Out
             !$ser data dtp=dtp itc=itc ntchm=ntchm ntk=ntk nsamftrac=nsamftrac
             !$ser data delta=del prsl=Statein%prsl pgr=Statein%pgr phil=Statein%phil clw=clw(:,:,1:nsamftrac+2)
@@ -3240,6 +3244,7 @@ module module_physics_driver
             !$ser data dt_mf=dt_mf cnvw=cnvw cnvc=cnvc
             !$ser data clam_shal=clam_shal c0s_shal=c0s_shal c1_shal=c1_shal
             !$ser data pgcon_shal=pgcon_shal asolfac_shal=asolfac_shal
+            !$ser verbatim print *, 'INFO: finish shalconv'
             raincs(:)     = frain * rain1(:)
             Diag%rainc(:) = Diag%rainc(:) + raincs(:)
 ! in  mfshalcnv,  'cnvw' and 'cnvc' are set to zero before computation starts:
@@ -3252,6 +3257,7 @@ module module_physics_driver
               num2 = Model%num_p3d + 1
               Tbd%phy_f3d(:,:,num2) = Tbd%phy_f3d(:,:,num2) + cnvw(:,:)
             endif
+            !$ser verbatim print *, 'INFO: done shalconv'
 
           elseif (Model%imfshalcnv == 0) then    ! modified Tiedtke Shallow convecton
                                                  !-----------------------------------
