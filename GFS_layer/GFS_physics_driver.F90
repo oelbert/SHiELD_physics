@@ -3206,6 +3206,8 @@ module module_physics_driver
             !$ser verbatim ii = size(ser_fscav)
             !$ser verbatim print *, ii
             !$ser verbatim do i = 1, ii
+              !$ser verbatim print *, i
+              !$ser verbatim print *, size(Model%fscav)
               !$ser verbatim print *, 'INFO: array fscav: ',ser_fscav(i)
               !$ser verbatim print *, 'INFO: Model fscav: ',Model%fscav(i)
               !$ser verbatim ser_fscav(i) = Model%fscav(i)
