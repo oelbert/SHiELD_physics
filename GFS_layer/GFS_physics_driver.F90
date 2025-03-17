@@ -3203,10 +3203,11 @@ module module_physics_driver
             endif
             !$ser verbatim print *, 'INFO: shalconv'
             !$ser verbatim ntchm = Model%ntchm
-            !$ser verbatim do k = 1, Model%ntrac-Model%ncld+2
-              !$ser verbatim print *, 'INFO: Model fscav: ',Model%fscav(k)
-              !$ser verbatim print *, 'INFO: array fscav: ',ser_fscav(k)
-              !$ser verbatim ser_fscav(k) = Model%fscav(k)
+            !$ser verbatim ii = Model%ntrac-Model%ncld+2
+            !$ser verbatim do i = 1, ii
+              !$ser verbatim print *, 'INFO: Model fscav: ',Model%fscav(i)
+              !$ser verbatim print *, 'INFO: array fscav: ',ser_fscav(i)
+              !$ser verbatim ser_fscav(i) = Model%fscav(i)
             !$ser verbatim enddo
             !$ser verbatim print *, 'INFO: fscav'
             !$ser verbatim ncld = Model%ncld
