@@ -3204,27 +3204,13 @@ module module_physics_driver
             !$ser verbatim print *, 'INFO: shalconv'
             !$ser verbatim ntchm = Model%ntchm
             !$ser verbatim ii = size(ser_fscav)
-            !$ser verbatim print *, ii
-            !$ser verbatim do i = 1, ii
-              !$ser verbatim print *, i
-              !$ser verbatim print *, size(Model%fscav)
-              !$ser verbatim print *, 'INFO: array fscav: ',ser_fscav(i)
-              !$ser verbatim print *, 'INFO: Model fscav: ',Model%fscav(i)
-              !$ser verbatim ser_fscav(i) = Model%fscav(i)
-            !$ser verbatim enddo
-            !$ser verbatim print *, 'INFO: fscav'
+            !$ser verbatim ser_fscav(:) = 0.0
             !$ser verbatim ncld = Model%ncld
-            !$ser verbatim print *, 'INFO: ncld'
             !$ser verbatim clam_shal = Model%clam_shal
-            !$ser verbatim print *, 'INFO: clam_shal'
             !$ser verbatim c0s_shal = Model%c0s_shal
-            !$ser verbatim print *, 'INFO: c0s_shal'
             !$ser verbatim c1_shal = Model%c1_shal
-            !$ser verbatim print *, 'INFO: c1_shal'
             !$ser verbatim pgcon_shal = Model%pgcon_shal
-            !$ser verbatim print *, 'INFO: pgcon_shal'
             !$ser verbatim asolfac_shal = Model%asolfac_shal
-            !$ser verbatim print *, 'INFO: asolfac_shal'
             !$ser savepoint ShalConv-In
             !$ser data dtp=dtp itc=itc ntchm=ntchm ntk=ntk nsamftrac=nsamftrac
             !$ser data delta=del prsl=Statein%prsl pgr=Statein%pgr phil=Statein%phil clw=clw(:,:,1:nsamftrac+2)
