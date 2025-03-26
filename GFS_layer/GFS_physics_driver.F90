@@ -3214,7 +3214,7 @@ module module_physics_driver
             !$ser savepoint ShalConv-In
             !$ser data dtp=dtp itc=itc ntchm=ntchm ntk=ntk nsamftrac=nsamftrac
             !$ser data delta=del prsl=Statein%prsl pgr=Statein%pgr phil=Statein%phil clw=clw(:,:,1:nsamftrac+2)
-            !$ser data gq0(:,:,1)=Stateout%gq0(:,:,1) gt0=Stateout%gt0
+            !$ser data gq0=Stateout%gq0(:,:,1) gt0=Stateout%gt0
             !$ser data gu0=Stateout%gu0 gv0=Stateout%gv0 ser_fscav=ser_fscav
             !$ser data rain1=rain1 kbot=kbot ktop=ktop kcnv=kcnv islmsk=islmsk garea=garea
             !$ser data vvl=Statein%vvl ncld=ncld hpbl=Diag%hpbl ud_mf=ud_mf
@@ -3233,15 +3233,12 @@ module module_physics_driver
 
 
             !$ser savepoint ShalConv-Out
-            !$ser data dtp=dtp itc=itc ntchm=ntchm ntk=ntk nsamftrac=nsamftrac
-            !$ser data delta=del prsl=Statein%prsl pgr=Statein%pgr phil=Statein%phil clw=clw(:,:,1:nsamftrac+2)
-            !$ser data gq0(:,:,1)=Stateout%gq0(:,:,1) gt0=Stateout%gt0
-            !$ser data gu0=Stateout%gu0 gv0=Stateout%gv0 ser_fscav=ser_fscav
-            !$ser data rain1=rain1 kbot=kbot ktop=ktop kcnv=kcnv islmsk=islmsk garea=garea
-            !$ser data vvl=Statein%vvl ncld=ncld hpbl=Diag%hpbl ud_mf=ud_mf
+            !$ser data delta=del prsl=Statein%prsl pgr=Statein%pgr phil=Statein%phil
+            !$ser data gq0=Stateout%gq0(:,:,1) gt0=Stateout%gt0
+            !$ser data gu0=Stateout%gu0 gv0=Stateout%gv0 clw=clw(:,:,1:nsamftrac+2)
+            !$ser data rain1=rain1 kbot=kbot ktop=ktop kcnv=kcnv
+            !$ser data vvl=Statein%vvl hpbl=Diag%hpbl ud_mf=ud_mf
             !$ser data dt_mf=dt_mf cnvw=cnvw cnvc=cnvc
-            !$ser data clam_shal=clam_shal c0s_shal=c0s_shal c1_shal=c1_shal
-            !$ser data pgcon_shal=pgcon_shal asolfac_shal=asolfac_shal
             raincs(:)     = frain * rain1(:)
             Diag%rainc(:) = Diag%rainc(:) + raincs(:)
 ! in  mfshalcnv,  'cnvw' and 'cnvc' are set to zero before computation starts:
