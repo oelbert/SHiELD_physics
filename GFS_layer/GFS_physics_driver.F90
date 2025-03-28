@@ -3202,6 +3202,7 @@ module module_physics_driver
                nsamftrac = tottracer
             endif
             !$ser verbatim print *, 'INFO: shalconv'
+            !$ser verbatim print *, 'INFO: ntshalconv = ',nsamftrac
             !$ser verbatim ntchm = Model%ntchm
             !$ser verbatim ii = size(ser_fscav)
             !$ser verbatim ser_fscav(:) = 0.0
