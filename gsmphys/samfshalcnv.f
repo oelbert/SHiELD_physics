@@ -71,6 +71,8 @@
      &     dot,ncloud,hpbl,ud_mf,dt_mf,cnvw,cnvc,
      &     clam,c0s,c1,pgcon,asolfac)
 !
+      !$ser verbatim use mpi
+      !$ser verbatim USE m_serialize, ONLY: fs_is_serialization_on
       use machine , only : kind_phys
       use funcphys , only : fpvs
       use physcons, grav => con_g, cp => con_cp, hvap => con_hvap
@@ -1516,6 +1518,13 @@ c
 c
 c!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 c
+      !$ser savepoint FeedbackCtrl-In
+      !$ser data cnvflg=cnvflg kmax=kmax kb=kb ktcon=ktcon islimsk=islimsk ktop=ktop
+      !$ser data kbot=kbot kbcon=kbcon kcnv=kcnv qeso=qeso pfld=pfld delhbar=delhbar
+      !$ser data delqbar=delqbar deltbar=deltbar delubar=delubar delvbar=delvbar qcond=qcond
+      !$ser data dellah=dellah dellaq=dellaq xmb=xmb dt2=dt2 dellau=dellau dellav=dellav
+      !$ser data del=del del1=delq delq2=delq2 delqev=delqev deltv=deltv qevap=qevap rn=rn
+      !$ser data t1=t1 q1=q1 u1=u1 v1=v1 rntot=rntot pwo=pwo edt=edt eta=eta cnvw=cnvw cnvwt=cnvwt cnvc=cnvc
       do k = 1, km
         do i = 1, im
           if (cnvflg(i) .and. k <= kmax(i)) then
@@ -1724,6 +1733,13 @@ c
           endif
         enddo
       enddo
+      !$ser savepoint FeedbackCtrl-Out
+      !$ser data cnvflg=cnvflg kmax=kmax kb=kb ktcon=ktcon islimsk=islimsk ktop=ktop
+      !$ser data kbot=kbot kbcon=kbcon kcnv=kcnv qeso=qeso pfld=pfld delhbar=delhbar
+      !$ser data delqbar=delqbar deltbar=deltbar delubar=delubar delvbar=delvbar qcond=qcond
+      !$ser data dellah=dellah dellaq=dellaq xmb=xmb dellau=dellau dellav=dellav
+      !$ser data del=del del1=delq delq2=delq2 delqev=delqev deltv=deltv qevap=qevap rn=rn
+      !$ser data t1=t1 q1=q1 u1=u1 v1=v1 rntot=rntot pwo=pwo edt=edt eta=eta cnvw=cnvw cnvwt=cnvwt cnvc=cnvc
 c
 c  cloud water
 c
