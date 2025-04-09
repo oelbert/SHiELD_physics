@@ -533,7 +533,7 @@ c
 !> - Search below the index "kbm" for the level of free convection (LFC) where the condition \f$h_b > h^*\f$ is first met, where \f$h_b, h^*\f$ are the state moist static energy at the parcel's starting level and saturation moist static energy, respectively. Set "kbcon" to the index of the LFC.
       !$ser savepoint Static1-In
       !$ser data sc1_cnvflg=cnvflg sc1_flg=flg sc1_kbcon=kbcon sc1_kmax=kmax
-      !$ser data sc1_kbm=kbm sc1_kb=kb sc1_heo_kb=heo_kb sc1_heo=heo sc1_heso=heso
+      !$ser data sc1_kbm=kbm sc1_kb=kb sc1_heo=heo sc1_heso=heso
       do i=1,im
         flg(i)   = cnvflg(i)
         if(flg(i)) kbcon(i) = kmax(i)
@@ -556,7 +556,7 @@ c
       enddo
       !$ser savepoint Static1-Out
       !$ser data sc1_cnvflg=cnvflg sc1_flg=flg sc1_kbcon=kbcon sc1_kmax=kmax
-      !$ser data sc1_kbm=kbm sc1_kb=kb sc1_heo_kb=heo_kb sc1_heo=heo sc1_heso=heso
+      !$ser data sc1_kbm=kbm sc1_kb=kb sc1_heo=heo sc1_heso=heso
 !!
 !> - If no LFC, return to the calling routine without modifying state variables.
       totflg = .true.
