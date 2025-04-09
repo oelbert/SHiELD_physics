@@ -531,6 +531,9 @@ c
 c  look for the level of free convection as cloud base
 c
 !> - Search below the index "kbm" for the level of free convection (LFC) where the condition \f$h_b > h^*\f$ is first met, where \f$h_b, h^*\f$ are the state moist static energy at the parcel's starting level and saturation moist static energy, respectively. Set "kbcon" to the index of the LFC.
+      !$ser savepoint Static1-In
+      !$ser data sc1_cnvflg=cnvflg sc1_flg=flg sc1_kbcon=kbcon sc1_kmax=kmax
+      !$ser data sc1_kbm=kbm sc1_kb=kb sc1_heo_kb=heo_kb sc1_heo=heo sc1_heso=heso
       do i=1,im
         flg(i)   = cnvflg(i)
         if(flg(i)) kbcon(i) = kmax(i)
@@ -551,6 +554,9 @@ c
           if(kbcon(i) == kmax(i)) cnvflg(i) = .false.
         endif
       enddo
+      !$ser savepoint Static1-Out
+      !$ser data sc1_cnvflg=cnvflg sc1_flg=flg sc1_kbcon=kbcon sc1_kmax=kmax
+      !$ser data sc1_kbm=kbm sc1_kb=kb sc1_heo_kb=heo_kb sc1_heo=heo sc1_heso=heso
 !!
 !> - If no LFC, return to the calling routine without modifying state variables.
       totflg = .true.
@@ -799,6 +805,8 @@ c   taking account into convection inhibition due to existence of
 c    dry layers below cloud base
 c
 !> - With entrainment, recalculate the LFC as the first level where buoyancy is positive. The difference in pressure levels between LFCs calculated with/without entrainment must be less than a threshold (currently 25 hPa). Otherwise, convection is inhibited and the scheme returns to the calling routine without modifying the state variables. This is the subcloud dryness trigger modification discussed in Han and Pan (2011) \cite han_and_pan_2011.
+      !$ser savepoint UpdateKb9-In
+      !$ser data uk9_dbyo=dbyo uk9_cnvflg=cnvflg uk9_kmax=kmax uk9_kbm=kbm uk9_kbcon=kbcon uk9_kbcon1=kbcon1 uk9_flg=flg uk9_pfld=pfld
       do i=1,im
         flg(i) = cnvflg(i)
         kbcon1(i) = kmax(i)
@@ -826,6 +834,8 @@ c
           endif
         endif
       enddo
+      !$ser savepoint UpdateKb9-Out
+      !$ser data uk9_dbyo=dbyo uk9_cnvflg=cnvflg uk9_kmax=kmax uk9_kbm=kbm uk9_kbcon=kbcon uk9_kbcon1=kbcon1 uk9_flg=flg uk9_pfld=pfld
 !!
       totflg = .true.
       do i = 1, im
@@ -1069,12 +1079,20 @@ c
       if(totflg) return
 !!
 c
-c  estimate the onvective overshooting as the level
+c  estimate the convective overshooting as the level
 c    where the [aafac * cloud work function] becomes zero,
 c    which is the final cloud top
 c    limited to the level of P/Ps=0.7
 c
 !> - Continue calculating the cloud work function past the point of neutral buoyancy to represent overshooting according to Han and Pan (2011) \cite han_and_pan_2011 . Convective overshooting stops when \f$ cA_u < 0\f$ where \f$c\f$ is currently 10%, or when 10% of the updraft cloud work function has been consumed by the stable buoyancy force. Overshooting is also limited to the level where \f$p=0.7p_{sfc}\f$.
+      !$ser savepoint Static12-In 
+      !$ser data s12_cnvflg=cnvflg s12_aa1=aa1 s12_flg=flg s12_ktcon1=ktcon1 s12_kbm=kbm
+      !$ser data s12_ktcon=ktcon s12_zo=zo s12_qeso=qeso s12_to=to s12_dellal=dellal
+      !$ser data s12_dbyo=dbyo s12_zi=zi s12_xlamue=xlamue s12_xlamud=xlamud s12_qcko=qcko
+      !$ser data s12_qrcko=qrcko s12_qo=qo s12_eta=eta s12_del0=del0 s12_c0t=c0t s12_pwo=pwo
+      !$ser data s12_cnvwt=cnvwt s12_buo=buo s12_wu2=wu2 s12_wc=wc s12_sumx=sumx
+      !$ser data s12_kbcon1=kbcon1 s12_drag=drag
+      !$ser data s12_c1=c1 s12_ncloud=ncloud
       do i = 1, im
         if (cnvflg(i)) then
           aa1(i) = aafac * aa1(i)
@@ -1238,6 +1256,13 @@ c
           ktcon1(i) = kk
         endif
       enddo
+      !$ser savepoint Static12-Out
+      !$ser data s12_cnvflg=cnvflg s12_aa1=aa1 s12_flg=flg s12_ktcon1=ktcon1 s12_kbm=kbm
+      !$ser data s12_ktcon=ktcon s12_zo=zo s12_qeso=qeso s12_to=to s12_dellal=dellal
+      !$ser data s12_dbyo=dbyo s12_zi=zi s12_xlamue=xlamue s12_xlamud=xlamud s12_qcko=qcko
+      !$ser data s12_qrcko=qrcko s12_qo=qo s12_eta=eta s12_del0=del0 s12_c0t=c0t s12_pwo=pwo
+      !$ser data s12_cnvwt=cnvwt s12_buo=buo s12_wu2=wu2 s12_wc=wc s12_sumx=sumx
+      !$ser data s12_kbcon1=kbcon1 s12_drag=drag
 c
 c  this section is ready for cloud water
 c
@@ -1519,12 +1544,12 @@ c
 c!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 c
       !$ser savepoint FeedbackCtrl-In
-      !$ser data cnvflg=cnvflg kmax=kmax kb=kb ktcon=ktcon islimsk=islimsk ktop=ktop
-      !$ser data kbot=kbot kbcon=kbcon kcnv=kcnv qeso=qeso pfld=pfld delhbar=delhbar
-      !$ser data delqbar=delqbar deltbar=deltbar delubar=delubar delvbar=delvbar qcond=qcond
-      !$ser data dellah=dellah dellaq=dellaq xmb=xmb dt2=dt2 dellau=dellau dellav=dellav
-      !$ser data del=del del1=delq delq2=delq2 delqev=delqev deltv=deltv qevap=qevap rn=rn
-      !$ser data t1=t1 q1=q1 u1=u1 v1=v1 rntot=rntot pwo=pwo edt=edt eta=eta cnvw=cnvw cnvwt=cnvwt cnvc=cnvc
+      !$ser data fc_cnvflg=cnvflg fc_kmax=kmax fc_kb=kb fc_ktcon=ktcon fc_islimsk=islimsk fc_ktop=ktop
+      !$ser data fc_kbot=kbot fc_kbcon=kbcon fc_kcnv=kcnv fc_qeso=qeso fc_pfld=pfld fc_delhbar=delhbar
+      !$ser data fc_delqbar=delqbar fc_deltbar=deltbar fc_delubar=delubar fc_delvbar=delvbar fc_qcond=qcond
+      !$ser data fc_dellah=dellah fc_dellaq=dellaq fc_xmb=xmb fc_dt2=dt2 fc_dellau=dellau fc_dellav=dellav
+      !$ser data fc_del=del fc_del1=delq fc_delq2=delq2 fc_delqev=delqev fc_deltv=deltv fc_qevap=qevap fc_rn=rn
+      !$ser data fc_t1=t1 fc_q1=q1 fc_u1=u1 fc_v1=v1 fc_rntot=rntot fc_pwo=pwo fc_edt=edt fc_eta=eta fc_cnvw=cnvw fc_cnvwt=cnvwt fc_cnvc=cnvc
       do k = 1, km
         do i = 1, im
           if (cnvflg(i) .and. k <= kmax(i)) then
@@ -1734,12 +1759,12 @@ c
         enddo
       enddo
       !$ser savepoint FeedbackCtrl-Out
-      !$ser data cnvflg=cnvflg kmax=kmax kb=kb ktcon=ktcon islimsk=islimsk ktop=ktop
-      !$ser data kbot=kbot kbcon=kbcon kcnv=kcnv qeso=qeso pfld=pfld delhbar=delhbar
-      !$ser data delqbar=delqbar deltbar=deltbar delubar=delubar delvbar=delvbar qcond=qcond
-      !$ser data dellah=dellah dellaq=dellaq xmb=xmb dellau=dellau dellav=dellav
-      !$ser data del=del del1=delq delq2=delq2 delqev=delqev deltv=deltv qevap=qevap rn=rn
-      !$ser data t1=t1 q1=q1 u1=u1 v1=v1 rntot=rntot pwo=pwo edt=edt eta=eta cnvw=cnvw cnvwt=cnvwt cnvc=cnvc
+      !$ser data fc_cnvflg=cnvflg fc_kmax=kmax fc_kb=kb fc_ktcon=ktcon fc_islimsk=islimsk fc_ktop=ktop
+      !$ser data fc_kbot=kbot fc_kbcon=kbcon fc_kcnv=kcnv fc_qeso=qeso fc_pfld=pfld fc_delhbar=delhbar
+      !$ser data fc_delqbar=delqbar fc_deltbar=deltbar fc_delubar=delubar fc_delvbar=delvbar fc_qcond=qcond
+      !$ser data fc_dellah=dellah fc_dellaq=dellaq fc_xmb=xmb fc_dellau=dellau fc_dellav=dellav
+      !$ser data fc_del=del fc_del1=delq fc_delq2=delq2 fc_delqev=delqev fc_deltv=deltv fc_qevap=qevap fc_rn=rn
+      !$ser data fc_t1=t1 fc_q1=q1 fc_u1=u1 fc_v1=v1 fc_rntot=rntot fc_pwo=pwo fc_edt=edt fc_eta=eta fc_cnvw=cnvw fc_cnvwt=cnvwt fc_cnvc=cnvc
 c
 c  cloud water
 c
