@@ -1089,7 +1089,7 @@
       !$ser data s12_cnvflg=cnvflg s12_aa1=aa1 s12_flg=flg s12_ktcon1=ktcon1 s12_kbm=kbm
       !$ser data s12_ktcon=ktcon s12_zo=zo s12_qeso=qeso s12_to=to s12_dellal=dellal
       !$ser data s12_dbyo=dbyo s12_zi=zi s12_xlamue=xlamue s12_xlamud=xlamud s12_qcko=qcko
-      !$ser data s12_qrcko=qrcko s12_qo=qo s12_eta=eta s12_del0=del0 s12_c0t=c0t s12_pwo=pwo
+      !$ser data s12_qrcko=qrcko s12_qo=qo s12_eta=eta s12_del0=del s12_c0t=c0t s12_pwo=pwo
       !$ser data s12_cnvwt=cnvwt s12_buo=buo s12_wu2=wu2 s12_wc=wc s12_sumx=sumx
       !$ser data s12_kbcon1=kbcon1 s12_drag=drag
       !$ser data s12_c1=c1 s12_ncloud=ncloud
@@ -1260,7 +1260,7 @@
       !$ser data s12_cnvflg=cnvflg s12_aa1=aa1 s12_flg=flg s12_ktcon1=ktcon1 s12_kbm=kbm
       !$ser data s12_ktcon=ktcon s12_zo=zo s12_qeso=qeso s12_to=to s12_dellal=dellal
       !$ser data s12_dbyo=dbyo s12_zi=zi s12_xlamue=xlamue s12_xlamud=xlamud s12_qcko=qcko
-      !$ser data s12_qrcko=qrcko s12_qo=qo s12_eta=eta s12_del0=del0 s12_c0t=c0t s12_pwo=pwo
+      !$ser data s12_qrcko=qrcko s12_qo=qo s12_eta=eta s12_del0=del s12_c0t=c0t s12_pwo=pwo
       !$ser data s12_cnvwt=cnvwt s12_buo=buo s12_wu2=wu2 s12_wc=wc s12_sumx=sumx
       !$ser data s12_kbcon1=kbcon1 s12_drag=drag
 !
