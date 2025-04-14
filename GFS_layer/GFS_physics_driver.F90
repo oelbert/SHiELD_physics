@@ -3829,6 +3829,7 @@ module module_physics_driver
           delp (:,k) = del(:,levs-k+1)
           dz   (:,k) = (Statein%phii(:,levs-k+1)-Statein%phii(:,levs-k+2))/con_g
         enddo
+        !$ser off
         !$ser verbatim mp_qv(:,:)=Stateout%gq0(:,levs:1:-1,1)
         !$ser verbatim mp_ql(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntcw)
         !$ser verbatim mp_qr(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntrw)
