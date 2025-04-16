@@ -34,9 +34,6 @@
 
 module gfdl_cld_mp_mod
 
-    !$ser verbatim use mpi
-    !$ser verbatim USE m_serialize, ONLY: fs_is_serialization_on
-    
     implicit none
 
     private
@@ -290,13 +287,13 @@ module gfdl_cld_mp_mod
 
     logical :: use_rhc_cevap = .false. ! cap of rh for cloud water evaporation
     logical :: use_rhc_revap = .false. ! cap of rh for rain evaporation
-    
-    logical :: const_vw = .false. ! if .true., the constants are specified by v * _fac
-    logical :: const_vi = .false. ! if .true., the constants are specified by v * _fac
-    logical :: const_vs = .false. ! if .true., the constants are specified by v * _fac
-    logical :: const_vg = .false. ! if .true., the constants are specified by v * _fac
-    logical :: const_vr = .false. ! if .true., the constants are specified by v * _fac
-    
+
+    logical :: const_vw = .false. ! if .ture., the constants are specified by v * _fac
+    logical :: const_vi = .false. ! if .ture., the constants are specified by v * _fac
+    logical :: const_vs = .false. ! if .ture., the constants are specified by v * _fac
+    logical :: const_vg = .false. ! if .ture., the constants are specified by v * _fac
+    logical :: const_vr = .false. ! if .ture., the constants are specified by v * _fac
+
     logical :: liq_ice_combine = .false. ! combine all liquid water, combine all solid water
     logical :: snow_grauple_combine = .true. ! combine snow and graupel
 
@@ -1209,88 +1206,6 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     real (kind = r8), dimension (ks:ke) :: tz, tzuv, tzw
 
-    !$ser verbatim real, dimension (is:ie) :: pre_vapor, pre_water, pre_rain, pre_ice, pre_snow, pre_graupel, pre_dte, pre_cond, pre_h_var, pre_rh_adj, pre_rh_rain, pre_bew0, pre_bww0, pre_bed0, pre_bwd0, pre_gsize, pre_hs
-    !$ser verbatim real, dimension (is:ie) :: fin_dte, fin_dte0, fin_te_loss, fin_bew, fin_bww, fin_bed, fin_bwd, fin_vapor, fin_water, fin_rain, fin_ice, fin_snow, fin_graupel
-    !$ser verbatim real, dimension (is:ie) :: ne_cond, ne_cond_o, cf_h_var, cf_gsize
-    !$ser verbatim real, dimension (is:ie) :: mpf_h_var, mpf_rh_adj, mpf_rh_rain, mpf_dte, mpf_water, mpf_rain, mpf_ice, mpf_snow, mpf_graupel, mpf_cond, mpf_dep, mpf_sub, mpf_evap
-    !$ser verbatim real, dimension (is:ie) :: mpf_h_var_o, mpf_rh_adj_o, mpf_dte_o, mpf_water_o, mpf_rain_o, mpf_ice_o, mpf_snow_o, mpf_graupel_o, mpf_cond_o, mpf_dep_o, mpf_sub_o, mpf_evap_o
-    !$ser verbatim real, dimension (is:ie) :: sd_w1, sd_r1, sd_i1, sd_s1, sd_g1, sd_dte, wr_reevap, sz_cond, sz_dep, sz_reevap, sz_sub
-    !$ser verbatim real, dimension (is:ie) :: tfi_i1, tfo_i1, tfi_dte, tfo_dte, sf_nf, sf_e1, ef_e1, sm_zs, sm_r1, sm_r1o
-    !$ser verbatim real, dimension (is:ie) :: ts_w1, ts_r1, ts_i1, ts_s1, ts_g1, ts_w1o, ts_r1o, ts_i1o, ts_s1o, ts_g1o, ts_dte, ts_dteo
-    !$ser verbatim real, dimension (is:ie) :: is_w1, is_r1, is_i1, is_s1, is_g1, ws_reevap, ws_reevapo
-    !$ser verbatim real, dimension (is:ie) :: szs_cond, szs_dep, szs_reevap, szs_sub, szs_condo, szs_depo, szs_reevapo, szs_subo
-
-    !$ser verbatim real, dimension (is:ie) :: mpsub_dte, mpsub_water, mpsub_rain, mpsub_ice, mpsub_snow, mpsub_graupel, mpsub_cond, mpsub_dep, mpsub_sub, mpsub_evap
-    !$ser verbatim real, dimension (is:ie) :: mpsub_dte_o, mpsub_water_o, mpsub_rain_o, mpsub_ice_o, mpsub_snow_o, mpsub_graupel_o, mpsub_cond_o, mpsub_dep_o, mpsub_sub_o, mpsub_evap_o
-
-    !$ser verbatim real, dimension (is:ie) :: zerobuff_2d, onebuff_2d
-
-    !$ser verbatim real, dimension (is:ie) :: ini_c_air, ini_c_vap, ini_d0_vap, ini_lv00, ini_li00, ini_li20, ini_d1_vap, ini_d1_ice, ini_c1_vap, ini_c1_liq, ini_c1_ice
-    !$ser verbatim real, dimension (is:ie) :: ini_t_wfr, ini_pcaw, ini_pcbw, ini_pcai, ini_pcbi, ini_pcar, ini_pcbr, ini_pcas, ini_pcbs, ini_pcag, ini_pcbg, ini_pcah, ini_pcbh, ini_edaw, ini_edbw, ini_edai, ini_edbi, ini_edar, ini_edbr
-    !$ser verbatim real, dimension (is:ie) :: ini_edas, ini_edbs, ini_edag, ini_edbg, ini_edah, ini_edbh, ini_oeaw, ini_oebw, ini_oeai, ini_oebi, ini_oear, ini_oebr, ini_oeas, ini_oebs, ini_oeag, ini_oebg, ini_oeah, ini_oebh, ini_rraw, ini_rrbw
-    !$ser verbatim real, dimension (is:ie) :: ini_rrai, ini_rrbi, ini_rrar, ini_rrbr, ini_rras, ini_rrbs, ini_rrag, ini_rrbg, ini_rrah, ini_rrbh, ini_tvai, ini_tvbi, ini_tvar, ini_tvbr, ini_tvas, ini_tvbs, ini_tvag, ini_tvbg, ini_tvah, ini_tvbh 
-    !$ser verbatim real, dimension (is:ie) :: ini_crevp_1, ini_crevp_2, ini_crevp_3, ini_crevp_4, ini_crevp_5, ini_cssub_1, ini_cssub_2, ini_cssub_3, ini_cssub_4, ini_cssub_5, ini_cgsub_1, ini_cgsub_2, ini_cgsub_3, ini_cgsub_4, ini_cgsub_5
-    !$ser verbatim real, dimension (is:ie) :: ini_csmlt_1, ini_csmlt_2, ini_csmlt_3, ini_csmlt_4, ini_cgmlt_1, ini_cgmlt_2, ini_cgmlt_3, ini_cgmlt_4, ini_cgfr_1, ini_cgfr_2, ini_normw, ini_normr, ini_normi, ini_norms
-    !$ser verbatim real, dimension (is:ie) :: ini_normg, ini_expow, ini_expor, ini_expoi, ini_expos, ini_expog, ini_cracw, ini_craci, ini_csacw, ini_csaci, ini_cgacw, ini_cgaci, ini_cracs, ini_csacr, ini_cgacr, ini_cgacs
-    !$ser verbatim real, dimension (is:ie, 1:20) :: ini_acc
-    !$ser verbatim real, dimension (is:ie, 1:10) :: ini_acco1, ini_acco2, ini_acco3
-
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: pre_qv, pre_ql, pre_qr, pre_qi, pre_qs, pre_qg, pre_pt, pre_delp, pre_delz, pre_ua, pre_va, pre_wa, pre_qnl, pre_qni
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: pre_qvo, pre_qlo, pre_qro, pre_qio, pre_qso, pre_qgo, pre_pto, pre_delpo, pre_delzo, pre_uao, pre_vao, pre_wao
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: pre_ew0, pre_ww0, pre_adj_vmr, pre_ccn, pre_cin, pre_ed0, pre_wd0, pre_den, pre_pz, pre_denfac, pre_dp0    
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: pp_qv, pp_ql, pp_qr, pp_qi, pp_qs, pp_qg, pp_den
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: fin_tzuv, fin_tzw, fin_qv, fin_ql, fin_qr, fin_qi, fin_qs, fin_qg, fin_pt, fin_delp, fin_delz, fin_ua, fin_va, fin_wa
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: fin_adj_vmr, fin_te, fin_ew, fin_ww, fin_ed, fin_wd, fin_te0, fin_qv0, fin_ql0, fin_qr0, fin_qi0, fin_qs0, fin_qg0, fin_delp0, fin_delz0, fin_pt0, fin_ua0, fin_va0, fin_wa0
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: ne_qv, ne_ql, ne_qr, ne_qi, ne_qs, ne_qg, ne_pt, ne_delp
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: ne_qv_o, ne_ql_o, ne_qr_o, ne_qi_o, ne_qs_o, ne_qg_o, ne_pt_o, ne_delp_o
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: cf_qv, cf_ql, cf_qr, cf_qi, cf_qs, cf_qg, cf_qa, cf_qa_o, cf_pt, cf_den, cf_pz, cf_qsi, cf_dqidt, cf_qsw, cf_dqwdt
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: mpf_qv, mpf_ql, mpf_qr, mpf_qi, mpf_qs, mpf_qg, mpf_pt, mpf_delp, mpf_delz, mpf_u, mpf_v, mpf_w, mpf_den, mpf_denfac, mpf_ccn, mpf_cin, mpf_pfw, mpf_pfr, mpf_pfi, mpf_pfs, mpf_pfg
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: mpf_qv_o, mpf_ql_o, mpf_qr_o, mpf_qi_o, mpf_qs_o, mpf_qg_o, mpf_pt_o, mpf_delp_o, mpf_delz_o, mpf_u_o, mpf_v_o, mpf_w_o, mpf_den_o, mpf_denfac_o, mpf_ccn_o, mpf_cin_o, mpf_pfw_o, mpf_pfr_o, mpf_pfi_o, mpf_pfs_o, mpf_pfg_o
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: sd_qv, sd_ql, sd_qr, sd_qi, sd_qs, sd_qg, sd_u, sd_v, sd_w, sd_vtw, sd_vtr, sd_vti, sd_vts, sd_vtg, sd_pfw, sd_pfr, sd_pfi, sd_pfs, sd_pfg, sd_tz
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: wr_qv, wr_ql, wr_qr, wr_qi, wr_qs, wr_qg, wr_ccn, wr_tz
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: ic_qv, ic_ql, ic_qr, ic_qi, ic_qs, ic_qg, ic_tz
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: sz_qv, sz_ql, sz_qr, sz_qi, sz_qs, sz_qg, sz_ccn, sz_cin, sz_tz
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: tfi_qv, tfi_ql, tfi_qr, tfi_qi, tfi_qs, tfi_qg, tfi_u, tfi_v, tfi_w, tf_vt, tf_dp
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: tfo_qv, tfo_ql, tfo_qr, tfo_qi, tfo_qs, tfo_qg, tfo_u, tfo_v, tfo_w
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: tfi_pt, tfi_pfi, tfo_pt, tfo_pfi, sf_dm, sm_cv, sm_vt, sm_ic
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: ts_qv, ts_ql, ts_qr, ts_qi, ts_qs, ts_qg, ts_qvo, ts_qlo, ts_qro, ts_qio, ts_qso, ts_qgo
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: ts_den, ts_denfac, ts_dp, ts_dz, ts_tz, ts_u, ts_v, ts_w, ts_pf, ts_vt, ts_tzo, ts_uo, ts_vo, ts_wo, ts_pfo, ts_vto 
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: is_icpk, is_pfw, is_pfr, is_pfi, is_pfs, is_pfg, is_vtw, is_vtr, is_vti, is_vts, is_vtg
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: sm_qv, sm_ql, sm_qr, sm_qi, sm_qs, sm_qg, sm_pt, sm_qro, sm_qio, sm_qso, sm_qgo, sm_pto
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: tab_wq, tab_dwq, tab_iq, tab_diq
-
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: isub_qv, isub_ql, isub_qr, isub_qi, isub_qs, isub_qg, isub_pt, isub_cvm, isub_te8, isub_lcpk, isub_icpk, isub_tcpk, isub_tcp3, isub_di
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: isub_qvo, isub_qlo, isub_qro, isub_qio, isub_qso, isub_qgo, isub_pto, isub_cvmo, isub_te8o, isub_lcpko, isub_icpko, isub_tcpko, isub_tcp3o, isub_dio
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: ws_qv, ws_ql, ws_qr, ws_qi, ws_qs, ws_qg, ws_ccn, ws_pt
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: ws_qvo, ws_qlo, ws_qro, ws_qio, ws_qso, ws_qgo, ws_ccno, ws_pto, ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink, ws_vc
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_te
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: szs_pto, szs_qvo, szs_qlo, szs_qro, szs_qio, szs_qso, szs_qgo, szs_ccno, szs_cino
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: szs_lcpk, szs_icpk, szs_tcpk, szs_tcp3, szs_lcpko, szs_icpko, szs_tcpko, szs_tcp3o, szs_cvm, szs_cvmo, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt
-
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: mpsub_qv, mpsub_ql, mpsub_qr, mpsub_qi, mpsub_qs, mpsub_qg, mpsub_pt, mpsub_u, mpsub_v, mpsub_w
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: mpsub_ccn, mpsub_cin, mpsub_pfw, mpsub_pfr, mpsub_pfi, mpsub_pfs, mpsub_pfg, mpsub_vtw, mpsub_vtr, mpsub_vti, mpsub_vts, mpsub_vtg
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: mpsub_qv_o, mpsub_ql_o, mpsub_qr_o, mpsub_qi_o, mpsub_qs_o, mpsub_qg_o, mpsub_pt_o, mpsub_u_o, mpsub_v_o, mpsub_w_o
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: mpsub_ccn_o, mpsub_cin_o, mpsub_pfw_o, mpsub_pfr_o, mpsub_pfi_o, mpsub_pfs_o, mpsub_pfg_o, mpsub_vtw_o, mpsub_vtr_o, mpsub_vti_o, mpsub_vts_o, mpsub_vtg_o
-
-    !$ser verbatim real, dimension (is:ie, ks:ke) :: zerobuff_3d, tem, t0, t2, tc_index, tc_ap1
-
-    !$ser verbatim real, dimension (is:ie, ks:ke + 1) :: tf_ze, tf_zt, zerobuff1_3d, sm_ze, sm_zt
-
-    !$ser verbatim integer, dimension (is:ie, ks:ke) :: tc_it1, tc_it2, zerobuff_3d_int
-    !$ser verbatim integer :: mpi_rank, ier, ii
-    !$ser verbatim logical :: ser_on
-    !$ser verbatim  call mpi_comm_rank(MPI_COMM_WORLD, mpi_rank,ier)
-    !$ser verbatim print *, 'INFO: inside mp_driver'
-    !$ser verbatim zerobuff_3d = 0.0
-    !$ser verbatim zerobuff_3d_int = 0
-    !$ser verbatim zerobuff1_3d = 0.0
-    !$ser verbatim zerobuff_2d = 0.0
-    !$ser verbatim onebuff_2d = 1.0
-
-    !$ser verbatim t0=0.
-    !$ser verbatim t2=0.
-
     ! -----------------------------------------------------------------------
     ! time steps
     ! -----------------------------------------------------------------------
@@ -1301,29 +1216,6 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
     ! -----------------------------------------------------------------------
     ! initialization of total energy difference and condensation diag
     ! -----------------------------------------------------------------------
-    
-    !$ser verbatim pre_qv = qv
-    !$ser verbatim pre_ql = ql
-    !$ser verbatim pre_qr = qr
-    !$ser verbatim pre_qi = qi
-    !$ser verbatim pre_qs = qs
-    !$ser verbatim pre_qg = qg
-    !$ser verbatim pre_pt = pt
-    !$ser verbatim pre_delp = delp
-    !$ser verbatim pre_delz = delz
-    !$ser verbatim pre_ua = ua
-    !$ser verbatim pre_va = va
-    !$ser verbatim pre_wa = wa
-    !$ser verbatim pre_vapor = 0.
-    !$ser verbatim pre_water = water
-    !$ser verbatim pre_rain = rain
-    !$ser verbatim pre_ice = ice
-    !$ser verbatim pre_snow = snow
-    !$ser verbatim pre_graupel = graupel
-    !$ser verbatim pre_qnl = qnl
-    !$ser verbatim pre_qni = qni
-    !$ser verbatim pre_hs = hs
-    !$ser verbatim pre_gsize = gsize
 
     dte = 0.0
     cond = 0.0
@@ -1342,14 +1234,6 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     do i = is, ie
 
-        !$ser verbatim do k = ks, ke
-            !$ser verbatim ii = mod((k - 1) + ke * (i - 1), length) + 1
-            !$ser verbatim tc_index (i, k) = ii
-            !$ser verbatim tem (i, k) = tice - 160. + 0.1 * real (ii - 1)
-            !$ser verbatim t0 (i, k) = table0 (ii)
-            !$ser verbatim t2 (i, k) = table2 (ii)
-        !$ser verbatim enddo
-        
         ! -----------------------------------------------------------------------
         ! conversion of temperature
         ! -----------------------------------------------------------------------
@@ -1505,78 +1389,14 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
         rh_adj = 1. - h_var - rh_inc
         rh_rain = max (0.35, rh_adj - rh_inr)
 
-        !$ser verbatim pre_qvo (i, :) = qvz (:)
-        !$ser verbatim pre_qlo (i, :) = qlz (:)
-        !$ser verbatim pre_qro (i, :) = qrz (:)
-        !$ser verbatim pre_qio (i, :) = qiz (:)
-        !$ser verbatim pre_qso (i, :) = qsz (:)
-        !$ser verbatim pre_qgo (i, :) = qgz (:)
-        !$ser verbatim pre_pto (i, :) = tz (:)
-        !$ser verbatim pre_delpo (i, :) = dp (:)
-        !$ser verbatim pre_delzo (i, :) = dz (:)
-        !$ser verbatim pre_uao (i, :) = u (:)
-        !$ser verbatim pre_vao (i, :) = v (:)
-        !$ser verbatim pre_wao (i, :) = w (:)
-        !$ser verbatim pre_den (i, :) = den (:)
-        !$ser verbatim pre_pz (i, :) = pz (:)
-        !$ser verbatim pre_denfac (i, :) = denfac (:)
-        !$ser verbatim pre_dp0 (i, :) = dp0 (:)
-        !$ser verbatim pre_dte (i) = dte (i)
-        !$ser verbatim pre_cond (i) = cond
-        !$ser verbatim pre_adj_vmr (i, :) = adj_vmr (i, :)
-        !$ser verbatim pre_ccn (i, :) = ccn (:)
-        !$ser verbatim pre_cin (i, :) = cin (:)
-        !$ser verbatim pre_h_var (i) = h_var
-        !$ser verbatim pre_rh_adj (i) = rh_adj
-        !$ser verbatim pre_rh_rain (i) = rh_rain
-
-        !$ser verbatim if (consv_checker) then
-            !$ser verbatim pre_ew0 (i, :) = te_beg_m (i, :)
-            !$ser verbatim pre_ww0 (i, :) = tw_beg_m (i, :)
-            !$ser verbatim pre_bew0 (i) = te_b_beg_m (i)
-            !$ser verbatim pre_bww0 (i) = tw_b_beg_m (i)
-            !$ser verbatim pre_ed0 (i, :) = te_beg_d (i, :)
-            !$ser verbatim pre_wd0 (i, :) = tw_beg_d (i, :)
-            !$ser verbatim pre_bed0 (i) = te_b_beg_d (i)
-            !$ser verbatim pre_bwd0 (i) = tw_b_beg_d (i)
-        !$ser verbatim else
-            !$ser verbatim pre_ew0 (i, :) = 0.
-            !$ser verbatim pre_ww0 (i, :) = 0.
-            !$ser verbatim pre_bew0 (i) = 0.
-            !$ser verbatim pre_bww0 (i) = 0.
-            !$ser verbatim pre_ed0 (i, :) = 0.
-            !$ser verbatim pre_wd0 (i, :) = 0.
-            !$ser verbatim pre_bed0 (i) = 0.
-            !$ser verbatim pre_bwd0 (i) = 0.
-        !$ser verbatim endif
-        
-        
         ! -----------------------------------------------------------------------
         ! fix negative water species from outside
         ! -----------------------------------------------------------------------
-        
-        !$ser verbatim ne_qv(i,:)=qvz(:)
-        !$ser verbatim ne_ql(i,:)=qlz(:)
-        !$ser verbatim ne_qr(i,:)=qrz(:)
-        !$ser verbatim ne_qi(i,:)=qiz(:)
-        !$ser verbatim ne_qs(i,:)=qsz(:)
-        !$ser verbatim ne_qg(i,:)=qgz(:)
-        !$ser verbatim ne_pt(i,:)=tz(:)
-        !$ser verbatim ne_delp(i,:)=dp(:)
-        !$ser verbatim ne_cond(i)=condensation(i)
+
         if (fix_negative) &
             call neg_adj (ks, ke, tz, dp, qvz, qlz, qrz, qiz, qsz, qgz, cond)
 
         condensation (i) = condensation (i) + cond * convt * ntimes
-        !$ser verbatim ne_qv_o(i,:)=qvz(:)
-        !$ser verbatim ne_ql_o(i,:)=qlz(:)
-        !$ser verbatim ne_qr_o(i,:)=qrz(:)
-        !$ser verbatim ne_qi_o(i,:)=qiz(:)
-        !$ser verbatim ne_qs_o(i,:)=qsz(:)
-        !$ser verbatim ne_qg_o(i,:)=qgz(:)
-        !$ser verbatim ne_pt_o(i,:)=tz(:)
-        !$ser verbatim ne_delp_o(i,:)=dp(:)
-        !$ser verbatim ne_cond_o(i)=condensation(i)
 
         ! -----------------------------------------------------------------------
         ! fast microphysics loop
@@ -1596,155 +1416,29 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
         if (do_mp_full) then
 
-            !$ser verbatim do k = ks, ke
-                !$ser verbatim tab_iq (i,k) = iqs (tz (k), den (k), tab_diq (i,k))
-                !$ser verbatim tab_wq (i,k) = wqs (tz (k), den (k), tab_dwq (i,k))
-            !$ser verbatim enddo
-
-            !$ser verbatim mpf_qv(i,:)=qvz(:)
-            !$ser verbatim mpf_ql(i,:)=qlz(:)
-            !$ser verbatim mpf_qr(i,:)=qrz(:)
-            !$ser verbatim mpf_qi(i,:)=qiz(:)
-            !$ser verbatim mpf_qs(i,:)=qsz(:)
-            !$ser verbatim mpf_qg(i,:)=qgz(:)
-            !$ser verbatim mpf_pt(i,:)=tz(:)
-            !$ser verbatim mpf_delp(i,:)=dp(:)
-            !$ser verbatim mpf_delz(i,:)=dz(:)
-            !$ser verbatim mpf_u(i,:)=u(:)
-            !$ser verbatim mpf_v(i,:)=v(:)
-            !$ser verbatim mpf_w(i,:)=w(:)
-            !$ser verbatim mpf_den(i,:)=den(:)
-            !$ser verbatim mpf_denfac(i,:)=denfac(:)
-            !$ser verbatim mpf_ccn(i,:)=ccn(:)
-            !$ser verbatim mpf_cin(i,:)=cin(:)
-            !$ser verbatim mpf_pfw(i,:)=prefluxw(i,:)
-            !$ser verbatim mpf_pfr(i,:)=prefluxr(i,:)
-            !$ser verbatim mpf_pfi(i,:)=prefluxi(i,:)
-            !$ser verbatim mpf_pfs(i,:)=prefluxs(i,:)
-            !$ser verbatim mpf_pfg(i,:)=prefluxg(i,:)
-            !$ser verbatim mpf_h_var(i)=h_var
-            !$ser verbatim mpf_rh_adj(i)=rh_adj
-            !$ser verbatim mpf_rh_rain(i)=rh_rain
-            !$ser verbatim mpf_dte(i)=dte(i)
-            !$ser verbatim mpf_water(i)=water(i)
-            !$ser verbatim mpf_rain(i)=rain(i)
-            !$ser verbatim mpf_ice(i)=ice(i)
-            !$ser verbatim mpf_snow(i)=snow(i)
-            !$ser verbatim mpf_graupel(i)=graupel(i)
-            !$ser verbatim mpf_cond(i)=condensation(i)
-            !$ser verbatim mpf_dep(i)=deposition(i)
-            !$ser verbatim mpf_sub(i)=sublimation(i)
-            !$ser verbatim mpf_evap(i)=evaporation(i)
-            
             call mp_full (ks, ke, ntimes, tz, qvz, qlz, qrz, qiz, qsz, qgz, dp, dz, &
                 u, v, w, den, denfac, ccn, cin, dts, rh_adj, rh_rain, h_var, dte (i), &
                 water (i), rain (i), ice (i), snow (i), graupel (i), prefluxw (i, :), &
                 prefluxr (i, :), prefluxi (i, :), prefluxs (i, :), prefluxg (i, :), &
-!$ser verbatim sd_qv (i, :), sd_ql (i, :), sd_qr (i, :), sd_qi (i, :), sd_qs (i, :), sd_qg (i, :), sd_u (i, :), sd_v (i, :), sd_w (i, :),&
-!$ser verbatim sd_w1 (i), sd_r1 (i), sd_i1 (i), sd_s1 (i), sd_g1 (i), sd_dte (i), sd_vtw (i, :), sd_vtr (i, :),&
-!$ser verbatim sd_vti (i, :), sd_vts (i, :), sd_vtg (i, :), sd_pfw (i, :), sd_pfr (i, :), sd_pfi (i, :), sd_pfs (i, :), sd_pfg (i, :), sd_tz (i, :),&
-!$ser verbatim wr_qv (i, :), wr_ql (i, :), wr_qr (i, :), wr_qi (i, :), wr_qs (i, :), wr_qg (i, :), wr_ccn (i, :), wr_tz (i, :), wr_reevap (i),&
-!$ser verbatim ic_qv (i, :), ic_ql (i, :), ic_qr (i, :), ic_qi (i, :), ic_qs (i, :), ic_qg (i, :), ic_tz (i, :), sz_tz (i, :),&
-!$ser verbatim sz_qv (i, :), sz_ql (i, :), sz_qr (i, :), sz_qi (i, :), sz_qs (i, :), sz_qg (i, :), sz_ccn (i, :), sz_cin (i, :),&
-!$ser verbatim sz_cond (i), sz_dep (i), sz_reevap (i), sz_sub (i),&
-!$ser verbatim tfi_qv (i, :), tfi_ql (i, :), tfi_qr (i, :), tfi_qi (i, :), tfi_qs (i, :), tfi_qg (i, :), tfi_u (i, :), tfi_v (i, :), tfi_w (i, :), tf_vt (i, :), tf_dp (i, :),&
-!$ser verbatim tfo_qv (i, :), tfo_ql (i, :), tfo_qr (i, :), tfo_qi (i, :), tfo_qs (i, :), tfo_qg (i, :), tfo_u (i, :), tfo_v (i, :), tfo_w (i, :), tfi_i1 (i), tfo_i1 (i),&
-!$ser verbatim tf_ze (i, :), tf_zt (i, :), tfi_dte (i), tfo_dte (i), tfi_pt (i, :), tfi_pfi (i, :), tfo_pt (i, :), tfo_pfi (i, :), sf_dm (i, :), sf_e1 (i), sf_nf (i), ef_e1 (i),&
-!$ser verbatim sm_ze (i, :), sm_zt (i, :), sm_zs (i), sm_cv (i, :), sm_vt (i, :), sm_ic (i, :), sm_r1 (i), sm_r1o (i),&
-!$ser verbatim ts_w1 (i), ts_r1 (i), ts_i1 (i), ts_s1 (i), ts_g1 (i), ts_w1o (i), ts_r1o (i), ts_i1o (i), ts_s1o (i), ts_g1o (i), ts_dte (i), ts_dteo (i),&
-!$ser verbatim ts_qv (i, :), ts_ql (i, :), ts_qr (i, :), ts_qi (i, :), ts_qs (i, :), ts_qg (i, :), ts_qvo (i, :), ts_qlo (i, :), ts_qro (i, :), ts_qio (i, :), ts_qso (i, :), ts_qgo (i, :),&
-!$ser verbatim ts_den (i, :), ts_denfac (i, :), ts_dp (i, :), ts_dz (i, :), ts_tz (i, :), ts_u (i, :), ts_v (i, :), ts_w (i, :), ts_pf (i, :), ts_vt (i, :),&
-!$ser verbatim ts_tzo (i, :), ts_uo (i, :), ts_vo (i, :), ts_wo (i, :), ts_pfo (i, :), ts_vto (i, :),&
-!$ser verbatim is_icpk  (i, :), is_pfw  (i, :), is_pfr  (i, :), is_pfi  (i, :), is_pfs  (i, :), is_pfg  (i, :), is_vtw  (i, :), is_vtr  (i, :), is_vti  (i, :), is_vts  (i, :), is_vtg  (i, :), is_w1 (i), is_r1 (i), is_i1 (i), is_s1 (i), is_g1 (i),&
-!$ser verbatim sm_qv (i, :), sm_ql (i, :), sm_qr (i, :), sm_qi (i, :), sm_qs (i, :), sm_qg (i, :), sm_pt (i, :), sm_qro (i, :), sm_qio (i, :), sm_qso (i, :), sm_qgo (i, :), sm_pto (i, :),&
-!$ser verbatim isub_qv  (i, :), isub_ql  (i, :), isub_qr  (i, :), isub_qi  (i, :), isub_qs  (i, :), isub_qg  (i, :), isub_pt  (i, :), isub_cvm  (i, :), isub_te8  (i, :), isub_lcpk  (i, :), isub_icpk  (i, :), isub_tcpk  (i, :), isub_tcp3  (i, :), isub_di  (i, :),&
-!$ser verbatim isub_qvo  (i, :), isub_qlo  (i, :), isub_qro  (i, :), isub_qio  (i, :), isub_qso  (i, :), isub_qgo  (i, :), isub_pto  (i, :), isub_cvmo  (i, :), isub_te8o  (i, :), isub_lcpko  (i, :), isub_icpko  (i, :), isub_tcpko  (i, :), isub_tcp3o  (i, :), isub_dio  (i, :), is_psacw (i, :), is_psacr (i, :), is_pracs (i, :), is_qsi (i, :), is_dqdt (i, :), is_sink0 (i, :), is_sink (i, :), is_tmp (i, :),&
-!$ser verbatim ws_qv (i, :), ws_ql (i, :), ws_qr (i, :), ws_qi (i, :), ws_qs (i, :), ws_qg (i, :), ws_ccn (i, :), ws_pt (i, :),&
-!$ser verbatim ws_qvo (i, :), ws_qlo (i, :), ws_qro (i, :), ws_qio (i, :), ws_qso (i, :), ws_qgo (i, :), ws_ccno (i, :), ws_pto (i, :), ws_tin (i, :), ws_qsat (i, :), ws_dqdt (i, :), ws_dqh (i, :), ws_bool_check (i, :), ws_dq (i, :), ws_sink0 (i, :), ws_sink (i, :), ws_vc (i, :),&
-!$ser verbatim ws_reevap (i), ws_reevapo (i), szs_pt (i, :), szs_qv (i, :), szs_ql (i, :), szs_qr (i, :), szs_qi (i, :), szs_qs (i, :), szs_qg (i, :), szs_ccn (i, :), szs_cin (i, :), szs_te (i, :),&
-!$ser verbatim szs_cond (i), szs_dep (i), szs_reevap (i), szs_sub (i), szs_pto (i, :), szs_qvo (i, :), szs_qlo (i, :), szs_qro (i, :), szs_qio (i, :), szs_qso (i, :), szs_qgo (i, :), szs_ccno (i, :), szs_cino (i, :),&
-!$ser verbatim szs_condo (i), szs_depo (i), szs_reevapo (i), szs_subo (i), szs_lcpk (i, :), szs_icpk (i, :), szs_tcpk (i, :), szs_tcp3 (i, :), szs_lcpko (i, :), szs_icpko (i, :), szs_tcpko (i, :), szs_tcp3o (i, :), szs_cvm (i, :), szs_cvmo (i, :),&
-!$ser verbatim szs_qsi (i, :), szs_dqidt (i, :), szs_qsw (i, :), szs_dqwdt (i, :),&
-!$ser verbatim mpsub_qv (i, :), mpsub_ql (i, :), mpsub_qr (i, :), mpsub_qi (i, :), mpsub_qs (i, :), mpsub_qg (i, :), mpsub_pt (i, :), mpsub_u (i, :), mpsub_v (i, :), mpsub_w (i, :),&
-!$ser verbatim mpsub_ccn (i, :), mpsub_cin (i, :), mpsub_pfw (i, :), mpsub_pfr (i, :), mpsub_pfi (i, :), mpsub_pfs (i, :), mpsub_pfg (i, :), mpsub_vtw (i, :), mpsub_vtr (i, :), mpsub_vti (i, :), mpsub_vts (i, :), mpsub_vtg (i, :),&
-!$ser verbatim mpsub_qv_o (i, :), mpsub_ql_o (i, :), mpsub_qr_o (i, :), mpsub_qi_o (i, :), mpsub_qs_o (i, :), mpsub_qg_o (i, :), mpsub_pt_o (i, :), mpsub_u_o (i, :), mpsub_v_o (i, :), mpsub_w_o (i, :),&
-!$ser verbatim mpsub_ccn_o (i, :), mpsub_cin_o (i, :), mpsub_pfw_o (i, :), mpsub_pfr_o (i, :), mpsub_pfi_o (i, :), mpsub_pfs_o (i, :), mpsub_pfg_o (i, :), mpsub_vtw_o (i, :), mpsub_vtr_o (i, :), mpsub_vti_o (i, :), mpsub_vts_o (i, :), mpsub_vtg_o (i, :),&
-!$ser verbatim mpsub_dte (i), mpsub_water (i), mpsub_rain (i), mpsub_ice (i), mpsub_snow (i), mpsub_graupel (i), mpsub_cond (i), mpsub_dep (i), mpsub_sub (i), mpsub_evap (i),&
-!$ser verbatim mpsub_dte_o (i), mpsub_water_o (i), mpsub_rain_o (i), mpsub_ice_o (i), mpsub_snow_o (i), mpsub_graupel_o (i), mpsub_cond_o (i), mpsub_dep_o (i), mpsub_sub_o (i), mpsub_evap_o (i),&
                 condensation (i), deposition (i), evaporation (i), sublimation (i), &
                 convt, last_step)
-            
-            !$ser verbatim mpf_qv_o(i,:)=qvz(:)
-            !$ser verbatim mpf_ql_o(i,:)=qlz(:)
-            !$ser verbatim mpf_qr_o(i,:)=qrz(:)
-            !$ser verbatim mpf_qi_o(i,:)=qiz(:)
-            !$ser verbatim mpf_qs_o(i,:)=qsz(:)
-            !$ser verbatim mpf_qg_o(i,:)=qgz(:)
-            !$ser verbatim mpf_pt_o(i,:)=tz(:)
-            !$ser verbatim mpf_delp_o(i,:)=dp(:)
-            !$ser verbatim mpf_delz_o(i,:)=dz(:)
-            !$ser verbatim mpf_u_o(i,:)=u(:)
-            !$ser verbatim mpf_v_o(i,:)=v(:)
-            !$ser verbatim mpf_w_o(i,:)=w(:)
-            !$ser verbatim mpf_den_o(i,:)=den(:)
-            !$ser verbatim mpf_denfac_o(i,:)=denfac(:)
-            !$ser verbatim mpf_ccn_o(i,:)=ccn(:)
-            !$ser verbatim mpf_cin_o(i,:)=cin(:)
-            !$ser verbatim mpf_pfw_o(i,:)=prefluxw(i,:)
-            !$ser verbatim mpf_pfr_o(i,:)=prefluxr(i,:)
-            !$ser verbatim mpf_pfi_o(i,:)=prefluxi(i,:)
-            !$ser verbatim mpf_pfs_o(i,:)=prefluxs(i,:)
-            !$ser verbatim mpf_pfg_o(i,:)=prefluxg(i,:)
-            !$ser verbatim mpf_h_var_o(i)=h_var
-            !$ser verbatim mpf_rh_adj_o(i)=rh_adj
-            !$ser verbatim mpf_dte_o(i)=dte(i)
-            !$ser verbatim mpf_water_o(i)=water(i)
-            !$ser verbatim mpf_rain_o(i)=rain(i)
-            !$ser verbatim mpf_ice_o(i)=ice(i)
-            !$ser verbatim mpf_snow_o(i)=snow(i)
-            !$ser verbatim mpf_graupel_o(i)=graupel(i)
-            !$ser verbatim mpf_cond_o(i)=condensation(i)
-            !$ser verbatim mpf_dep_o(i)=deposition(i)
-            !$ser verbatim mpf_sub_o(i)=sublimation(i)
-            !$ser verbatim mpf_evap_o(i)=evaporation(i)
 
         endif
 
         ! -----------------------------------------------------------------------
         ! cloud fraction diagnostic
         ! -----------------------------------------------------------------------
-        !$ser verbatim cf_qv(i,:)=qvz(:)
-        !$ser verbatim cf_ql(i,:)=qlz(:)
-        !$ser verbatim cf_qr(i,:)=qrz(:)
-        !$ser verbatim cf_qi(i,:)=qiz(:)
-        !$ser verbatim cf_qs(i,:)=qsz(:)
-        !$ser verbatim cf_qg(i,:)=qgz(:)
-        !$ser verbatim cf_qa(i,:)=qaz(:)
-        !$ser verbatim cf_pt(i,:)=tz(:)
-        !$ser verbatim cf_den(i,:)=den(:)
-        !$ser verbatim cf_pz(i,:)=pz(:)
-        !$ser verbatim cf_h_var(i)=h_var
-        !$ser verbatim cf_gsize(i)=gsize(i)
+
         if (do_qa .and. last_step) then
             call cloud_fraction (ks, ke, pz, den, qvz, qlz, qrz, qiz, qsz, qgz, qaz, &
-!$ser verbatim cf_qsi (i,:), cf_dqidt (i,:), cf_qsw (i,:), cf_dqwdt (i,:),&
                 tz, h_var, gsize (i))
         endif
-        !$ser verbatim cf_qa_o(i,:)=qaz(:)
-        
+
         ! =======================================================================
         ! calculation of particle concentration (pc), effective diameter (ed),
         ! optical extinction (oe), radar reflectivity factor (rr), and
         ! mass-weighted terminal velocity (tv)
         ! =======================================================================
-
-        !$ser verbatim pp_qv (i, :) = qvz (:)
-        !$ser verbatim pp_ql (i, :) = qlz (:)
-        !$ser verbatim pp_qr (i, :) = qrz (:)
-        !$ser verbatim pp_qi (i, :) = qiz (:)
-        !$ser verbatim pp_qs (i, :) = qsz (:)
-        !$ser verbatim pp_qg (i, :) = qgz (:)
-        !$ser verbatim pp_den (i, :) = den (:)
 
         pcw (i, :) = 0.0
         edw (i, :) = 0.0
@@ -1812,27 +1506,6 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
         ! momentum transportation during sedimentation
         ! update temperature before delp and q update
         ! -----------------------------------------------------------------------
-        
-        !$ser verbatim fin_qv0 (i, :) = qvz (:)
-        !$ser verbatim fin_ql0 (i, :) = qlz (:)
-        !$ser verbatim fin_qr0 (i, :) = qrz (:)
-        !$ser verbatim fin_qi0 (i, :) = qiz (:)
-        !$ser verbatim fin_qs0 (i, :) = qsz (:)
-        !$ser verbatim fin_qg0 (i, :) = qgz (:)
-        !$ser verbatim fin_delp0 (i, :) = dp (:)
-        !$ser verbatim fin_delz0 (i, :) = dz (:)
-        !$ser verbatim fin_pt0 (i, :) = tz (:)
-        !$ser verbatim fin_ua0 (i, :) = u (:)
-        !$ser verbatim fin_va0 (i, :) = v (:)
-        !$ser verbatim fin_wa0 (i, :) = w (:)
-        !$ser verbatim fin_te0 (i, :) = te (i, :)
-        !$ser verbatim fin_dte0 (i) = dte (i)
-        !$ser verbatim fin_vapor (i) = 0.
-        !$ser verbatim fin_water (i) = water (i)
-        !$ser verbatim fin_rain (i) = rain (i)
-        !$ser verbatim fin_ice (i) = ice (i)
-        !$ser verbatim fin_snow (i) = snow (i)
-        !$ser verbatim fin_graupel (i) = graupel (i)
 
         if (do_sedi_uv) then
             do k = ks, ke
@@ -2054,449 +1727,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
             !print*, "GFDL MP TE WET LOSS (%) : ", te_loss_0 (i) / (sum (te_beg_m (i, :)) + te_b_beg_m (i)) * 100.0
         endif
 
-        !$ser verbatim ini_c_air (i)=c_air
-        !$ser verbatim ini_c_vap (i)=c_vap
-        !$ser verbatim ini_d0_vap (i)=d0_vap
-        !$ser verbatim ini_lv00 (i)=lv00
-        !$ser verbatim ini_li00 (i)=li00
-        !$ser verbatim ini_li20 (i)=li20
-        !$ser verbatim ini_d1_vap (i)=d1_vap
-        !$ser verbatim ini_d1_ice (i)=d1_ice
-        !$ser verbatim ini_c1_vap (i)=c1_vap
-        !$ser verbatim ini_c1_liq (i)=c1_liq
-        !$ser verbatim ini_c1_ice (i)=c1_ice
-        !$ser verbatim ini_t_wfr (i)=t_wfr
-        !$ser verbatim ini_pcaw (i)=pcaw
-        !$ser verbatim ini_pcbw (i)=pcbw
-        !$ser verbatim ini_pcai (i)=pcai
-        !$ser verbatim ini_pcbi (i)=pcbi
-        !$ser verbatim ini_pcar (i)=pcar
-        !$ser verbatim ini_pcbr (i)=pcbr
-        !$ser verbatim ini_pcas (i)=pcas
-        !$ser verbatim ini_pcbs (i)=pcbs
-        !$ser verbatim ini_pcag (i)=pcag
-        !$ser verbatim ini_pcbg (i)=pcbg
-        !$ser verbatim ini_pcah (i)=pcah
-        !$ser verbatim ini_pcbh (i)=pcbh
-        !$ser verbatim ini_edaw (i)=edaw
-        !$ser verbatim ini_edbw (i)=edbw
-        !$ser verbatim ini_edai (i)=edai
-        !$ser verbatim ini_edbi (i)=edbi
-        !$ser verbatim ini_edar (i)=edar
-        !$ser verbatim ini_edbr (i)=edbr
-        !$ser verbatim ini_edas (i)=edas
-        !$ser verbatim ini_edbs (i)=edbs
-        !$ser verbatim ini_edag (i)=edag
-        !$ser verbatim ini_edbg (i)=edbg
-        !$ser verbatim ini_edah (i)=edah
-        !$ser verbatim ini_edbh (i)=edbh
-        !$ser verbatim ini_oeaw (i)=oeaw
-        !$ser verbatim ini_oebw (i)=oebw
-        !$ser verbatim ini_oeai (i)=oeai
-        !$ser verbatim ini_oebi (i)=oebi
-        !$ser verbatim ini_oear (i)=oear
-        !$ser verbatim ini_oebr (i)=oebr
-        !$ser verbatim ini_oeas (i)=oeas
-        !$ser verbatim ini_oebs (i)=oebs
-        !$ser verbatim ini_oeag (i)=oeag
-        !$ser verbatim ini_oebg (i)=oebg
-        !$ser verbatim ini_oeah (i)=oeah
-        !$ser verbatim ini_oebh (i)=oebh
-        !$ser verbatim ini_rraw (i)=rraw
-        !$ser verbatim ini_rrbw (i)=rrbw
-        !$ser verbatim ini_rrai (i)=rrai
-        !$ser verbatim ini_rrbi (i)=rrbi
-        !$ser verbatim ini_rrar (i)=rrar
-        !$ser verbatim ini_rrbr (i)=rrbr
-        !$ser verbatim ini_rras (i)=rras
-        !$ser verbatim ini_rrbs (i)=rrbs
-        !$ser verbatim ini_rrag (i)=rrag
-        !$ser verbatim ini_rrbg (i)=rrbg
-        !$ser verbatim ini_rrah (i)=rrah
-        !$ser verbatim ini_rrbh (i)=rrbh
-        !$ser verbatim ini_tvai (i)=tvai
-        !$ser verbatim ini_tvbi (i)=tvbi
-        !$ser verbatim ini_tvar (i)=tvar
-        !$ser verbatim ini_tvbr (i)=tvbr
-        !$ser verbatim ini_tvas (i)=tvas
-        !$ser verbatim ini_tvbs (i)=tvbs
-        !$ser verbatim ini_tvag (i)=tvag
-        !$ser verbatim ini_tvbg (i)=tvbg
-        !$ser verbatim ini_tvah (i)=tvah
-        !$ser verbatim ini_tvbh (i)=tvbh
-        !$ser verbatim ini_crevp_1 (i)=crevp (1)
-        !$ser verbatim ini_crevp_2 (i)=crevp (2)
-        !$ser verbatim ini_crevp_3 (i)=crevp (3)
-        !$ser verbatim ini_crevp_4 (i)=crevp (4)
-        !$ser verbatim ini_crevp_5 (i)=crevp (5)
-        !$ser verbatim ini_cssub_1 (i)=cssub (1)
-        !$ser verbatim ini_cssub_2 (i)=cssub (2)
-        !$ser verbatim ini_cssub_3 (i)=cssub (3)
-        !$ser verbatim ini_cssub_4 (i)=cssub (4)
-        !$ser verbatim ini_cssub_5 (i)=cssub (5)
-        !$ser verbatim ini_cgsub_1 (i)=cgsub (1)
-        !$ser verbatim ini_cgsub_2 (i)=cgsub (2)
-        !$ser verbatim ini_cgsub_3 (i)=cgsub (3)
-        !$ser verbatim ini_cgsub_4 (i)=cgsub (4)
-        !$ser verbatim ini_cgsub_5 (i)=cgsub (5)
-        !$ser verbatim ini_csmlt_1 (i)=csmlt (1)
-        !$ser verbatim ini_csmlt_2 (i)=csmlt (2)
-        !$ser verbatim ini_csmlt_3 (i)=csmlt (3)
-        !$ser verbatim ini_csmlt_4 (i)=csmlt (4)
-        !$ser verbatim ini_cgmlt_1 (i)=cgmlt (1)
-        !$ser verbatim ini_cgmlt_2 (i)=cgmlt (2)
-        !$ser verbatim ini_cgmlt_3 (i)=cgmlt (3)
-        !$ser verbatim ini_cgmlt_4 (i)=cgmlt (4)
-        !$ser verbatim ini_cgfr_1 (i)=cgfr (1)
-        !$ser verbatim ini_cgfr_2 (i)=cgfr (2)
-        !$ser verbatim ini_normw (i)=normw
-        !$ser verbatim ini_normr (i)=normr
-        !$ser verbatim ini_normi (i)=normi
-        !$ser verbatim ini_norms (i)=norms
-        !$ser verbatim ini_normg (i)=normg
-        !$ser verbatim ini_expow (i)=expow
-        !$ser verbatim ini_expor (i)=expor
-        !$ser verbatim ini_expoi (i)=expoi
-        !$ser verbatim ini_expos (i)=expos
-        !$ser verbatim ini_expog (i)=expog
-        !$ser verbatim ini_cracw (i)=cracw
-        !$ser verbatim ini_craci (i)=craci
-        !$ser verbatim ini_csacw (i)=csacw
-        !$ser verbatim ini_csaci (i)=csaci
-        !$ser verbatim ini_cgacw (i)=cgacw
-        !$ser verbatim ini_cgaci (i)=cgaci
-        !$ser verbatim ini_cracs (i)=cracs
-        !$ser verbatim ini_csacr (i)=csacr
-        !$ser verbatim ini_cgacr (i)=cgacr
-        !$ser verbatim ini_cgacs (i)=cgacs
-        !$ser verbatim do k = 1, 20
-            !$ser verbatim ini_acc (i, k) = acc (k)
-        !$ser verbatim enddo ! k loop
-        !$ser verbatim do k = 1, 10
-            !$ser verbatim ini_acco1 (i, k) = acco (1, k)
-            !$ser verbatim ini_acco2 (i, k) = acco (2, k)
-            !$ser verbatim ini_acco3 (i, k) = acco (3, k)
-        !$ser verbatim enddo ! k loop
-
-        !$ser verbatim fin_tzuv (i, :) = tzuv (:)
-        !$ser verbatim fin_tzw (i, :) = tzw (:)
-
-        !$ser verbatim do k = ks, ke
-            !$ser verbatim tc_ap1 (i, k) = 10. * dim (mpf_pt (i, k), tice - 160.) + 1.
-            !$ser verbatim tc_ap1 (i, k) = min (2621., tc_ap1 (i, k))
-            !$ser verbatim tc_it1 (i, k) = tc_ap1 (i, k)
-            !$ser verbatim tc_it2 (i, k) = tc_ap1 (i, k) - 0.5
-        !$ser verbatim enddo ! k loop
-
     enddo ! i loop
-
-    !$ser verbatim fin_qv = qv
-    !$ser verbatim fin_ql = ql
-    !$ser verbatim fin_qr = qr
-    !$ser verbatim fin_qi = qi
-    !$ser verbatim fin_qs = qs
-    !$ser verbatim fin_qg = qg
-    !$ser verbatim fin_pt = pt
-    !$ser verbatim fin_delp = delp
-    !$ser verbatim fin_delz = delz
-    !$ser verbatim fin_ua = ua
-    !$ser verbatim fin_va = va
-    !$ser verbatim fin_wa = wa
-    !$ser verbatim fin_dte = dte
-    !$ser verbatim fin_adj_vmr = adj_vmr
-    !$ser verbatim fin_te = te
-    !$ser verbatim fin_te_loss = te_loss
-
-    !$ser verbatim if (consv_checker) then
-        !$ser verbatim fin_ew = te_end_m
-        !$ser verbatim fin_ww = tw_end_m
-        !$ser verbatim fin_bew = te_b_end_m
-        !$ser verbatim fin_bww = tw_b_end_m
-        !$ser verbatim fin_ed = te_end_d
-        !$ser verbatim fin_wd = tw_end_d
-        !$ser verbatim fin_bed = te_b_end_d
-        !$ser verbatim fin_bwd = tw_b_end_d
-    !$ser verbatim else
-        !$ser verbatim fin_ew = 0.
-        !$ser verbatim fin_ww = 0.
-        !$ser verbatim fin_bew = 0.
-        !$ser verbatim fin_bww = 0.
-        !$ser verbatim fin_ed = 0.
-        !$ser verbatim fin_wd = 0.
-        !$ser verbatim fin_bed = 0.
-        !$ser verbatim fin_bwd = 0.
-    !$ser verbatim endif
-
-    !$ser savepoint ConfigInit-In
-    !$ser data ini_c_air=ini_c_air ini_c_vap=ini_c_vap ini_d0_vap=ini_d0_vap ini_lv00=ini_lv00 ini_li00=ini_li00 ini_li20=ini_li20 ini_d1_vap=ini_d1_vap ini_d1_ice=ini_d1_ice
-    !$ser data ini_c1_vap=ini_c1_vap ini_c1_liq=ini_c1_liq ini_c1_ice=ini_c1_ice
-    !$ser data ini_t_wfr=ini_t_wfr ini_pcaw=ini_pcaw ini_pcbw=ini_pcbw ini_pcai=ini_pcai ini_pcbi=ini_pcbi ini_pcar=ini_pcar
-    !$ser data ini_pcbr=ini_pcbr ini_pcas=ini_pcas ini_pcbs=ini_pcbs ini_pcag=ini_pcag ini_pcbg=ini_pcbg ini_pcah=ini_pcah ini_pcbh=ini_pcbh ini_edaw=ini_edaw ini_edbw=ini_edbw
-    !$ser data ini_edai=ini_edai ini_edbi=ini_edbi ini_edar=ini_edar ini_edbr=ini_edbr ini_edas=ini_edas ini_edbs=ini_edbs ini_edag=ini_edag ini_edbg=ini_edbg ini_edah=ini_edah
-    !$ser data ini_edbh=ini_edbh ini_oeaw=ini_oeaw ini_oebw=ini_oebw ini_oeai=ini_oeai ini_oebi=ini_oebi ini_oear=ini_oear ini_oebr=ini_oebr ini_oeas=ini_oeas ini_oebs=ini_oebs
-    !$ser data ini_oeag=ini_oeag ini_oebg=ini_oebg ini_oeah=ini_oeah ini_oebh=ini_oebh ini_rraw=ini_rraw ini_rrbw=ini_rrbw ini_rrai=ini_rrai ini_rrbi=ini_rrbi ini_rrar=ini_rrar
-    !$ser data ini_rrbr=ini_rrbr ini_rras=ini_rras ini_rrbs=ini_rrbs ini_rrag=ini_rrag ini_rrbg=ini_rrbg ini_rrah=ini_rrah ini_rrbh=ini_rrbh ini_tvai=ini_tvai ini_tvbi=ini_tvbi
-    !$ser data ini_tvar=ini_tvar ini_tvbr=ini_tvbr ini_tvas=ini_tvas ini_tvbs=ini_tvbs ini_tvag=ini_tvag ini_tvbg=ini_tvbg ini_tvah=ini_tvah ini_tvbh=ini_tvbh
-    !$ser data ini_crevp_1=ini_crevp_1 ini_crevp_2=ini_crevp_2 ini_crevp_3=ini_crevp_3 ini_crevp_4=ini_crevp_4 ini_crevp_5=ini_crevp_5 ini_cssub_1=ini_cssub_1 
-    !$ser data ini_cssub_2=ini_cssub_2 ini_cssub_3=ini_cssub_3 ini_cssub_4=ini_cssub_4 ini_cssub_5=ini_cssub_5 ini_cgsub_1=ini_cgsub_1 ini_cgsub_2=ini_cgsub_2
-    !$ser data ini_cgsub_3=ini_cgsub_3 ini_cgsub_4=ini_cgsub_4 ini_cgsub_5=ini_cgsub_5 ini_csmlt_1=ini_csmlt_1 ini_csmlt_2=ini_csmlt_2 ini_csmlt_3=ini_csmlt_3
-    !$ser data ini_csmlt_4=ini_csmlt_4 ini_cgmlt_1=ini_cgmlt_1 ini_cgmlt_2=ini_cgmlt_2 ini_cgmlt_3=ini_cgmlt_3 ini_cgmlt_4=ini_cgmlt_4 ini_cgfr_1=ini_cgfr_1
-    !$ser data ini_cgfr_2=ini_cgfr_2 ini_normw=ini_normw ini_normr=ini_normr ini_normi=ini_normi ini_norms=ini_norms ini_normg=ini_normg ini_expow=ini_expow ini_expor=ini_expor
-    !$ser data ini_expoi=ini_expoi ini_expos=ini_expos ini_expog=ini_expog ini_cracw=ini_cracw ini_craci=ini_craci ini_csacw=ini_csacw ini_csaci=ini_csaci ini_cgacw=ini_cgacw
-    !$ser data ini_cgaci=ini_cgaci ini_cracs=ini_cracs ini_csacr=ini_csacr ini_cgacr=ini_cgacr ini_cgacs=ini_cgacs ini_acc=ini_acc ini_acco1=ini_acco1 ini_acco2=ini_acco2 ini_acco3=ini_acco3
-
-    !$ser savepoint NegAdjP-In
-    !$ser data ne_qv=ne_qv ne_ql=ne_ql ne_qr=ne_qr ne_qi=ne_qi ne_qs=ne_qs ne_qg=ne_qg ne_pt=ne_pt ne_delp=ne_delp ne_cond=ne_cond convt=convt
-    
-    !$ser savepoint CloudFrac-In
-    !$ser data cf_qv=cf_qv cf_ql=cf_ql cf_qr=cf_qr cf_qi=cf_qi cf_qs=cf_qs cf_qg=cf_qg cf_pt=cf_pt cf_qa=cf_qa cf_den=cf_den cf_pz=cf_pz cf_h_var=cf_h_var cf_gsize=cf_gsize cf_qsi=cf_qsi cf_dqidt=cf_dqidt cf_qsw=cf_qsw cf_dqwdt=cf_dqwdt
-    
-    !$ser savepoint MPFull-In
-    !$ser data mpf_qv=mpf_qv mpf_ql=mpf_ql mpf_qr=mpf_qr mpf_qi=mpf_qi mpf_qs=mpf_qs mpf_qg=mpf_qg mpf_pt=mpf_pt mpf_delp=mpf_delp mpf_delz=mpf_delz
-    !$ser data mpf_u=mpf_u mpf_v=mpf_v mpf_w=mpf_w mpf_den=mpf_den mpf_denfac=mpf_denfac mpf_ccn=mpf_ccn mpf_cin=mpf_cin mpf_pfw=mpf_pfw mpf_pfr=mpf_pfr
-    !$ser data mpf_pfi=mpf_pfi mpf_pfs=mpf_pfs mpf_pfg=mpf_pfg mpf_h_var=mpf_h_var mpf_rh_adj=mpf_rh_adj mpf_dte=mpf_dte mpf_water=mpf_water
-    !$ser data mpf_rain=mpf_rain mpf_ice=mpf_ice mpf_snow=mpf_snow mpf_graupel=mpf_graupel mpf_cond=mpf_cond mpf_dep=mpf_dep mpf_sub=mpf_sub mpf_evap=mpf_evap convt=convt dt=dts
-
-    !$ser savepoint Sedimentation-In
-    !$ser data sd_qv=mpf_qv sd_ql=mpf_ql sd_qr=mpf_qr sd_qi=mpf_qi sd_qs=mpf_qs sd_qg=mpf_qg sd_delp=mpf_delp sd_delz=mpf_delz sd_den=mpf_den sd_denfac=mpf_denfac
-    !$ser data sd_pt=mpf_pt sd_u=mpf_u sd_v=mpf_v sd_w=mpf_w sd_dte=mpf_dte dt=dts sd_pfw=mpf_pfw sd_pfr=mpf_pfr sd_pfi=mpf_pfi sd_pfs=mpf_pfs sd_pfg=mpf_pfg
-    !$ser data sd_vtw=zerobuff_3d sd_vtr=zerobuff_3d sd_vti=zerobuff_3d sd_vts=zerobuff_3d sd_vtg=zerobuff_3d sd_w1=zerobuff_2d sd_r1=zerobuff_2d sd_i1=zerobuff_2d 
-    !$ser data sd_s1=zerobuff_2d sd_g1=zerobuff_2d
-
-    !$ser savepoint WarmRain-In
-    !$ser data wr_delp=mpf_delp wr_pt=sd_tz wr_qv=sd_qv wr_ql=sd_ql wr_qr=sd_qr wr_qi=sd_qi wr_qs=sd_qs wr_qg=sd_qg wr_den=mpf_den
-    !$ser data wr_denfac=mpf_denfac wr_vtw=sd_vtw wr_vtr=sd_vtr wr_ccn=mpf_ccn wr_h_var=mpf_h_var dt=dts wr_reevap=zerobuff_2d
-
-    !$ser savepoint IceCloud-In
-    !$ser data ic_pt=wr_tz ic_qv=wr_qv ic_ql=wr_ql ic_qr=wr_qr ic_qi=wr_qi ic_qs=wr_qs ic_qg=wr_qg ic_den=mpf_den ic_denfac=mpf_denfac ic_vtw=sd_vtw
-    !$ser data ic_vtr=sd_vtr ic_vti=sd_vti ic_vts=sd_vts ic_vtg=sd_vtg ic_h_var=mpf_h_var dt=dts
-
-    !$ser savepoint SubgridZProc-In
-    !$ser data sz_den=mpf_den sz_denfac=mpf_denfac sz_rh_adj=mpf_rh_adj sz_pt=ic_tz sz_qv=ic_qv sz_ql=ic_ql sz_qr=ic_qr sz_qi=ic_qi sz_qs=ic_qs sz_qg=ic_qg
-    !$ser data sz_ccn=wr_ccn sz_cin=mpf_cin dt=dts sz_delp=mpf_delp sz_cond=zerobuff_2d sz_dep=zerobuff_2d sz_reevap=zerobuff_2d sz_sub=zerobuff_2d
-
-    !$ser savepoint TerminalFall-In
-    !$ser data tf_dp=tf_dp tf_dz=mpf_delz tf_vt=tf_vt tf_ze=tf_ze tf_zt=tf_zt tf_pt=tfi_pt tf_qv=tfi_qv tf_ql=tfi_ql tf_qr=tfi_qr tf_qi=tfi_qi tf_qs=tfi_qs tf_qg=tfi_qg
-    !$ser data tf_ua=tfi_u tf_va=tfi_v tf_wa=tfi_w tf_pfi=tfi_pfi tf_i1=tfi_i1 tf_dte=tfi_dte dt=dts
-
-    !$ser savepoint ZeZt-In
-    !$ser data zz_dz=mpf_delz zz_vt=sm_vt zz_zs=zerobuff_2d zz_ze=zerobuff1_3d zz_zt=zerobuff1_3d dt=dts
-
-    !$ser savepoint StartFall-In
-    !$ser data sf_dm=zerobuff_3d sf_e1=zerobuff_2d sf_nf=onebuff_2d sf_qf=tfi_qi sf_qv=tfi_qv sf_ql=tfi_ql sf_qr=tfi_qr sf_qi=tfi_qi sf_qs=tfi_qs sf_qg=tfi_qg
-    !$ser data sf_delp=tf_dp sf_pt=tfi_pt
-
-    !$ser savepoint EndFall-In
-    !$ser data ef_dp=tf_dp ef_dz=mpf_delz ef_vt=tf_vt ef_pt=tfi_pt ef_qv=tfo_qv ef_ql=tfo_ql ef_qr=tfo_qr ef_qi=tfo_qi ef_qs=tfo_qs ef_qg=tfo_qg
-    !$ser data ef_ua=tfi_u ef_va=tfi_v ef_wa=tfi_w ef_pfi=tfo_pfi ef_dte=tfi_dte ef_ie=sf_e1 ef_dm=sf_dm ef_nf=sf_nf ef_fe=zerobuff_2d
-
-    !$ser savepoint TableComputation-In
-    !$ser data tc_temp=tem tc_t0=t0 tc_t2=t2 tab_wq=zerobuff_3d tab_dwq=zerobuff_3d tab_iq=zerobuff_3d tab_diq=zerobuff_3d tab_pt=mpf_pt tab_den=mpf_den tc_ap1=zerobuff_3d tc_it1=zerobuff_3d_int tc_it2=zerobuff_3d_int
-
-    !$ser savepoint PythonTables-In
-    !$ser data tc_index=tc_index tc_t0=t0 tc_t2=t2 tab_wq=zerobuff_3d tab_dwq=zerobuff_3d tab_iq=zerobuff_3d tab_diq=zerobuff_3d tab_pt=mpf_pt tab_den=mpf_den
-
-    !$ser savepoint SediMelt-In
-    !$ser data sm_qv=sm_qv sm_ql=sm_ql sm_qr=sm_qr sm_qi=sm_qi sm_qs=sm_qs sm_qg=sm_qg sm_pt=sm_pt sm_dp=mpf_delp sm_cv=zerobuff_3d
-    !$ser data sm_ze=sm_ze sm_zt=sm_zt sm_zs=sm_zs sm_vt=sm_vt sm_ic=sm_ic sm_r1=sm_r1 dt=dts
-
-    !$ser savepoint CalcVTIce-In
-    !$ser data vti_qi=mpf_qi vti_den=mpf_den vti_denfac=mpf_denfac vti_pt=mpf_pt vti_vti=zerobuff_3d
-
-    !$ser savepoint CalcVTSnow-In
-    !$ser data vts_qs=mpf_qs vts_den=mpf_den vts_denfac=mpf_denfac vts_pt=zerobuff_3d vts_vts=zerobuff_3d
-
-    !$ser savepoint TracerSed-In
-    !$ser data ts_qv=ts_qv ts_ql=ts_ql ts_qr=ts_qr ts_qi=ts_qi ts_qs=ts_qs ts_qg=ts_qg ts_den=ts_den ts_denfac=ts_denfac ts_delp=ts_dp ts_delz=ts_dz
-    !$ser data ts_pt=ts_tz ts_ua=ts_u ts_va=ts_v ts_wa=ts_w ts_dte=ts_dte dt=dts ts_pf=ts_pf ts_vt=ts_vt ts_w1=ts_w1 ts_r1=ts_r1 ts_i1=ts_i1 ts_s1=ts_s1
-    !$ser data ts_g1=ts_g1 ts_ze=zerobuff1_3d ts_zt=zerobuff1_3d ts_zs=zerobuff_2d ts_ic=sm_ic
-
-    !$ser savepoint InitSed-In
-    !$ser data is_qv=mpf_qv is_ql=mpf_ql is_qr=mpf_qr is_qi=mpf_qi is_qs=mpf_qs is_qg=mpf_qg is_pt=mpf_pt
-    !$ser data is_icpk=zerobuff_3d is_pfw=zerobuff_3d is_pfr=zerobuff_3d is_pfi=zerobuff_3d is_pfs=zerobuff_3d is_pfg=zerobuff_3d 
-    !$ser data is_vtw=zerobuff_3d is_vtr=zerobuff_3d is_vti=zerobuff_3d is_vts=zerobuff_3d is_vtg=zerobuff_3d is_w1=zerobuff_2d is_r1=zerobuff_2d is_i1=zerobuff_2d is_s1=zerobuff_2d is_g1=zerobuff_2d
-
-    !$ser savepoint IceSubFunc-In
-    !$ser data isub_qv=isub_qv isub_ql=isub_ql isub_qr=isub_qr isub_qi=isub_qi isub_qs=isub_qs isub_qg=isub_qg isub_pt=isub_pt isub_cvm=isub_cvm isub_te8=isub_te8
-    !$ser data isub_lcpk=isub_lcpk isub_icpk=isub_icpk isub_tcpk=isub_tcpk isub_tcp3=isub_tcp3 isub_di=isub_di isub_den=mpf_den isub_denfac=mpf_denfac isub_vtw=sd_vtw
-    !$ser data isub_vtr=sd_vtr isub_vti=sd_vti isub_vts=sd_vts isub_vtg=sd_vtg isub_h_var=mpf_h_var dt=dts
-    !$ser data is_psacw=zerobuff_3d is_psacr=zerobuff_3d is_pracs=zerobuff_3d is_qsi=zerobuff_3d is_dqdt=zerobuff_3d is_sink0=zerobuff_3d is_sink=zerobuff_3d is_tmp=zerobuff_3d
-
-    !$ser savepoint WRainSubFunc-In
-    !$ser data ws_delp=mpf_delp ws_den=mpf_den ws_denfac=mpf_denfac ws_vtw=sd_vtw ws_vtr=sd_vtr ws_h_var=mpf_h_var dt=dts
-    !$ser data ws_qv=ws_qv ws_ql=ws_ql ws_qr=ws_qr ws_qi=ws_qi ws_qs=ws_qs ws_qg=ws_qg ws_pt=ws_pt ws_ccn=ws_ccn ws_reevap=ws_reevap
-    !$ser data ws_tin=zerobuff_3d ws_qsat=zerobuff_3d ws_dqdt=zerobuff_3d ws_dqh=zerobuff_3d ws_bool_check=zerobuff_3d ws_dq=zerobuff_3d ws_sink0=zerobuff_3d ws_sink=zerobuff_3d ws_vc=zerobuff_3d
-
-    !$ser savepoint SubgridZSubs-In
-    !$ser data szs_den=mpf_den szs_denfac=mpf_denfac szs_rh_adj=mpf_rh_adj szs_pt=szs_pt szs_qv=szs_qv szs_ql=szs_ql szs_qr=szs_qr szs_qi=szs_qi szs_qs=szs_qs szs_qg=szs_qg
-    !$ser data szs_ccn=szs_ccn szs_cin=szs_cin dt=dts szs_delp=mpf_delp szs_cond=szs_cond szs_dep=szs_dep szs_reevap=szs_reevap szs_sub=szs_sub szs_te=szs_te
-    !$ser data szs_lcpk=szs_lcpk szs_icpk=szs_icpk szs_tcpk=szs_tcpk szs_tcp3=szs_tcp3 szs_cvm=szs_cvm
-    !$ser data szs_qsi=szs_qsi szs_dqidt=szs_dqidt szs_qsw=szs_qsw szs_dqwdt=szs_dqwdt
-
-    !$ser savepoint ParticleProperties-In
-    !$ser data pp_ql=pp_ql pp_qr=pp_qr pp_qi=pp_qi pp_qs=pp_qs pp_qg=pp_qg pp_den=pp_den
-    !$ser data pp_pcw=zerobuff_3d pp_edw=zerobuff_3d pp_oew=zerobuff_3d pp_rrw=zerobuff_3d pp_tvw=zerobuff_3d pp_pci=zerobuff_3d pp_edi=zerobuff_3d pp_oei=zerobuff_3d pp_rri=zerobuff_3d pp_tvi=zerobuff_3d
-    !$ser data pp_pcr=zerobuff_3d pp_edr=zerobuff_3d pp_oer=zerobuff_3d pp_rrr=zerobuff_3d pp_tvr=zerobuff_3d pp_pcs=zerobuff_3d pp_eds=zerobuff_3d pp_oes=zerobuff_3d pp_rrs=zerobuff_3d pp_tvs=zerobuff_3d
-    !$ser data pp_pcg=zerobuff_3d pp_edg=zerobuff_3d pp_oeg=zerobuff_3d pp_rrg=zerobuff_3d pp_tvg=zerobuff_3d
-
-    !$ser savepoint PreliminaryCalculations-In
-    !$ser data pre_qv=pre_qv pre_ql=pre_ql pre_qr=pre_qr pre_qi=pre_qi pre_qs=pre_qs pre_qg=pre_qg pre_pt=pre_pt pre_delp=pre_delp pre_delz=pre_delz pre_ua=pre_ua pre_va=pre_va pre_wa=pre_wa
-    !$ser data pre_vapor=pre_vapor pre_water=pre_water pre_rain=pre_rain pre_ice=pre_ice pre_snow=pre_snow pre_graupel=pre_graupel pre_gsize=pre_gsize pre_hs=pre_hs pre_qnl=pre_qnl pre_qni=pre_qni
-    !$ser data pre_qv0=zerobuff_3d pre_ql0=zerobuff_3d pre_qr0=zerobuff_3d pre_qi0=zerobuff_3d pre_qs0=zerobuff_3d pre_qg0=zerobuff_3d pre_dp0=zerobuff_3d pre_pt0=zerobuff_3d pre_u0=zerobuff_3d pre_v0=zerobuff_3d pre_w0=zerobuff_3d
-    !$ser data pre_den=zerobuff_3d pre_pz=zerobuff_3d pre_denfac=zerobuff_3d pre_dte=zerobuff_2d pre_cond=zerobuff_2d pre_adj_vmr=zerobuff_3d pre_ccn=zerobuff_3d pre_cin=zerobuff_3d pre_h_var=zerobuff_2d
-    !$ser data pre_rh_adj=zerobuff_2d pre_rh_rain=zerobuff_2d pre_ew0=zerobuff_3d pre_ww0=zerobuff_3d pre_bew0=zerobuff_2d pre_bww0=zerobuff_2d pre_ed0=zerobuff_3d pre_wd0=zerobuff_3d pre_bed0=zerobuff_2d pre_bwd0=zerobuff_2d
-
-    !$ser savepoint FinalCalculations-In
-    !$ser data fin_qv=fin_qv0 fin_ql=fin_ql0 fin_qr=fin_qr0 fin_qi=fin_qi0 fin_qs=fin_qs0 fin_qg=fin_qg0 fin_delp=fin_delp0 fin_delz=fin_delz0 fin_pt=fin_pt0 fin_ua=fin_ua0 fin_va=fin_va0 fin_wa=fin_wa0
-    !$ser data fin_gsize=pre_gsize fin_vapor=fin_vapor fin_water=fin_water fin_rain=fin_rain fin_ice=fin_ice fin_snow=fin_snow fin_graupel=fin_graupel
-    !$ser data fin_qv0=pre_qv fin_ql0=pre_ql fin_qr0=pre_qr fin_qi0=pre_qi fin_qs0=pre_qs fin_qg0=pre_qg fin_dp0=pre_delp fin_pt0=pre_pt fin_u0=pre_ua fin_v0=pre_va fin_w0=pre_wa
-    !$ser data fin_ew0=pre_ew0 fin_ww0=pre_ww0 fin_bew0=pre_bew0 fin_bww0=pre_bww0 fin_ed0=pre_ed0 fin_wd0=pre_wd0 fin_bed0=pre_bed0 fin_bwd0=pre_bwd0
-    !$ser data fin_adj_vmr=pre_adj_vmr fin_te=fin_te0 fin_te_loss=zerobuff_2d fin_ew=zerobuff_3d fin_ww=zerobuff_3d fin_bew=zerobuff_2d fin_bww=zerobuff_2d
-    !$ser data fin_ed=zerobuff_3d fin_wd=zerobuff_3d fin_bed=zerobuff_2d fin_bwd=zerobuff_2d fin_tzuv=zerobuff_3d fin_tzw=zerobuff_3d fin_dte=fin_dte0
-
-    !$ser savepoint PostMP-In
-    !$ser data post_qv=cf_qv post_ql=cf_ql post_qr=cf_qr post_qi=cf_qi post_qs=cf_qs post_qg=cf_qg post_pt=cf_pt post_qa=cf_qa post_den=cf_den post_pz=cf_pz post_h_var=cf_h_var post_gsize=cf_gsize
-    !$ser data post_pcw=zerobuff_3d post_edw=zerobuff_3d post_oew=zerobuff_3d post_rrw=zerobuff_3d post_tvw=zerobuff_3d post_pci=zerobuff_3d post_edi=zerobuff_3d post_oei=zerobuff_3d post_rri=zerobuff_3d post_tvi=zerobuff_3d
-    !$ser data post_pcr=zerobuff_3d post_edr=zerobuff_3d post_oer=zerobuff_3d post_rrr=zerobuff_3d post_tvr=zerobuff_3d post_pcs=zerobuff_3d post_eds=zerobuff_3d post_oes=zerobuff_3d post_rrs=zerobuff_3d post_tvs=zerobuff_3d
-    !$ser data post_pcg=zerobuff_3d post_edg=zerobuff_3d post_oeg=zerobuff_3d post_rrg=zerobuff_3d post_tvg=zerobuff_3d post_delp=fin_delp0 post_delz=fin_delz0 post_ua=fin_ua0 post_va=fin_va0 post_wa=fin_wa0
-    !$ser data post_vapor=fin_vapor post_water=fin_water post_rain=fin_rain post_ice=fin_ice post_snow=fin_snow post_graupel=fin_graupel
-    !$ser data post_qv0=pre_qv post_ql0=pre_ql post_qr0=pre_qr post_qi0=pre_qi post_qs0=pre_qs post_qg0=pre_qg post_dp0=pre_delp post_pt0=pre_pt post_u0=pre_ua post_v0=pre_va post_w0=pre_wa
-    !$ser data post_ew0=pre_ew0 post_ww0=pre_ww0 post_bew0=pre_bew0 post_bww0=pre_bww0 post_ed0=pre_ed0 post_wd0=pre_wd0 post_bed0=pre_bed0 post_bwd0=pre_bwd0
-    !$ser data post_adj_vmr=pre_adj_vmr post_te=fin_te0 post_te_loss=zerobuff_2d post_ew=zerobuff_3d post_ww=zerobuff_3d post_bew=zerobuff_2d post_bww=zerobuff_2d
-    !$ser data post_ed=zerobuff_3d post_wd=zerobuff_3d post_bed=zerobuff_2d post_bwd=zerobuff_2d post_dte=fin_dte0
-
-    !$ser savepoint MPSub-In
-    !$ser data mpsub_qv=mpsub_qv mpsub_ql=mpsub_ql mpsub_qr=mpsub_qr mpsub_qi=mpsub_qi mpsub_qs=mpsub_qs mpsub_qg=mpsub_qg mpsub_pt=mpsub_pt mpsub_u=mpsub_u mpsub_v=mpsub_v mpsub_w=mpsub_w
-    !$ser data mpsub_ccn=mpsub_ccn mpsub_cin=mpsub_cin mpsub_pfw=mpsub_pfw mpsub_pfr=mpsub_pfr mpsub_pfi=mpsub_pfi mpsub_pfs=mpsub_pfs mpsub_pfg=mpsub_pfg mpsub_vtw=mpsub_vtw mpsub_vtr=mpsub_vtr
-    !$ser data mpsub_vti=mpsub_vti mpsub_vts=mpsub_vts mpsub_vtg=mpsub_vtg mpsub_dte=mpsub_dte mpsub_water=mpsub_water mpsub_rain=mpsub_rain mpsub_ice=mpsub_ice mpsub_snow=mpsub_snow
-    !$ser data mpsub_graupel=mpsub_graupel mpsub_cond=mpsub_cond mpsub_dep=mpsub_dep mpsub_sub=mpsub_sub mpsub_evap=mpsub_evap
-    !$ser data mpsub_den=mpf_den mpsub_denfac=mpf_denfac mpsub_delp=mpf_delp mpsub_delz=mpf_delz mpsub_h_var=mpf_h_var mpsub_rh_adj=mpf_rh_adj convt=convt dt=dts 
-
-
-
-    !$ser savepoint ConfigInit-Out
-    !$ser data ini_c_air=ini_c_air ini_c_vap=ini_c_vap ini_d0_vap=ini_d0_vap ini_lv00=ini_lv00 ini_li00=ini_li00 ini_li20=ini_li20 ini_d1_vap=ini_d1_vap ini_d1_ice=ini_d1_ice
-    !$ser data ini_c1_vap=ini_c1_vap ini_c1_liq=ini_c1_liq ini_c1_ice=ini_c1_ice
-    !$ser data ini_t_wfr=ini_t_wfr ini_pcaw=ini_pcaw ini_pcbw=ini_pcbw ini_pcai=ini_pcai ini_pcbi=ini_pcbi ini_pcar=ini_pcar
-    !$ser data ini_pcbr=ini_pcbr ini_pcas=ini_pcas ini_pcbs=ini_pcbs ini_pcag=ini_pcag ini_pcbg=ini_pcbg ini_pcah=ini_pcah ini_pcbh=ini_pcbh ini_edaw=ini_edaw ini_edbw=ini_edbw
-    !$ser data ini_edai=ini_edai ini_edbi=ini_edbi ini_edar=ini_edar ini_edbr=ini_edbr ini_edas=ini_edas ini_edbs=ini_edbs ini_edag=ini_edag ini_edbg=ini_edbg ini_edah=ini_edah
-    !$ser data ini_edbh=ini_edbh ini_oeaw=ini_oeaw ini_oebw=ini_oebw ini_oeai=ini_oeai ini_oebi=ini_oebi ini_oear=ini_oear ini_oebr=ini_oebr ini_oeas=ini_oeas ini_oebs=ini_oebs
-    !$ser data ini_oeag=ini_oeag ini_oebg=ini_oebg ini_oeah=ini_oeah ini_oebh=ini_oebh ini_rraw=ini_rraw ini_rrbw=ini_rrbw ini_rrai=ini_rrai ini_rrbi=ini_rrbi ini_rrar=ini_rrar
-    !$ser data ini_rrbr=ini_rrbr ini_rras=ini_rras ini_rrbs=ini_rrbs ini_rrag=ini_rrag ini_rrbg=ini_rrbg ini_rrah=ini_rrah ini_rrbh=ini_rrbh ini_tvai=ini_tvai ini_tvbi=ini_tvbi
-    !$ser data ini_tvar=ini_tvar ini_tvbr=ini_tvbr ini_tvas=ini_tvas ini_tvbs=ini_tvbs ini_tvag=ini_tvag ini_tvbg=ini_tvbg ini_tvah=ini_tvah ini_tvbh=ini_tvbh
-    !$ser data ini_crevp_1=ini_crevp_1 ini_crevp_2=ini_crevp_2 ini_crevp_3=ini_crevp_3 ini_crevp_4=ini_crevp_4 ini_crevp_5=ini_crevp_5 ini_cssub_1=ini_cssub_1 
-    !$ser data ini_cssub_2=ini_cssub_2 ini_cssub_3=ini_cssub_3 ini_cssub_4=ini_cssub_4 ini_cssub_5=ini_cssub_5 ini_cgsub_1=ini_cgsub_1 ini_cgsub_2=ini_cgsub_2
-    !$ser data ini_cgsub_3=ini_cgsub_3 ini_cgsub_4=ini_cgsub_4 ini_cgsub_5=ini_cgsub_5 ini_csmlt_1=ini_csmlt_1 ini_csmlt_2=ini_csmlt_2 ini_csmlt_3=ini_csmlt_3
-    !$ser data ini_csmlt_4=ini_csmlt_4 ini_cgmlt_1=ini_cgmlt_1 ini_cgmlt_2=ini_cgmlt_2 ini_cgmlt_3=ini_cgmlt_3 ini_cgmlt_4=ini_cgmlt_4 ini_cgfr_1=ini_cgfr_1
-    !$ser data ini_cgfr_2=ini_cgfr_2 ini_normw=ini_normw ini_normr=ini_normr ini_normi=ini_normi ini_norms=ini_norms ini_normg=ini_normg ini_expow=ini_expow ini_expor=ini_expor
-    !$ser data ini_expoi=ini_expoi ini_expos=ini_expos ini_expog=ini_expog ini_cracw=ini_cracw ini_craci=ini_craci ini_csacw=ini_csacw ini_csaci=ini_csaci ini_cgacw=ini_cgacw
-    !$ser data ini_cgaci=ini_cgaci ini_cracs=ini_cracs ini_csacr=ini_csacr ini_cgacr=ini_cgacr ini_cgacs=ini_cgacs ini_acc=ini_acc ini_acco1=ini_acco1 ini_acco2=ini_acco2 ini_acco3=ini_acco3
-
-    !$ser savepoint NegAdjP-Out
-    !$ser data ne_qv=ne_qv_o ne_ql=ne_ql_o ne_qr=ne_qr_o ne_qi=ne_qi_o ne_qs=ne_qs_o ne_qg=ne_qg_o ne_pt=ne_pt_o ne_delp=ne_delp_o ne_cond=ne_cond_o
-     
-    !$ser savepoint CloudFrac-Out
-    !$ser data cf_qa=cf_qa_o
-
-    !$ser savepoint MPFull-Out
-    !$ser data mpf_qv=mpf_qv_o mpf_ql=mpf_ql_o mpf_qr=mpf_qr_o mpf_qi=mpf_qi_o mpf_qs=mpf_qs_o mpf_qg=mpf_qg_o mpf_pt=mpf_pt_o mpf_delp=mpf_delp_o mpf_delz=mpf_delz_o
-    !$ser data mpf_u=mpf_u_o mpf_v=mpf_v_o mpf_w=mpf_w_o mpf_den=mpf_den_o mpf_denfac=mpf_denfac_o mpf_ccn=mpf_ccn_o mpf_cin=mpf_cin_o mpf_pfw=mpf_pfw_o mpf_pfr=mpf_pfr_o
-    !$ser data mpf_pfi=mpf_pfi_o mpf_pfs=mpf_pfs_o mpf_pfg=mpf_pfg_o mpf_h_var=mpf_h_var_o mpf_rh_adj=mpf_rh_adj_o mpf_dte=mpf_dte_o mpf_water=mpf_water_o
-    !$ser data mpf_rain=mpf_rain_o mpf_ice=mpf_ice_o mpf_snow=mpf_snow_o mpf_graupel=mpf_graupel_o mpf_cond=mpf_cond_o mpf_dep=mpf_dep_o mpf_sub=mpf_sub_o mpf_evap=mpf_evap_o
-
-    !$ser savepoint Sedimentation-Out
-    !$ser data sd_qv=sd_qv sd_ql=sd_ql sd_qr=sd_qr sd_qi=sd_qi sd_qs=sd_qs sd_qg=sd_qg sd_u=sd_u sd_v=sd_v sd_w=sd_w sd_vtw=sd_vtw sd_vtr=sd_vtr sd_vti=sd_vti sd_vts=sd_vts
-    !$ser data sd_vtg=sd_vtg sd_pfw=sd_pfw sd_pfr=sd_pfr sd_pfi=sd_pfi sd_pfs=sd_pfs sd_pfg=sd_pfg sd_pt=sd_tz sd_w1=sd_w1 sd_r1=sd_r1 sd_i1=sd_i1 sd_s1=sd_s1 sd_g1=sd_g1 sd_dte=sd_dte
-
-    !$ser savepoint WarmRain-Out
-    !$ser data wr_qv=wr_qv wr_ql=wr_ql wr_qr=wr_qr wr_qi=wr_qi wr_qs=wr_qs wr_qg=wr_qg wr_ccn=wr_ccn wr_pt=wr_tz wr_reevap=wr_reevap
-
-    !$ser savepoint IceCloud-Out
-    !$ser data ic_qv=ic_qv ic_ql=ic_ql ic_qr=ic_qr ic_qi=ic_qi ic_qs=ic_qs ic_qg=ic_qg ic_pt=ic_tz
-
-    !$ser savepoint SubgridZProc-Out
-    !$ser data sz_qv=sz_qv sz_ql=sz_ql sz_qr=sz_qr sz_qi=sz_qi sz_qs=sz_qs sz_qg=sz_qg sz_ccn=sz_ccn sz_cin=sz_cin sz_pt=sz_tz
-    !$ser data sz_cond=sz_cond sz_dep=sz_dep sz_reevap=sz_reevap sz_sub=sz_sub
-
-    !$ser savepoint TerminalFall-Out
-    !$ser data tf_pt=tfo_pt tf_qv=tfo_qv tf_ql=tfo_ql tf_qr=tfo_qr tf_qi=tfo_qi tf_qs=tfo_qs tf_qg=tfo_qg
-    !$ser data tf_ua=tfo_u tf_va=tfo_v tf_wa=tfo_w tf_pfi=tfo_pfi tf_i1=tfo_i1 tf_dte=tfo_dte
-
-    !$ser savepoint ZeZt-Out
-    !$ser data zz_ze=sm_ze zz_zt=sm_zt zz_zs=sm_zs
-
-    !$ser savepoint StartFall-Out
-    !$ser data sf_dm=sf_dm sf_e1=sf_e1 sf_nf=sf_nf
- 
-    !$ser savepoint EndFall-Out
-    !$ser data ef_ua=tfo_u ef_va=tfo_v ef_wa=tfo_w ef_dte=tfo_dte ef_pt=tfo_pt ef_ie=ef_e1
-
-    !$ser savepoint TableComputation-Out
-    !$ser data tc_t0=t0 tc_t2=t2 tab_wq=tab_wq tab_dwq=tab_dwq tab_iq=tab_iq tab_diq=tab_diq tc_ap1=tc_ap1 tc_it1=tc_it1 tc_it2=tc_it2
-
-    !$ser savepoint PythonTables-Out
-    !$ser data tc_t0=t0 tc_t2=t2 tab_wq=tab_wq tab_dwq=tab_dwq tab_iq=tab_iq tab_diq=tab_diq
-
-    !$ser savepoint SediMelt-Out
-    !$ser data sm_qr=sm_qro sm_qi=sm_qio sm_qs=sm_qso sm_qg=sm_qgo sm_pt=sm_pto sm_cv=sm_cv sm_r1=sm_r1o
-
-    !$ser savepoint CalcVTIce-Out
-    !$ser data vti_vti=sd_vti
-
-    !$ser savepoint CalcVTSnow-Out
-    !$ser data vts_vts=sd_vts
-
-    !$ser savepoint TracerSed-Out
-    !$ser data ts_qv=ts_qvo ts_ql=ts_qlo ts_qr=ts_qro ts_qi=ts_qio ts_qs=ts_qso ts_qg=ts_qgo
-    !$ser data ts_pt=ts_tzo ts_ua=ts_uo ts_va=ts_vo ts_wa=ts_wo ts_pf=ts_pfo ts_vt=ts_vto 
-    !$ser data ts_w1=ts_w1o ts_r1=ts_r1o ts_i1=ts_i1o ts_s1=ts_s1o ts_g1=ts_g1o ts_dte=ts_dteo
-    !$ser data ts_ze=tf_ze ts_zt=tf_zt ts_zs=sm_zs
-
-    !$ser savepoint InitSed-Out
-    !$ser data is_icpk=is_icpk is_pfw=is_pfw is_pfr=is_pfr is_pfi=is_pfi is_pfs=is_pfs is_pfg=is_pfg is_vtw=is_vtw is_vtr=is_vtr is_vti=is_vti is_vts=is_vts is_vtg=is_vtg
-    !$ser data is_w1=is_w1 is_r1=is_r1 is_i1=is_i1 is_s1=is_s1 is_g1=is_g1
-
-    !$ser savepoint IceSubFunc-Out
-    !$ser data isub_qv=isub_qvo isub_ql=isub_qlo isub_qr=isub_qro isub_qi=isub_qio isub_qs=isub_qso isub_qg=isub_qgo isub_pt=isub_pto isub_cvm=isub_cvmo isub_te8=isub_te8o
-    !$ser data isub_lcpk=isub_lcpko isub_icpk=isub_icpko isub_tcpk=isub_tcpko isub_tcp3=isub_tcp3o isub_di=isub_dio
-    !$ser data is_psacw=is_psacw is_psacr=is_psacr is_pracs=is_pracs is_qsi=is_qsi is_dqdt=is_dqdt is_sink0=is_sink0 is_sink=is_sink is_tmp=is_tmp
-
-    !$ser savepoint WRainSubFunc-Out
-    !$ser data ws_qv=ws_qvo ws_ql=ws_qlo ws_qr=ws_qro ws_qi=ws_qio ws_qs=ws_qso ws_qg=ws_qgo ws_pt=ws_pto ws_ccn=ws_ccno ws_reevap=ws_reevapo
-    !$ser data ws_tin=ws_tin ws_qsat=ws_qsat ws_dqdt=ws_dqdt ws_dqh=ws_dqh ws_bool_check=ws_bool_check ws_dq=ws_dq ws_sink0=ws_sink0 ws_sink=ws_sink ws_vc=ws_vc
-
-    !$ser savepoint SubgridZSubs-Out
-    !$ser data szs_qv=szs_qvo szs_ql=szs_qlo szs_qr=szs_qro szs_qi=szs_qio szs_qs=szs_qso szs_qg=szs_qgo szs_ccn=szs_ccno szs_cin=szs_cino szs_pt=szs_pto
-    !$ser data szs_cond=szs_condo szs_dep=szs_depo szs_reevap=szs_reevapo szs_sub=szs_subo
-    !$ser data szs_lcpk=szs_lcpko szs_icpk=szs_icpko szs_tcpk=szs_tcpko szs_tcp3=szs_tcp3o szs_cvm=szs_cvmo
-
-    !$ser savepoint ParticleProperties-Out
-    !$ser data pp_pcw=pcw pp_edw=edw pp_oew=oew pp_rrw=rrw pp_tvw=tvw pp_pci=pci pp_edi=edi pp_oei=oei pp_rri=rri pp_tvi=tvi
-    !$ser data pp_pcr=pcr pp_edr=edr pp_oer=oer pp_rrr=rrr pp_tvr=tvr pp_pcs=pcs pp_eds=eds pp_oes=oes pp_rrs=rrs pp_tvs=tvs
-    !$ser data pp_pcg=pcg pp_edg=edg pp_oeg=oeg pp_rrg=rrg pp_tvg=tvg
-
-    !$ser savepoint PreliminaryCalculations-Out
-    !$ser data pre_qv=pre_qvo pre_ql=pre_qlo pre_qr=pre_qro pre_qi=pre_qio pre_qs=pre_qso pre_qg=pre_qgo pre_pt=pre_pto pre_delp=pre_delpo pre_delz=pre_delzo pre_ua=pre_uao pre_va=pre_vao pre_wa=pre_wao
-    !$ser data pre_qv0=pre_qv pre_ql0=pre_ql pre_qr0=pre_qr pre_qi0=pre_qi pre_qs0=pre_qs pre_qg0=pre_qg pre_dp0=pre_dp0 pre_pt0=pre_pt pre_u0=pre_ua pre_v0=pre_va pre_w0=pre_wa
-    !$ser data pre_den=pre_den pre_pz=pre_pz pre_denfac=pre_denfac pre_dte=pre_dte pre_cond=pre_cond pre_adj_vmr=pre_adj_vmr pre_ccn=pre_ccn pre_cin=pre_cin pre_h_var=pre_h_var
-    !$ser data pre_rh_adj=pre_rh_adj pre_rh_rain=pre_rh_rain pre_ew0=pre_ew0 pre_ww0=pre_ww0 pre_bew0=pre_bew0 pre_bww0=pre_bww0 pre_ed0=pre_ed0 pre_wd0=pre_wd0 pre_bed0=pre_bed0 pre_bwd0=pre_bwd0
-
-    !$ser savepoint FinalCalculations-Out
-    !$ser data fin_qv=fin_qv fin_ql=fin_ql fin_qr=fin_qr fin_qi=fin_qi fin_qs=fin_qs fin_qg=fin_qg fin_pt=fin_pt fin_delp=fin_delp fin_delz=fin_delz fin_ua=fin_ua fin_va=fin_va fin_wa=fin_wa 
-    !$ser data fin_dte=fin_dte fin_adj_vmr=fin_adj_vmr fin_te=fin_te fin_te_loss=fin_te_loss fin_ew=fin_ew fin_ww=fin_ww fin_bew=fin_bew fin_bww=fin_bww fin_ed=fin_ed fin_wd=fin_wd fin_bed=fin_bed fin_bwd=fin_bwd
-
-    !$ser savepoint PostMP-Out
-    !$ser data post_qv=fin_qv post_ql=fin_ql post_qr=fin_qr post_qi=fin_qi post_qs=fin_qs post_qg=fin_qg post_pt=fin_pt post_delp=fin_delp post_delz=fin_delz post_ua=fin_ua post_va=fin_va post_wa=fin_wa 
-    !$ser data post_dte=fin_dte post_adj_vmr=fin_adj_vmr post_te=fin_te post_te_loss=fin_te_loss post_ew=fin_ew post_ww=fin_ww post_bew=fin_bew post_bww=fin_bww post_ed=fin_ed post_wd=fin_wd post_bed=fin_bed post_bwd=fin_bwd
-    !$ser data post_pcw=pcw post_edw=edw post_oew=oew post_rrw=rrw post_tvw=tvw post_pci=pci post_edi=edi post_oei=oei post_rri=rri post_tvi=tvi
-    !$ser data post_pcr=pcr post_edr=edr post_oer=oer post_rrr=rrr post_tvr=tvr post_pcs=pcs post_eds=eds post_oes=oes post_rrs=rrs post_tvs=tvs
-    !$ser data post_pcg=pcg post_edg=edg post_oeg=oeg post_rrg=rrg post_tvg=tvg post_qa=cf_qa_o
-
-    !$ser savepoint MPSub-Out
-    !$ser data mpsub_qv=mpsub_qv_o mpsub_ql=mpsub_ql_o mpsub_qr=mpsub_qr_o mpsub_qi=mpsub_qi_o mpsub_qs=mpsub_qs_o mpsub_qg=mpsub_qg_o mpsub_pt=mpsub_pt_o mpsub_u=mpsub_u_o mpsub_v=mpsub_v_o mpsub_w=mpsub_w_o
-    !$ser data mpsub_ccn=mpsub_ccn_o mpsub_cin=mpsub_cin_o mpsub_pfw=mpsub_pfw_o mpsub_pfr=mpsub_pfr_o mpsub_pfi=mpsub_pfi_o mpsub_pfs=mpsub_pfs_o mpsub_pfg=mpsub_pfg_o mpsub_vtw=mpsub_vtw_o mpsub_vtr=mpsub_vtr_o
-    !$ser data mpsub_vti=mpsub_vti_o mpsub_vts=mpsub_vts_o mpsub_vtg=mpsub_vtg_o mpsub_dte=mpsub_dte_o mpsub_water=mpsub_water_o mpsub_rain=mpsub_rain_o mpsub_ice=mpsub_ice_o mpsub_snow=mpsub_snow_o
-    !$ser data mpsub_graupel=mpsub_graupel_o mpsub_cond=mpsub_cond_o mpsub_dep=mpsub_dep_o mpsub_sub=mpsub_sub_o mpsub_evap=mpsub_evap_o
 
 end subroutine mpdrv
 
@@ -2625,39 +1856,8 @@ end subroutine neg_adj
 subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w, &
         den, denfac, ccn, cin, dts, rh_adj, rh_rain, h_var, dte, water, rain, ice, &
         snow, graupel, prefluxw, prefluxr, prefluxi, prefluxs, prefluxg, &
-!$ser verbatim sd_qv, sd_ql, sd_qr, sd_qi, sd_qs, sd_qg, sd_u, sd_v, sd_w,&
-!$ser verbatim sd_w1, sd_r1, sd_i1, sd_s1, sd_g1, sd_dte, sd_vtw, sd_vtr,&
-!$ser verbatim sd_vti, sd_vts, sd_vtg, sd_pfw, sd_pfr, sd_pfi, sd_pfs, sd_pfg, sd_tz,&
-!$ser verbatim wr_qv, wr_ql, wr_qr, wr_qi, wr_qs, wr_qg, wr_ccn, wr_tz, wr_reevap,&
-!$ser verbatim ic_qv, ic_ql, ic_qr, ic_qi, ic_qs, ic_qg, ic_tz, sz_tz,&
-!$ser verbatim sz_qv, sz_ql, sz_qr, sz_qi, sz_qs, sz_qg, sz_ccn, sz_cin,&
-!$ser verbatim sz_cond, sz_dep, sz_reevap, sz_sub,&
-!$ser verbatim tfi_qv, tfi_ql, tfi_qr, tfi_qi, tfi_qs, tfi_qg, tfi_u, tfi_v, tfi_w, tf_vt, tf_dp,&
-!$ser verbatim tfo_qv, tfo_ql, tfo_qr, tfo_qi, tfo_qs, tfo_qg, tfo_u, tfo_v, tfo_w, tfi_i1, tfo_i1,&
-!$ser verbatim tf_ze, tf_zt, tfi_dte, tfo_dte, tfi_pt, tfi_pfi, tfo_pt, tfo_pfi, sf_dm, sf_e1, sf_nf, ef_e1,&
-!$ser verbatim sm_ze, sm_zt, sm_zs, sm_cv, sm_vt, sm_ic, sm_r1, sm_r1o,&
-!$ser verbatim ts_w1, ts_r1, ts_i1, ts_s1, ts_g1, ts_w1o, ts_r1o, ts_i1o, ts_s1o, ts_g1o, ts_dte, ts_dteo,&
-!$ser verbatim ts_qv, ts_ql, ts_qr, ts_qi, ts_qs, ts_qg, ts_qvo, ts_qlo, ts_qro, ts_qio, ts_qso, ts_qgo,&
-!$ser verbatim ts_den, ts_denfac, ts_dp, ts_dz, ts_tz, ts_u, ts_v, ts_w, ts_pf, ts_vt,&
-!$ser verbatim ts_tzo, ts_uo, ts_vo, ts_wo, ts_pfo, ts_vto,&
-!$ser verbatim is_icpk, is_pfw, is_pfr, is_pfi, is_pfs, is_pfg, is_vtw, is_vtr, is_vti, is_vts, is_vtg, is_w1, is_r1, is_i1, is_s1, is_g1,&
-!$ser verbatim sm_qv, sm_ql, sm_qr, sm_qi, sm_qs, sm_qg, sm_pt, sm_qro, sm_qio, sm_qso, sm_qgo, sm_pto,&
-!$ser verbatim isub_qv, isub_ql, isub_qr, isub_qi, isub_qs, isub_qg, isub_pt, isub_cvm, isub_te8, isub_lcpk, isub_icpk, isub_tcpk, isub_tcp3, isub_di,&
-!$ser verbatim isub_qvo, isub_qlo, isub_qro, isub_qio, isub_qso, isub_qgo, isub_pto, isub_cvmo, isub_te8o, isub_lcpko, isub_icpko, isub_tcpko, isub_tcp3o, isub_dio, is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp,&
-!$ser verbatim ws_qv, ws_ql, ws_qr, ws_qi, ws_qs, ws_qg, ws_ccn, ws_pt,&
-!$ser verbatim ws_qvo, ws_qlo, ws_qro, ws_qio, ws_qso, ws_qgo, ws_ccno, ws_pto, ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink, ws_vc,&
-!$ser verbatim ws_reevap, ws_reevapo, szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_te,&
-!$ser verbatim szs_cond, szs_dep, szs_reevap, szs_sub, szs_pto, szs_qvo, szs_qlo, szs_qro, szs_qio, szs_qso, szs_qgo, szs_ccno, szs_cino,&
-!$ser verbatim szs_condo, szs_depo, szs_reevapo, szs_subo, szs_lcpk, szs_icpk, szs_tcpk, szs_tcp3, szs_lcpko, szs_icpko, szs_tcpko, szs_tcp3o, szs_cvm, szs_cvmo,&
-!$ser verbatim szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
-!$ser verbatim mpsub_qv, mpsub_ql, mpsub_qr, mpsub_qi, mpsub_qs, mpsub_qg, mpsub_pt, mpsub_u, mpsub_v, mpsub_w,&
-!$ser verbatim mpsub_ccn, mpsub_cin, mpsub_pfw, mpsub_pfr, mpsub_pfi, mpsub_pfs, mpsub_pfg, mpsub_vtw, mpsub_vtr, mpsub_vti, mpsub_vts, mpsub_vtg,&
-!$ser verbatim mpsub_qv_o, mpsub_ql_o, mpsub_qr_o, mpsub_qi_o, mpsub_qs_o, mpsub_qg_o, mpsub_pt_o, mpsub_u_o, mpsub_v_o, mpsub_w_o,&
-!$ser verbatim mpsub_ccn_o, mpsub_cin_o, mpsub_pfw_o, mpsub_pfr_o, mpsub_pfi_o, mpsub_pfs_o, mpsub_pfg_o, mpsub_vtw_o, mpsub_vtr_o, mpsub_vti_o, mpsub_vts_o, mpsub_vtg_o,&
-!$ser verbatim mpsub_dte, mpsub_water, mpsub_rain, mpsub_ice, mpsub_snow, mpsub_graupel, mpsub_cond, mpsub_dep, mpsub_sub, mpsub_evap,&
-!$ser verbatim mpsub_dte_o, mpsub_water_o, mpsub_rain_o, mpsub_ice_o, mpsub_snow_o, mpsub_graupel_o, mpsub_cond_o, mpsub_dep_o, mpsub_sub_o, mpsub_evap_o,&
         condensation, deposition, evaporation, sublimation, convt, last_step)
-    
+
     implicit none
 
     ! -----------------------------------------------------------------------
@@ -2674,56 +1874,15 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
 
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg, u, v, w, ccn, cin
     real, intent (inout), dimension (ks:ke) :: prefluxw, prefluxr, prefluxi, prefluxs, prefluxg
-    
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: sd_qv, sd_ql, sd_qr, sd_qi, sd_qs, sd_qg, sd_u, sd_v, sd_w
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: sd_vtw, sd_vtr, sd_vti, sd_vts, sd_vtg, sd_pfw, sd_pfr, sd_pfi, sd_pfs, sd_pfg
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: wr_qv, wr_ql, wr_qr, wr_qi, wr_qs, wr_qg, wr_ccn
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: ic_qv, ic_ql, ic_qr, ic_qi, ic_qs, ic_qg
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: sz_qv, sz_ql, sz_qr, sz_qi, sz_qs, sz_qg, sz_ccn, sz_cin
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: sd_tz, wr_tz, ic_tz, sz_tz
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: tfi_qv, tfi_ql, tfi_qr, tfi_qi, tfi_qs, tfi_qg, tfi_u, tfi_v, tfi_w, tf_vt, tf_dp
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: tfo_qv, tfo_ql, tfo_qr, tfo_qi, tfo_qs, tfo_qg, tfo_u, tfo_v, tfo_w
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: tfi_pt, tfi_pfi, tfo_pt, tfo_pfi, sf_dm, sm_cv, sm_vt, sm_ic
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: ts_qv, ts_ql, ts_qr, ts_qi, ts_qs, ts_qg, ts_qvo, ts_qlo, ts_qro, ts_qio, ts_qso, ts_qgo
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: ts_den, ts_denfac, ts_dp, ts_dz, ts_tz, ts_u, ts_v, ts_w, ts_pf, ts_vt, ts_tzo, ts_uo, ts_vo, ts_wo, ts_pfo, ts_vto
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: is_icpk, is_pfw, is_pfr, is_pfi, is_pfs, is_pfg, is_vtw, is_vtr, is_vti, is_vts, is_vtg
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: sm_qv, sm_ql, sm_qr, sm_qi, sm_qs, sm_qg, sm_pt, sm_qro, sm_qio, sm_qso, sm_qgo, sm_pto
-
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: isub_qv, isub_ql, isub_qr, isub_qi, isub_qs, isub_qg, isub_pt, isub_cvm, isub_te8, isub_lcpk, isub_icpk, isub_tcpk, isub_tcp3, isub_di
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: isub_qvo, isub_qlo, isub_qro, isub_qio, isub_qso, isub_qgo, isub_pto, isub_cvmo, isub_te8o, isub_lcpko, isub_icpko, isub_tcpko, isub_tcp3o, isub_dio
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp
-
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: ws_qv, ws_ql, ws_qr, ws_qi, ws_qs, ws_qg, ws_ccn, ws_pt
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: ws_qvo, ws_qlo, ws_qro, ws_qio, ws_qso, ws_qgo, ws_ccno, ws_pto, ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink, ws_vc
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_te
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: szs_pto, szs_qvo, szs_qlo, szs_qro, szs_qio, szs_qso, szs_qgo, szs_ccno, szs_cino
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: szs_lcpk, szs_icpk, szs_tcpk, szs_tcp3, szs_lcpko, szs_icpko, szs_tcpko, szs_tcp3o, szs_cvm, szs_cvmo, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt
-
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: mpsub_qv, mpsub_ql, mpsub_qr, mpsub_qi, mpsub_qs, mpsub_qg, mpsub_pt, mpsub_u, mpsub_v, mpsub_w
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: mpsub_ccn, mpsub_cin, mpsub_pfw, mpsub_pfr, mpsub_pfi, mpsub_pfs, mpsub_pfg, mpsub_vtw, mpsub_vtr, mpsub_vti, mpsub_vts, mpsub_vtg
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: mpsub_qv_o, mpsub_ql_o, mpsub_qr_o, mpsub_qi_o, mpsub_qs_o, mpsub_qg_o, mpsub_pt_o, mpsub_u_o, mpsub_v_o, mpsub_w_o
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: mpsub_ccn_o, mpsub_cin_o, mpsub_pfw_o, mpsub_pfr_o, mpsub_pfi_o, mpsub_pfs_o, mpsub_pfg_o, mpsub_vtw_o, mpsub_vtr_o, mpsub_vti_o, mpsub_vts_o, mpsub_vtg_o
-    
-    !$ser verbatim real, intent (out), dimension (ks:ke + 1) :: tf_ze, tf_zt, sm_ze, sm_zt
 
     real (kind = r8), intent (inout), dimension (ks:ke) :: tz
 
     real, intent (inout) :: water, rain, ice, snow, graupel
     real, intent (inout) :: condensation, deposition
     real, intent (inout) :: evaporation, sublimation
-    !$ser verbatim real, intent (inout) :: tfi_i1, tfo_i1, sf_nf, sf_e1, ef_e1, sm_zs, sm_r1, sm_r1o
-    !$ser verbatim real, intent (inout) :: ts_w1, ts_r1, ts_i1, ts_s1, ts_g1, ts_w1o ,ts_r1o ,ts_i1o ,ts_s1o ,ts_g1o, ts_dte, ts_dteo
-    
+
     real (kind = r8), intent (inout) :: dte
-    !$ser verbatim real, intent (inout) :: tfi_dte, tfo_dte, is_w1, is_r1, is_i1, is_s1, is_g1
-    !$ser verbatim real, intent (inout) :: ws_reevap, ws_reevapo, szs_cond, szs_dep, szs_reevap, szs_sub, szs_condo, szs_depo, szs_reevapo, szs_subo
 
-    !$ser verbatim real, intent (inout) :: mpsub_dte, mpsub_water, mpsub_rain, mpsub_ice, mpsub_snow, mpsub_graupel, mpsub_cond, mpsub_dep, mpsub_sub, mpsub_evap
-    !$ser verbatim real, intent (inout) :: mpsub_dte_o, mpsub_water_o, mpsub_rain_o, mpsub_ice_o, mpsub_snow_o, mpsub_graupel_o, mpsub_cond_o, mpsub_dep_o, mpsub_sub_o, mpsub_evap_o
-
-    !$ser verbatim real, intent (out) :: sd_w1, sd_r1, sd_i1, sd_s1, sd_g1, wr_reevap, sz_cond, sz_dep, sz_reevap, sz_sub
-    !$ser verbatim real, intent (out) :: sd_dte
-    
     ! -----------------------------------------------------------------------
     ! local variables
     ! -----------------------------------------------------------------------
@@ -2742,46 +1901,7 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
 
         call sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, &
             dz, dp, vtw, vtr, vti, vts, vtg, w1, r1, i1, s1, g1, pfw, pfr, pfi, pfs, pfg, &
-!$ser verbatim n, tfi_qv, tfi_ql, tfi_qr, tfi_qi, tfi_qs, tfi_qg, tfi_u, tfi_v, tfi_w, tf_vt, tf_dp,&
-!$ser verbatim tfo_qv, tfo_ql, tfo_qr, tfo_qi, tfo_qs, tfo_qg, tfo_u, tfo_v, tfo_w, tfi_i1, tfo_i1,&
-!$ser verbatim tf_ze, tf_zt, tfi_dte, tfo_dte, tfi_pt, tfi_pfi, tfo_pt, tfo_pfi, sf_dm, sf_e1, sf_nf, ef_e1,&
-!$ser verbatim sm_ze, sm_zt, sm_zs, sm_cv, sm_vt, sm_ic, sm_r1, sm_r1o,&
-!$ser verbatim ts_w1, ts_r1, ts_i1, ts_s1, ts_g1, ts_w1o, ts_r1o, ts_i1o, ts_s1o, ts_g1o, ts_dte, ts_dteo,&
-!$ser verbatim ts_qv, ts_ql, ts_qr, ts_qi, ts_qs, ts_qg, ts_qvo, ts_qlo, ts_qro, ts_qio, ts_qso, ts_qgo,&
-!$ser verbatim ts_den, ts_denfac, ts_dp, ts_dz, ts_tz, ts_u, ts_v, ts_w, ts_pf, ts_vt,&
-!$ser verbatim ts_tzo, ts_uo, ts_vo, ts_wo, ts_pfo, ts_vto,&
-!$ser verbatim is_icpk, is_pfw, is_pfr, is_pfi, is_pfs, is_pfg, is_vtw, is_vtr, is_vti, is_vts, is_vtg, is_w1, is_r1, is_i1, is_s1, is_g1,&
-!$ser verbatim sm_qv, sm_ql, sm_qr, sm_qi, sm_qs, sm_qg, sm_pt, sm_qro, sm_qio, sm_qso, sm_qgo, sm_pto,&
             u, v, w, den, denfac, dte)
-        
-        !$ser verbatim if (n .eq. 1) then
-            !$ser verbatim sd_qv=qv
-            !$ser verbatim sd_ql=ql
-            !$ser verbatim sd_qr=qr
-            !$ser verbatim sd_qi=qi
-            !$ser verbatim sd_qs=qs
-            !$ser verbatim sd_qg=qg
-            !$ser verbatim sd_u=u
-            !$ser verbatim sd_v=v
-            !$ser verbatim sd_w=w
-            !$ser verbatim sd_vtw=vtw
-            !$ser verbatim sd_vtr=vtr
-            !$ser verbatim sd_vti=vti
-            !$ser verbatim sd_vts=vts
-            !$ser verbatim sd_vtg=vtg
-            !$ser verbatim sd_pfw=pfw
-            !$ser verbatim sd_pfr=pfr
-            !$ser verbatim sd_pfi=pfi
-            !$ser verbatim sd_pfs=pfs
-            !$ser verbatim sd_pfg=pfg
-            !$ser verbatim sd_tz=tz
-            !$ser verbatim sd_w1=w1
-            !$ser verbatim sd_r1=r1
-            !$ser verbatim sd_i1=i1
-            !$ser verbatim sd_s1=s1
-            !$ser verbatim sd_g1=g1
-            !$ser verbatim sd_dte=dte
-        !$ser verbatim endif
 
         water = water + w1 * convt
         rain = rain + r1 * convt
@@ -2794,65 +1914,13 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
         prefluxi = prefluxi + pfi * convt
         prefluxs = prefluxs + pfs * convt
         prefluxg = prefluxg + pfg * convt
-        
-        !sed out here
 
         ! -----------------------------------------------------------------------
         ! warm rain cloud microphysics
         ! -----------------------------------------------------------------------
-        
-        !$ser verbatim if (n .eq. 1) then
-            !$ser verbatim mpsub_qv(:)=qv(:)
-            !$ser verbatim mpsub_ql(:)=ql(:)
-            !$ser verbatim mpsub_qr(:)=qr(:)
-            !$ser verbatim mpsub_qi(:)=qi(:)
-            !$ser verbatim mpsub_qs(:)=qs(:)
-            !$ser verbatim mpsub_qg(:)=qg(:)
-            !$ser verbatim mpsub_pt(:)=tz(:)
-            !$ser verbatim mpsub_u(:)=u(:)
-            !$ser verbatim mpsub_v(:)=v(:)
-            !$ser verbatim mpsub_w(:)=w(:)
-            !$ser verbatim mpsub_ccn(:)=ccn(:)
-            !$ser verbatim mpsub_cin(:)=cin(:)
-            !$ser verbatim mpsub_pfw(:)=prefluxw(:)
-            !$ser verbatim mpsub_pfr(:)=prefluxr(:)
-            !$ser verbatim mpsub_pfi(:)=prefluxi(:)
-            !$ser verbatim mpsub_pfs(:)=prefluxs(:)
-            !$ser verbatim mpsub_pfg(:)=prefluxg(:)
-            !$ser verbatim mpsub_vtw(:)=vtw(:)
-            !$ser verbatim mpsub_vtr(:)=vtr(:)
-            !$ser verbatim mpsub_vti(:)=vti(:)
-            !$ser verbatim mpsub_vts(:)=vts(:)
-            !$ser verbatim mpsub_vtg(:)=vtg(:)
-            !$ser verbatim mpsub_dte=dte
-            !$ser verbatim mpsub_water=water
-            !$ser verbatim mpsub_rain=rain
-            !$ser verbatim mpsub_ice=ice
-            !$ser verbatim mpsub_snow=snow
-            !$ser verbatim mpsub_graupel=graupel
-            !$ser verbatim mpsub_cond=condensation
-            !$ser verbatim mpsub_dep=deposition
-            !$ser verbatim mpsub_sub=sublimation
-            !$ser verbatim mpsub_evap=evaporation
-        !$ser verbatim endif
 
         call warm_rain (dts, ks, ke, dp, dz, tz, qv, ql, qr, qi, qs, qg, &
-!$ser verbatim ws_qv, ws_ql, ws_qr, ws_qi, ws_qs, ws_qg, ws_ccn, ws_pt,&
-!$ser verbatim ws_qvo, ws_qlo, ws_qro, ws_qio, ws_qso, ws_qgo, ws_ccno, ws_pto,&
-!$ser verbatim ws_reevap, ws_reevapo, n, ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink, ws_vc,&
             den, denfac, vtw, vtr, ccn, rh_rain, h_var, reevap)
-        
-        !$ser verbatim if (n .eq. 1) then
-            !$ser verbatim wr_qv=qv
-            !$ser verbatim wr_ql=ql
-            !$ser verbatim wr_qr=qr
-            !$ser verbatim wr_qi=qi
-            !$ser verbatim wr_qs=qs
-            !$ser verbatim wr_qg=qg
-            !$ser verbatim wr_ccn=ccn
-            !$ser verbatim wr_tz=tz
-            !$ser verbatim wr_reevap=reevap
-        !$ser verbatim endif
 
         evaporation = evaporation + reevap * convt
 
@@ -2861,87 +1929,24 @@ subroutine mp_full (ks, ke, ntimes, tz, qv, ql, qr, qi, qs, qg, dp, dz, u, v, w,
         ! -----------------------------------------------------------------------
 
         call ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
-!$ser verbatim isub_qv, isub_ql, isub_qr, isub_qi, isub_qs, isub_qg, isub_pt, isub_cvm, isub_te8, isub_lcpk, isub_icpk, isub_tcpk, isub_tcp3, isub_di, n,&
-!$ser verbatim isub_qvo, isub_qlo, isub_qro, isub_qio, isub_qso, isub_qgo, isub_pto, isub_cvmo, isub_te8o, isub_lcpko, isub_icpko, isub_tcpko, isub_tcp3o, isub_dio,&
-!$ser verbatim is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp,&
             denfac, vtw, vtr, vti, vts, vtg, dts, h_var)
-        
-        !$ser verbatim if (n .eq. 1) then
-            !$ser verbatim ic_qv=qv
-            !$ser verbatim ic_ql=ql
-            !$ser verbatim ic_qr=qr
-            !$ser verbatim ic_qi=qi
-            !$ser verbatim ic_qs=qs
-            !$ser verbatim ic_qg=qg
-            !$ser verbatim ic_tz=tz
-        !$ser verbatim endif
 
-        !$ser verbatim if (n .eq. 1) then
-            !$ser verbatim mpsub_qv_o(:)=qv(:)
-            !$ser verbatim mpsub_ql_o(:)=ql(:)
-            !$ser verbatim mpsub_qr_o(:)=qr(:)
-            !$ser verbatim mpsub_qi_o(:)=qi(:)
-            !$ser verbatim mpsub_qs_o(:)=qs(:)
-            !$ser verbatim mpsub_qg_o(:)=qg(:)
-            !$ser verbatim mpsub_pt_o(:)=tz(:)
-            !$ser verbatim mpsub_u_o(:)=u(:)
-            !$ser verbatim mpsub_v_o(:)=v(:)
-            !$ser verbatim mpsub_w_o(:)=w(:)
-            !$ser verbatim mpsub_ccn_o(:)=ccn(:)
-            !$ser verbatim mpsub_cin_o(:)=cin(:)
-            !$ser verbatim mpsub_pfw_o(:)=prefluxw(:)
-            !$ser verbatim mpsub_pfr_o(:)=prefluxr(:)
-            !$ser verbatim mpsub_pfi_o(:)=prefluxi(:)
-            !$ser verbatim mpsub_pfs_o(:)=prefluxs(:)
-            !$ser verbatim mpsub_pfg_o(:)=prefluxg(:)
-            !$ser verbatim mpsub_vtw_o(:)=vtw(:)
-            !$ser verbatim mpsub_vtr_o(:)=vtr(:)
-            !$ser verbatim mpsub_vti_o(:)=vti(:)
-            !$ser verbatim mpsub_vts_o(:)=vts(:)
-            !$ser verbatim mpsub_vtg_o(:)=vtg(:)
-            !$ser verbatim mpsub_dte_o=dte
-            !$ser verbatim mpsub_water_o=water
-            !$ser verbatim mpsub_rain_o=rain
-            !$ser verbatim mpsub_ice_o=ice
-            !$ser verbatim mpsub_snow_o=snow
-            !$ser verbatim mpsub_graupel_o=graupel
-            !$ser verbatim mpsub_cond_o=condensation
-            !$ser verbatim mpsub_dep_o=deposition
-            !$ser verbatim mpsub_sub_o=sublimation
-            !$ser verbatim mpsub_evap_o=evaporation
-        !$ser verbatim endif
+        if (do_subgrid_proc) then
 
-        ! -----------------------------------------------------------------------
-        ! temperature sentive high vertical resolution processes
-        ! -----------------------------------------------------------------------
-        
-        call subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
-!$ser verbatim szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_cond, szs_dep, szs_reevap, szs_sub, szs_te,&
-!$ser verbatim szs_pto, szs_qvo, szs_qlo, szs_qro, szs_qio, szs_qso, szs_qgo, szs_ccno, szs_cino, szs_condo, szs_depo, szs_reevapo, szs_subo, n,&
-!$ser verbatim szs_lcpk, szs_icpk, szs_tcpk, szs_tcp3, szs_lcpko, szs_icpko, szs_tcpko, szs_tcp3o, szs_cvm, szs_cvmo, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
-            qi, qs, qg, dp, ccn, cin, cond, dep, reevap, sub, last_step)
-        
-        !$ser verbatim if (n .eq. 1) then
-            !$ser verbatim sz_qv=qv
-            !$ser verbatim sz_ql=ql
-            !$ser verbatim sz_qr=qr
-            !$ser verbatim sz_qi=qi
-            !$ser verbatim sz_qs=qs
-            !$ser verbatim sz_qg=qg
-            !$ser verbatim sz_tz=tz
-            !$ser verbatim sz_ccn=ccn
-            !$ser verbatim sz_cin=cin
-            !$ser verbatim sz_cond=cond
-            !$ser verbatim sz_dep=dep
-            !$ser verbatim sz_reevap=reevap
-            !$ser verbatim sz_sub=sub
-        !$ser verbatim endif
+            ! -----------------------------------------------------------------------
+            ! temperature sentive high vertical resolution processes
+            ! -----------------------------------------------------------------------
+         
+            call subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, &
+                qr, qi, qs, qg, dp, ccn, cin, cond, dep, reevap, sub, last_step)
+         
+            condensation = condensation + cond * convt
+            deposition = deposition + dep * convt
+            evaporation = evaporation + reevap * convt
+            sublimation = sublimation + sub * convt
 
-        condensation = condensation + cond * convt
-        deposition = deposition + dep * convt
-        evaporation = evaporation + reevap * convt
-        sublimation = sublimation + sub * convt
-        
+        endif
+
     enddo
 
 end subroutine mp_full
@@ -2969,7 +1974,6 @@ subroutine mp_fast (ks, ke, tz, qv, ql, qr, qi, qs, qg, dtm, dp, den, &
     real, intent (in), dimension (ks:ke) :: dp, den, denfac
 
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg, ccn, cin
-    !$ser verbatim real, dimension (ks:ke) :: buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt
 
     real (kind = r8), intent (inout), dimension (ks:ke) :: tz
 
@@ -2987,8 +1991,7 @@ subroutine mp_fast (ks, ke, tz, qv, ql, qr, qi, qs, qg, dtm, dp, den, &
     real :: cond, dep, reevap, sub
 
     real, dimension (ks:ke) :: q_liq, q_sol, lcpk, icpk, tcpk, tcp3
-    !$ser verbatim real, dimension (ks:ke) ::  szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt
-    
+
     real (kind = r8), dimension (ks:ke) :: cvm, te8
 
     ! -----------------------------------------------------------------------
@@ -3038,7 +2041,6 @@ subroutine mp_fast (ks, ke, tz, qv, ql, qr, qi, qs, qg, dtm, dp, den, &
     if (cond_evap) then
         do n = 1, nconds
             call pcond_pevap (ks, ke, dtm, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-                !$ser verbatim 1, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
                 lcpk, icpk, tcpk, tcp3, cond, reevap)
         enddo
     endif
@@ -3058,10 +2060,8 @@ subroutine mp_fast (ks, ke, tz, qv, ql, qr, qi, qs, qg, dtm, dp, den, &
         ! -----------------------------------------------------------------------
         ! Wegener Bergeron Findeisen process
         ! -----------------------------------------------------------------------
-        
-        call pwbf (ks, ke, dtm, qv, ql, qr, qi, qs, qg, tz, &
-!$ser verbatim 1, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
-            cvm, te8, den, &
+
+        call pwbf (ks, ke, dtm, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, &
             lcpk, icpk, tcpk, tcp3)
 
         ! -----------------------------------------------------------------------
@@ -3100,7 +2100,6 @@ subroutine mp_fast (ks, ke, tz, qv, ql, qr, qi, qs, qg, dtm, dp, den, &
         ! -----------------------------------------------------------------------
 
         call pidep_pisub (ks, ke, dtm, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-!$ser verbatim 1, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
             lcpk, icpk, tcpk, tcp3, cin, dep, sub)
 
         deposition = deposition + dep * convt
@@ -3117,7 +2116,6 @@ subroutine mp_fast (ks, ke, tz, qv, ql, qr, qi, qs, qg, dtm, dp, den, &
         ! -----------------------------------------------------------------------
 
         call psdep_pssub (ks, ke, dtm, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-!$ser verbatim 1, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
             denfac, lcpk, icpk, tcpk, tcp3, dep, sub)
 
         ! -----------------------------------------------------------------------
@@ -3125,7 +2123,6 @@ subroutine mp_fast (ks, ke, tz, qv, ql, qr, qi, qs, qg, dtm, dp, den, &
         ! -----------------------------------------------------------------------
 
         call pgdep_pgsub (ks, ke, dtm, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-!$ser verbatim 1, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
             denfac, lcpk, icpk, tcpk, tcp3, dep, sub)
 
     endif
@@ -3138,16 +2135,6 @@ end subroutine mp_fast
 
 subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
         vtw, vtr, vti, vts, vtg, w1, r1, i1, s1, g1, pfw, pfr, pfi, pfs, pfg, &
-!$ser verbatim nn, tfi_qv, tfi_ql, tfi_qr, tfi_qi, tfi_qs, tfi_qg, tfi_u, tfi_v, tfi_w, tf_vt, tf_dp,&
-!$ser verbatim tfo_qv, tfo_ql, tfo_qr, tfo_qi, tfo_qs, tfo_qg, tfo_u, tfo_v, tfo_w, tfi_i1, tfo_i1,&
-!$ser verbatim tf_ze, tf_zt, tfi_dte, tfo_dte, tfi_pt, tfi_pfi, tfo_pt, tfo_pfi, sf_dm, sf_e1, sf_nf, ef_e1,&
-!$ser verbatim sm_ze, sm_zt, sm_zs, sm_cv, sm_vt, sm_ic, sm_r1, sm_r1o,&
-!$ser verbatim ts_w1, ts_r1, ts_i1, ts_s1, ts_g1, ts_w1o, ts_r1o, ts_i1o, ts_s1o, ts_g1o, ts_dte, ts_dteo,&
-!$ser verbatim ts_qv, ts_ql, ts_qr, ts_qi, ts_qs, ts_qg, ts_qvo, ts_qlo, ts_qro, ts_qio, ts_qso, ts_qgo,&
-!$ser verbatim ts_den, ts_denfac, ts_dp, ts_dz, ts_tz, ts_u, ts_v, ts_w, ts_pf, ts_vt,&
-!$ser verbatim ts_tzo, ts_uo, ts_vo, ts_wo, ts_pfo, ts_vto,&
-!$ser verbatim is_icpk, is_pfw, is_pfr, is_pfi, is_pfs, is_pfg, is_vtw, is_vtr, is_vti, is_vts, is_vtg, is_w1, is_r1, is_i1, is_s1, is_g1,&
-!$ser verbatim sm_qv, sm_ql, sm_qr, sm_qi, sm_qs, sm_qg, sm_pt, sm_qro, sm_qio, sm_qso, sm_qgo, sm_pto,&
         u, v, w, den, denfac, dte)
 
     implicit none
@@ -3157,53 +2144,30 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     ! -----------------------------------------------------------------------
 
     integer, intent (in) :: ks, ke
-    !$ser verbatim integer, intent (in) :: nn
-    
+
     real, intent (in) :: dts
 
     real, intent (in), dimension (ks:ke) :: dp, dz, den, denfac
 
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg, u, v, w
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: tfi_qv, tfi_ql, tfi_qr, tfi_qi, tfi_qs, tfi_qg, tfi_u, tfi_v, tfi_w, tf_vt, tf_dp
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: tfo_qv, tfo_ql, tfo_qr, tfo_qi, tfo_qs, tfo_qg, tfo_u, tfo_v, tfo_w
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: ts_qv, ts_ql, ts_qr, ts_qi, ts_qs, ts_qg, ts_qvo, ts_qlo, ts_qro, ts_qio, ts_qso, ts_qgo
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: ts_den, ts_denfac, ts_dp, ts_dz, ts_tz, ts_u, ts_v, ts_w, ts_pf, ts_vt, ts_tzo, ts_uo, ts_vo, ts_wo, ts_pfo, ts_vto 
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: is_icpk, is_pfw, is_pfr, is_pfi, is_pfs, is_pfg, is_vtw, is_vtr, is_vti, is_vts, is_vtg
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: sm_qv, sm_ql, sm_qr, sm_qi, sm_qs, sm_qg, sm_pt, sm_qro, sm_qio, sm_qso, sm_qgo, sm_pto
 
     real, intent (out) :: w1, r1, i1, s1, g1
-    !$ser verbatim real, intent (inout) :: tfi_i1, tfo_i1
-    
+
     real, intent (out), dimension (ks:ke) :: vtw, vtr, vti, vts, vtg, pfw, pfr, pfi, pfs, pfg
-    !$ser verbatim real, intent (out), dimension (ks:ke + 1) :: tf_ze, tf_zt, sm_ze, sm_zt
 
     real (kind = r8), intent (inout) :: dte
-    !$ser verbatim real, intent (inout) :: tfi_dte, tfo_dte, sf_nf, sf_e1, ef_e1, sm_zs, sm_r1, sm_r1o
-    !$ser verbatim real, intent (out) :: ts_w1, ts_r1, ts_i1, ts_s1, ts_g1, ts_w1o ,ts_r1o ,ts_i1o ,ts_s1o ,ts_g1o, ts_dte, ts_dteo, is_w1, is_r1, is_i1, is_s1, is_g1
-    
+
     real (kind = r8), intent (inout), dimension (ks:ke) :: tz
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: tfi_pt, tfi_pfi, tfo_pt, tfo_pfi, sf_dm, sm_cv, sm_vt, sm_ic
 
     ! -----------------------------------------------------------------------
     ! local variables
     ! -----------------------------------------------------------------------
 
     integer :: k
-    
-    !$ser verbatim real, dimension (ks:ke + 1) :: ze_buf, zt_buf
-    !$ser verbatim real, dimension (ks:ke) :: dm_buf, ser_dp, ser_dz, ser_den, ser_denfac
+
     real, dimension (ks:ke) :: q_liq, q_sol, lcpk, icpk, tcpk, tcp3
 
     real (kind = r8), dimension (ks:ke) :: te8, cvm
-    !$ser verbatim real :: nf_buf, e1_buf, e2_buf
-
-    !$ser verbatim character (len = 2) :: ts_q
-
-    !$ser verbatim ts_q = "qs"    
-    !$ser verbatim ser_dp (:) = dp (:)
-    !$ser verbatim ser_dz (:) = dz (:)
-    !$ser verbatim ser_den (:) = den (:)
-    !$ser verbatim ser_denfac (:) = denfac (:)
 
     w1 = 0.
     r1 = 0.
@@ -3229,57 +2193,11 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
 
     call cal_mhc_lhc (ks, ke, qv, ql, qr, qi, qs, qg, q_liq, q_sol, cvm, te8, tz, &
         lcpk, icpk, tcpk, tcp3)
-    
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim is_icpk(:) = icpk(:)
-        !$ser verbatim is_pfw(:) = pfw(:)
-        !$ser verbatim is_pfr(:) = pfr(:)
-        !$ser verbatim is_pfi(:) = pfi(:)
-        !$ser verbatim is_pfs(:) = pfs(:)
-        !$ser verbatim is_pfg(:) = pfg(:)
-        !$ser verbatim is_vtw(:) = vtw(:)
-        !$ser verbatim is_vtr(:) = vtr(:)
-        !$ser verbatim is_vti(:) = vti(:)
-        !$ser verbatim is_vts(:) = vts(:)
-        !$ser verbatim is_vtg(:) = vtg(:)
-        !$ser verbatim is_w1 = w1
-        !$ser verbatim is_r1 = r1
-        !$ser verbatim is_i1 = i1
-        !$ser verbatim is_s1 = s1
-        !$ser verbatim is_g1 = g1
-    !$ser verbatim endif
 
     ! -----------------------------------------------------------------------
     ! terminal fall and melting of falling cloud ice into rain
     ! -----------------------------------------------------------------------
 
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim if (ts_q == "qi") then
-            !$ser verbatim ts_qv = qv
-            !$ser verbatim ts_ql = ql
-            !$ser verbatim ts_qr = qr
-            !$ser verbatim ts_qi = qi
-            !$ser verbatim ts_qs = qs
-            !$ser verbatim ts_qg = qg
-            !$ser verbatim ts_den = den
-            !$ser verbatim ts_denfac = denfac
-            !$ser verbatim ts_dp = dp
-            !$ser verbatim ts_dz = dz
-            !$ser verbatim ts_tz = tz
-            !$ser verbatim ts_u = u
-            !$ser verbatim ts_v = v
-            !$ser verbatim ts_w = w
-            !$ser verbatim ts_dte = dte
-            !$ser verbatim ts_pf = pfi
-            !$ser verbatim ts_vt = vti
-            !$ser verbatim ts_w1 = w1
-            !$ser verbatim ts_r1 = r1
-            !$ser verbatim ts_i1 = i1
-            !$ser verbatim ts_s1 = s1
-            !$ser verbatim ts_g1 = g1
-        !$ser verbatim endif
-    !$ser verbatim endif
-        
     if (do_psd_ice_fall) then
         call term_rsg (ks, ke, qi, den, denfac, vi_fac, blini, mui, tvai, tvbi, vi_max, const_vi, vti)
     else
@@ -3288,139 +2206,29 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
 
     if (do_sedi_melt) then
         call sedi_melt (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
-!$ser verbatim ze_buf, zt_buf, e1_buf, dm_buf, nn,&
             vti, r1, tau_imlt, icpk, "qi")
     endif
 
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim tf_vt=vti
-        !$ser verbatim tfi_pt=tz
-        !$ser verbatim tfi_qv=qv
-        !$ser verbatim tfi_ql=ql
-        !$ser verbatim tfi_qr=qr
-        !$ser verbatim tfi_qi=qi
-        !$ser verbatim tfi_qs=qs
-        !$ser verbatim tfi_qg=qg
-        !$ser verbatim tfi_u=u
-        !$ser verbatim tfi_v=v
-        !$ser verbatim tfi_w=w
-        !$ser verbatim tfi_pfi=pfi
-        !$ser verbatim tfi_i1=i1
-        !$ser verbatim tfi_dte=dte
-        !$ser verbatim tf_dp=dp
-    !$ser verbatim endif
-
     call terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
-!$ser verbatim tf_ze, tf_zt, nn, sf_dm, sf_e1, sf_nf, ef_e1,&
         vti, i1, pfi, u, v, w, dte, "qi")
-    
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim tfo_pt=tz
-        !$ser verbatim tfo_qv=qv
-        !$ser verbatim tfo_ql=ql
-        !$ser verbatim tfo_qr=qr
-        !$ser verbatim tfo_qi=qi
-        !$ser verbatim tfo_qs=qs
-        !$ser verbatim tfo_qg=qg
-        !$ser verbatim tfo_u=u
-        !$ser verbatim tfo_v=v
-        !$ser verbatim tfo_w=w
-        !$ser verbatim tfo_pfi=pfi
-        !$ser verbatim tfo_i1=i1
-        !$ser verbatim tfo_dte=dte
-    !$ser verbatim endif
 
     pfi (ks) = max (0.0, pfi (ks))
     do k = ke, ks + 1, -1
         pfi (k) = max (0.0, pfi (k) - pfi (k - 1))
     enddo
 
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim if (ts_q == "qi") then
-            !$ser verbatim ts_qvo = qv
-            !$ser verbatim ts_qlo = ql
-            !$ser verbatim ts_qro = qr
-            !$ser verbatim ts_qio = qi
-            !$ser verbatim ts_qso = qs
-            !$ser verbatim ts_qgo = qg
-            !$ser verbatim ts_tzo = tz
-            !$ser verbatim ts_uo = u
-            !$ser verbatim ts_vo = v
-            !$ser verbatim ts_wo = w
-            !$ser verbatim ts_dteo = dte
-            !$ser verbatim ts_pfo = pfi
-            !$ser verbatim ts_vto = vti
-            !$ser verbatim ts_w1o = w1
-            !$ser verbatim ts_r1o = r1
-            !$ser verbatim ts_i1o = i1
-            !$ser verbatim ts_s1o = s1
-            !$ser verbatim ts_g1o = g1
-        !$ser verbatim endif
-    !$ser verbatim endif
-
     ! -----------------------------------------------------------------------
     ! terminal fall and melting of falling snow into rain
     ! -----------------------------------------------------------------------
 
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim if (ts_q == "qs") then
-            !$ser verbatim ts_qv = qv
-            !$ser verbatim ts_ql = ql
-            !$ser verbatim ts_qr = qr
-            !$ser verbatim ts_qi = qi
-            !$ser verbatim ts_qs = qs
-            !$ser verbatim ts_qg = qg
-            !$ser verbatim ts_den = den
-            !$ser verbatim ts_denfac = denfac
-            !$ser verbatim ts_dp = dp
-            !$ser verbatim ts_dz = dz
-            !$ser verbatim ts_tz = tz
-            !$ser verbatim ts_u = u
-            !$ser verbatim ts_v = v
-            !$ser verbatim ts_w = w
-            !$ser verbatim ts_dte = dte
-            !$ser verbatim ts_pf = pfs
-            !$ser verbatim ts_vt = vts
-            !$ser verbatim ts_w1 = w1
-            !$ser verbatim ts_r1 = r1
-            !$ser verbatim ts_i1 = i1
-            !$ser verbatim ts_s1 = s1
-            !$ser verbatim ts_g1 = g1
-        !$ser verbatim endif
-    !$ser verbatim endif
-    
     call term_rsg (ks, ke, qs, den, denfac, vs_fac, blins, mus, tvas, tvbs, vs_max, const_vs, vts)
-    
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim sm_qv = qv
-        !$ser verbatim sm_ql = ql
-        !$ser verbatim sm_qr = qr
-        !$ser verbatim sm_qi = qi
-        !$ser verbatim sm_qs = qs
-        !$ser verbatim sm_qg = qg
-        !$ser verbatim sm_pt = tz
-        !$ser verbatim sm_vt = vts
-        !$ser verbatim sm_ic = icpk
-        !$ser verbatim sm_r1 = r1
-    !$ser verbatim endif
 
     if (do_sedi_melt) then
         call sedi_melt (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
-!$ser verbatim sm_ze, sm_zt, sm_zs, sm_cv, nn,&
             vts, r1, tau_smlt, icpk, "qs")
     endif
 
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim sm_qro = qr
-        !$ser verbatim sm_qio = qi
-        !$ser verbatim sm_qso = qs
-        !$ser verbatim sm_qgo = qg
-        !$ser verbatim sm_pto = tz
-        !$ser verbatim sm_r1o = r1
-    !$ser verbatim endif
-    
     call terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
-!$ser verbatim ze_buf, zt_buf, nn, dm_buf, e1_buf, nf_buf, e2_buf,&
         vts, s1, pfs, u, v, w, dte, "qs")
 
     pfs (ks) = max (0.0, pfs (ks))
@@ -3428,60 +2236,10 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
         pfs (k) = max (0.0, pfs (k) - pfs (k - 1))
     enddo
 
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim if (ts_q == "qs") then
-            !$ser verbatim ts_qvo = qv
-            !$ser verbatim ts_qlo = ql
-            !$ser verbatim ts_qro = qr
-            !$ser verbatim ts_qio = qi
-            !$ser verbatim ts_qso = qs
-            !$ser verbatim ts_qgo = qg
-            !$ser verbatim ts_tzo = tz
-            !$ser verbatim ts_uo = u
-            !$ser verbatim ts_vo = v
-            !$ser verbatim ts_wo = w
-            !$ser verbatim ts_dteo = dte
-            !$ser verbatim ts_pfo = pfs
-            !$ser verbatim ts_vto = vts
-            !$ser verbatim ts_w1o = w1
-            !$ser verbatim ts_r1o = r1
-            !$ser verbatim ts_i1o = i1
-            !$ser verbatim ts_s1o = s1
-            !$ser verbatim ts_g1o = g1
-        !$ser verbatim endif
-    !$ser verbatim endif
-
     ! -----------------------------------------------------------------------
     ! terminal fall and melting of falling graupel into rain
     ! -----------------------------------------------------------------------
 
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim if (ts_q == "qg") then
-            !$ser verbatim ts_qv = qv
-            !$ser verbatim ts_ql = ql
-            !$ser verbatim ts_qr = qr
-            !$ser verbatim ts_qi = qi
-            !$ser verbatim ts_qs = qs
-            !$ser verbatim ts_qg = qg
-            !$ser verbatim ts_den = den
-            !$ser verbatim ts_denfac = denfac
-            !$ser verbatim ts_dp = dp
-            !$ser verbatim ts_dz = dz
-            !$ser verbatim ts_tz = tz
-            !$ser verbatim ts_u = u
-            !$ser verbatim ts_v = v
-            !$ser verbatim ts_w = w
-            !$ser verbatim ts_dte = dte
-            !$ser verbatim ts_pf = pfg
-            !$ser verbatim ts_vt = vtg
-            !$ser verbatim ts_w1 = w1
-            !$ser verbatim ts_r1 = r1
-            !$ser verbatim ts_i1 = i1
-            !$ser verbatim ts_s1 = s1
-            !$ser verbatim ts_g1 = g1
-        !$ser verbatim endif
-    !$ser verbatim endif
-    
     if (do_hail) then
         call term_rsg (ks, ke, qg, den, denfac, vg_fac, blinh, muh, tvah, tvbh, vg_max, const_vg, vtg)
     else
@@ -3490,12 +2248,10 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
 
     if (do_sedi_melt) then
         call sedi_melt (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
-!$ser verbatim ze_buf, zt_buf, e1_buf, dm_buf, nn,&
             vtg, r1, tau_gmlt, icpk, "qg")
     endif
 
     call terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
-!$ser verbatim ze_buf, zt_buf, nn, dm_buf, e1_buf, nf_buf, e2_buf,&
         vtg, g1, pfg, u, v, w, dte, "qg")
 
     pfg (ks) = max (0.0, pfg (ks))
@@ -3503,66 +2259,15 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
         pfg (k) = max (0.0, pfg (k) - pfg (k - 1))
     enddo
 
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim if (ts_q == "qg") then
-            !$ser verbatim ts_qvo = qv
-            !$ser verbatim ts_qlo = ql
-            !$ser verbatim ts_qro = qr
-            !$ser verbatim ts_qio = qi
-            !$ser verbatim ts_qso = qs
-            !$ser verbatim ts_qgo = qg
-            !$ser verbatim ts_tzo = tz
-            !$ser verbatim ts_uo = u
-            !$ser verbatim ts_vo = v
-            !$ser verbatim ts_wo = w
-            !$ser verbatim ts_dteo = dte
-            !$ser verbatim ts_pfo = pfg
-            !$ser verbatim ts_vto = vtg
-            !$ser verbatim ts_w1o = w1
-            !$ser verbatim ts_r1o = r1
-            !$ser verbatim ts_i1o = i1
-            !$ser verbatim ts_s1o = s1
-            !$ser verbatim ts_g1o = g1
-        !$ser verbatim endif
-    !$ser verbatim endif
-    
     ! -----------------------------------------------------------------------
     ! terminal fall of cloud water
     ! -----------------------------------------------------------------------
 
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim if (ts_q == "ql") then
-            !$ser verbatim ts_qv = qv
-            !$ser verbatim ts_ql = ql
-            !$ser verbatim ts_qr = qr
-            !$ser verbatim ts_qi = qi
-            !$ser verbatim ts_qs = qs
-            !$ser verbatim ts_qg = qg
-            !$ser verbatim ts_den = den
-            !$ser verbatim ts_denfac = denfac
-            !$ser verbatim ts_dp = dp
-            !$ser verbatim ts_dz = dz
-            !$ser verbatim ts_tz = tz
-            !$ser verbatim ts_u = u
-            !$ser verbatim ts_v = v
-            !$ser verbatim ts_w = w
-            !$ser verbatim ts_dte = dte
-            !$ser verbatim ts_pf = pfw
-            !$ser verbatim ts_vt = vtw
-            !$ser verbatim ts_w1 = w1
-            !$ser verbatim ts_r1 = r1
-            !$ser verbatim ts_i1 = i1
-            !$ser verbatim ts_s1 = s1
-            !$ser verbatim ts_g1 = g1
-        !$ser verbatim endif
-    !$ser verbatim endif
-    
     if (do_psd_water_fall) then
 
         call term_rsg (ks, ke, ql, den, denfac, vw_fac, blinw, muw, tvaw, tvbw, vw_max, const_vw, vtw)
 
         call terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
-!$ser verbatim ze_buf, zt_buf, nn, dm_buf, e1_buf, nf_buf, e2_buf,&
             vtw, w1, pfw, u, v, w, dte, "ql")
 
         pfw (ks) = max (0.0, pfw (ks))
@@ -3572,93 +2277,19 @@ subroutine sedimentation (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
 
     endif
 
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim if (ts_q == "ql") then
-            !$ser verbatim ts_qvo = qv
-            !$ser verbatim ts_qlo = ql
-            !$ser verbatim ts_qro = qr
-            !$ser verbatim ts_qio = qi
-            !$ser verbatim ts_qso = qs
-            !$ser verbatim ts_qgo = qg
-            !$ser verbatim ts_tzo = tz
-            !$ser verbatim ts_uo = u
-            !$ser verbatim ts_vo = v
-            !$ser verbatim ts_wo = w
-            !$ser verbatim ts_dteo = dte
-            !$ser verbatim ts_pfo = pfw
-            !$ser verbatim ts_vto = vtw
-            !$ser verbatim ts_w1o = w1
-            !$ser verbatim ts_r1o = r1
-            !$ser verbatim ts_i1o = i1
-            !$ser verbatim ts_s1o = s1
-            !$ser verbatim ts_g1o = g1
-        !$ser verbatim endif
-    !$ser verbatim endif
-    
     ! -----------------------------------------------------------------------
     ! terminal fall of rain
     ! -----------------------------------------------------------------------
 
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim if (ts_q == "qr") then
-            !$ser verbatim ts_qv = qv
-            !$ser verbatim ts_ql = ql
-            !$ser verbatim ts_qr = qr
-            !$ser verbatim ts_qi = qi
-            !$ser verbatim ts_qs = qs
-            !$ser verbatim ts_qg = qg
-            !$ser verbatim ts_den = den
-            !$ser verbatim ts_denfac = denfac
-            !$ser verbatim ts_dp = dp
-            !$ser verbatim ts_dz = dz
-            !$ser verbatim ts_tz = tz
-            !$ser verbatim ts_u = u
-            !$ser verbatim ts_v = v
-            !$ser verbatim ts_w = w
-            !$ser verbatim ts_dte = dte
-            !$ser verbatim ts_pf = pfr
-            !$ser verbatim ts_vt = vtr
-            !$ser verbatim ts_w1 = w1
-            !$ser verbatim ts_r1 = r1
-            !$ser verbatim ts_i1 = i1
-            !$ser verbatim ts_s1 = s1
-            !$ser verbatim ts_g1 = g1
-        !$ser verbatim endif
-    !$ser verbatim endif
-    
     call term_rsg (ks, ke, qr, den, denfac, vr_fac, blinr, mur, tvar, tvbr, vr_max, const_vr, vtr)
 
     call terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
-!$ser verbatim ze_buf, zt_buf, nn, dm_buf, e1_buf, nf_buf, e2_buf,&
         vtr, r1, pfr, u, v, w, dte, "qr")
 
     pfr (ks) = max (0.0, pfr (ks))
     do k = ke, ks + 1, -1
         pfr (k) = max (0.0, pfr (k) - pfr (k - 1))
     enddo
-
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim if (ts_q == "qr") then
-            !$ser verbatim ts_qvo = qv
-            !$ser verbatim ts_qlo = ql
-            !$ser verbatim ts_qro = qr
-            !$ser verbatim ts_qio = qi
-            !$ser verbatim ts_qso = qs
-            !$ser verbatim ts_qgo = qg
-            !$ser verbatim ts_tzo = tz
-            !$ser verbatim ts_uo = u
-            !$ser verbatim ts_vo = v
-            !$ser verbatim ts_wo = w
-            !$ser verbatim ts_dteo = dte
-            !$ser verbatim ts_pfo = pfr
-            !$ser verbatim ts_vto = vtr
-            !$ser verbatim ts_w1o = w1
-            !$ser verbatim ts_r1o = r1
-            !$ser verbatim ts_i1o = i1
-            !$ser verbatim ts_s1o = s1
-            !$ser verbatim ts_g1o = g1
-        !$ser verbatim endif
-    !$ser verbatim endif
 
 end subroutine sedimentation
 
@@ -3777,7 +2408,6 @@ end subroutine term_rsg
 ! =======================================================================
 
 subroutine sedi_melt (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
-!$ser verbatim sm_ze, sm_zt, sm_zs, sm_cv, nn,&
         vt, r1, tau_mlt, icpk, qflag)
 
     implicit none
@@ -3787,17 +2417,13 @@ subroutine sedi_melt (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     ! -----------------------------------------------------------------------
 
     integer, intent (in) :: ks, ke
-    !$ser verbatim integer, intent (in) :: nn
-    
+
     real, intent (in) :: dts, tau_mlt
-    !$ser verbatim real, intent (out) :: sm_zs
-    
+
     real, intent (in), dimension (ks:ke) :: vt, dp, dz, icpk
 
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: sm_cv
-    !$ser verbatim real, intent (out), dimension (ks:ke + 1) :: sm_ze, sm_zt
-    
+
     real, intent (inout) :: r1
 
     real (kind = r8), intent (inout), dimension (ks:ke) :: tz
@@ -3818,10 +2444,6 @@ subroutine sedi_melt (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
 
     real (kind = r8), dimension (ks:ke) :: cvm
 
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim cvm=0.0
-    !$ser verbatim endif
-    
     call zezt (ks, ke, dts, zs, dz, vt, ze, zt)
 
     select case (qflag)
@@ -3876,13 +2498,6 @@ subroutine sedi_melt (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
         endif
     enddo
 
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim sm_ze=ze
-        !$ser verbatim sm_zt=zt
-        !$ser verbatim sm_zs=zs
-        !$ser verbatim sm_cv=cvm
-    !$ser verbatim endif
-    
 end subroutine sedi_melt
 
 ! =======================================================================
@@ -3890,7 +2505,6 @@ end subroutine sedi_melt
 ! =======================================================================
 
 subroutine terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
-!$ser verbatim tf_ze, tf_zt, nn, sf_dm, sf_e1, sf_nf, ef_e1,&
         vt, x1, m1, u, v, w, dte, qflag)
 
     implicit none
@@ -3900,19 +2514,15 @@ subroutine terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     ! -----------------------------------------------------------------------
 
     integer, intent (in) :: ks, ke
-    !$ser verbatim integer, intent(in) :: nn
-    
+
     real, intent (in) :: dts
-    !$ser verbatim real, intent (out) :: sf_nf, sf_e1, ef_e1
-    
+
     real, intent (in), dimension (ks:ke) :: vt, dp, dz
 
     character (len = 2), intent (in) :: qflag
 
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg, u, v, w
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: sf_dm
-    !$ser verbatim real, intent (out), dimension (ks:ke + 1) :: tf_ze, tf_zt
-    
+
     real, intent (inout) :: x1
 
     real (kind = r8), intent (inout) :: dte
@@ -3941,16 +2551,6 @@ subroutine terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
 
     call zezt (ks, ke, dts, zs, dz, vt, ze, zt)
 
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim tf_ze=ze
-        !$ser verbatim tf_zt=zt
-        !$ser verbatim sf_dm=0.0
-        !$ser verbatim sf_e1=0.0
-        !$ser verbatim sf_nf=0.0
-        !$ser verbatim dm=0.0
-        !$ser verbatim te1=0.0
-    !$ser verbatim endif
-    
     select case (qflag)
         case ("ql")
             q = ql
@@ -3967,12 +2567,6 @@ subroutine terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     end select
 
     call check_column (ks, ke, q, no_fall)
-    
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim if (no_fall) then
-            !$ser verbatim sf_nf=1.0
-        !$ser verbatim endif
-    !$ser verbatim endif
 
     if (no_fall) return
 
@@ -3993,11 +2587,6 @@ subroutine terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
     do k = ks, ke
         te1 (k) = mte (qv (k), ql (k), qr (k), qi (k), qs (k), qg (k), tz (k), dp (k), .false.)
     enddo
-    
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim sf_e1=sum (te1)
-        !$ser verbatim sf_dm=dm
-    !$ser verbatim endif
 
     ! -----------------------------------------------------------------------
     ! sedimentation
@@ -4072,10 +2661,6 @@ subroutine terminal_fall (dts, ks, ke, tz, qv, ql, qr, qi, qs, qg, dz, dp, &
         te1 (k) = mte (qv (k), ql (k), qr (k), qi (k), qs (k), qg (k), tz (k), dp (k), .false.)
     enddo
 
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim ef_e1=sum (te1)
-    !$ser verbatim endif
-    
     ! -----------------------------------------------------------------------
     ! heat exchanges during sedimentation
     ! -----------------------------------------------------------------------
@@ -4182,9 +2767,6 @@ end subroutine check_column
 ! =======================================================================
 
 subroutine warm_rain (dts, ks, ke, dp, dz, tz, qv, ql, qr, qi, qs, qg, &
-!$ser verbatim ws_qv, ws_ql, ws_qr, ws_qi, ws_qs, ws_qg, ws_ccn, ws_pt,&
-!$ser verbatim ws_qvo, ws_qlo, ws_qro, ws_qio, ws_qso, ws_qgo, ws_ccno, ws_pto,&
-!$ser verbatim ws_reevap, ws_reevapo, nn, ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink, ws_vc,&
         den, denfac, vtw, vtr, ccn, rh_rain, h_var, reevap)
 
     implicit none
@@ -4201,16 +2783,10 @@ subroutine warm_rain (dts, ks, ke, dp, dz, tz, qv, ql, qr, qi, qs, qg, &
 
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg, ccn
 
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: ws_qv, ws_ql, ws_qr, ws_qi, ws_qs, ws_qg, ws_ccn, ws_pt
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: ws_qvo, ws_qlo, ws_qro, ws_qio, ws_qso, ws_qgo, ws_ccno, ws_pto, ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink, ws_vc
-    
     real (kind = r8), intent (inout), dimension (ks:ke) :: tz
 
     real, intent (out) :: reevap
 
-    !$ser verbatim real, intent (inout) :: ws_reevap, ws_reevapo
-    !$ser verbatim integer, intent (in) :: nn
-    
     ! -----------------------------------------------------------------------
     ! initialization
     ! -----------------------------------------------------------------------
@@ -4221,33 +2797,7 @@ subroutine warm_rain (dts, ks, ke, dp, dz, tz, qv, ql, qr, qi, qs, qg, &
     ! rain evaporation to form water vapor
     ! -----------------------------------------------------------------------
 
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim ws_qv=qv
-        !$ser verbatim ws_ql=ql
-        !$ser verbatim ws_qr=qr
-        !$ser verbatim ws_qi=qi
-        !$ser verbatim ws_qs=qs
-        !$ser verbatim ws_qg=qg
-        !$ser verbatim ws_pt=tz
-        !$ser verbatim ws_ccn=ccn
-        !$ser verbatim ws_reevap=reevap
-    !$ser verbatim endif
-
-    call prevp (ks, ke, dts, tz, qv, ql, qr, qi, qs, qg, &
-!$ser verbatim ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink, ws_vc,&
-    den, denfac, rh_rain, h_var, dp, reevap)
-
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim ws_qvo=qv
-        !$ser verbatim ws_qlo=ql
-        !$ser verbatim ws_qro=qr
-        !$ser verbatim ws_qio=qi
-        !$ser verbatim ws_qso=qs
-        !$ser verbatim ws_qgo=qg
-        !$ser verbatim ws_pto=tz
-        !$ser verbatim ws_ccno=ccn
-        !$ser verbatim ws_reevapo=reevap
-    !$ser verbatim endif
+    call prevp (ks, ke, dts, tz, qv, ql, qr, qi, qs, qg, den, denfac, rh_rain, h_var, dp, reevap)
 
     ! -----------------------------------------------------------------------
     ! rain accretion with cloud water
@@ -4267,10 +2817,8 @@ end subroutine warm_rain
 ! rain evaporation to form water vapor, Lin et al. (1983)
 ! =======================================================================
 
-subroutine prevp (ks, ke, dts, tz, qv, ql, qr, qi, qs, qg, &
-!$ser verbatim ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink, ws_vc,&
-    den, denfac, rh_rain, h_var, dp, reevap)
-    
+subroutine prevp (ks, ke, dts, tz, qv, ql, qr, qi, qs, qg, den, denfac, rh_rain, h_var, dp, reevap)
+
     implicit none
 
     ! -----------------------------------------------------------------------
@@ -4286,8 +2834,7 @@ subroutine prevp (ks, ke, dts, tz, qv, ql, qr, qi, qs, qg, &
     real (kind = r8), intent (inout), dimension (ks:ke) :: tz
 
     real, intent (inout), dimension (ks:ke) :: qv, qr, ql, qi, qs, qg
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: ws_tin, ws_qsat, ws_dqdt, ws_dqh, ws_bool_check, ws_dq, ws_sink0, ws_sink, ws_vc
-    
+
     real, intent (out) :: reevap
 
     ! -----------------------------------------------------------------------
@@ -4328,13 +2875,7 @@ subroutine prevp (ks, ke, dts, tz, qv, ql, qr, qi, qs, qg, &
     do k = ks, ke
 
         tin = (tz (k) * cvm (k) - lv00 * ql (k)) / mhc (qv (k) + ql (k), qr (k), q_sol (k))
-        !$ser verbatim ws_tin (k) = tin
-        !$ser verbatim ws_bool_check (k) = 0.0
-        !$ser verbatim ws_dq (k) = -1.0
-        !$ser verbatim ws_sink0 (k) = 0.0
-        !$ser verbatim ws_sink (k) = 0.0
-        !$ser verbatim ws_vc (k) = 0.0
-        
+
         ! -----------------------------------------------------------------------
         ! calculate supersaturation and subgrid variability of water
         ! -----------------------------------------------------------------------
@@ -4342,17 +2883,12 @@ subroutine prevp (ks, ke, dts, tz, qv, ql, qr, qi, qs, qg, &
         qpz = qv (k) + ql (k)
         qsat = wqs (tin, den (k), dqdt)
         dqv = qsat - qv (k)
-        
-        !$ser verbatim ws_qsat (k) = qsat
-        !$ser verbatim ws_dqdt (k) = dqdt
 
         dqh = max (ql (k), h_var * max (qpz, qcmin))
         dqh = min (dqh, 0.2 * qpz)
         q_minus = qpz - dqh
         q_plus = qpz + dqh
 
-        !$ser verbatim ws_dqh (k) = dqh
-        
         ! -----------------------------------------------------------------------
         ! rain evaporation
         ! -----------------------------------------------------------------------
@@ -4361,25 +2897,19 @@ subroutine prevp (ks, ke, dts, tz, qv, ql, qr, qi, qs, qg, &
 
         if (tz (k) .gt. t_wfr .and. qr (k) .gt. qcmin .and. dqv .gt. 0.0 .and. qsat .gt. q_minus) then
 
-            !$ser verbatim ws_bool_check (k) = 1.0
-
             if (qsat .gt. q_plus) then
                 dq = qsat - qpz
             else
                 dq = 0.25 * (qsat - q_minus) ** 2 / dqh
             endif
-            !$ser verbatim ws_dq (k) = dq
             qden = qr (k) * den (k)
             t2 = tin * tin
             sink = psub (t2, dq, qden, qsat, crevp, den (k), denfac (k), blinr, mur, lcpk (k), cvm (k))
-            !$ser verbatim ws_vc (k) = vent_coeff (qden, crevp (2), crevp (3), denfac (k), blinr, mur)
-            !$ser verbatim ws_sink0 (k) = sink
             sink = min (qr (k), dts * fac_revp * sink, dqv / (1. + lcpk (k) * dqdt))
             if (use_rhc_revap .and. rh_tem .ge. rhc_revap) then
                 sink = 0.0
             endif
-            !$ser verbatim ws_sink (k) = sink
-            
+
             ! -----------------------------------------------------------------------
             ! alternative minimum evaporation in dry environmental air
             ! -----------------------------------------------------------------------
@@ -4560,9 +3090,6 @@ end subroutine praut
 ! =======================================================================
 
 subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
-!$ser verbatim isub_qv, isub_ql, isub_qr, isub_qi, isub_qs, isub_qg, isub_pt, isub_cvm, isub_te8, isub_lcpk, isub_icpk, isub_tcpk, isub_tcp3, isub_di, nn,&
-!$ser verbatim isub_qvo, isub_qlo, isub_qro, isub_qio, isub_qso, isub_qgo, isub_pto, isub_cvmo, isub_te8o, isub_lcpko, isub_icpko, isub_tcpko, isub_tcp3o, isub_dio,&
-!$ser verbatim is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp,&
         denfac, vtw, vtr, vti, vts, vtg, dts, h_var)
 
     implicit none
@@ -4572,8 +3099,6 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
     ! -----------------------------------------------------------------------
 
     integer, intent (in) :: ks, ke
-    
-    !$ser verbatim integer, intent (in) :: nn
 
     real, intent (in) :: dts, h_var
 
@@ -4583,10 +3108,6 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
 
     real (kind = r8), intent (inout), dimension (ks:ke) :: tz
 
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: isub_qv, isub_ql, isub_qr, isub_qi, isub_qs, isub_qg, isub_pt, isub_cvm, isub_te8, isub_lcpk, isub_icpk, isub_tcpk, isub_tcp3, isub_di
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: isub_qvo, isub_qlo, isub_qro, isub_qio, isub_qso, isub_qgo, isub_pto, isub_cvmo, isub_te8o, isub_lcpko, isub_icpko, isub_tcpko, isub_tcp3o, isub_dio
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp
-    
     ! -----------------------------------------------------------------------
     ! local variables
     ! -----------------------------------------------------------------------
@@ -4626,43 +3147,8 @@ subroutine ice_cloud (ks, ke, tz, qv, ql, qr, qi, qs, qg, den, &
         ! snow melting (includes snow accretion with cloud water and rain) to form cloud water and rain
         ! -----------------------------------------------------------------------
 
-        !$ser verbatim if (nn .eq. 1) then
-            !$ser verbatim isub_qv=qv
-            !$ser verbatim isub_ql=ql
-            !$ser verbatim isub_qr=qr
-            !$ser verbatim isub_qi=qi
-            !$ser verbatim isub_qs=qs
-            !$ser verbatim isub_qg=qg
-            !$ser verbatim isub_pt=tz
-            !$ser verbatim isub_cvm=cvm
-            !$ser verbatim isub_te8=te8
-            !$ser verbatim isub_lcpk=lcpk
-            !$ser verbatim isub_icpk=icpk
-            !$ser verbatim isub_tcpk=tcpk
-            !$ser verbatim isub_tcp3=tcp3
-            !$ser verbatim isub_di=di
-        !$ser verbatim endif
-
         call psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
-!$ser verbatim is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp,&
             vtw, vtr, vts, lcpk, icpk, tcpk, tcp3)
-
-        !$ser verbatim if (nn .eq. 1) then
-            !$ser verbatim isub_qvo=qv
-            !$ser verbatim isub_qlo=ql
-            !$ser verbatim isub_qro=qr
-            !$ser verbatim isub_qio=qi
-            !$ser verbatim isub_qso=qs
-            !$ser verbatim isub_qgo=qg
-            !$ser verbatim isub_pto=tz
-            !$ser verbatim isub_cvmo=cvm
-            !$ser verbatim isub_te8o=te8
-            !$ser verbatim isub_lcpko=lcpk
-            !$ser verbatim isub_icpko=icpk
-            !$ser verbatim isub_tcpko=tcpk
-            !$ser verbatim isub_tcp3o=tcp3
-            !$ser verbatim isub_dio=di
-        !$ser verbatim endif
 
         ! -----------------------------------------------------------------------
         ! graupel melting (includes graupel accretion with cloud water and rain) to form rain
@@ -4830,7 +3316,6 @@ end subroutine pifr
 ! =======================================================================
 
 subroutine psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac, &
-!$ser verbatim is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp,&
         vtw, vtr, vts, lcpk, icpk, tcpk, tcp3)
 
     implicit none
@@ -4850,8 +3335,6 @@ subroutine psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg
     real, intent (inout), dimension (ks:ke) :: lcpk, icpk, tcpk, tcp3
 
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: is_psacw, is_psacr, is_pracs, is_qsi, is_dqdt, is_sink0, is_sink, is_tmp
-    
     real (kind = r8), intent (inout), dimension (ks:ke) :: cvm, tz
 
     ! -----------------------------------------------------------------------
@@ -4867,15 +3350,6 @@ subroutine psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac
 
         tc = tz (k) - tice
 
-        !$ser verbatim is_psacw (k) = 0.
-        !$ser verbatim is_psacr (k) = 0.
-        !$ser verbatim is_pracs (k) = 0.
-        !$ser verbatim is_qsi (k) = 0.
-        !$ser verbatim is_dqdt (k) = 0.
-        !$ser verbatim is_sink0 (k) = 0.
-        !$ser verbatim is_sink (k) = 0.
-        !$ser verbatim is_tmp (k) = 0.
-        
         if (tc .ge. 0. .and. qs (k) .gt. qcmin) then
 
             psacw = 0.
@@ -4890,8 +3364,6 @@ subroutine psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac
                 endif
             endif
 
-            !$ser verbatim is_psacw (k) = psacw
-            
             psacr = 0.
             pracs = 0.
             if (qr (k) .gt. qcmin) then
@@ -4900,24 +3372,16 @@ subroutine psmlt (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, denfac
                 pracs = acr3d (vtr (k), vts (k), qs (k), qr (k), cracs, acco (:, 1), &
                     acc (1), acc (2), den (k))
             endif
-            !$ser verbatim is_psacr (k) = psacr
-            !$ser verbatim is_pracs (k) = pracs
-            
+
             tin = tz (k)
             qsi = iqs (tin, den (k), dqdt)
-            !$ser verbatim is_qsi (k) = qsi
-            !$ser verbatim is_dqdt (k) = dqdt
             dq = qsi - qv (k)
-            sink = pmlt (tc, dq, qden, psacw, psacr, csmlt, den (k), denfac (k), blins, mus, &
-                lcpk (k), icpk (k), cvm (k))
-            !$ser verbatim is_sink0 (k) = sink
-            sink = max (0., sink)
-            
+            sink = max (0., pmlt (tc, dq, qden, psacw, psacr, csmlt, den (k), denfac (k), blins, mus, &
+                lcpk (k), icpk (k), cvm (k)))
+
             sink = min (qs (k), (sink + pracs) * dts, tc / icpk (k))
-            !$ser verbatim is_sink (k) = sink
             tmp = min (sink, dim (qs_mlt, ql (k)))
-            !$ser verbatim is_tmp (k) = tmp
-            
+
             call update_qt (qv (k), ql (k), qr (k), qi (k), qs (k), qg (k), &
                 0., tmp, sink - tmp, 0., - sink, 0., te8 (k), cvm (k), tz (k), &
                 lcpk (k), icpk (k), tcpk (k), tcp3 (k))
@@ -5448,11 +3912,8 @@ end subroutine pgacw_pgacr
 ! =======================================================================
 
 subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
-!$ser verbatim szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_cond, szs_dep, szs_reevap, szs_sub, szs_te,&
-!$ser verbatim szs_pto, szs_qvo, szs_qlo, szs_qro, szs_qio, szs_qso, szs_qgo, szs_ccno, szs_cino, szs_condo, szs_depo, szs_reevapo, szs_subo, nn,&
-!$ser verbatim szs_lcpk, szs_icpk, szs_tcpk, szs_tcp3, szs_lcpko, szs_icpko, szs_tcpko, szs_tcp3o, szs_cvm, szs_cvmo, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
         qi, qs, qg, dp, ccn, cin, cond, dep, reevap, sub, last_step)
-    
+
     implicit none
 
     ! -----------------------------------------------------------------------
@@ -5462,21 +3923,15 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
     logical, intent (in) :: last_step
 
     integer, intent (in) :: ks, ke
-    !$ser verbatim integer, intent (in) :: nn
-    
+
     real, intent (in) :: dts, rh_adj
 
     real, intent (in), dimension (ks:ke) :: den, denfac, dp
 
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg, ccn, cin
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_pt, szs_qv, szs_ql, szs_qr, szs_qi, szs_qs, szs_qg, szs_ccn, szs_cin, szs_te
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_pto, szs_qvo, szs_qlo, szs_qro, szs_qio, szs_qso, szs_qgo, szs_ccno, szs_cino
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_lcpk, szs_icpk, szs_tcpk, szs_tcp3, szs_lcpko, szs_icpko, szs_tcpko, szs_tcp3o, szs_cvm, szs_cvmo
-    !$ser verbatim real, intent (inout), dimension (ks:ke) :: szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt
 
     real, intent (out) :: cond, dep, reevap, sub
-    !$ser verbatim real, intent (out) :: szs_cond, szs_dep, szs_reevap, szs_sub, szs_condo, szs_depo, szs_reevapo, szs_subo
-    
+
     real (kind = r8), intent (inout), dimension (ks:ke) :: tz
 
     ! -----------------------------------------------------------------------
@@ -5488,35 +3943,12 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
     integer :: n
 
     real, dimension (ks:ke) :: q_liq, q_sol, q_cond, lcpk, icpk, tcpk, tcp3
-    !$ser verbatim real, dimension (ks:ke) :: buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt
-    
+
     real (kind = r8), dimension (ks:ke) :: cvm, te8
 
     ! -----------------------------------------------------------------------
     ! initialization
     ! -----------------------------------------------------------------------
-
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim szs_pt = tz
-        !$ser verbatim szs_qv = qv
-        !$ser verbatim szs_ql = ql
-        !$ser verbatim szs_qr = qr
-        !$ser verbatim szs_qi = qi
-        !$ser verbatim szs_qs = qs
-        !$ser verbatim szs_qg = qg
-        !$ser verbatim szs_ccn = ccn
-        !$ser verbatim szs_cin = cin
-        !$ser verbatim szs_cond = cond
-        !$ser verbatim szs_dep = dep
-        !$ser verbatim szs_reevap = reevap
-        !$ser verbatim szs_sub = sub
-        !$ser verbatim szs_te = te8
-        !$ser verbatim szs_lcpk = lcpk
-        !$ser verbatim szs_icpk = icpk
-        !$ser verbatim szs_tcpk = tcpk
-        !$ser verbatim szs_tcp3 = tcp3
-        !$ser verbatim szs_cvm = cvm
-    !$ser verbatim endif
 
     cond = 0
     dep = 0
@@ -5537,7 +3969,6 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
     if (.not. do_warm_rain_mp) then
 
         call pinst (ks, ke, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-!$ser verbatim nn, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
             lcpk, icpk, tcpk, tcp3, rh_adj, dep, sub, reevap)
 
     endif
@@ -5555,31 +3986,9 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
     if (cond_evap) then
         do n = 1, nconds
             call pcond_pevap (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-                !$ser verbatim nn, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
                 lcpk, icpk, tcpk, tcp3, cond, reevap)
         enddo
     endif
-
-    !$ser verbatim if (nn .eq. 1) then
-        !$ser verbatim szs_pto = tz
-        !$ser verbatim szs_qvo = qv
-        !$ser verbatim szs_qlo = ql
-        !$ser verbatim szs_qro = qr
-        !$ser verbatim szs_qio = qi
-        !$ser verbatim szs_qso = qs
-        !$ser verbatim szs_qgo = qg
-        !$ser verbatim szs_ccno = ccn
-        !$ser verbatim szs_cino = cin
-        !$ser verbatim szs_condo = cond
-        !$ser verbatim szs_depo = dep
-        !$ser verbatim szs_reevapo = reevap
-        !$ser verbatim szs_subo = sub
-        !$ser verbatim szs_lcpko = lcpk
-        !$ser verbatim szs_icpko = icpk
-        !$ser verbatim szs_tcpko = tcpk
-        !$ser verbatim szs_tcp3o = tcp3
-        !$ser verbatim szs_cvmo = cvm
-    !$ser verbatim endif
 
     if (.not. do_warm_rain_mp) then
 
@@ -5593,10 +4002,8 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
         ! Wegener Bergeron Findeisen process
         ! -----------------------------------------------------------------------
 
-        call pwbf (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, &
-!$ser verbatim nn, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
-            cvm, te8, den, lcpk, icpk, tcpk, tcp3)
-        
+        call pwbf (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, lcpk, icpk, tcpk, tcp3)
+
         ! -----------------------------------------------------------------------
         ! Bigg freezing mechanism
         ! -----------------------------------------------------------------------
@@ -5608,7 +4015,6 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
         ! -----------------------------------------------------------------------
 
         call pidep_pisub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-!$ser verbatim nn, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
             lcpk, icpk, tcpk, tcp3, cin, dep, sub)
 
         ! -----------------------------------------------------------------------
@@ -5616,7 +4022,6 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
         ! -----------------------------------------------------------------------
 
         call psdep_pssub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-!$ser verbatim nn, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
             denfac, lcpk, icpk, tcpk, tcp3, dep, sub)
 
         ! -----------------------------------------------------------------------
@@ -5624,7 +4029,6 @@ subroutine subgrid_z_proc (ks, ke, den, denfac, dts, rh_adj, tz, qv, ql, qr, &
         ! -----------------------------------------------------------------------
 
         call pgdep_pgsub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-!$ser verbatim nn, buf_qsi, buf_dqidt, buf_qsw, buf_dqwdt,&
             denfac, lcpk, icpk, tcpk, tcp3, dep, sub)
 
     endif
@@ -5636,7 +4040,6 @@ end subroutine subgrid_z_proc
 ! =======================================================================
 
 subroutine pinst (ks, ke, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-!$ser verbatim nn, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
         lcpk, icpk, tcpk, tcp3, rh_adj, dep, sub, reevap)
 
     implicit none
@@ -5646,8 +4049,7 @@ subroutine pinst (ks, ke, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
     ! -----------------------------------------------------------------------
 
     integer, intent (in) :: ks, ke
-    !$ser verbatim integer, intent (in) :: nn
-    
+
     real, intent (in) :: rh_adj
 
     real, intent (in), dimension (ks:ke) :: den, dp
@@ -5656,8 +4058,7 @@ subroutine pinst (ks, ke, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
 
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg
     real, intent (inout), dimension (ks:ke) :: lcpk, icpk, tcpk, tcp3
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt
-    
+
     real (kind = r8), intent (inout), dimension (ks:ke) :: cvm, tz
 
     real, intent (out) :: dep, reevap, sub
@@ -5672,13 +4073,6 @@ subroutine pinst (ks, ke, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
 
     do k = ks, ke
 
-        !$ser verbatim if (nn .eq. 1) then
-            !$ser verbatim szs_qsi (k) = 0.
-            !$ser verbatim szs_dqidt (k) = 0.
-            !$ser verbatim szs_qsw (k) = 0.
-            !$ser verbatim szs_dqwdt (k) = 0.
-        !$ser verbatim endif
-        
         ! -----------------------------------------------------------------------
         ! instant deposit all water vapor to cloud ice when temperature is super low
         ! -----------------------------------------------------------------------
@@ -5705,10 +4099,6 @@ subroutine pinst (ks, ke, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
         if (tin .gt. t_sub + 6.) then
 
             qsi = iqs (tin, den (k), dqdt)
-            !$ser verbatim if (nn .eq. 1) then
-                !$ser verbatim szs_qsi (k) = qsi
-                !$ser verbatim szs_dqidt (k) = dqdt
-            !$ser verbatim endif
             rh = qpz / qsi
             if (rh .lt. rh_adj) then
 
@@ -5735,7 +4125,6 @@ end subroutine pinst
 ! =======================================================================
 
 subroutine pcond_pevap (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-!$ser verbatim nn, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
         lcpk, icpk, tcpk, tcp3, cond, reevap)
 
     implicit none
@@ -5745,8 +4134,7 @@ subroutine pcond_pevap (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
     ! -----------------------------------------------------------------------
 
     integer, intent (in) :: ks, ke
-    !$ser verbatim integer, intent (in) :: nn
-    
+
     real, intent (in) :: dts
 
     real, intent (in), dimension (ks:ke) :: den, dp
@@ -5755,8 +4143,7 @@ subroutine pcond_pevap (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
 
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg
     real, intent (inout), dimension (ks:ke) :: lcpk, icpk, tcpk, tcp3
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt
-    
+
     real (kind = r8), intent (inout), dimension (ks:ke) :: cvm, tz
 
     real, intent (out) :: cond, reevap
@@ -5774,19 +4161,8 @@ subroutine pcond_pevap (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
 
     do k = ks, ke
 
-        !$ser verbatim if (nn .eq. 1) then
-            !$ser verbatim szs_qsi (k) = 0.
-            !$ser verbatim szs_dqidt (k) = 0.
-            !$ser verbatim szs_qsw (k) = 0.
-            !$ser verbatim szs_dqwdt (k) = 0.
-        !$ser verbatim endif
-        
         tin = tz (k)
         qsw = wqs (tin, den (k), dqdt)
-        !$ser verbatim if (nn .eq. 1) then
-            !$ser verbatim szs_qsw (k) = qsw
-            !$ser verbatim szs_dqwdt (k) = dqdt
-        !$ser verbatim endif
         qpz = qv (k) + ql (k) + qi (k)
         rh_tem = qpz / qsw
         dq = qsw - qv (k)
@@ -5871,10 +4247,8 @@ end subroutine pcomp
 ! Wegener Bergeron Findeisen process, Storelvmo and Tan (2015)
 ! =======================================================================
 
-subroutine pwbf (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, &
-!$ser verbatim nn, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
-        cvm, te8, den, lcpk, icpk, tcpk, tcp3)
-    
+subroutine pwbf (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, cvm, te8, den, lcpk, icpk, tcpk, tcp3)
+
     implicit none
 
     ! -----------------------------------------------------------------------
@@ -5882,8 +4256,7 @@ subroutine pwbf (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, &
     ! -----------------------------------------------------------------------
 
     integer, intent (in) :: ks, ke
-    !$ser verbatim integer, intent (in) :: nn
-    
+
     real, intent (in) :: dts
 
     real, intent (in), dimension (ks:ke) :: den
@@ -5892,8 +4265,7 @@ subroutine pwbf (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, &
 
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg
     real, intent (inout), dimension (ks:ke) :: lcpk, icpk, tcpk, tcp3
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt
-    
+
     real (kind = r8), intent (inout), dimension (ks:ke) :: cvm, tz
 
     ! -----------------------------------------------------------------------
@@ -5910,26 +4282,11 @@ subroutine pwbf (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, &
 
     do k = ks, ke
 
-        !$ser verbatim if (nn .eq. 1) then
-            !$ser verbatim szs_qsi (k) = 0.
-            !$ser verbatim szs_dqidt (k) = 0.
-            !$ser verbatim szs_qsw (k) = 0.
-            !$ser verbatim szs_dqwdt (k) = 0.
-        !$ser verbatim endif
-        
         tc = tice - tz (k)
 
         tin = tz (k)
         qsw = wqs (tin, den (k), dqdt)
-        !$ser verbatim if (nn .eq. 1) then
-            !$ser verbatim szs_qsw (k) = qsw
-            !$ser verbatim szs_dqwdt (k) = dqdt
-        !$ser verbatim endif
         qsi = iqs (tin, den (k), dqdt)
-        !$ser verbatim if (nn .eq. 1) then
-            !$ser verbatim szs_qsi (k) = qsi
-            !$ser verbatim szs_dqidt (k) = dqdt
-        !$ser verbatim endif
 
         if (tc .gt. 0. .and. ql (k) .gt. qcmin .and. qi (k) .gt. qcmin .and. &
             qv (k) .gt. qsi .and. qv (k) .lt. qsw) then
@@ -6011,7 +4368,6 @@ end subroutine pbigg
 ! =======================================================================
 
 subroutine pidep_pisub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-!$ser verbatim nn, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
         lcpk, icpk, tcpk, tcp3, cin, dep, sub)
 
     implicit none
@@ -6021,8 +4377,7 @@ subroutine pidep_pisub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
     ! -----------------------------------------------------------------------
 
     integer, intent (in) :: ks, ke
-    !$ser verbatim integer, intent (in) :: nn
-    
+
     real, intent (in) :: dts
 
     real, intent (in), dimension (ks:ke) :: den, dp
@@ -6031,8 +4386,7 @@ subroutine pidep_pisub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
 
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg, cin
     real, intent (inout), dimension (ks:ke) :: lcpk, icpk, tcpk, tcp3
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt
-    
+
     real (kind = r8), intent (inout), dimension (ks:ke) :: cvm, tz
 
     real, intent (out) :: dep, sub
@@ -6047,22 +4401,11 @@ subroutine pidep_pisub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
 
     do k = ks, ke
 
-        !$ser verbatim if (nn .eq. 1) then
-            !$ser verbatim szs_qsi (k) = 0.
-            !$ser verbatim szs_dqidt (k) = 0.
-            !$ser verbatim szs_qsw (k) = 0.
-            !$ser verbatim szs_dqwdt (k) = 0.
-        !$ser verbatim endif
-        
         if (tz (k) .lt. tice) then
 
             pidep = 0.
             tin = tz (k)
             qsi = iqs (tin, den (k), dqdt)
-            !$ser verbatim if (nn .eq. 1) then
-                !$ser verbatim szs_qsi (k) = qsi
-                !$ser verbatim szs_dqidt (k) = dqdt
-            !$ser verbatim endif
             dq = qv (k) - qsi
             tmp = dq / (1. + tcpk (k) * dqdt)
 
@@ -6123,7 +4466,6 @@ end subroutine pidep_pisub
 ! =======================================================================
 
 subroutine psdep_pssub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-!$ser verbatim nn, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
         denfac, lcpk, icpk, tcpk, tcp3, dep, sub)
 
     implicit none
@@ -6133,8 +4475,7 @@ subroutine psdep_pssub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
     ! -----------------------------------------------------------------------
 
     integer, intent (in) :: ks, ke
-    !$ser verbatim integer, intent (in) :: nn
-    
+
     real, intent (in) :: dts
 
     real, intent (in), dimension (ks:ke) :: den, dp, denfac
@@ -6143,8 +4484,7 @@ subroutine psdep_pssub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
 
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg
     real, intent (inout), dimension (ks:ke) :: lcpk, icpk, tcpk, tcp3
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt
-    
+
     real (kind = r8), intent (inout), dimension (ks:ke) :: cvm, tz
 
     real, intent (out) :: dep, sub
@@ -6159,21 +4499,10 @@ subroutine psdep_pssub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
 
     do k = ks, ke
 
-        !$ser verbatim if (nn .eq. 1) then
-            !$ser verbatim szs_qsi (k) = 0.
-            !$ser verbatim szs_dqidt (k) = 0.
-            !$ser verbatim szs_qsw (k) = 0.
-            !$ser verbatim szs_dqwdt (k) = 0.
-        !$ser verbatim endif
-        
         if (qs (k) .gt. qcmin) then
 
             tin = tz (k)
             qsi = iqs (tin, den (k), dqdt)
-            !$ser verbatim if (nn .eq. 1) then
-                !$ser verbatim szs_qsi (k) = qsi
-                !$ser verbatim szs_dqidt (k) = dqdt
-            !$ser verbatim endif
             qden = qs (k) * den (k)
             t2 = tz (k) * tz (k)
             dq = qsi - qv (k)
@@ -6206,7 +4535,6 @@ end subroutine psdep_pssub
 ! =======================================================================
 
 subroutine pgdep_pgsub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, den, &
-!$ser verbatim nn, szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt,&
         denfac, lcpk, icpk, tcpk, tcp3, dep, sub)
 
     implicit none
@@ -6216,8 +4544,7 @@ subroutine pgdep_pgsub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
     ! -----------------------------------------------------------------------
 
     integer, intent (in) :: ks, ke
-    !$ser verbatim integer, intent (in) :: nn
-    
+
     real, intent (in) :: dts
 
     real, intent (in), dimension (ks:ke) :: den, dp, denfac
@@ -6226,8 +4553,7 @@ subroutine pgdep_pgsub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
 
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg
     real, intent (inout), dimension (ks:ke) :: lcpk, icpk, tcpk, tcp3
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: szs_qsi, szs_dqidt, szs_qsw, szs_dqwdt
-    
+
     real (kind = r8), intent (inout), dimension (ks:ke) :: cvm, tz
 
     real, intent (out) :: dep, sub
@@ -6242,21 +4568,10 @@ subroutine pgdep_pgsub (ks, ke, dts, qv, ql, qr, qi, qs, qg, tz, dp, cvm, te8, d
 
     do k = ks, ke
 
-        !$ser verbatim if (nn .eq. 1) then
-            !$ser verbatim szs_qsi (k) = 0.
-            !$ser verbatim szs_dqidt (k) = 0.
-            !$ser verbatim szs_qsw (k) = 0.
-            !$ser verbatim szs_dqwdt (k) = 0.
-        !$ser verbatim endif
-        
         if (qg (k) .gt. qcmin) then
 
             tin = tz (k)
             qsi = iqs (tin, den (k), dqdt)
-            !$ser verbatim if (nn .eq. 1) then
-                !$ser verbatim szs_qsi (k) = qsi
-                !$ser verbatim szs_dqidt (k) = dqdt
-            !$ser verbatim endif
             qden = qg (k) * den (k)
             t2 = tz (k) * tz (k)
             dq = qsi - qv (k)
@@ -6294,10 +4609,8 @@ end subroutine pgdep_pgsub
 ! cloud fraction diagnostic
 ! =======================================================================
 
-subroutine cloud_fraction (ks, ke, pz, den, qv, ql, qr, qi, qs, qg, qa, &
-!$ser verbatim cf_qsi, cf_dqidt, cf_qsw, cf_dqwdt,&
-    tz, h_var, gsize)
-    
+subroutine cloud_fraction (ks, ke, pz, den, qv, ql, qr, qi, qs, qg, qa, tz, h_var, gsize)
+
     implicit none
 
     ! -----------------------------------------------------------------------
@@ -6313,8 +4626,7 @@ subroutine cloud_fraction (ks, ke, pz, den, qv, ql, qr, qi, qs, qg, qa, &
     real (kind = r8), intent (in), dimension (ks:ke) :: tz
 
     real, intent (inout), dimension (ks:ke) :: qv, ql, qr, qi, qs, qg, qa
-    !$ser verbatim real, intent (out), dimension (ks:ke) :: cf_qsi, cf_dqidt, cf_qsw, cf_dqwdt
-    
+
     ! -----------------------------------------------------------------------
     ! local variables
     ! -----------------------------------------------------------------------
@@ -6339,11 +4651,6 @@ subroutine cloud_fraction (ks, ke, pz, den, qv, ql, qr, qi, qs, qg, qa, &
 
     do k = ks, ke
 
-        !$ser verbatim cf_qsi (k) = 0.
-        !$ser verbatim cf_dqidt (k) = 0.
-        !$ser verbatim cf_qsw (k) = 0.
-        !$ser verbatim cf_dqwdt (k) = 0.
-        
         ! combine water species
 
         ice = q_sol (k)
@@ -6371,9 +4678,6 @@ subroutine cloud_fraction (ks, ke, pz, den, qv, ql, qr, qi, qs, qg, qa, &
         tin = (te8 (k) - lv00 * qpz + li00 * ice) / mhc (qpz, liq, ice)
 
         ! calculate saturated specific humidity
-        
-        !$ser verbatim cf_qsi (k) = iqs (tin, den (k), cf_dqidt (k))
-        !$ser verbatim cf_qsw (k) = wqs (tin, den (k), cf_dqwdt (k))
 
         if (tin .le. t_wfr) then
             qstar = iqs (tin, den (k), dqdt)

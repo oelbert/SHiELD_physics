@@ -935,27 +935,27 @@ module module_physics_driver
 
       else
         !!$ser verbatim print *, 'INFO: serialize rad'
-        !$ser verbatim rad_solhr = Model%solhr
-        !$ser verbatim rad_slag = Model%slag
-        !$ser verbatim rad_sdec = Model%sdec
-        !$ser verbatim rad_cdec = Model%cdec
-        !$ser verbatim rad_daily_mean = Model%daily_mean
-        !$ser verbatim do i = 1, im
-          !$ser verbatim rad_t_surface(i) = Statein%tgrs(i, 1)
-        !$ser verbatim enddo
-        !$ser savepoint RadInterp-In
-        !$ser data solhr=rad_solhr slag=rad_slag sdec=rad_sdec cdec=rad_cdec sinlat=Grid%sinlat
-        !$ser data coslat=Grid%coslat xlon=Grid%xlon coszen=Radtend%coszen tsurf=Sfcprop%tsfc
-        !$ser data tgrs=rad_t_surface tsflw=Radtend%tsflw semis=Radtend%semis
-        !$ser data sfcdsw=Coupling%sfcdsw sfcnsw=Coupling%sfcnsw sfcdlw=Coupling%sfcdlw
-        !$ser data htrsw=Radtend%htrsw swhc=Radtend%swhc htrlw=Radtend%htrlw lwhc=Radtend%lwhc
-        !$ser data nirbmui=Coupling%nirbmui nirdfui=Coupling%nirdfui visbmui=Coupling%visbmui
-        !$ser data visdfui=Coupling%visdfui nirbmdi=Coupling%nirbmdi nirdfdi=Coupling%nirdfdi
-        !$ser data visbmdi=Coupling%visbmdi visdfdi=Coupling%visdfdi daily_mean=rad_daily_mean
-        !$ser data dtdt=dtdt dtdtc=dtdtc xmu=xmu xcosz=xcosz
-        !$ser data adjsfcdsw=adjsfcdsw adjsfcnsw=adjsfcnsw adjsfcdlw=adjsfcdlw adjsfculw=adjsfculw
-        !$ser data adjnirbmu=adjnirbmu adjnirdfu=adjnirdfu adjvisbmu=adjvisbmu adjvisdfu=adjvisdfu
-        !$ser data adjnirbmd=adjnirbmd adjnirdfd=adjnirdfd adjvisbmd=adjvisbmd adjvisdfd=adjvisdfd
+        !!$ser verbatim rad_solhr = Model%solhr
+        !!$ser verbatim rad_slag = Model%slag
+        !!$ser verbatim rad_sdec = Model%sdec
+        !!$ser verbatim rad_cdec = Model%cdec
+        !!$ser verbatim rad_daily_mean = Model%daily_mean
+        !!$ser verbatim do i = 1, im
+          !!$ser verbatim rad_t_surface(i) = Statein%tgrs(i, 1)
+        !!$ser verbatim enddo
+        !!$ser savepoint RadInterp-In
+        !!$ser data solhr=rad_solhr slag=rad_slag sdec=rad_sdec cdec=rad_cdec sinlat=Grid%sinlat
+        !!$ser data coslat=Grid%coslat xlon=Grid%xlon coszen=Radtend%coszen tsurf=Sfcprop%tsfc
+        !!$ser data tgrs=rad_t_surface tsflw=Radtend%tsflw semis=Radtend%semis
+        !!$ser data sfcdsw=Coupling%sfcdsw sfcnsw=Coupling%sfcnsw sfcdlw=Coupling%sfcdlw
+        !!$ser data htrsw=Radtend%htrsw swhc=Radtend%swhc htrlw=Radtend%htrlw lwhc=Radtend%lwhc
+        !!$ser data nirbmui=Coupling%nirbmui nirdfui=Coupling%nirdfui visbmui=Coupling%visbmui
+        !!$ser data visdfui=Coupling%visdfui nirbmdi=Coupling%nirbmdi nirdfdi=Coupling%nirdfdi
+        !!$ser data visbmdi=Coupling%visbmdi visdfdi=Coupling%visdfdi daily_mean=rad_daily_mean
+        !!$ser data dtdt=dtdt dtdtc=dtdtc xmu=xmu xcosz=xcosz
+        !!$ser data adjsfcdsw=adjsfcdsw adjsfcnsw=adjsfcnsw adjsfcdlw=adjsfcdlw adjsfculw=adjsfculw
+        !!$ser data adjnirbmu=adjnirbmu adjnirdfu=adjnirdfu adjvisbmu=adjvisbmu adjvisdfu=adjvisdfu
+        !!$ser data adjnirbmd=adjnirbmd adjnirdfd=adjnirdfd adjvisbmd=adjvisbmd adjvisdfd=adjvisdfd
         call dcyc2t3                                                        &
 !  ---  inputs:
            ( Model%solhr, Model%slag, Model%sdec, Model%cdec, Grid%sinlat,  &
@@ -974,11 +974,11 @@ module module_physics_driver
              adjnirbmu, adjnirdfu, adjvisbmu, adjvisdfu,                    &
              adjnirbmd, adjnirdfd, adjvisbmd, adjvisdfd                     &
            )
-        !$ser savepoint RadInterp-Out
-        !$ser data dtdt=dtdt dtdtc=dtdtc xmu=xmu xcosz=xcosz
-        !$ser data adjsfcdsw=adjsfcdsw adjsfcnsw=adjsfcnsw adjsfcdlw=adjsfcdlw adjsfculw=adjsfculw
-        !$ser data adjnirbmu=adjnirbmu adjnirdfu=adjnirdfu adjvisbmu=adjvisbmu adjvisdfu=adjvisdfu
-        !$ser data adjnirbmd=adjnirbmd adjnirdfd=adjnirdfd adjvisbmd=adjvisbmd adjvisdfd=adjvisdfd
+        !!$ser savepoint RadInterp-Out
+        !!$ser data dtdt=dtdt dtdtc=dtdtc xmu=xmu xcosz=xcosz
+        !!$ser data adjsfcdsw=adjsfcdsw adjsfcnsw=adjsfcnsw adjsfcdlw=adjsfcdlw adjsfculw=adjsfculw
+        !!$ser data adjnirbmu=adjnirbmu adjnirdfu=adjnirdfu adjvisbmu=adjvisbmu adjvisdfu=adjvisdfu
+        !!$ser data adjnirbmd=adjnirbmd adjnirdfd=adjnirdfd adjvisbmd=adjvisbmd adjvisdfd=adjvisdfd
 
         if (Model%do_diagnostic_radiation_with_scaled_co2) then
            call compute_diagnostics_with_scaled_co2(                        &
@@ -1141,28 +1141,28 @@ module module_physics_driver
       Diag%smcwlt2(:) = 0.0
       Diag%smcref2(:) = 0.0
       
-      !$ser verbatim nxpvs = 7501
-      !$ser verbatim xmin = 180.
-      !$ser verbatim xmax = 330.
-      !$ser verbatim xinc=(xmax-xmin)/(nxpvs-1)
-      !$ser savepoint FPVS-In
-      !$ser data temp=Sfcprop%tsfc tab_fpvsx=tab_fpvsx tab_fpvs=tab_fpvs xval=xval xmin=xmin xmax=xmax nxpvs=nxpvs xinc=xinc fp=fp fpx=fpx
-      !$ser verbatim do i = 1, im
-        !$ser verbatim fp(i)=fpvs(Sfcprop%tsfc(i))
-        !$ser verbatim fpx(i)=fpvsx(Sfcprop%tsfc(i))
-        !$ser verbatim if (i == 1) then
-          !$ser verbatim xmax = con_ttp / Sfcprop%tsfc(i)
-        !$ser verbatim endif
-        !$ser verbatim do k = 1, levs
-          !$ser verbatim ii = (i - 1) * levs + k
-          !$ser verbatim nt = mod(ii, nxpvs)
-          !$ser verbatim xval(i, k) = xmin+(nt-1)*xinc
-          !$ser verbatim tab_fpvsx(i, k) = fpvsx(xval(i, k))
-          !$ser verbatim tab_fpvs(i, k) = fpvs(xval(i, k))
-        !$ser verbatim enddo
-      !$ser verbatim enddo
-      !$ser savepoint FPVS-Out
-      !$ser data tab_fpvsx=tab_fpvsx tab_fpvs=tab_fpvs xval=xval fp=fp fpx=fpx
+      !!$ser verbatim nxpvs = 7501
+      !!$ser verbatim xmin = 180.
+      !!$ser verbatim xmax = 330.
+      !!$ser verbatim xinc=(xmax-xmin)/(nxpvs-1)
+      !!$ser savepoint FPVS-In
+      !!$ser data temp=Sfcprop%tsfc tab_fpvsx=tab_fpvsx tab_fpvs=tab_fpvs xval=xval xmin=xmin xmax=xmax nxpvs=nxpvs xinc=xinc fp=fp fpx=fpx
+      !!$ser verbatim do i = 1, im
+        !!$ser verbatim fp(i)=fpvs(Sfcprop%tsfc(i))
+        !!$ser verbatim fpx(i)=fpvsx(Sfcprop%tsfc(i))
+        !!$ser verbatim if (i == 1) then
+          !!$ser verbatim xmax = con_ttp / Sfcprop%tsfc(i)
+        !!$ser verbatim endif
+        !!$ser verbatim do k = 1, levs
+          !!$ser verbatim ii = (i - 1) * levs + k
+          !!$ser verbatim nt = mod(ii, nxpvs)
+          !!$ser verbatim xval(i, k) = xmin+(nt-1)*xinc
+          !!$ser verbatim tab_fpvsx(i, k) = fpvsx(xval(i, k))
+          !!$ser verbatim tab_fpvs(i, k) = fpvs(xval(i, k))
+        !!$ser verbatim enddo
+      !!$ser verbatim enddo
+      !!$ser savepoint FPVS-Out
+      !!$ser data tab_fpvsx=tab_fpvsx tab_fpvs=tab_fpvs xval=xval fp=fp fpx=fpx
       
 
 !  --- ...  lu: iter-loop over (sfc_diff,sfc_drv,sfc_ocean,sfc_sice)
@@ -1870,22 +1870,22 @@ module module_physics_driver
 
           if (Model%isatmedmf == 0) then
              ! initial version of satmedmfvdif (Nov 2018) modified by kgao
-             !$ser savepoint PBL-In
-             !$ser data pbl_ntrac=nvdiff pbl_ntcw=ntcw pbl_ntiw=ntiw pbl_ntke=ntke
-             !$ser data pbl_dv=dvdt pbl_du=dudt pbl_tdt=dtdt pbl_rtg=dqdt pbl_u1=Statein%ugrs pbl_v1=Statein%vgrs
-             !$ser data pbl_t1=Statein%tgrs pbl_q1=Statein%qgrs pbl_swh=Radtend%htrsw pbl_hlw=Radtend%htrlw
-             !$ser data pbl_xmu=xmu pbl_garea=garea pbl_islmsk=islmsk pbl_psk=Statein%prsik(1:ix,1) pbl_rbsoil=rb
-             !$ser data pbl_zorl=Sfcprop%zorl pbl_u10m=Diag%u10m pbl_v10m=Diag%v10m pbl_fm=Sfcprop%ffmm
-             !$ser data pbl_fh=Sfcprop%ffhh pbl_tsea=Sfcprop%tsfc pbl_heat=hflx pbl_evap=evap pbl_stress=stress
-             !$ser data pbl_wind=wind pbl_kpbl=kpbl pbl_prsi=Statein%prsi pbl_delta=del pbl_prsl=Statein%prsl
-             !$ser data pbl_prslk=Statein%prslk pbl_phii=Statein%phii pbl_phil=Statein%phil pbl_dtp=dtp
-             !$ser data pbl_dspheat=dspheat pbl_dusfc=dusfc1 pbl_dvsfc=dvsfc1 pbl_dtsfc=dtsfc1
-             !$ser data pbl_dqsfc=dqsfc1 pbl_hpbl=Diag%hpbl pbl_kinver=kinver pbl_xkzm_m=xkzm_m
-             !$ser data pbl_xkzm_h=xkzm_h pbl_xkzm_ml=xkzm_ml pbl_xkzm_hl=xkzm_hl
-             !$ser data pbl_xkzm_mi=xkzm_mi pbl_xkzm_hi=xkzm_hi pbl_xkzm_s=xkzm_s
-             !$ser data pbl_xkzminv=xkzminv pbl_do_dk_hb19=do_dk_hb19 pbl_xkzm_lim=xkzm_lim
-             !$ser data pbl_xkgdx=xkgdx pbl_rlmn=rlmn pbl_rlmx=rlmx pbl_dkt=dkt
-             !$ser data pbl_cap_k0_land=cap_k0_land
+             !!$ser savepoint PBL-In
+             !!$ser data pbl_ntrac=nvdiff pbl_ntcw=ntcw pbl_ntiw=ntiw pbl_ntke=ntke
+             !!$ser data pbl_dv=dvdt pbl_du=dudt pbl_tdt=dtdt pbl_rtg=dqdt pbl_u1=Statein%ugrs pbl_v1=Statein%vgrs
+             !!$ser data pbl_t1=Statein%tgrs pbl_q1=Statein%qgrs pbl_swh=Radtend%htrsw pbl_hlw=Radtend%htrlw
+             !!$ser data pbl_xmu=xmu pbl_garea=garea pbl_islmsk=islmsk pbl_psk=Statein%prsik(1:ix,1) pbl_rbsoil=rb
+             !!$ser data pbl_zorl=Sfcprop%zorl pbl_u10m=Diag%u10m pbl_v10m=Diag%v10m pbl_fm=Sfcprop%ffmm
+             !!$ser data pbl_fh=Sfcprop%ffhh pbl_tsea=Sfcprop%tsfc pbl_heat=hflx pbl_evap=evap pbl_stress=stress
+             !!$ser data pbl_wind=wind pbl_kpbl=kpbl pbl_prsi=Statein%prsi pbl_delta=del pbl_prsl=Statein%prsl
+             !!$ser data pbl_prslk=Statein%prslk pbl_phii=Statein%phii pbl_phil=Statein%phil pbl_dtp=dtp
+             !!$ser data pbl_dspheat=dspheat pbl_dusfc=dusfc1 pbl_dvsfc=dvsfc1 pbl_dtsfc=dtsfc1
+             !!$ser data pbl_dqsfc=dqsfc1 pbl_hpbl=Diag%hpbl pbl_kinver=kinver pbl_xkzm_m=xkzm_m
+             !!$ser data pbl_xkzm_h=xkzm_h pbl_xkzm_ml=xkzm_ml pbl_xkzm_hl=xkzm_hl
+             !!$ser data pbl_xkzm_mi=xkzm_mi pbl_xkzm_hi=xkzm_hi pbl_xkzm_s=xkzm_s
+             !!$ser data pbl_xkzminv=xkzminv pbl_do_dk_hb19=do_dk_hb19 pbl_xkzm_lim=xkzm_lim
+             !!$ser data pbl_xkgdx=xkgdx pbl_rlmn=rlmn pbl_rlmx=rlmx pbl_dkt=dkt
+             !!$ser data pbl_cap_k0_land=cap_k0_land
              call satmedmfvdif(ix, im, levs, nvdiff,                            & 
                    Model%ntcw, Model%ntiw, Model%ntke,                          &
                    dvdt, dudt, dtdt, dqdt,                                      &
@@ -1901,9 +1901,9 @@ module module_physics_driver
                    Model%xkzm_s,  Model%xkzminv, Model%do_dk_hb19,              &
                    Model%xkzm_lim, Model%xkgdx,                                 &
                    Model%rlmn, Model%rlmx, Model%cap_k0_land, dkt)
-             !$ser savepoint PBL-Out
-             !$ser data pbl_du=dudt pbl_dv=dvdt pbl_tdt=dtdt pbl_rtg=dqdt pbl_kpbl=kpbl
-             !$ser data pbl_dusfc=dusfc1 pbl_dvsfc=dvsfc1 pbl_dtsfc=dtsfc1 pbl_dqsfc=dqsfc1 pbl_hpbl=Diag%hpbl
+             !!$ser savepoint PBL-Out
+             !!$ser data pbl_du=dudt pbl_dv=dvdt pbl_tdt=dtdt pbl_rtg=dqdt pbl_kpbl=kpbl
+             !!$ser data pbl_dusfc=dusfc1 pbl_dvsfc=dvsfc1 pbl_dtsfc=dtsfc1 pbl_dqsfc=dqsfc1 pbl_hpbl=Diag%hpbl
              elseif (Model%isatmedmf == 1) then   
                 do i=1,im
                    if (islmsk(i) == 1) then
@@ -3829,46 +3829,46 @@ module module_physics_driver
           delp (:,k) = del(:,levs-k+1)
           dz   (:,k) = (Statein%phii(:,levs-k+1)-Statein%phii(:,levs-k+2))/con_g
         enddo
-        !$ser verbatim mp_qv(:,:)=Stateout%gq0(:,levs:1:-1,1)
-        !$ser verbatim mp_ql(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntcw)
-        !$ser verbatim mp_qr(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntrw)
-        !$ser verbatim mp_qi(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntiw)
-        !$ser verbatim mp_qs(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntsw)
-        !$ser verbatim mp_qg(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntgl)
-        !$ser verbatim mp_qa(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntclamt)
-        !$ser verbatim mp_qnl(:,:)=qnl1(:,levs:1:-1)
-        !$ser verbatim mp_qni(:,:)=qni1(:,levs:1:-1)
-        !$ser verbatim mp_pt(:,:)=Stateout%gt0(:,levs:1:-1)
-        !$ser verbatim mp_wa(:,:)=w
-        !$ser verbatim mp_ua(:,:)=Stateout%gu0(:,levs:1:-1)
-        !$ser verbatim mp_va(:,:)=Stateout%gv0(:,levs:1:-1)
-        !$ser verbatim mp_delz(:,:)=dz
-        !$ser verbatim mp_delp(:,:)=delp
-        !$ser verbatim mp_gsize(:,1)=gsize
-        !$ser verbatim mp_hs(:,1)=hs
-        !$ser verbatim mp_water(:,1)=water0
-        !$ser verbatim mp_rain(:,1)=rain0
-        !$ser verbatim mp_ice(:,1)=ice0
-        !$ser verbatim mp_snow(:,1)=snow0
-        !$ser verbatim mp_graupel(:,1)=graupel0
-        !$ser verbatim mp_q_con(:,:)=q_con(:,levs:1:-1)
-        !$ser verbatim mp_cappa(:,:)=cappa(:,levs:1:-1)
-        !$ser verbatim mp_te(:,:)=te(:,levs:1:-1)
-        !$ser verbatim mp_prefluxw(:,:)=prefluxw(:,levs:1:-1)
-        !$ser verbatim mp_prefluxr(:,:)=prefluxr(:,levs:1:-1)
-        !$ser verbatim mp_prefluxi(:,:)=prefluxi(:,levs:1:-1)
-        !$ser verbatim mp_prefluxs(:,:)=prefluxs(:,levs:1:-1)
-        !$ser verbatim mp_prefluxg(:,:)=prefluxg(:,levs:1:-1)
-        !$ser verbatim mp_consv_te=.false.
-        !$ser verbatim mp_last_step=.true.
+        !!$ser verbatim mp_qv(:,:)=Stateout%gq0(:,levs:1:-1,1)
+        !!$ser verbatim mp_ql(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntcw)
+        !!$ser verbatim mp_qr(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntrw)
+        !!$ser verbatim mp_qi(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntiw)
+        !!$ser verbatim mp_qs(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntsw)
+        !!$ser verbatim mp_qg(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntgl)
+        !!$ser verbatim mp_qa(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntclamt)
+        !!$ser verbatim mp_qnl(:,:)=qnl1(:,levs:1:-1)
+        !!$ser verbatim mp_qni(:,:)=qni1(:,levs:1:-1)
+        !!$ser verbatim mp_pt(:,:)=Stateout%gt0(:,levs:1:-1)
+        !!$ser verbatim mp_wa(:,:)=w
+        !!$ser verbatim mp_ua(:,:)=Stateout%gu0(:,levs:1:-1)
+        !!$ser verbatim mp_va(:,:)=Stateout%gv0(:,levs:1:-1)
+        !!$ser verbatim mp_delz(:,:)=dz
+        !!$ser verbatim mp_delp(:,:)=delp
+        !!$ser verbatim mp_gsize(:,1)=gsize
+        !!$ser verbatim mp_hs(:,1)=hs
+        !!$ser verbatim mp_water(:,1)=water0
+        !!$ser verbatim mp_rain(:,1)=rain0
+        !!$ser verbatim mp_ice(:,1)=ice0
+        !!$ser verbatim mp_snow(:,1)=snow0
+        !!$ser verbatim mp_graupel(:,1)=graupel0
+        !!$ser verbatim mp_q_con(:,:)=q_con(:,levs:1:-1)
+        !!$ser verbatim mp_cappa(:,:)=cappa(:,levs:1:-1)
+        !!$ser verbatim mp_te(:,:)=te(:,levs:1:-1)
+        !!$ser verbatim mp_prefluxw(:,:)=prefluxw(:,levs:1:-1)
+        !!$ser verbatim mp_prefluxr(:,:)=prefluxr(:,levs:1:-1)
+        !!$ser verbatim mp_prefluxi(:,:)=prefluxi(:,levs:1:-1)
+        !!$ser verbatim mp_prefluxs(:,:)=prefluxs(:,levs:1:-1)
+        !!$ser verbatim mp_prefluxg(:,:)=prefluxg(:,levs:1:-1)
+        !!$ser verbatim mp_consv_te=.false.
+        !!$ser verbatim mp_last_step=.true.
 
-        !$ser savepoint Microphysics3-In
-        !$ser data mp_qv=mp_qv mp_ql=mp_ql mp_qr=mp_qr mp_qi=mp_qi
-        !$ser data mp_qs=mp_qs mp_qg=mp_qg mp_qa=mp_qa mp_qnl=mp_qnl
-        !$ser data mp_qni=mp_qni mp_pt=mp_pt mp_wa=mp_wa mp_ua=mp_ua mp_va=mp_va mp_delz=mp_delz mp_delp=mp_delp
-        !$ser data mp_gsize=mp_gsize timestep=dtp mp_hs=mp_hs mp_water=mp_water mp_rain=mp_rain mp_ice=mp_ice mp_snow=mp_snow mp_graupel=mp_graupel mp_q_con=mp_q_con mp_cappa=mp_cappa
-        !$ser data mp_te=mp_te mp_prefluxw=mp_prefluxw mp_prefluxr=mp_prefluxr mp_prefluxi=mp_prefluxi mp_prefluxs=mp_prefluxs
-        !$ser data mp_prefluxg=mp_prefluxg mp_cond=mp_cond mp_dep=mp_dep mp_reevap=mp_reevap mp_sub=mp_sub consv_te=mp_consv_te last_step=mp_last_step
+        !!$ser savepoint Microphysics3-In
+        !!$ser data mp_qv=mp_qv mp_ql=mp_ql mp_qr=mp_qr mp_qi=mp_qi
+        !!$ser data mp_qs=mp_qs mp_qg=mp_qg mp_qa=mp_qa mp_qnl=mp_qnl
+        !!$ser data mp_qni=mp_qni mp_pt=mp_pt mp_wa=mp_wa mp_ua=mp_ua mp_va=mp_va mp_delz=mp_delz mp_delp=mp_delp
+        !!$ser data mp_gsize=mp_gsize timestep=dtp mp_hs=mp_hs mp_water=mp_water mp_rain=mp_rain mp_ice=mp_ice mp_snow=mp_snow mp_graupel=mp_graupel mp_q_con=mp_q_con mp_cappa=mp_cappa
+        !!$ser data mp_te=mp_te mp_prefluxw=mp_prefluxw mp_prefluxr=mp_prefluxr mp_prefluxi=mp_prefluxi mp_prefluxs=mp_prefluxs
+        !!$ser data mp_prefluxg=mp_prefluxg mp_cond=mp_cond mp_dep=mp_dep mp_reevap=mp_reevap mp_sub=mp_sub consv_te=mp_consv_te last_step=mp_last_step
 
         call gfdl_cld_mp_driver(Stateout%gq0(:,levs:1:-1,1), Stateout%gq0(:,levs:1:-1,Model%ntcw), &
                                 Stateout%gq0(:,levs:1:-1,Model%ntrw), Stateout%gq0(:,levs:1:-1,Model%ntiw), &
@@ -3882,44 +3882,44 @@ module module_physics_driver
                                 prefluxi(:,levs:1:-1), prefluxs(:,levs:1:-1), prefluxg(:,levs:1:-1), &
                                 .true., Model%do_inline_mp)
 
-        !$ser verbatim mp_qv(:,:)=Stateout%gq0(:,levs:1:-1,1)
-        !$ser verbatim mp_ql(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntcw)
-        !$ser verbatim mp_qr(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntrw)
-        !$ser verbatim mp_qi(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntiw)
-        !$ser verbatim mp_qs(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntsw)
-        !$ser verbatim mp_qg(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntgl)
-        !$ser verbatim mp_ql(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntcw)
-        !$ser verbatim mp_qa(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntclamt)
-        !$ser verbatim mp_pt(:,:)=Stateout%gt0(:,levs:1:-1)
-        !$ser verbatim mp_wa(:,:)=w
-        !$ser verbatim mp_ua(:,:)=Stateout%gu0(:,levs:1:-1)
-        !$ser verbatim mp_va(:,:)=Stateout%gv0(:,levs:1:-1)
-        !$ser verbatim mp_delz(:,:)=dz
-        !$ser verbatim mp_delp(:,:)=delp
-        !$ser verbatim mp_water(:,1)=water0
-        !$ser verbatim mp_rain(:,1)=rain0
-        !$ser verbatim mp_ice(:,1)=ice0
-        !$ser verbatim mp_snow(:,1)=snow0
-        !$ser verbatim mp_graupel(:,1)=graupel0
-        !$ser verbatim mp_q_con(:,:)=q_con(:,levs:1:-1)
-        !$ser verbatim mp_cappa(:,:)=cappa(:,levs:1:-1)
-        !$ser verbatim mp_adj_vmr(:,:)=adj_vmr(:,levs:1:-1)
-        !$ser verbatim mp_te(:,:)=te(:,levs:1:-1)
-        !$ser verbatim mp_dte(:,1)=dte
-        !$ser verbatim mp_prefluxw(:,:)=prefluxw(:,levs:1:-1)
-        !$ser verbatim mp_prefluxr(:,:)=prefluxr(:,levs:1:-1)
-        !$ser verbatim mp_prefluxi(:,:)=prefluxi(:,levs:1:-1)
-        !$ser verbatim mp_prefluxs(:,:)=prefluxs(:,levs:1:-1)
-        !$ser verbatim mp_prefluxg(:,:)=prefluxg(:,levs:1:-1)
+        !!$ser verbatim mp_qv(:,:)=Stateout%gq0(:,levs:1:-1,1)
+        !!$ser verbatim mp_ql(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntcw)
+        !!$ser verbatim mp_qr(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntrw)
+        !!$ser verbatim mp_qi(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntiw)
+        !!$ser verbatim mp_qs(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntsw)
+        !!$ser verbatim mp_qg(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntgl)
+        !!$ser verbatim mp_ql(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntcw)
+        !!$ser verbatim mp_qa(:,:)=Stateout%gq0(:,levs:1:-1,Model%ntclamt)
+        !!$ser verbatim mp_pt(:,:)=Stateout%gt0(:,levs:1:-1)
+        !!$ser verbatim mp_wa(:,:)=w
+        !!$ser verbatim mp_ua(:,:)=Stateout%gu0(:,levs:1:-1)
+        !!$ser verbatim mp_va(:,:)=Stateout%gv0(:,levs:1:-1)
+        !!$ser verbatim mp_delz(:,:)=dz
+        !!$ser verbatim mp_delp(:,:)=delp
+        !!$ser verbatim mp_water(:,1)=water0
+        !!$ser verbatim mp_rain(:,1)=rain0
+        !!$ser verbatim mp_ice(:,1)=ice0
+        !!$ser verbatim mp_snow(:,1)=snow0
+        !!$ser verbatim mp_graupel(:,1)=graupel0
+        !!$ser verbatim mp_q_con(:,:)=q_con(:,levs:1:-1)
+        !!$ser verbatim mp_cappa(:,:)=cappa(:,levs:1:-1)
+        !!$ser verbatim mp_adj_vmr(:,:)=adj_vmr(:,levs:1:-1)
+        !!$ser verbatim mp_te(:,:)=te(:,levs:1:-1)
+        !!$ser verbatim mp_dte(:,1)=dte
+        !!$ser verbatim mp_prefluxw(:,:)=prefluxw(:,levs:1:-1)
+        !!$ser verbatim mp_prefluxr(:,:)=prefluxr(:,levs:1:-1)
+        !!$ser verbatim mp_prefluxi(:,:)=prefluxi(:,levs:1:-1)
+        !!$ser verbatim mp_prefluxs(:,:)=prefluxs(:,levs:1:-1)
+        !!$ser verbatim mp_prefluxg(:,:)=prefluxg(:,levs:1:-1)
 
-        !$ser savepoint Microphysics3-Out
-        !$ser data mp_qv=mp_qv mp_ql=mp_ql mp_qr=mp_qr mp_qi=mp_qi
-        !$ser data mp_qs=mp_qs mp_qg=mp_qg mp_qa=mp_qa
-        !$ser data mp_pt=mp_pt mp_wa=mp_wa mp_ua=mp_ua mp_va=mp_va mp_delz=mp_delz mp_delp=mp_delp
-        !$ser data mp_water=mp_water mp_rain=mp_rain mp_ice=mp_ice mp_snow=mp_snow mp_graupel=mp_graupel mp_q_con=mp_q_con mp_cappa=mp_cappa
-        !$ser data mp_adj_vmr=mp_adj_vmr mp_te=mp_te mp_dte=mp_dte
-        !$ser data mp_prefluxw=mp_prefluxw mp_prefluxr=mp_prefluxr mp_prefluxi=mp_prefluxi mp_prefluxs=mp_prefluxs
-        !$ser data mp_prefluxg=mp_prefluxg
+        !!$ser savepoint Microphysics3-Out
+        !!$ser data mp_qv=mp_qv mp_ql=mp_ql mp_qr=mp_qr mp_qi=mp_qi
+        !!$ser data mp_qs=mp_qs mp_qg=mp_qg mp_qa=mp_qa
+        !!$ser data mp_pt=mp_pt mp_wa=mp_wa mp_ua=mp_ua mp_va=mp_va mp_delz=mp_delz mp_delp=mp_delp
+        !!$ser data mp_water=mp_water mp_rain=mp_rain mp_ice=mp_ice mp_snow=mp_snow mp_graupel=mp_graupel mp_q_con=mp_q_con mp_cappa=mp_cappa
+        !!$ser data mp_adj_vmr=mp_adj_vmr mp_te=mp_te mp_dte=mp_dte
+        !!$ser data mp_prefluxw=mp_prefluxw mp_prefluxr=mp_prefluxr mp_prefluxi=mp_prefluxi mp_prefluxs=mp_prefluxs
+        !!$ser data mp_prefluxg=mp_prefluxg
         !!$ser verbatim print *, 'INFO: end serialize microphysics'
         tem = dtp * con_p001 / con_day
         water0(:)   = water0(:)   * tem

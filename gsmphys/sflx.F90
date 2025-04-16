@@ -42,7 +42,7 @@
              !$ser verbatim pr_nroot, pr_zroot, pr_sldpth, pr_zsoil, pr_slope, pr_snup,&
              !$ser verbatim pr_rsmin, pr_rgl, pr_hs, pr_xlai, pr_bexp, pr_dksat, pr_dwsat, pr_f1,&
              !$ser verbatim pr_kdt, pr_psisat, pr_quartz, pr_smcdry, pr_smcmax, pr_smcref,&
-             !$ser verbatim pr_smcwlt, pr_shdfac, pr_frzx, pr_rtdis,&
+             !$ser verbatim pr_smcwlt, pr_shdfac, pr_frzx, pr_rtdis, i_index,&
              rcsoil, soilw, soilm, smcwlt, smcdry, smcref, smcmax)
 
 ! ===================================================================== !
@@ -228,6 +228,7 @@
 !  ---  inputs:
       integer, intent(in) :: nsoil, couple, icein, vegtyp, soiltyp,     &
              slopetyp, ivegsrc
+      !$ser verbatim integer, intent(in) :: i_index
 
       real (kind=kind_phys), intent(in) :: ffrozp, dt, zlvl, lwdn,      &
              sldpth(nsoil), swdn, swnet, sfcems, sfcprs, sfctmp,        &
