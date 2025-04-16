@@ -855,6 +855,11 @@
         endif   ! flag_iter and flag
       enddo   ! end do_i_loop
 
+      !$ser flush_savepoint NopEvapo-In
+      !$ser flush_savepoint NopEvapo-Out
+      !$ser flush_savepoint SopEvapo-In
+      !$ser flush_savepoint SopEvapo-Out
+
       !$ser verbatim if (sfc_iter == 1) then
           !$ser savepoint SoilVeg1-In
         !$ser verbatim else
