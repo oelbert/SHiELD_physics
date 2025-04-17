@@ -606,7 +606,7 @@
              !$ser verbatim pr_nroot, pr_zroot, pr_sldpth, pr_zsoil, pr_slope, pr_snup,&
              !$ser verbatim pr_rsmin, pr_rgl, pr_hs, pr_xlai, pr_bexp, pr_dksat, pr_dwsat, pr_f1,&
              !$ser verbatim pr_kdt, pr_psisat, pr_quartz, pr_smcdry, pr_smcmax, pr_smcref,&
-             !$ser verbatim pr_smcwlt, pr_shdfac, pr_frzx, pr_rtdis,&
+             !$ser verbatim pr_smcwlt, pr_shdfac, pr_frzx, pr_rtdis, i,&
              rcsoil, soilw, soilm, smcwlt, smcdry, smcref, smcmax)
 
              !$ser verbatim do k = 1, km
@@ -854,6 +854,11 @@
 
         endif   ! flag_iter and flag
       enddo   ! end do_i_loop
+
+      !$ser flush_savepoint NopEvapo-In
+      !$ser flush_savepoint NopEvapo-Out
+      !$ser flush_savepoint SopEvapo-In
+      !$ser flush_savepoint SopEvapo-Out
 
       !$ser verbatim if (sfc_iter == 1) then
           !$ser savepoint SoilVeg1-In
