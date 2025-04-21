@@ -1552,7 +1552,7 @@
         !$ser savepoint NopEvapo-Out
         !$ser verbatim do k = 1, nsoil
           !$ser verbatim call set_ser_indices(i_index, k, 1, 1)
-          !$ser data_buffered Dx=2(k) ne_et1=et1(k)
+          !$ser data_buffered Dx=2 ne_et1=et1(k)
         !$ser verbatim enddo
         !$ser verbatim call set_ser_indices(i_index, 1, 1, 1)
         !$ser data_buffered Dx=1 ne_eta1=eta1 ne_edir1=edir1 ne_ec1=ec1 ne_ett1=ett1
