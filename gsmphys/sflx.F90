@@ -1535,9 +1535,9 @@
         !$ser savepoint NopEvapo-In
         !$ser verbatim do k = 1, nsoil
           !$ser verbatim call set_ser_indices(i_index, k, 1, 1)
-          !$ser data_buffered Dx=2 ne_zsoil=zsoil ne_sh2o=sh2o ne_rtdis=rtdis ne_et1=et1
+          !$ser data_buffered Dx=2 ne_zsoil=zsoil(k) ne_sh2o=sh2o(k) ne_rtdis=rtdis(k) ne_et1=et1(k)
         !$ser verbatim enddo
-        !$ser verbatim call set_ser_indices(1, k, 1, 1)
+        !$ser verbatim call set_ser_indices(i_index, 1, 1, 1)
         !$ser data_buffered Dx=1 ne_nroot=nroot ne_cmc=cmc ne_cmcmax=cmcmax ne_etp1=etp1 ne_smcmax=smcmax ne_smcwlt=smcwlt
         !$ser data_buffered Dx=1 ne_smcref=smcref ne_smcdry=smcdry ne_pc=pc ne_cfactr=cfactr ne_fxexp=fxexp ne_shdfac=shdfac
         !$ser data_buffered Dx=1 ne_eta1=eta1 ne_edir1=edir1 ne_ec1=ec1 ne_ett1=ett1
@@ -1552,9 +1552,9 @@
         !$ser savepoint NopEvapo-Out
         !$ser verbatim do k = 1, nsoil
           !$ser verbatim call set_ser_indices(i_index, k, 1, 1)
-          !$ser data_buffered Dx=2 ne_et1=et1
+          !$ser data_buffered Dx=2(k) ne_et1=et1(k)
         !$ser verbatim enddo
-        !$ser verbatim call set_ser_indices(1, k, 1, 1)
+        !$ser verbatim call set_ser_indices(i_index, 1, 1, 1)
         !$ser data_buffered Dx=1 ne_eta1=eta1 ne_edir1=edir1 ne_ec1=ec1 ne_ett1=ett1
 
         call smflx                                                      &
@@ -2633,9 +2633,9 @@
         !$ser savepoint SopEvapo-In
         !$ser verbatim do k = 1, nsoil
           !$ser verbatim call set_ser_indices(i_index, k, 1, 1)
-          !$ser data_buffered Dx=2 se_zsoil=zsoil se_sh2o=sh2o se_rtdis=rtdis se_et1=et1
+          !$ser data_buffered Dx=2 se_zsoil=zsoil(k) se_sh2o=sh2o(k) se_rtdis=rtdis(k) se_et1=et1(k)
         !$ser verbatim enddo
-        !$ser verbatim call set_ser_indices(1, k, 1, 1)
+        !$ser verbatim call set_ser_indices(i_index, 1, 1, 1)
         !$ser data_buffered Dx=1 se_nroot=nroot se_cmc=cmc se_cmcmax=cmcmax se_etp1=etp1 se_smcmax=smcmax se_smcwlt=smcwlt
         !$ser data_buffered Dx=1 se_smcref=smcref se_smcdry=smcdry se_pc=pc se_cfactr=cfactr se_fxexp=fxexp se_shdfac=shdfac
         !$ser data_buffered Dx=1 se_eta1=etns1 se_edir1=edir1 se_ec1=ec1 se_ett1=ett1
@@ -2650,9 +2650,9 @@
         !$ser savepoint SopEvapo-Out
         !$ser verbatim do k = 1, nsoil
           !$ser verbatim call set_ser_indices(i_index, k, 1, 1)
-          !$ser data_buffered Dx=2 se_et1=et1
+          !$ser data_buffered Dx=2 se_et1=et1(k)
         !$ser verbatim enddo
-        !$ser verbatim call set_ser_indices(1, k, 1, 1)
+        !$ser verbatim call set_ser_indices(i_index, 1, 1, 1)
         !$ser data_buffered Dx=1 se_eta1=etns1 se_edir1=edir1 se_ec1=ec1 se_ett1=ett1
 
             edir1 = edir1 * (1.0 - sncovr)
