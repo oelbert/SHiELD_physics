@@ -71,14 +71,14 @@
            dot,ncloud,hpbl,ud_mf,dt_mf,cnvw,cnvc, &
            clam,c0s,c1,pgcon,asolfac)
 !
-      !$ser verbatim use mpi
-      !$ser verbatim USE m_serialize, ONLY: fs_is_serialization_on
       use machine , only : kind_phys
       use funcphys , only : fpvs
       use physcons, grav => con_g, cp => con_cp, hvap => con_hvap, &
                     rv => con_rv, fv => con_fvirt, t0c => con_t0c, &
                     rd => con_rd, cvap => con_cvap, cliq => con_cliq, &
                     eps => con_eps, epsm1 => con_epsm1
+      !$ser verbatim use mpi
+      !$ser verbatim USE m_serialize, ONLY: fs_is_serialization_on
       implicit none
 !
       integer, intent(in)  :: im, ix,  km, itc, ntc, ntk, ntr, ncloud

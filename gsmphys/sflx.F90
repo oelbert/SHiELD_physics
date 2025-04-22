@@ -186,13 +186,13 @@
 !                                                                       !
 !  ====================    end of description    =====================  !
 !
-      !$ser verbatim use mpi
-      !$ser verbatim USE m_serialize, ONLY: fs_is_serialization_on
       use machine ,   only : kind_phys
 !
       use physcons,   only : con_cp, con_rd, con_t0c, con_g, con_pi,    &
                              con_cliq, con_csol, con_hvap, con_hfus,    &
                              con_sbc
+      !$ser verbatim use mpi
+      !$ser verbatim USE m_serialize, ONLY: fs_is_serialization_on
 !
       implicit none
 

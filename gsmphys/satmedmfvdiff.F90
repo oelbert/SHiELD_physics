@@ -38,14 +38,14 @@
          xkzm_s,xkzinv,do_dk_hb19,xkzm_lim,xkgdx, &
          rlmn, rlmx, cap_k0_land, dkt_out)
 !
-      !$ser verbatim use mpi
-      !$ser verbatim USE m_serialize, ONLY: fs_is_serialization_on
       use machine  , only : kind_phys
       use funcphys , only : fpvs
       use physcons, grav => con_g, rd => con_rd, cp => con_cp, &
                     rv => con_rv, hvap => con_hvap, &
                     hfus => con_hfus, fv => con_fvirt, &
                     eps => con_eps, epsm1 => con_epsm1
+      !$ser verbatim use mpi
+      !$ser verbatim USE m_serialize, ONLY: fs_is_serialization_on
 !
       implicit none
 !
