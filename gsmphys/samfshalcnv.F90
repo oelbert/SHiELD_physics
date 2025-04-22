@@ -71,6 +71,7 @@
            dot,ncloud,hpbl,ud_mf,dt_mf,cnvw,cnvc, &
            clam,c0s,c1,pgcon,asolfac)
 !
+
       use machine , only : kind_phys
       use funcphys , only : fpvs
       use physcons, grav => con_g, cp => con_cp, hvap => con_hvap, &
