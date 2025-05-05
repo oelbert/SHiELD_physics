@@ -243,6 +243,7 @@
 
 !  ---  outputs:
       !$ser verbatim logical, intent(out) :: np_mask, np_lheatstrg, sp_snowng, sp_mask
+      !$ser verbatim logical :: ser_on
       integer, intent(out) :: nroot
       !$ser verbatim integer, intent(out) :: cn_nroot, np_nroot, np_ice, pr_nroot
 
@@ -303,6 +304,7 @@
 !
 !  --- ...  initialization
 
+      !$ser verbatim ser_on=fs_is_serialization_on()
       !$ser verbatim print *, 'INFO: inside sflx, serialization is ', ser_on
       runoff1 = 0.0
       runoff2 = 0.0
