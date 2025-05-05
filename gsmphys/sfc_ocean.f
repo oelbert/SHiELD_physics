@@ -67,8 +67,6 @@
       use physcons, only : cp => con_cp, rd => con_rd, eps => con_eps,  &
      &                     epsm1 => con_epsm1, hvap => con_hvap,        &
      &                     rvrdm1 => con_fvirt
-      !$ser verbatim use mpi
-      !$ser verbatim USE m_serialize, ONLY: fs_is_serialization_on
 !
       implicit none
 !
@@ -93,39 +91,16 @@
 !  ---  locals:
 
       real (kind=kind_phys) :: q0, qss, rch, rho, wind, tem
-      !$ser verbatim real (kind=kind_phys), dimension(im) :: ser_qss, ser_qss0
-      !$ser verbatim real (kind=kind_phys), dimension(7501) :: tab_fpvs, tab_fpvsx
-      !$ser verbatim real (kind=kind_phys) :: xmin, xmax, xinc, xval
 
       integer :: i
-      !$ser verbatim integer :: nt, nxpvs
-      !$ser verbatim integer :: mpi_rank,ier
 
       logical :: flag(im)
-      !$ser verbatim logical :: ser_on
-      !$ser verbatim ser_on=fs_is_serialization_on()
-      !$ser verbatim  call mpi_comm_rank(MPI_COMM_WORLD, mpi_rank,ier)
 !
 !===> ...  begin here
 !
-      !$ser verbatim nxpvs = 7501
-      !$ser verbatim xmin = 180.
-      !$ser verbatim xmax = 330.
-      !$ser verbatim xinc=(xmax-xmin)/(nxpvs-1)
-      !$ser savepoint FPVSTable-In
-      !$ser data tab_fpvsx=tab_fpvsx tab_fpvs=tab_fpvs xval=xval xmin=xmin xmax=xmax nxpvs=nxpvs xinc=xinc
-      !$ser verbatim do nt = 1, nxpvs
-        !$ser verbatim xval(nt) = xmin+(nt-1)*xinc
-        !$ser verbatim tab_fpvsx(nt) = fpvsx(xval(nt))
-        !$ser verbatim tab_fpvs(nt) = fpvs(xval(nt))
-      !$ser verbatim enddo
-      !$ser savepoint FPVSTable-Out
-      !$ser data tab_fpvsx=tab_fpvsx tab_fpvs=tab_fpvs xval=xval
 
 !  --- ...  flag for open water
       do i = 1, im
-        !$ser verbatim ser_qss(i) = 0
-        !$ser verbatim ser_qss0(i) = 0
         flag(i) = ( islimsk(i) == 0 .and. flag_iter(i) )
 
 !  --- ...  initialize variables. all units are supposedly m.k.s. unless specified
@@ -141,7 +116,6 @@
           rho      = prsl1(i) / (rd*t1(i)*(1.0 + rvrdm1*q0))
 
           qss      = fpvs( tskin(i) )
-          !$ser verbatim ser_qss(i) = qss
           qss      = eps*qss / (ps(i) + epsm1*qss)
 
           evap(i)  = 0.0
@@ -168,10 +142,6 @@
         endif
       enddo
 !
-      !$ser savepoint FPVS-In
-      !$ser data tskin=tskin qss=ser_qss0
-      !$ser savepoint FPVS-Out
-      !$ser data qss=ser_qss
       return
 !...................................
       end subroutine sfc_ocean
