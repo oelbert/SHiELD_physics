@@ -421,7 +421,7 @@
 !            smcref, smcdry, f1, quartz, fxexp, rtdis, nroot,              !
 !            z0, czil, xlai, csoil )                                       !
 
-
+      !$ser verbatim print *, 'INFO: post redprm, serialization is ', ser_on
 !  --- ...  bexp sfc-perts, mgehne
       if( bexpp < 0.) then
          bexp = bexp * max(1.+bexpp, 0.)
@@ -815,6 +815,7 @@
       !$ser verbatim cn_rct = rct
       !$ser verbatim cn_rcq = rcq
       !$ser verbatim cn_rcsoil = rcsoil
+      !$ser verbatim print *, 'INFO: post-canres, serialization is ', ser_on
 
 !  --- ...  now decide major pathway branch to take depending on whether
 !           snowpack exists or not:
@@ -1008,7 +1009,7 @@
         !$ser verbatim sp_esnow = esnow
 
       endif
-
+      !$ser verbatim print *, 'INFO: post-(s)nopac, serialization is ', ser_on
 !  --- ...  prepare sensible heat (h) for return to parent model
 
       sheat = -(ch*cp1*sfcprs) / (rd1*t2v) * (th2 - t1)
@@ -1534,7 +1535,7 @@
       if (etp > 0.0) then
 
 !  --- ...  convert prcp from 'kg m-2 s-1' to 'm s-1'.
-
+        !$ser verbatim print *, 'INFO: inside nopac, serialization is ', ser_on
         !$ser savepoint NopEvapo-In
         !$ser verbatim do k = 1, nsoil
           !$ser verbatim call ser_set_indices(i_index, k, 1, 1)
@@ -1559,6 +1560,7 @@
         !$ser verbatim enddo
         !$ser verbatim call ser_set_indices(i_index, 1, 1, 1)
         !$ser data_buffered Dx=1 ne_eta1=eta1 ne_edir1=edir1 ne_ec1=ec1 ne_ett1=ett1
+        !$ser verbatim print *, 'INFO: inside nopac post-evapo, serialization is ', ser_on
 
         call smflx                                                      &
 !  ---  inputs:
