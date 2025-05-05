@@ -303,6 +303,7 @@
 !
 !  --- ...  initialization
 
+      !$ser verbatim print *, 'INFO: inside sflx, serialization is ', ser_on
       runoff1 = 0.0
       runoff2 = 0.0
       runoff3 = 0.0
