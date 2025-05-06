@@ -42,7 +42,7 @@
              !$ser verbatim pr_nroot, pr_zroot, pr_sldpth, pr_zsoil, pr_slope, pr_snup,&
              !$ser verbatim pr_rsmin, pr_rgl, pr_hs, pr_xlai, pr_bexp, pr_dksat, pr_dwsat, pr_f1,&
              !$ser verbatim pr_kdt, pr_psisat, pr_quartz, pr_smcdry, pr_smcmax, pr_smcref,&
-             !$ser verbatim pr_smcwlt, pr_shdfac, pr_frzx, pr_rtdis, i_index,&
+             !$ser verbatim pr_smcwlt, pr_shdfac, pr_frzx, pr_rtdis,&
              rcsoil, soilw, soilm, smcwlt, smcdry, smcref, smcmax)
 
 ! ===================================================================== !
@@ -186,13 +186,13 @@
 !                                                                       !
 !  ====================    end of description    =====================  !
 !
+      !$ser verbatim use mpi
+      !$ser verbatim USE m_serialize, ONLY: fs_is_serialization_on
       use machine ,   only : kind_phys
 !
       use physcons,   only : con_cp, con_rd, con_t0c, con_g, con_pi,    &
                              con_cliq, con_csol, con_hvap, con_hfus,    &
                              con_sbc
-      !$ser verbatim use mpi
-      !$ser verbatim USE m_serialize, ONLY: fs_is_serialization_on
 !
       implicit none
 
@@ -228,7 +228,6 @@
 !  ---  inputs:
       integer, intent(in) :: nsoil, couple, icein, vegtyp, soiltyp,     &
              slopetyp, ivegsrc
-      !$ser verbatim integer, intent(in) :: i_index
 
       real (kind=kind_phys), intent(in) :: ffrozp, dt, zlvl, lwdn,      &
              sldpth(nsoil), swdn, swnet, sfcems, sfcprs, sfctmp,        &
@@ -243,7 +242,6 @@
 
 !  ---  outputs:
       !$ser verbatim logical, intent(out) :: np_mask, np_lheatstrg, sp_snowng, sp_mask
-      !$ser verbatim logical :: ser_on
       integer, intent(out) :: nroot
       !$ser verbatim integer, intent(out) :: cn_nroot, np_nroot, np_ice, pr_nroot
 
@@ -304,8 +302,6 @@
 !
 !  --- ...  initialization
 
-      !$ser verbatim ser_on=fs_is_serialization_on()
-      !$ser verbatim print *, 'INFO: inside sflx, serialization is ', ser_on
       runoff1 = 0.0
       runoff2 = 0.0
       runoff3 = 0.0
@@ -421,7 +417,7 @@
 !            smcref, smcdry, f1, quartz, fxexp, rtdis, nroot,              !
 !            z0, czil, xlai, csoil )                                       !
 
-      !$ser verbatim print *, 'INFO: post redprm, serialization is ', ser_on
+
 !  --- ...  bexp sfc-perts, mgehne
       if( bexpp < 0.) then
          bexp = bexp * max(1.+bexpp, 0.)
@@ -815,7 +811,6 @@
       !$ser verbatim cn_rct = rct
       !$ser verbatim cn_rcq = rcq
       !$ser verbatim cn_rcsoil = rcsoil
-      !$ser verbatim print *, 'INFO: post-canres, serialization is ', ser_on
 
 !  --- ...  now decide major pathway branch to take depending on whether
 !           snowpack exists or not:
@@ -1009,7 +1004,7 @@
         !$ser verbatim sp_esnow = esnow
 
       endif
-      !$ser verbatim print *, 'INFO: post-(s)nopac, serialization is ', ser_on
+
 !  --- ...  prepare sensible heat (h) for return to parent model
 
       sheat = -(ch*cp1*sfcprs) / (rd1*t2v) * (th2 - t1)
@@ -1535,16 +1530,7 @@
       if (etp > 0.0) then
 
 !  --- ...  convert prcp from 'kg m-2 s-1' to 'm s-1'.
-        !$ser verbatim print *, 'INFO: inside nopac, serialization is ', ser_on
-        !$ser savepoint NopEvapo-In
-        !$ser verbatim do k = 1, nsoil
-          !$ser verbatim call ser_set_indices(i_index, k, 1, 1)
-          !$ser data_buffered Dx=2 ne_zsoil=zsoil(k) ne_sh2o=sh2o(k) ne_rtdis=rtdis(k) ne_et1=et1(k)
-        !$ser verbatim enddo
-        !$ser verbatim call ser_set_indices(i_index, 1, 1, 1)
-        !$ser data_buffered Dx=1 ne_nroot=nroot ne_cmc=cmc ne_cmcmax=cmcmax ne_etp1=etp1 ne_smcmax=smcmax ne_smcwlt=smcwlt
-        !$ser data_buffered Dx=1 ne_smcref=smcref ne_smcdry=smcdry ne_pc=pc ne_cfactr=cfactr ne_fxexp=fxexp ne_shdfac=shdfac
-        !$ser data_buffered Dx=1 ne_eta1=eta1 ne_edir1=edir1 ne_ec1=ec1 ne_ett1=ett1
+
         call evapo                                                      &
 !  ---  inputs:
            ( nsoil, nroot, cmc, cmcmax, etp1, dt, zsoil,                &
@@ -1553,14 +1539,6 @@
 !  ---  outputs:
              eta1, edir1, ec1, et1, ett1                                &
            )
-        !$ser savepoint NopEvapo-Out
-        !$ser verbatim do k = 1, nsoil
-          !$ser verbatim call ser_set_indices(i_index, k, 1, 1)
-          !$ser data_buffered Dx=2 ne_et1=et1(k)
-        !$ser verbatim enddo
-        !$ser verbatim call ser_set_indices(i_index, 1, 1, 1)
-        !$ser data_buffered Dx=1 ne_eta1=eta1 ne_edir1=edir1 ne_ec1=ec1 ne_ett1=ett1
-        !$ser verbatim print *, 'INFO: inside nopac post-evapo, serialization is ', ser_on
 
         call smflx                                                      &
 !  ---  inputs:
@@ -2635,15 +2613,6 @@
 
           if (sncovr < 1.0) then
 
-        !$ser savepoint SopEvapo-In
-        !$ser verbatim do k = 1, nsoil
-          !$ser verbatim call ser_set_indices(i_index, k, 1, 1)
-          !$ser data_buffered Dx=2 se_zsoil=zsoil(k) se_sh2o=sh2o(k) se_rtdis=rtdis(k) se_et1=et1(k)
-        !$ser verbatim enddo
-        !$ser verbatim call ser_set_indices(i_index, 1, 1, 1)
-        !$ser data_buffered Dx=1 se_nroot=nroot se_cmc=cmc se_cmcmax=cmcmax se_etp1=etp1 se_smcmax=smcmax se_smcwlt=smcwlt
-        !$ser data_buffered Dx=1 se_smcref=smcref se_smcdry=smcdry se_pc=pc se_cfactr=cfactr se_fxexp=fxexp se_shdfac=shdfac
-        !$ser data_buffered Dx=1 se_eta1=etns1 se_edir1=edir1 se_ec1=ec1 se_ett1=ett1
             call evapo                                                  &
 !  ---  inputs:
            ( nsoil, nroot, cmc, cmcmax, etp1, dt, zsoil,                &
@@ -2652,13 +2621,6 @@
 !  ---  outputs:
              etns1, edir1, ec1, et1, ett1                               &
            )
-        !$ser savepoint SopEvapo-Out
-        !$ser verbatim do k = 1, nsoil
-          !$ser verbatim call ser_set_indices(i_index, k, 1, 1)
-          !$ser data_buffered Dx=2 se_et1=et1(k)
-        !$ser verbatim enddo
-        !$ser verbatim call ser_set_indices(i_index, 1, 1, 1)
-        !$ser data_buffered Dx=1 se_eta1=etns1 se_edir1=edir1 se_ec1=ec1 se_ett1=ett1
 
             edir1 = edir1 * (1.0 - sncovr)
             ec1 = ec1 * (1.0 - sncovr)
