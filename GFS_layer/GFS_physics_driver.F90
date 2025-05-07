@@ -1424,7 +1424,7 @@ module module_physics_driver
             Radtend%sfalb, flag_iter, flag_guess,                      &
             Model%lheatstrg, Model%isot, Model%ivegsrc,                &
             bexp1d, xlai1d, vegf1d, Model%pertvegf,                    &
-            !$ser verbatim iter,&
+            !!$ser verbatim iter,&
 !  ---  in/outs:
             Sfcprop%weasd, Sfcprop%snowd, Sfcprop%tsfc, Sfcprop%tprcp, &
             Sfcprop%srflag, smsoil, stsoil, slsoil, Sfcprop%canopy,    &
