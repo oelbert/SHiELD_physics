@@ -1545,11 +1545,11 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !
       !$ser savepoint FeedbackCtrl-In
-      !$ser data fc_cnvflg=cnvflg fc_kmax=kmax fc_kb=kb fc_ktcon=ktcon fc_islimsk=islimsk fc_ktop=ktop
+      !$ser data fc_cnvflg=cnvflg fc_kmax=kmax fc_kb=kb fc_ktcon=ktcon fc_islimsk=islimsk fc_ktop=ktop fc_flg=flg
       !$ser data fc_kbot=kbot fc_kbcon=kbcon fc_kcnv=kcnv fc_qeso=qeso fc_pfld=pfld fc_delhbar=delhbar
       !$ser data fc_delqbar=delqbar fc_deltbar=deltbar fc_delubar=delubar fc_delvbar=delvbar fc_qcond=qcond
       !$ser data fc_dellah=dellah fc_dellaq=dellaq fc_xmb=xmb fc_dt2=dt2 fc_dellau=dellau fc_dellav=dellav
-      !$ser data fc_del=del fc_del1=delq fc_delq2=delq2 fc_delqev=delqev fc_deltv=deltv fc_qevap=qevap fc_rn=rn
+      !$ser data fc_del=del fc_del1=delq fc_delq2=delq2 fc_delqev=delqev fc_deltv=deltv fc_qevap=qevap fc_rn=rn fc_delq=delq
       !$ser data fc_t1=t1 fc_q1=q1 fc_u1=u1 fc_v1=v1 fc_rntot=rntot fc_pwo=pwo fc_edt=edt fc_eta=eta fc_cnvw=cnvw fc_cnvwt=cnvwt fc_cnvc=cnvc
       do k = 1, km
         do i = 1, im
@@ -1760,10 +1760,10 @@
         enddo
       enddo
       !$ser savepoint FeedbackCtrl-Out
-      !$ser data fc_cnvflg=cnvflg fc_kmax=kmax fc_kb=kb fc_ktcon=ktcon fc_islimsk=islimsk fc_ktop=ktop
+      !$ser data fc_cnvflg=cnvflg fc_kmax=kmax fc_kb=kb fc_ktcon=ktcon fc_islimsk=islimsk fc_ktop=ktop fc_flg=flg
       !$ser data fc_kbot=kbot fc_kbcon=kbcon fc_kcnv=kcnv fc_qeso=qeso fc_pfld=pfld fc_delhbar=delhbar
       !$ser data fc_delqbar=delqbar fc_deltbar=deltbar fc_delubar=delubar fc_delvbar=delvbar fc_qcond=qcond
-      !$ser data fc_dellah=dellah fc_dellaq=dellaq fc_xmb=xmb fc_dellau=dellau fc_dellav=dellav
+      !$ser data fc_dellah=dellah fc_dellaq=dellaq fc_xmb=xmb fc_dellau=dellau fc_dellav=dellav fc_delq=delq
       !$ser data fc_del=del fc_del1=delq fc_delq2=delq2 fc_delqev=delqev fc_deltv=deltv fc_qevap=qevap fc_rn=rn
       !$ser data fc_t1=t1 fc_q1=q1 fc_u1=u1 fc_v1=v1 fc_rntot=rntot fc_pwo=pwo fc_edt=edt fc_eta=eta fc_cnvw=cnvw fc_cnvwt=cnvwt fc_cnvc=cnvc
 !
