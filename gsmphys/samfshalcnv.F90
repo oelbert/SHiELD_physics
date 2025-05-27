@@ -1298,7 +1298,7 @@
       endif
 
     !$ser savepoint SC13-Out
-    !$ser data s13_ncloud=ncloud s13_cnvflg=cnvflg s13_ktcon=ktcon s13_qeso=qeso s13_to=to s13_dbyo=dbyo
+    !$ser data s13_cnvflg=cnvflg s13_ktcon=ktcon s13_qeso=qeso s13_to=to s13_dbyo=dbyo
     !$ser data s13_qcko=qcko s13_qlko_ktcon=qlko_ktcon s13_dq=s13_dq
 
 !
