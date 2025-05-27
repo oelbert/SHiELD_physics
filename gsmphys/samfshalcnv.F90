@@ -145,6 +145,7 @@
                            xlamud(im),  xmb(im),    xmbmax(im), &
                            delebar(im,ntr), &
                            delubar(im), delvbar(im)
+      !$ser verbatim real(kind=kind_phys) s13_dq(im)
 !
       real(kind=kind_phys) c0(im)
 !
@@ -238,6 +239,7 @@
 !>  - Initialize column-integrated and other single-value-per-column variable arrays.
       do i=1,im
         cnvflg(i) = .true.
+        !$ser verbatim s13_dq = 0.0
         if(kcnv(i) == 1) cnvflg(i) = .false.
         if(cnvflg(i)) then
           kbot(i)=km+1
@@ -1267,7 +1269,11 @@
 !
 !  this section is ready for cloud water
 !
-      if(ncloud > 0) then
+    !$ser savepoint SC13-In
+    !$ser data s13_ncloud=ncloud s13_cnvflg=cnvflg s13_ktcon=ktcon s13_qeso=qeso s13_to=to s13_dbyo=dbyo
+    !$ser data s13_qcko=qcko s13_qlko_ktcon=qlko_ktcon s13_dq=s13_dq
+
+    if(ncloud > 0) then
 !
 !  compute liquid and vapor separation at cloud top
 !
@@ -1279,6 +1285,7 @@
           qrch = qeso(i,k) &
                + gamma * dbyo(i,k) / (hvap * (1. + gamma))
           dq = qcko(i,k) - qrch
+          !$ser verbatim s13_dq(i) = dq
 !
 !  check if there is excess moisture to release latent heat
 !
@@ -1289,6 +1296,11 @@
         endif
       enddo
       endif
+
+    !$ser savepoint SC13-Out
+    !$ser data s13_ncloud=ncloud s13_cnvflg=cnvflg s13_ktcon=ktcon s13_qeso=qeso s13_to=to s13_dbyo=dbyo
+    !$ser data s13_qcko=qcko s13_qlko_ktcon=qlko_ktcon s13_dq=s13_dq
+
 !
 !--- compute precipitation efficiency in terms of windshear
 !
@@ -1329,6 +1341,15 @@
 !--- what would the change be, that a cloud with unit mass
 !--- will do to the environment?
 !
+      !$ser savepoint CompTendencies-In
+      !$ser data sct_cnvflg=cnvflg sct_kmax=kmax sct_dellah=dellah sct_dellaq=dellaq sct_dellau=dellau sct_dellav=dellav
+      !$ser data sct_dt2=dt2 sct_kb=kb sct_ktcon=ktcon sct_ktcon1=ktcon1 sct_kbcon1=kbcon1 sct_kbcon=kbcon sct_del=del
+      !$ser data sct_zi=zi sct_heo=heo sct_qo=qo sct_xlamue=xlamue sct_xlamud=xlamud sct_eta=eta sct_hcko=hcko
+      !$ser data sct_qrcko=qrcko sct_uo=uo sct_ucko=ucko sct_vo=vo sct_vcko=vcko sct_qcko=qcko sct_dellal=dellal
+      !$ser data sct_qlko_ktcon=qlko_ktcon sct_wc=wc sct_gdx=gdx sct_dtconv=dtconv sct_u1=u1 sct_v1=v1 sct_po=po sct_to=to
+      !$ser data sct_tauadv=tauadv sct_xmb=xmb sct_sigmagfm=sigmagfm sct_garea=garea sct_scaldfunc=scaldfunc
+      !$ser data sct_xmbmax=xmbmax sct_sumx=sumx sct_umean=umean
+
 !> ## Calculate the tendencies of the state variables (per unit cloud base mass flux) and the cloud base mass flux.
 !> - Calculate the change in moist static energy, moisture mixing ratio, and horizontal winds per unit cloud base mass flux for all layers below cloud top from equations B.14 and B.15 from Grell (1993) \cite grell_1993, and for the cloud top from B.16 and B.17.
       do k = 1, km
@@ -1528,6 +1549,14 @@
         endif
       enddo
 
+      !$ser savepoint CompTendencies-Out
+      !$ser data sct_cnvflg=cnvflg sct_kmax=kmax sct_dellah=dellah sct_dellaq=dellaq sct_dellau=dellau sct_dellav=dellav
+      !$ser data sct_kb=kb sct_ktcon=ktcon sct_ktcon1=ktcon1 sct_kbcon1=kbcon1 sct_kbcon=kbcon sct_del=del
+      !$ser data sct_zi=zi sct_heo=heo sct_qo=qo sct_xlamue=xlamue sct_xlamud=xlamud sct_eta=eta sct_hcko=hcko
+      !$ser data sct_qrcko=qrcko sct_uo=uo sct_ucko=ucko sct_vo=vo sct_vcko=vcko sct_qcko=qcko sct_dellal=dellal
+      !$ser data sct_qlko_ktcon=qlko_ktcon sct_wc=wc sct_gdx=gdx sct_dtconv=dtconv sct_u1=u1 sct_v1=v1 sct_po=po sct_to=to
+      !$ser data sct_tauadv=tauadv sct_xmb=xmb sct_sigmagfm=sigmagfm sct_garea=garea sct_scaldfunc=scaldfunc
+      !$ser data sct_xmbmax=xmbmax sct_sumx=sumx sct_umean=umean
 !
 !     transport aerosols if present
 !
@@ -1549,7 +1578,7 @@
       !$ser data fc_kbot=kbot fc_kbcon=kbcon fc_kcnv=kcnv fc_qeso=qeso fc_pfld=pfld fc_delhbar=delhbar
       !$ser data fc_delqbar=delqbar fc_deltbar=deltbar fc_delubar=delubar fc_delvbar=delvbar fc_qcond=qcond
       !$ser data fc_dellah=dellah fc_dellaq=dellaq fc_xmb=xmb fc_dt2=dt2 fc_dellau=dellau fc_dellav=dellav
-      !$ser data fc_del=del fc_del1=delq fc_delq2=delq2 fc_delqev=delqev fc_deltv=deltv fc_qevap=qevap fc_rn=rn fc_delq=delq
+      !$ser data fc_del=del fc_delq2=delq2 fc_delqev=delqev fc_deltv=deltv fc_qevap=qevap fc_rn=rn fc_delq=delq
       !$ser data fc_t1=t1 fc_q1=q1 fc_u1=u1 fc_v1=v1 fc_rntot=rntot fc_pwo=pwo fc_edt=edt fc_eta=eta fc_cnvw=cnvw fc_cnvwt=cnvwt fc_cnvc=cnvc
       do k = 1, km
         do i = 1, im
@@ -1764,7 +1793,7 @@
       !$ser data fc_kbot=kbot fc_kbcon=kbcon fc_kcnv=kcnv fc_qeso=qeso fc_pfld=pfld fc_delhbar=delhbar
       !$ser data fc_delqbar=delqbar fc_deltbar=deltbar fc_delubar=delubar fc_delvbar=delvbar fc_qcond=qcond
       !$ser data fc_dellah=dellah fc_dellaq=dellaq fc_xmb=xmb fc_dellau=dellau fc_dellav=dellav fc_delq=delq
-      !$ser data fc_del=del fc_del1=delq fc_delq2=delq2 fc_delqev=delqev fc_deltv=deltv fc_qevap=qevap fc_rn=rn
+      !$ser data fc_del=del fc_delq2=delq2 fc_delqev=delqev fc_deltv=deltv fc_qevap=qevap fc_rn=rn
       !$ser data fc_t1=t1 fc_q1=q1 fc_u1=u1 fc_v1=v1 fc_rntot=rntot fc_pwo=pwo fc_edt=edt fc_eta=eta fc_cnvw=cnvw fc_cnvwt=cnvwt fc_cnvc=cnvc
 !
 !  cloud water
