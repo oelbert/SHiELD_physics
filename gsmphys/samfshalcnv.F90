@@ -230,7 +230,7 @@
       !$ser data icol_rn=rn icol_kbot=kbot icol_ktop=ktop icol_kcnv=kcnv icol_islimsk=islimsk
       !$ser data icol_dot=dot icol_ncloud=ncloud icol_hpbl=hpbl icol_ud_mf=ud_mf icol_dt_mf=dt_mf
       !$ser data icol_clam=clam icol_c0s=c0s icol_c1=c1 icol_pgcon=pgcon icol_asolfac=asolfac
-      !$ser data icol_u1=u1 icol_v1=v1 icol_fscav=fscav icol_garea=garea icol_cnvw=cnvw icol_cnvc=cnvc
+      !$ser data icol_u1=u1 icol_v1=v1 icol_garea=garea icol_cnvw=cnvw icol_cnvc=cnvc
       !$ser data icol_cnvflg=cnvflg icol_kbcon=kbcon icol_kb=kb icol_ktcon=ktcon icol_ktconn=ktconn
       !$ser data icol_pdot=pdot icol_qlko_ktcon=qlko_ktcon icol_edt=edt icol_aa1=aa1 icol_cina=cina
       !$ser data icol_vshear=vshear icol_gdx=gdx icol_ps=ps icol_prsl=prsl icol_del=del
@@ -242,7 +242,7 @@
       !$ser data sc1_rn=rn sc1_kbot=kbot sc1_ktop=ktop sc1_kcnv=kcnv sc1_islimsk=islimsk
       !$ser data sc1_dot=dot sc1_ncloud=ncloud sc1_hpbl=hpbl sc1_ud_mf=ud_mf sc1_dt_mf=dt_mf
       !$ser data sc1_clam=clam sc1_c0s=c0s sc1_c1=c1 sc1_pgcon=pgcon sc1_asolfac=asolfac
-      !$ser data sc1_u1=u1 sc1_v1=v1 sc1_fscav=fscav sc1_garea=garea sc1_cnvw=cnvw sc1_cnvc=cnvc
+      !$ser data sc1_u1=u1 sc1_v1=v1 sc1_garea=garea sc1_cnvw=cnvw sc1_cnvc=cnvc
       !$ser data sc1_cnvflg=cnvflg sc1_flg=flg sc1_kbcon=kbcon sc1_kmax=kmax
       !$ser data sc1_kbm=kbm sc1_kb=kb sc1_heo=heo sc1_heso=heso
 
@@ -253,7 +253,7 @@
       !$ser data sc2_rn=rn sc2_kbot=kbot sc2_ktop=ktop sc2_kcnv=kcnv sc2_islimsk=islimsk
       !$ser data sc2_dot=dot sc2_ncloud=ncloud sc2_hpbl=hpbl sc2_ud_mf=ud_mf sc2_dt_mf=dt_mf
       !$ser data sc2_clam=clam sc2_c0s=c0s sc2_c1=c1 sc2_pgcon=pgcon sc2_asolfac=asolfac
-      !$ser data sc2_u1=u1 sc2_v1=v1 sc2_fscav=fscav sc2_garea=garea sc2_cnvw=cnvw sc2_cnvc=cnvc
+      !$ser data sc2_u1=u1 sc2_v1=v1 sc2_garea=garea sc2_cnvw=cnvw sc2_cnvc=cnvc
       !$ser data sc2_cnvflg=cnvflg sc2_pdot=pdot sc2_kbcon=kbcon sc2_kb=kb sc2_pfld=pfld
 
       !$ser verbatim print *, 'INFO: UK9I'
@@ -263,7 +263,7 @@
       !$ser data uk9_rn=rn uk9_kbot=kbot uk9_ktop=ktop uk9_kcnv=kcnv uk9_islimsk=islimsk
       !$ser data uk9_dot=dot uk9_ncloud=ncloud uk9_hpbl=hpbl uk9_ud_mf=ud_mf uk9_dt_mf=dt_mf
       !$ser data uk9_clam=clam uk9_c0s=c0s uk9_c1=c1 uk9_pgcon=pgcon uk9_asolfac=asolfac
-      !$ser data uk9_u1=u1 uk9_v1=v1 uk9_fscav=fscav uk9_garea=garea uk9_cnvw=cnvw uk9_cnvc=cnvc
+      !$ser data uk9_u1=u1 uk9_v1=v1 uk9_garea=garea uk9_cnvw=cnvw uk9_cnvc=cnvc
       !$ser data uk9_dbyo=dbyo uk9_cnvflg=cnvflg uk9_kmax=kmax uk9_kbm=kbm uk9_kbcon=kbcon 
       !$ser data uk9_kbcon1=kbcon1 uk9_flg=flg uk9_pfld=pfld
 
@@ -274,7 +274,7 @@
       !$ser data sc10_rn=rn sc10_kbot=kbot sc10_ktop=ktop sc10_kcnv=kcnv sc10_islimsk=islimsk
       !$ser data sc10_dot=dot sc10_ncloud=ncloud sc10_hpbl=hpbl sc10_ud_mf=ud_mf sc10_dt_mf=dt_mf
       !$ser data sc10_clam=clam sc10_c0s=c0s sc10_c1=c1 sc10_pgcon=pgcon sc10_asolfac=asolfac
-      !$ser data sc10_u1=u1 sc10_v1=v1 sc10_fscav=fscav sc10_garea=garea sc10_cnvw=cnvw sc10_cnvc=cnvc
+      !$ser data sc10_u1=u1 sc10_v1=v1 sc10_garea=garea sc10_cnvw=cnvw sc10_cnvc=cnvc
       !$ser data sc10_cina=cina sc10_cnvflg=cnvflg sc10_kb=kb sc10_kbcon1=kbcon1 sc10_zo=zo
       !$ser data sc10_qeso=qeso sc10_to=to sc10_dbyo=dbyo sc10_qo=qo sc10_pdot=pdot
 
@@ -285,7 +285,7 @@
       !$ser data sc11_rn=rn sc11_kbot=kbot sc11_ktop=ktop sc11_kcnv=kcnv sc11_islimsk=islimsk
       !$ser data sc11_dot=dot sc11_ncloud=ncloud sc11_hpbl=hpbl sc11_ud_mf=ud_mf sc11_dt_mf=dt_mf
       !$ser data sc11_clam=clam sc11_c0s=c0s sc11_c1=c1 sc11_pgcon=pgcon sc11_asolfac=asolfac
-      !$ser data sc11_u1=u1 sc11_v1=v1 sc11_fscav=fscav sc11_garea=garea sc11_cnvw=cnvw sc11_cnvc=cnvc
+      !$ser data sc11_u1=u1 sc11_v1=v1 sc11_garea=garea sc11_cnvw=cnvw sc11_cnvc=cnvc
       !$ser data sc11_flg=flg sc11_cnvflg=cnvflg sc11_ktcon=ktcon sc11_kbm=kbm sc11_kbcon1=kbcon1
       !$ser data sc11_dbyo=dbyo sc11_kbcon=kbcon sc11_del0=del sc11_xmbmax=xmbmax sc11_aa1=aa1
       !$ser data sc11_kb=kb sc11_qcko=qcko sc11_qo=qo sc11_qrcko=qrcko sc11_zi=zi sc11_qeso=qeso
@@ -299,7 +299,7 @@
       !$ser data s12_rn=rn s12_kbot=kbot s12_ktop=ktop s12_kcnv=kcnv s12_islimsk=islimsk
       !$ser data s12_dot=dot s12_ncloud=ncloud s12_hpbl=hpbl s12_ud_mf=ud_mf s12_dt_mf=dt_mf
       !$ser data s12_clam=clam s12_c0s=c0s s12_c1=c1 s12_pgcon=pgcon s12_asolfac=asolfac
-      !$ser data s12_u1=u1 s12_v1=v1 s12_fscav=fscav s12_garea=garea s12_cnvw=cnvw s12_cnvc=cnvc
+      !$ser data s12_u1=u1 s12_v1=v1 s12_garea=garea s12_cnvw=cnvw s12_cnvc=cnvc
       !$ser data s12_cnvflg=cnvflg s12_aa1=aa1 s12_flg=flg s12_ktcon1=ktcon1 s12_kbm=kbm
       !$ser data s12_ktcon=ktcon s12_zo=zo s12_qeso=qeso s12_to=to s12_dellal=dellal
       !$ser data s12_dbyo=dbyo s12_zi=zi s12_xlamue=xlamue s12_xlamud=xlamud s12_qcko=qcko
