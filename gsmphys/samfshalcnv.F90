@@ -336,7 +336,6 @@
         gdx(i) = sqrt(garea(i))
       enddo
 !!
-      !$ser verbatim print *, 'INFO: ICO'
       !$ser savepoint InitCol-Out
       !$ser data icol_rn=rn icol_kbot=kbot icol_ktop=ktop icol_kcnv=kcnv
       !$ser data icol_delp=delp icol_ps=ps icol_prsl=prsl icol_del=del
@@ -640,7 +639,6 @@
           if(kbcon(i) == kmax(i)) cnvflg(i) = .false.
         endif
       enddo
-      !$ser verbatim print *, 'INFO: SC1O'
       !$ser savepoint Static1-Out
       !$ser data sc1_cnvflg=cnvflg sc1_flg=flg sc1_kbcon=kbcon sc1_kmax=kmax
       !$ser data sc1_kbm=kbm sc1_kb=kb sc1_heo=heo sc1_heso=heso
@@ -697,7 +695,6 @@
         endif
       enddo
 !!
-      !$ser verbatim print *, 'INFO: SC2O'
       !$ser savepoint Static2-Out
       !$ser data sc2_cnvflg=cnvflg sc2_pdot=pdot sc2_dot=dot sc2_islimsk=islimsk
       !$ser data sc2_kbcon=kbcon sc2_kb=kb sc2_pfld=pfld
@@ -923,7 +920,6 @@
           endif
         endif
       enddo
-      !$ser verbatim print *, 'INFO: UK9O'
       !$ser savepoint UpdateKb9-Out
       !$ser data uk9_dbyo=dbyo uk9_cnvflg=cnvflg uk9_kmax=kmax uk9_kbm=kbm uk9_kbcon=kbcon uk9_kbcon1=kbcon1 uk9_flg=flg uk9_pfld=pfld
 !!
@@ -995,7 +991,6 @@
         endif
       enddo
 !!
-      !$ser verbatim print *, 'INFO: SC10O'
       !$ser savepoint Static10-Out
       !$ser data sc10_cina=cina sc10_cnvflg=cnvflg sc10_kb=kb sc10_kbcon1=kbcon1 sc10_zo=zo
       !$ser data sc10_qeso=qeso sc10_to=to sc10_dbyo=dbyo sc10_qo=qo sc10_pdot=pdot
@@ -1165,7 +1160,6 @@
         if(cnvflg(i) .and. aa1(i) <= 0.) cnvflg(i) = .false.
       enddo
 !!
-      !$ser verbatim print *, 'INFO: SC11O'
       !$ser savepoint Static11-Out
       !$ser data sc11_flg=flg sc11_cnvflg=cnvflg sc11_ktcon=ktcon sc11_kbm=kbm sc11_kbcon1=kbcon1
       !$ser data sc11_dbyo=dbyo sc11_kbcon=kbcon sc11_del0=del sc11_xmbmax=xmbmax sc11_aa1=aa1
@@ -1350,7 +1344,6 @@
           ktcon1(i) = kk
         endif
       enddo
-      !$ser verbatim print *, 'INFO: SC12O'
       !$ser savepoint Static12-Out
       !$ser data s12_cnvflg=cnvflg s12_aa1=aa1 s12_flg=flg s12_ktcon1=ktcon1 s12_kbm=kbm
       !$ser data s12_ktcon=ktcon s12_zo=zo s12_qeso=qeso s12_to=to s12_dellal=dellal
