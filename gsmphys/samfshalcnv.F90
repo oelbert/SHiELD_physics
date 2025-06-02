@@ -223,7 +223,6 @@
       do_aerosols = (itc > 0) .and. (ntc > 0) .and. (ntr > 0)
       if (do_aerosols) do_aerosols = (ntr >= itc + ntc - 3)
 !
-      !$ser verbatim print *, 'INFO: ICI'
       !$ser savepoint InitCol-In
       !$ser data icol_delt=delt icol_itc=itc icol_ntc=ntc icol_ntk=ntk icol_ntr=ntr icol_delp=delp
       !$ser data icol_prslp=prslp icol_psp=psp icol_phil=phil icol_qtr=qtr icol_q1=q1 icol_t1=t1
@@ -235,7 +234,6 @@
       !$ser data icol_pdot=pdot icol_qlko_ktcon=qlko_ktcon icol_edt=edt icol_aa1=aa1 icol_cina=cina
       !$ser data icol_vshear=vshear icol_gdx=gdx icol_ps=ps icol_prsl=prsl icol_del=del
 
-      !$ser verbatim print *, 'INFO: SC1I'
       !$ser savepoint Static1-In
       !$ser data sc1_delt=delt sc1_itc=itc sc1_ntc=ntc sc1_ntk=ntk sc1_ntr=ntr sc1_delp=delp
       !$ser data sc1_prslp=prslp sc1_psp=psp sc1_phil=phil sc1_qtr=qtr sc1_q1=q1 sc1_t1=t1
@@ -246,7 +244,6 @@
       !$ser data sc1_cnvflg=cnvflg sc1_flg=flg sc1_kbcon=kbcon sc1_kmax=kmax
       !$ser data sc1_kbm=kbm sc1_kb=kb sc1_heo=heo sc1_heso=heso
 
-      !$ser verbatim print *, 'INFO: SC2I'
       !$ser savepoint Static2-In
       !$ser data sc2_delt=delt sc2_itc=itc sc2_ntc=ntc sc2_ntk=ntk sc2_ntr=ntr sc2_delp=delp
       !$ser data sc2_prslp=prslp sc2_psp=psp sc2_phil=phil sc2_qtr=qtr sc2_q1=q1 sc2_t1=t1
@@ -256,7 +253,6 @@
       !$ser data sc2_u1=u1 sc2_v1=v1 sc2_garea=garea sc2_cnvw=cnvw sc2_cnvc=cnvc
       !$ser data sc2_cnvflg=cnvflg sc2_pdot=pdot sc2_kbcon=kbcon sc2_kb=kb sc2_pfld=pfld
 
-      !$ser verbatim print *, 'INFO: UK9I'
       !$ser savepoint UpdateKb9-In
       !$ser data uk9_delt=delt uk9_itc=itc uk9_ntc=ntc uk9_ntk=ntk uk9_ntr=ntr uk9_delp=delp
       !$ser data uk9_prslp=prslp uk9_psp=psp uk9_phil=phil uk9_qtr=qtr uk9_q1=q1 uk9_t1=t1
@@ -267,7 +263,6 @@
       !$ser data uk9_dbyo=dbyo uk9_cnvflg=cnvflg uk9_kmax=kmax uk9_kbm=kbm uk9_kbcon=kbcon 
       !$ser data uk9_kbcon1=kbcon1 uk9_flg=flg uk9_pfld=pfld
 
-      !$ser verbatim print *, 'INFO: SC10I'
       !$ser savepoint Static10-In
       !$ser data sc10_delt=delt sc10_itc=itc sc10_ntc=ntc sc10_ntk=ntk sc10_ntr=ntr sc10_delp=delp
       !$ser data sc10_prslp=prslp sc10_psp=psp sc10_phil=phil sc10_qtr=qtr sc10_q1=q1 sc10_t1=t1
@@ -278,8 +273,7 @@
       !$ser data sc10_cina=cina sc10_cnvflg=cnvflg sc10_kb=kb sc10_kbcon1=kbcon1 sc10_zo=zo
       !$ser data sc10_qeso=qeso sc10_to=to sc10_dbyo=dbyo sc10_qo=qo sc10_pdot=pdot
 
-      !$ser verbatim print *, 'INFO: SC11I'
-      !$ser savepoint Static11-Out
+      !$ser savepoint Static11-In
       !$ser data sc11_delt=delt sc11_itc=itc sc11_ntc=ntc sc11_ntk=ntk sc11_ntr=ntr sc11_delp=delp
       !$ser data sc11_prslp=prslp sc11_psp=psp sc11_phil=phil sc11_qtr=qtr sc11_q1=q1 sc11_t1=t1
       !$ser data sc11_rn=rn sc11_kbot=kbot sc11_ktop=ktop sc11_kcnv=kcnv sc11_islimsk=islimsk
@@ -292,7 +286,6 @@
       !$ser data sc11_to=to sc11_xlamue=xlamue sc11_xlamud=xlamud sc11_eta=eta sc11_c0t=c0t
       !$ser data sc11_dellal=dellal sc11_buo=buo sc11_drag=drag sc11_zo=zo sc11_pwo=pwo sc11_cnvwt=cnvwt
 
-      !$ser verbatim print *, 'INFO: SC12I'
       !$ser savepoint Static12-In 
       !$ser data s12_delt=delt s12_itc=itc s12_ntc=ntc s12_ntk=ntk s12_ntr=ntr s12_delp=delp
       !$ser data s12_prslp=prslp s12_psp=psp s12_phil=phil s12_qtr=qtr s12_q1=q1 s12_t1=t1
