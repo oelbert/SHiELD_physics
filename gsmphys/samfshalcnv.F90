@@ -242,7 +242,7 @@
       !$ser data sc1_clam=clam sc1_c0s=c0s sc1_c1=c1 sc1_pgcon=pgcon sc1_asolfac=asolfac
       !$ser data sc1_u1=u1 sc1_v1=v1 sc1_garea=garea sc1_cnvw=cnvw sc1_cnvc=cnvc
       !$ser data sc1_cnvflg=cnvflg sc1_flg=flg sc1_kbcon=kbcon sc1_kmax=kmax
-      !$ser data sc1_kbm=kbm sc1_kb=kb sc1_heo=heo sc1_heso=heso
+      !$ser data sc1_kbm=kbm sc1_kb=kb sc1_heo=heo sc1_heso=heso sc1_hmax=hmax sc1_kpbl=kpbl
 
       !$ser savepoint Static2-In
       !$ser data sc2_delt=delt sc2_itc=itc sc2_ntc=ntc sc2_ntk=ntk sc2_ntr=ntr sc2_delp=delp
@@ -641,7 +641,7 @@
       enddo
       !$ser savepoint Static1-Out
       !$ser data sc1_cnvflg=cnvflg sc1_flg=flg sc1_kbcon=kbcon sc1_kmax=kmax
-      !$ser data sc1_kbm=kbm sc1_kb=kb sc1_heo=heo sc1_heso=heso
+      !$ser data sc1_kbm=kbm sc1_kb=kb sc1_heo=heo sc1_heso=heso sc1_hmax=hmax sc1_kpbl=kpbl
 !!
 !> - If no LFC, return to the calling routine without modifying state variables.
       totflg = .true.
