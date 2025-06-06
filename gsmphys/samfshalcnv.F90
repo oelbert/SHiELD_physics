@@ -131,6 +131,7 @@
       integer              kb(im), kbcon(im), kbcon1(im), &
                            ktcon(im), ktcon1(im), ktconn(im), &
                            kbm(im), kmax(im)
+      !$ser verbatim integer :: mpi_rank,ier
 !
       real(kind=kind_phys) aa1(im),     cina(im),    &
                            tkemean(im), clamt(im), &
@@ -222,6 +223,7 @@
 !>  ## Determine whether to perform aerosol transport
       do_aerosols = (itc > 0) .and. (ntc > 0) .and. (ntr > 0)
       if (do_aerosols) do_aerosols = (ntr >= itc + ntc - 3)
+      !$ser verbatim  call mpi_comm_rank(MPI_COMM_WORLD, mpi_rank,ier)
 !
       !$ser savepoint InitCol-In
       !$ser data icol_delt=delt icol_itc=itc icol_ntc=ntc icol_ntk=ntk icol_ntr=ntr icol_delp=delp
@@ -648,6 +650,7 @@
       do i=1,im
         totflg = totflg .and. (.not. cnvflg(i))
       enddo
+      !$ser verbatim if(totflg) print *, 'INFO: rank=',mpi_rank,': exiting sc1 early'
       if(totflg) return
 !!
 !> - Determine the vertical pressure velocity at the LFC. After Han and Pan (2011) \cite han_and_pan_2011 , determine the maximum pressure thickness between a parcel's starting level and the LFC. If a parcel doesn't reach the LFC within the critical thickness, then the convective inhibition is deemed too great for convection to be triggered, and the subroutine returns to the calling routine without modifying the state variables.
