@@ -650,7 +650,35 @@
       do i=1,im
         totflg = totflg .and. (.not. cnvflg(i))
       enddo
-      !$ser verbatim if(totflg) print *, 'INFO: rank=',mpi_rank,': exiting sc1 early'
+      !$ser verbatim if(totflg) then
+        !$ser verbatim print *, 'INFO: rank=',mpi_rank,': exiting sc1 early'
+        !$ser savepoint Static2-Out
+        !$ser data sc2_cnvflg=cnvflg sc2_pdot=pdot sc2_dot=dot sc2_islimsk=islimsk
+        !$ser data sc2_kbcon=kbcon sc2_kb=kb sc2_pfld=pfld
+
+        !$ser savepoint UpdateKb9-Out
+        !$ser data uk9_dbyo=dbyo uk9_cnvflg=cnvflg uk9_kmax=kmax uk9_kbm=kbm uk9_kbcon=kbcon uk9_kbcon1=kbcon1 uk9_flg=flg uk9_pfld=pfld
+
+        !$ser savepoint Static10-Out
+        !$ser data sc10_cina=cina sc10_cnvflg=cnvflg sc10_kb=kb sc10_kbcon1=kbcon1 sc10_zo=zo
+        !$ser data sc10_qeso=qeso sc10_to=to sc10_dbyo=dbyo sc10_qo=qo sc10_pdot=pdot
+
+        !$ser savepoint Static11-Out
+        !$ser data sc11_flg=flg sc11_cnvflg=cnvflg sc11_ktcon=ktcon sc11_kbm=kbm sc11_kbcon1=kbcon1
+        !$ser data sc11_dbyo=dbyo sc11_kbcon=kbcon sc11_del0=del sc11_xmbmax=xmbmax sc11_aa1=aa1
+        !$ser data sc11_kb=kb sc11_qcko=qcko sc11_qo=qo sc11_qrcko=qrcko sc11_zi=zi sc11_qeso=qeso
+        !$ser data sc11_to=to sc11_xlamue=xlamue sc11_xlamud=xlamud sc11_eta=eta sc11_c0t=c0t
+        !$ser data sc11_dellal=dellal sc11_buo=buo sc11_drag=drag sc11_zo=zo sc11_pwo=pwo sc11_cnvwt=cnvwt
+
+        !$ser savepoint Static12-Out
+        !$ser data s12_cnvflg=cnvflg s12_aa1=aa1 s12_flg=flg s12_ktcon1=ktcon1 s12_kbm=kbm
+        !$ser data s12_ktcon=ktcon s12_zo=zo s12_qeso=qeso s12_to=to s12_dellal=dellal
+        !$ser data s12_dbyo=dbyo s12_zi=zi s12_xlamue=xlamue s12_xlamud=xlamud s12_qcko=qcko
+        !$ser data s12_qrcko=qrcko s12_qo=qo s12_eta=eta s12_del0=del s12_c0t=c0t s12_pwo=pwo
+        !$ser data s12_cnvwt=cnvwt s12_buo=buo s12_wu2=wu2 s12_wc=wc s12_sumx=sumx
+        !$ser data s12_kbcon1=kbcon1 s12_drag=drag
+      !$ser verbatim endif
+
       if(totflg) return
 !!
 !> - Determine the vertical pressure velocity at the LFC. After Han and Pan (2011) \cite han_and_pan_2011 , determine the maximum pressure thickness between a parcel's starting level and the LFC. If a parcel doesn't reach the LFC within the critical thickness, then the convective inhibition is deemed too great for convection to be triggered, and the subroutine returns to the calling routine without modifying the state variables.
@@ -705,6 +733,31 @@
       do i=1,im
         totflg = totflg .and. (.not. cnvflg(i))
       enddo
+      !$ser verbatim if(totflg) then
+        !$ser verbatim print *, 'INFO: rank=',mpi_rank,': exiting sc2 early'
+
+        !$ser savepoint UpdateKb9-Out
+        !$ser data uk9_dbyo=dbyo uk9_cnvflg=cnvflg uk9_kmax=kmax uk9_kbm=kbm uk9_kbcon=kbcon uk9_kbcon1=kbcon1 uk9_flg=flg uk9_pfld=pfld
+
+        !$ser savepoint Static10-Out
+        !$ser data sc10_cina=cina sc10_cnvflg=cnvflg sc10_kb=kb sc10_kbcon1=kbcon1 sc10_zo=zo
+        !$ser data sc10_qeso=qeso sc10_to=to sc10_dbyo=dbyo sc10_qo=qo sc10_pdot=pdot
+
+        !$ser savepoint Static11-Out
+        !$ser data sc11_flg=flg sc11_cnvflg=cnvflg sc11_ktcon=ktcon sc11_kbm=kbm sc11_kbcon1=kbcon1
+        !$ser data sc11_dbyo=dbyo sc11_kbcon=kbcon sc11_del0=del sc11_xmbmax=xmbmax sc11_aa1=aa1
+        !$ser data sc11_kb=kb sc11_qcko=qcko sc11_qo=qo sc11_qrcko=qrcko sc11_zi=zi sc11_qeso=qeso
+        !$ser data sc11_to=to sc11_xlamue=xlamue sc11_xlamud=xlamud sc11_eta=eta sc11_c0t=c0t
+        !$ser data sc11_dellal=dellal sc11_buo=buo sc11_drag=drag sc11_zo=zo sc11_pwo=pwo sc11_cnvwt=cnvwt
+
+        !$ser savepoint Static12-Out
+        !$ser data s12_cnvflg=cnvflg s12_aa1=aa1 s12_flg=flg s12_ktcon1=ktcon1 s12_kbm=kbm
+        !$ser data s12_ktcon=ktcon s12_zo=zo s12_qeso=qeso s12_to=to s12_dellal=dellal
+        !$ser data s12_dbyo=dbyo s12_zi=zi s12_xlamue=xlamue s12_xlamud=xlamud s12_qcko=qcko
+        !$ser data s12_qrcko=qrcko s12_qo=qo s12_eta=eta s12_del0=del s12_c0t=c0t s12_pwo=pwo
+        !$ser data s12_cnvwt=cnvwt s12_buo=buo s12_wu2=wu2 s12_wc=wc s12_sumx=sumx
+        !$ser data s12_kbcon1=kbcon1 s12_drag=drag
+      !$ser verbatim endif
       if(totflg) return
 !
 ! turbulent entrainment rate assumed to be proportional
@@ -930,6 +983,28 @@
       do i = 1, im
         totflg = totflg .and. (.not. cnvflg(i))
       enddo
+      !$ser verbatim if(totflg) then
+        !$ser verbatim print *, 'INFO: rank=',mpi_rank,': exiting kb9 early'
+
+        !$ser savepoint Static10-Out
+        !$ser data sc10_cina=cina sc10_cnvflg=cnvflg sc10_kb=kb sc10_kbcon1=kbcon1 sc10_zo=zo
+        !$ser data sc10_qeso=qeso sc10_to=to sc10_dbyo=dbyo sc10_qo=qo sc10_pdot=pdot
+
+        !$ser savepoint Static11-Out
+        !$ser data sc11_flg=flg sc11_cnvflg=cnvflg sc11_ktcon=ktcon sc11_kbm=kbm sc11_kbcon1=kbcon1
+        !$ser data sc11_dbyo=dbyo sc11_kbcon=kbcon sc11_del0=del sc11_xmbmax=xmbmax sc11_aa1=aa1
+        !$ser data sc11_kb=kb sc11_qcko=qcko sc11_qo=qo sc11_qrcko=qrcko sc11_zi=zi sc11_qeso=qeso
+        !$ser data sc11_to=to sc11_xlamue=xlamue sc11_xlamud=xlamud sc11_eta=eta sc11_c0t=c0t
+        !$ser data sc11_dellal=dellal sc11_buo=buo sc11_drag=drag sc11_zo=zo sc11_pwo=pwo sc11_cnvwt=cnvwt
+
+        !$ser savepoint Static12-Out
+        !$ser data s12_cnvflg=cnvflg s12_aa1=aa1 s12_flg=flg s12_ktcon1=ktcon1 s12_kbm=kbm
+        !$ser data s12_ktcon=ktcon s12_zo=zo s12_qeso=qeso s12_to=to s12_dellal=dellal
+        !$ser data s12_dbyo=dbyo s12_zi=zi s12_xlamue=xlamue s12_xlamud=xlamud s12_qcko=qcko
+        !$ser data s12_qrcko=qrcko s12_qo=qo s12_eta=eta s12_del0=del s12_c0t=c0t s12_pwo=pwo
+        !$ser data s12_cnvwt=cnvwt s12_buo=buo s12_wu2=wu2 s12_wc=wc s12_sumx=sumx
+        !$ser data s12_kbcon1=kbcon1 s12_drag=drag
+      !$ser verbatim endif
       if(totflg) return
 !!
 !
@@ -1001,6 +1076,23 @@
       do i=1,im
         totflg = totflg .and. (.not. cnvflg(i))
       enddo
+      !$ser verbatim if(totflg) then
+        !$ser verbatim print *, 'INFO: rank=',mpi_rank,': exiting sc10 early'
+        !$ser savepoint Static11-Out
+        !$ser data sc11_flg=flg sc11_cnvflg=cnvflg sc11_ktcon=ktcon sc11_kbm=kbm sc11_kbcon1=kbcon1
+        !$ser data sc11_dbyo=dbyo sc11_kbcon=kbcon sc11_del0=del sc11_xmbmax=xmbmax sc11_aa1=aa1
+        !$ser data sc11_kb=kb sc11_qcko=qcko sc11_qo=qo sc11_qrcko=qrcko sc11_zi=zi sc11_qeso=qeso
+        !$ser data sc11_to=to sc11_xlamue=xlamue sc11_xlamud=xlamud sc11_eta=eta sc11_c0t=c0t
+        !$ser data sc11_dellal=dellal sc11_buo=buo sc11_drag=drag sc11_zo=zo sc11_pwo=pwo sc11_cnvwt=cnvwt
+
+        !$ser savepoint Static12-Out
+        !$ser data s12_cnvflg=cnvflg s12_aa1=aa1 s12_flg=flg s12_ktcon1=ktcon1 s12_kbm=kbm
+        !$ser data s12_ktcon=ktcon s12_zo=zo s12_qeso=qeso s12_to=to s12_dellal=dellal
+        !$ser data s12_dbyo=dbyo s12_zi=zi s12_xlamue=xlamue s12_xlamud=xlamud s12_qcko=qcko
+        !$ser data s12_qrcko=qrcko s12_qo=qo s12_eta=eta s12_del0=del s12_c0t=c0t s12_pwo=pwo
+        !$ser data s12_cnvwt=cnvwt s12_buo=buo s12_wu2=wu2 s12_wc=wc s12_sumx=sumx
+        !$ser data s12_kbcon1=kbcon1 s12_drag=drag
+      !$ser verbatim endif
       if(totflg) return
 !!
 !
@@ -1175,6 +1267,17 @@
       do i=1,im
         totflg = totflg .and. (.not. cnvflg(i))
       enddo
+      !$ser verbatim if(totflg) then
+        !$ser verbatim print *, 'INFO: rank=',mpi_rank,': exiting sc11 early'
+
+        !$ser savepoint Static12-Out
+        !$ser data s12_cnvflg=cnvflg s12_aa1=aa1 s12_flg=flg s12_ktcon1=ktcon1 s12_kbm=kbm
+        !$ser data s12_ktcon=ktcon s12_zo=zo s12_qeso=qeso s12_to=to s12_dellal=dellal
+        !$ser data s12_dbyo=dbyo s12_zi=zi s12_xlamue=xlamue s12_xlamud=xlamud s12_qcko=qcko
+        !$ser data s12_qrcko=qrcko s12_qo=qo s12_eta=eta s12_del0=del s12_c0t=c0t s12_pwo=pwo
+        !$ser data s12_cnvwt=cnvwt s12_buo=buo s12_wu2=wu2 s12_wc=wc s12_sumx=sumx
+        !$ser data s12_kbcon1=kbcon1 s12_drag=drag
+      !$ser verbatim endif
       if(totflg) return
 !!
 !
