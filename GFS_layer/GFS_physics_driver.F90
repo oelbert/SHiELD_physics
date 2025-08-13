@@ -934,28 +934,6 @@ module module_physics_driver
            )
 
       else
-        !!$ser verbatim print *, 'INFO: serialize rad'
-        !$ser verbatim rad_solhr = Model%solhr
-        !$ser verbatim rad_slag = Model%slag
-        !$ser verbatim rad_sdec = Model%sdec
-        !$ser verbatim rad_cdec = Model%cdec
-        !$ser verbatim rad_daily_mean = Model%daily_mean
-        !$ser verbatim do i = 1, im
-          !$ser verbatim rad_t_surface(i) = Statein%tgrs(i, 1)
-        !$ser verbatim enddo
-        !$ser savepoint RadInterp-In
-        !$ser data solhr=rad_solhr slag=rad_slag sdec=rad_sdec cdec=rad_cdec sinlat=Grid%sinlat
-        !$ser data coslat=Grid%coslat xlon=Grid%xlon coszen=Radtend%coszen tsurf=Sfcprop%tsfc
-        !$ser data tgrs=rad_t_surface tsflw=Radtend%tsflw semis=Radtend%semis
-        !$ser data sfcdsw=Coupling%sfcdsw sfcnsw=Coupling%sfcnsw sfcdlw=Coupling%sfcdlw
-        !$ser data htrsw=Radtend%htrsw swhc=Radtend%swhc htrlw=Radtend%htrlw lwhc=Radtend%lwhc
-        !$ser data nirbmui=Coupling%nirbmui nirdfui=Coupling%nirdfui visbmui=Coupling%visbmui
-        !$ser data visdfui=Coupling%visdfui nirbmdi=Coupling%nirbmdi nirdfdi=Coupling%nirdfdi
-        !$ser data visbmdi=Coupling%visbmdi visdfdi=Coupling%visdfdi daily_mean=rad_daily_mean
-        !$ser data dtdt=dtdt dtdtc=dtdtc xmu=xmu xcosz=xcosz
-        !$ser data adjsfcdsw=adjsfcdsw adjsfcnsw=adjsfcnsw adjsfcdlw=adjsfcdlw adjsfculw=adjsfculw
-        !$ser data adjnirbmu=adjnirbmu adjnirdfu=adjnirdfu adjvisbmu=adjvisbmu adjvisdfu=adjvisdfu
-        !$ser data adjnirbmd=adjnirbmd adjnirdfd=adjnirdfd adjvisbmd=adjvisbmd adjvisdfd=adjvisdfd
         call dcyc2t3                                                        &
 !  ---  inputs:
            ( Model%solhr, Model%slag, Model%sdec, Model%cdec, Grid%sinlat,  &
@@ -974,11 +952,6 @@ module module_physics_driver
              adjnirbmu, adjnirdfu, adjvisbmu, adjvisdfu,                    &
              adjnirbmd, adjnirdfd, adjvisbmd, adjvisdfd                     &
            )
-        !$ser savepoint RadInterp-Out
-        !$ser data dtdt=dtdt dtdtc=dtdtc xmu=xmu xcosz=xcosz
-        !$ser data adjsfcdsw=adjsfcdsw adjsfcnsw=adjsfcnsw adjsfcdlw=adjsfcdlw adjsfculw=adjsfculw
-        !$ser data adjnirbmu=adjnirbmu adjnirdfu=adjnirdfu adjvisbmu=adjvisbmu adjvisdfu=adjvisdfu
-        !$ser data adjnirbmd=adjnirbmd adjnirdfd=adjnirdfd adjvisbmd=adjvisbmd adjvisdfd=adjvisdfd
 
         if (Model%do_diagnostic_radiation_with_scaled_co2) then
            call compute_diagnostics_with_scaled_co2(                        &
@@ -1139,31 +1112,7 @@ module module_physics_driver
       gflx(:)       = 0.0
       Diag%zlvl(:)    = Statein%phil(:,1) * onebg
       Diag%smcwlt2(:) = 0.0
-      Diag%smcref2(:) = 0.0
-      
-      !$ser verbatim nxpvs = 7501
-      !$ser verbatim xmin = 180.
-      !$ser verbatim xmax = 330.
-      !$ser verbatim xinc=(xmax-xmin)/(nxpvs-1)
-      !$ser savepoint FPVS-In
-      !$ser data temp=Sfcprop%tsfc tab_fpvsx=tab_fpvsx tab_fpvs=tab_fpvs xval=xval xmin=xmin xmax=xmax nxpvs=nxpvs xinc=xinc fp=fp fpx=fpx
-      !$ser verbatim do i = 1, im
-        !$ser verbatim fp(i)=fpvs(Sfcprop%tsfc(i))
-        !$ser verbatim fpx(i)=fpvsx(Sfcprop%tsfc(i))
-        !$ser verbatim if (i == 1) then
-          !$ser verbatim xmax = con_ttp / Sfcprop%tsfc(i)
-        !$ser verbatim endif
-        !$ser verbatim do k = 1, levs
-          !$ser verbatim ii = (i - 1) * levs + k
-          !$ser verbatim nt = mod(ii, nxpvs)
-          !$ser verbatim xval(i, k) = xmin+(nt-1)*xinc
-          !$ser verbatim tab_fpvsx(i, k) = fpvsx(xval(i, k))
-          !$ser verbatim tab_fpvs(i, k) = fpvs(xval(i, k))
-        !$ser verbatim enddo
-      !$ser verbatim enddo
-      !$ser savepoint FPVS-Out
-      !$ser data tab_fpvsx=tab_fpvsx tab_fpvs=tab_fpvs xval=xval fp=fp fpx=fpx
-      
+      Diag%smcref2(:) = 0.0      
 
 !  --- ...  lu: iter-loop over (sfc_diff,sfc_drv,sfc_ocean,sfc_sice)
 
@@ -1299,19 +1248,6 @@ module module_physics_driver
 
             if (Model%sfc_gfdl) then
 ! a new and more flexible version of sfc_diff by kgao
-            !$ser verbatim if (iter == 1) then
-              !$ser savepoint SurfaceExchange_iter1-In
-            !$ser verbatim else
-              !$ser savepoint SurfaceExchange_iter2-In
-            !$ser verbatim end if
-            !$ser data u1=Statein%ugrs v1=Statein%vgrs t1=Statein%tgrs q1=Statein%qgrs z1=Diag%zlvl
-            !$ser data snowdepth=Sfcprop%snowd tsfc=Sfcprop%tsfc z0rl=Sfcprop%zorl ztrl=Sfcprop%ztrl cm=cd ch=cdq
-            !$ser data rb=rb prsl1=Statein%prsl(:,1) prslki=work3 islmsk=islmsk stress=stress fm=Sfcprop%ffmm
-            !$ser data fh=Sfcprop%ffhh ustar=Sfcprop%uustar wind=wind ddvel=Tbd%phy_f2d(:,Model%num_p2d) fm10=fm10
-            !$ser data fh2=fh2 sigmaf=sigmaf vegtype=vegtype shdmax=Sfcprop%shdmax ivegsrc=ivegsrc tsurf=tsurf
-            !$ser data flag_iter=flag_iter redrag=redrag do_z0_moon=do_z0_moon
-            !$ser data do_z0_hwrf15=do_z0_hwrf15 do_z0_hwrf17=do_z0_hwrf17 z0s_max=z0s_max
-            !$ser data do_z0_hwrf17_hwonly=do_z0_hwrf17_hwonly wind_th_hwrf=wind_th_hwrf
             call sfc_diff_gfdl(im,Statein%pgr, Statein%ugrs, Statein%vgrs,&
                  Statein%tgrs, Statein%qgrs, Diag%zlvl, Sfcprop%snowd, &
                  Sfcprop%tsfc, Sfcprop%zorl, Sfcprop%ztrl, cd,      &
@@ -1323,13 +1259,6 @@ module module_physics_driver
                  Model%do_z0_moon, Model%do_z0_hwrf15,              &
                  Model%do_z0_hwrf17, Model%do_z0_hwrf17_hwonly,     &
                  Model%wind_th_hwrf)
-            !$ser verbatim if (iter == 1) then
-              !$ser savepoint SurfaceExchange_iter1-Out
-            !$ser verbatim else
-              !$ser savepoint SurfaceExchange_iter2-Out
-            !$ser verbatim end if
-            !$ser data wind=wind z0rl=Sfcprop%zorl ztrl=Sfcprop%ztrl cm=cd ch=cdq stress=stress fm=Sfcprop%ffmm
-            !$ser data fh=Sfcprop%ffhh ustar=Sfcprop%uustar fm10=fm10 fh2=fh2
             else
 ! GFS original sfc_diff modified by kgao 
             call sfc_diff (im,Statein%pgr, Statein%ugrs, Statein%vgrs,&
@@ -1416,17 +1345,6 @@ module module_physics_driver
         else
 
 !  --- ...  surface energy balance over ocean
-          !$ser verbatim if (iter == 1) then
-            !$ser savepoint SurfaceOcean_iter1-In
-          !$ser verbatim else
-            !$ser savepoint SurfaceOcean_iter2-In
-          !$ser verbatim end if
-          !$ser data ocean_ps=Statein%pgr ocean_u1=Statein%ugrs ocean_v1=Statein%vgrs ocean_t1=Statein%tgrs
-          !$ser data ocean_q1=Statein%qgrs ocean_tskin=Sfcprop%tsfc ocean_cm=cd ocean_ch=cdq
-          !$ser data ocean_prsl1=Statein%prsl(:,1) ocean_prslki=work3 ocean_islmsk=islmsk ocean_ep=ep1d
-          !$ser data ocean_ddvel=Tbd%phy_f2d(:,Model%num_p2d) ocean_flag_iter=flag_iter ocean_qsurf=qss
-          !$ser data ocean_cmm=Diag%cmm ocean_chh=Diag%chh ocean_gflux=gflx ocean_evap=evap ocean_hflx=hflx
-
           call sfc_ocean                                                &
 !  ---  inputs:
            (im, Statein%pgr, Statein%ugrs, Statein%vgrs, Statein%tgrs,  &
@@ -1434,14 +1352,6 @@ module module_physics_driver
             work3, islmsk, Tbd%phy_f2d(1,Model%num_p2d), flag_iter,     &
 !  ---  outputs:
              qss, Diag%cmm, Diag%chh, gflx, evap, hflx, ep1d)
-          !$ser verbatim if (iter == 1) then
-            !$ser savepoint SurfaceOcean_iter1-Out
-          !$ser verbatim else
-            !$ser savepoint SurfaceOcean_iter2-Out
-          !$ser verbatim end if
-          !$ser data ocean_qsurf=qss ocean_cmm=Diag%cmm ocean_chh=Diag%chh ocean_gflux=gflx ocean_evap=evap
-          !$ser data ocean_hflx=hflx ocean_ep=ep1d
-
         endif       ! if ( nstf_name(1) > 0 ) then
 
 !       if (lprnt) write(0,*)' sfalb=',sfalb(ipr),' ipr=',ipr          &
@@ -1456,24 +1366,6 @@ module module_physics_driver
 !     if (lprnt) write(0,*)' tsead=',tsea(ipr),' tsurf=',tsurf(ipr),iter
 !    &,' pgr=',pgr(ipr),' sfcemis=',sfcemis(ipr)
 
-          !$ser verbatim if (iter == 1) then
-            !$ser savepoint NoahLSM_iter1-In
-          !$ser verbatim else
-            !$ser savepoint NoahLSM_iter2-In
-          !$ser verbatim end if
-          !$ser data lsoil=lsoil ps=Statein%pgr t1=Statein%tgrs q1=Statein%qgrs soiltyp=soiltyp
-          !$ser data vegtype=vegtype sigmaf=sigmaf sfcemis=Radtend%semis dlwflx=gabsbdlw dswsfc=adjsfcdsw_for_coupling
-          !$ser data snet=adjsfcnsw_for_coupling delt=dtf tg3=Sfcprop%tg3 cm=cd ch=cdq prsl1=Statein%prsl(:,1)
-          !$ser data prslki=work3 zf=Diag%zlvl land=dry wind=wind slopetyp=slopetyp shdmin=Sfcprop%shdmin
-          !$ser data shdmax=Sfcprop%shdmax snoalb=Sfcprop%snoalb sfalb=Radtend%sfalb flag_iter=flag_iter flag_guess=flag_guess
-          !$ser data lheatstrg=lheatstrg isot=isot ivegsrc=ivegsrc bexppert=bexp1d xlaipert=xlai1d
-          !$ser data vegfpert=vegf1d pertvegf=pertvegf
-          !$ser data weasd=Sfcprop%weasd snwdph=Sfcprop%snowd tskin=Sfcprop%tsfc
-          !$ser data tprcp=Sfcprop%tprcp srflag=Sfcprop%srflag smc=smsoil stc=stsoil slc=slsoil canopy=Sfcprop%canopy
-          !$ser data trans=trans tsurf=tsurf zorl=Sfcprop%zorl
-          !$ser data sncovr1=Sfcprop%sncovr qsurf=qss gflux=gflx drain=drain evap=evap hflx=hflx
-          !$ser data ep=ep1d runoff=runof cmm=Diag%cmm chh=Diag%chh evbs=evbs evcw=evcw sbsno=sbsno snowc=snowc
-          !$ser data stm=Diag%soilm snohf=snohf smcwlt2=Diag%smcwlt2 smcref2=Diag%smcref2 wet1=Diag%wet1
           call sfc_drv                                                 &
 !  ---  inputs:
            (im, Model%lsoil, Statein%pgr,                              &
@@ -1485,7 +1377,6 @@ module module_physics_driver
             Radtend%sfalb, flag_iter, flag_guess,                      &
             Model%lheatstrg, Model%isot, Model%ivegsrc,                &
             bexp1d, xlai1d, vegf1d, Model%pertvegf,                    &
-            !$ser verbatim iter,&
 !  ---  in/outs:
             Sfcprop%weasd, Sfcprop%snowd, Sfcprop%tsfc, Sfcprop%tprcp, &
             Sfcprop%srflag, smsoil, stsoil, slsoil, Sfcprop%canopy,    &
@@ -1494,18 +1385,6 @@ module module_physics_driver
             Sfcprop%sncovr, qss, gflx, drain, evap, hflx, ep1d, runof, &
             Diag%cmm, Diag%chh, evbs, evcw, sbsno, snowc, Diag%soilm,  &
             snohf, Diag%smcwlt2, Diag%smcref2, Diag%wet1)
-
-          !$ser verbatim if (iter == 1) then
-            !$ser savepoint NoahLSM_iter1-Out
-          !$ser verbatim else
-            !$ser savepoint NoahLSM_iter2-Out
-          !$ser verbatim end if
-          !$ser data weasd=Sfcprop%weasd snwdph=Sfcprop%snowd tskin=Sfcprop%tsfc
-          !$ser data tprcp=Sfcprop%tprcp srflag=Sfcprop%srflag smc=smsoil stc=stsoil slc=slsoil canopy=Sfcprop%canopy
-          !$ser data trans=trans tsurf=tsurf zorl=Sfcprop%zorl
-          !$ser data sncovr1=Sfcprop%sncovr qsurf=qss gflux=gflx drain=drain evap=evap hflx=hflx
-          !$ser data ep=ep1d runoff=runof cmm=Diag%cmm chh=Diag%chh evbs=evbs evcw=evcw sbsno=sbsno snowc=snowc
-          !$ser data stm=Diag%soilm snohf=snohf smcwlt2=Diag%smcwlt2 smcref2=Diag%smcref2 wet1=Diag%wet1
 
 !     if (lprnt) write(0,*)' tseae=',tsea(ipr),' tsurf=',tsurf(ipr),iter
 !    &,' phy_f2d=',phy_f2d(ipr,num_p2d)
@@ -1564,20 +1443,6 @@ module module_physics_driver
             endif
           enddo
         endif
-        !$ser verbatim if (iter == 1) then
-          !$ser savepoint SurfaceSeaIce_iter1-In
-        !$ser verbatim else
-          !$ser savepoint SurfaceSeaIce_iter2-In
-        !$ser verbatim end if
-        !$ser data sice_ps=Statein%pgr sice_wind=wind sice_u1=Statein%ugrs sice_v1=Statein%vgrs
-        !$ser data sice_t1=Statein%tgrs sice_q1=Statein%qgrs sice_delt=dtf sfcemis=Radtend%semis
-        !$ser data sice_dlwflx=gabsbdlw sice_sfcnsw=adjsfcnsw_for_coupling sice_sfcdsw=adjsfcdsw_for_coupling
-        !$ser data sice_srflag=Sfcprop%srflag sice_cm=cd sice_ch=cdq sice_prsl1=Statein%prsl(:,1)
-        !$ser data sice_prslki=work3 sice_islmsk=islmsk sice_flag_iter=flag_iter sice_mom4ice=mom4ice
-        !$ser data sice_lsm=lsm sice_hice=zice sice_fice=cice sice_tice=tice sice_weasd=Sfcprop%weasd
-        !$ser data sice_tskin=Sfcprop%tsfc sice_tprcp=Sfcprop%tprcp sice_stc0=stsoil(:,1) sice_stc1=stsoil(:,2) sice_ep=ep1d
-        !$ser data sice_snowd=Sfcprop%snowd sice_qsurf=qss sice_snowmt=snowmt sice_gflux=gflx sice_cmm=Diag%cmm
-        !$ser data sice_chh=Diag%chh sice_evap=evap sice_hflx=hflx
         call sfc_sice                                                   &
 !  ---  inputs:
            (im, Model%lsoil, Statein%pgr, Statein%ugrs, Statein%vgrs,   &
@@ -1592,15 +1457,6 @@ module module_physics_driver
 !  ---  outputs:
             Sfcprop%snowd, qss, snowmt, gflx, Diag%cmm, Diag%chh, evap, &
             hflx)
-        !$ser verbatim if (iter == 1) then
-          !$ser savepoint SurfaceSeaIce_iter1-Out
-        !$ser verbatim else
-          !$ser savepoint SurfaceSeaIce_iter2-Out
-        !$ser verbatim end if
-        !$ser data sice_hice=zice sice_fice=cice sice_tice=tice sice_weasd=Sfcprop%weasd sice_tskin=Sfcprop%tsfc
-        !$ser data sice_tprcp=Sfcprop%tprcp sice_stc0=stsoil(:,1) sice_stc1=stsoil(:,2) sice_ep=ep1d sice_snowd=Sfcprop%snowd sice_qsurf=qss
-        !$ser data sice_snowmt=snowmt sice_gflux=gflx sice_cmm=Diag%cmm sice_chh=Diag%chh sice_evap=evap
-        !$ser data sice_hflx=hflx
 
         if (Model%cplflx) then
           do i = 1, im
@@ -1870,22 +1726,6 @@ module module_physics_driver
 
           if (Model%isatmedmf == 0) then
              ! initial version of satmedmfvdif (Nov 2018) modified by kgao
-             !$ser savepoint PBL-In
-             !$ser data pbl_ntrac=nvdiff pbl_ntcw=ntcw pbl_ntiw=ntiw pbl_ntke=ntke
-             !$ser data pbl_dv=dvdt pbl_du=dudt pbl_tdt=dtdt pbl_rtg=dqdt pbl_u1=Statein%ugrs pbl_v1=Statein%vgrs
-             !$ser data pbl_t1=Statein%tgrs pbl_q1=Statein%qgrs pbl_swh=Radtend%htrsw pbl_hlw=Radtend%htrlw
-             !$ser data pbl_xmu=xmu pbl_garea=garea pbl_islmsk=islmsk pbl_psk=Statein%prsik(1:ix,1) pbl_rbsoil=rb
-             !$ser data pbl_zorl=Sfcprop%zorl pbl_u10m=Diag%u10m pbl_v10m=Diag%v10m pbl_fm=Sfcprop%ffmm
-             !$ser data pbl_fh=Sfcprop%ffhh pbl_tsea=Sfcprop%tsfc pbl_heat=hflx pbl_evap=evap pbl_stress=stress
-             !$ser data pbl_wind=wind pbl_kpbl=kpbl pbl_prsi=Statein%prsi pbl_delta=del pbl_prsl=Statein%prsl
-             !$ser data pbl_prslk=Statein%prslk pbl_phii=Statein%phii pbl_phil=Statein%phil pbl_dtp=dtp
-             !$ser data pbl_dspheat=dspheat pbl_dusfc=dusfc1 pbl_dvsfc=dvsfc1 pbl_dtsfc=dtsfc1
-             !$ser data pbl_dqsfc=dqsfc1 pbl_hpbl=Diag%hpbl pbl_kinver=kinver pbl_xkzm_m=xkzm_m
-             !$ser data pbl_xkzm_h=xkzm_h pbl_xkzm_ml=xkzm_ml pbl_xkzm_hl=xkzm_hl
-             !$ser data pbl_xkzm_mi=xkzm_mi pbl_xkzm_hi=xkzm_hi pbl_xkzm_s=xkzm_s
-             !$ser data pbl_xkzminv=xkzminv pbl_do_dk_hb19=do_dk_hb19 pbl_xkzm_lim=xkzm_lim
-             !$ser data pbl_xkgdx=xkgdx pbl_rlmn=rlmn pbl_rlmx=rlmx pbl_dkt=dkt
-             !$ser data pbl_cap_k0_land=cap_k0_land
              call satmedmfvdif(ix, im, levs, nvdiff,                            & 
                    Model%ntcw, Model%ntiw, Model%ntke,                          &
                    dvdt, dudt, dtdt, dqdt,                                      &
@@ -1901,9 +1741,6 @@ module module_physics_driver
                    Model%xkzm_s,  Model%xkzminv, Model%do_dk_hb19,              &
                    Model%xkzm_lim, Model%xkgdx,                                 &
                    Model%rlmn, Model%rlmx, Model%cap_k0_land, dkt)
-             !$ser savepoint PBL-Out
-             !$ser data pbl_du=dudt pbl_dv=dvdt pbl_tdt=dtdt pbl_rtg=dqdt pbl_kpbl=kpbl
-             !$ser data pbl_dusfc=dusfc1 pbl_dvsfc=dvsfc1 pbl_dtsfc=dtsfc1 pbl_dqsfc=dqsfc1 pbl_hpbl=Diag%hpbl
              elseif (Model%isatmedmf == 1) then   
                 do i=1,im
                    if (islmsk(i) == 1) then
@@ -3201,27 +3038,6 @@ module module_physics_driver
             else
                nsamftrac = tottracer
             endif
-            !!$ser verbatim print *, 'INFO: shalconv'
-            !!$ser verbatim print *, 'INFO: ntshalconv = ',nsamftrac
-            !!$ser verbatim ntchm = Model%ntchm
-            !!$ser verbatim ii = size(ser_fscav)
-            !!$ser verbatim ser_fscav(:) = 0.0
-            !!$ser verbatim ncld = Model%ncld
-            !!$ser verbatim clam_shal = Model%clam_shal
-            !!$ser verbatim c0s_shal = Model%c0s_shal
-            !!$ser verbatim c1_shal = Model%c1_shal
-            !!$ser verbatim pgcon_shal = Model%pgcon_shal
-            !!$ser verbatim asolfac_shal = Model%asolfac_shal
-            !!$ser savepoint ShalConv-In
-            !!$ser data sc_dtp=dtp sc_itc=itc sc_ntchm=ntchm sc_ntk=ntk sc_nsamftrac=nsamftrac
-            !!$ser data sc_delta=del sc_prsl=Statein%prsl sc_pgr=Statein%pgr sc_phil=Statein%phil sc_clw=clw(:,:,1:nsamftrac+2)
-            !!$ser data sc_gq0=Stateout%gq0(:,:,1) sc_gt0=Stateout%gt0
-            !!$ser data sc_gu0=Stateout%gu0 sc_gv0=Stateout%gv0 sc_ser_fscav=ser_fscav
-            !!$ser data sc_rain1=rain1 sc_kbot=kbot sc_ktop=ktop sc_kcnv=kcnv sc_islmsk=islmsk sc_garea=garea
-            !!$ser data sc_vvl=Statein%vvl sc_ncld=ncld sc_hpbl=Diag%hpbl sc_ud_mf=ud_mf
-            !!$ser data sc_dt_mf=dt_mf sc_cnvw=cnvw sc_cnvc=cnvc
-            !!$ser data sc_clam_shal=clam_shal sc_c0s_shal=c0s_shal sc_c1_shal=c1_shal
-            !!$ser data sc_pgcon_shal=pgcon_shal sc_asolfac_shal=asolfac_shal
             call samfshalcnv (im, ix, levs, dtp, itc, Model%ntchm, ntk, nsamftrac, &
                               del, Statein%prsl, Statein%pgr, Statein%phil, clw(:,:,1:nsamftrac+2),   &
                               Stateout%gq0(:,:,1), Stateout%gt0,                   &
@@ -3232,14 +3048,6 @@ module module_physics_driver
                               Model%clam_shal,  Model%c0s_shal, Model%c1_shal,     &
                               Model%pgcon_shal, Model%asolfac_shal)
 
-
-            !!$ser savepoint ShalConv-Out
-            !!$ser data sc_delta=del sc_prsl=Statein%prsl sc_pgr=Statein%pgr sc_phil=Statein%phil
-            !!$ser data sc_gq0=Stateout%gq0(:,:,1) sc_gt0=Stateout%gt0
-            !!$ser data sc_gu0=Stateout%gu0 sc_gv0=Stateout%gv0 sc_clw=clw(:,:,1:nsamftrac+2)
-            !!$ser data sc_rain1=rain1 sc_kbot=kbot sc_ktop=ktop sc_kcnv=kcnv
-            !!$ser data sc_vvl=Statein%vvl sc_hpbl=Diag%hpbl sc_ud_mf=ud_mf
-            !!$ser data sc_dt_mf=dt_mf sc_cnvw=cnvw sc_cnvc=cnvc
             raincs(:)     = frain * rain1(:)
             Diag%rainc(:) = Diag%rainc(:) + raincs(:)
 ! in  mfshalcnv,  'cnvw' and 'cnvc' are set to zero before computation starts:
@@ -3252,7 +3060,6 @@ module module_physics_driver
               num2 = Model%num_p3d + 1
               Tbd%phy_f3d(:,:,num2) = Tbd%phy_f3d(:,:,num2) + cnvw(:,:)
             endif
-            !$ser verbatim print *, 'INFO: done shalconv'
 
           elseif (Model%imfshalcnv == 0) then    ! modified Tiedtke Shallow convecton
                                                  !-----------------------------------

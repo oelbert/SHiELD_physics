@@ -38,8 +38,6 @@
          xkzm_s,xkzinv,do_dk_hb19,xkzm_lim,xkgdx, &
          rlmn, rlmx, cap_k0_land, dkt_out)
 !
-      !$ser verbatim use mpi
-      !$ser verbatim USE m_serialize, ONLY: fs_is_serialization_on
       use machine  , only : kind_phys
       use funcphys , only : fpvs
       use physcons, grav => con_g, rd => con_rd, cp => con_cp, &
@@ -93,7 +91,6 @@
       integer kx1(im), kpblx(im)
 !
       real(kind=kind_phys) tke(im,km),  tkeh(im,km-1)
-      !$ser verbatim real(kind=kind_phys) zldn_ser(im,km), zlup_ser(im,km), ser_tem(im, km)
 !
       real(kind=kind_phys) theta(im,km),thvx(im,km),  thlvx(im,km), &
                            qlx(im,km),  thetae(im,km),thlx(im,km), &
@@ -124,7 +121,6 @@
                            rdzt(im,km-1), &
                            al(im,km-1),  ad(im,km),   au(im,km-1), &
                            f1(im,km),    f2(im,km*(ntrac-1))
-      !$ser verbatim real(kind=kind_phys) f2_ser(im,km,ntrac)
 !
       real(kind=kind_phys) elm(im,km),   ele(im,km),  rle(im,km-1), &
                            ckz(im,km),   chz(im,km),  &
@@ -207,11 +203,6 @@
       parameter(h1=0.33333333)
       parameter(ck0=0.4,ck1=0.15,ch0=0.4,ch1=0.15,ce0=0.4)
       parameter(rchck=1.5,cdtn=25.)
-      !$ser verbatim integer :: mpi_rank,ier
-      !$ser verbatim logical :: ser_on
-      !$ser verbatim ser_on=fs_is_serialization_on()
-      !$ser verbatim  call mpi_comm_rank(MPI_COMM_WORLD, mpi_rank,ier)
-      !$ser verbatim print *, 'INFO: inside PBL scheme, serialization is ', ser_on
 
       elmx = rlmx
 !
@@ -248,28 +239,6 @@
       kmpbl = km / 2
       kmscu = km / 2
 !
-      !$ser verbatim do i = 1,im
-        !$ser verbatim do k = 1,km
-          !$ser verbatim ser_tem(i, k) = 0.0
-          !$ser verbatim do kk = 1, ntrac
-            !$ser verbatim f2_ser(i, k, kk) = 0.
-          !$ser verbatim enddo
-        !$ser verbatim enddo
-      !$ser verbatim enddo
-
-      !$ser savepoint PBLInit-In
-      !$ser data zi=zi zl=zl zm=zm phii=phii phil=phil chz=chz ckz=ckz area=garea gdx=gdx
-      !$ser data tke=tke q1=q1 rdzt=rdzt prn=prn kx1=kx1 prsi=prsi kinver=kinver tx1=tx1
-      !$ser data tx2=tx2 xkzo=xkzo xkzmo=xkzmo kpblx=kpblx hpblx=hpblx pblflg=pblflg 
-      !$ser data sfcflg=sfcflg pcnvflg=pcnvflg scuflg=scuflg zorl=zorl dusfc=dusfc dvsfc=dvsfc
-      !$ser data dtsfc=dtsfc dqsfc=dqsfc kpbl=kpbl hpbl=hpbl rbsoil=rbsoil radmin=radmin
-      !$ser data mrad=mrad krad=krad lcld=lcld kcld=kcld theta=theta prslk=prslk psk=psk t1=t1
-      !$ser data pix=pix qlx=qlx slx=slx thvx=thvx qtx=qtx thlx=thlx thlvx=thlvx svx=svx
-      !$ser data thetae=thetae gotvx=gotvx prsl=prsl plyr=plyr rhly=rhly qstl=qstl bf=bf
-      !$ser data cfly=cfly crb=crb dtdz1=dtdz1 evap=evap heat=heat hlw=hlw radx=radx
-      !$ser data sflux=sflux shr2=shr2 stress=stress hsw=swh thermal=thermal tsea=tsea
-      !$ser data u10m=u10m ustar=ustar u1=u1 v1=v1 v10m=v10m xmu=xmu islimsk=islimsk
-      !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke xkzm_hx=xkzm_hx xkzm_mx=xkzm_mx tvx=tvx ser_tem=ser_tem
       do k=1,km
         do i=1,im
           zi(i,k) = phii(i,k) * gravi
@@ -453,7 +422,6 @@
       do k = 1,km1
         do i=1,im
           tem1 = (tvx(i,k+1)-tvx(i,k)) * rdzt(i,k)
-          !$ser verbatim ser_tem(i, k) = tem1
 
           if (cap_k0_land) then
             if(tem1 > 1.e-5) then
@@ -578,28 +546,10 @@
          shr2(i,k) = max(dw2,dw2min)*rdz*rdz
       enddo
       enddo
-      !$ser savepoint PBLInit-Out
-      !$ser data zi=zi zl=zl zm=zm phii=phii phil=phil chz=chz ckz=ckz area=garea gdx=gdx
-      !$ser data tke=tke q1=q1 rdzt=rdzt prn=prn kx1=kx1 prsi=prsi kinver=kinver tx1=tx1
-      !$ser data tx2=tx2 xkzo=xkzo xkzmo=xkzmo kpblx=kpblx hpblx=hpblx pblflg=pblflg 
-      !$ser data sfcflg=sfcflg pcnvflg=pcnvflg scuflg=scuflg zorl=zorl dusfc=dusfc dvsfc=dvsfc
-      !$ser data dtsfc=dtsfc dqsfc=dqsfc kpbl=kpbl hpbl=hpbl rbsoil=rbsoil radmin=radmin
-      !$ser data mrad=mrad krad=krad lcld=lcld kcld=kcld theta=theta prslk=prslk psk=psk t1=t1
-      !$ser data pix=pix qlx=qlx slx=slx thvx=thvx qtx=qtx thlx=thlx thlvx=thlvx svx=svx
-      !$ser data thetae=thetae gotvx=gotvx prsl=prsl plyr=plyr rhly=rhly qstl=qstl bf=bf
-      !$ser data cfly=cfly crb=crb dtdz1=dtdz1 evap=evap heat=heat hlw=hlw radx=radx
-      !$ser data sflux=sflux shr2=shr2 stress=stress hsw=swh thermal=thermal tsea=tsea ser_tem=ser_tem
-      !$ser data u10m=u10m ustar=ustar u1=u1 v1=v1 v10m=v10m xmu=xmu xkzm_hx=xkzm_hx xkzm_mx=xkzm_mx tvx=tvx
 !
 ! find pbl height based on bulk richardson number (mrf pbl scheme)
 !   and also for diagnostic purpose
 !
-      !$ser savepoint MRF-In
-      !$ser data crb=crb flg=flg kpblx=kpblx rbdn=rbdn rbup=rbup rbsoil=rbsoil thermal=thermal
-      !$ser data thlvx=thlvx u1=u1 v1=v1 zl=zl evap=evap fh=fh fm=fm gotvx=gotvx zol=zol
-      !$ser data heat=heat hpbl=hpbl hpblx=hpblx kpbl=kpbl pblflg=pblflg pcnvflg=pcnvflg phih=phih
-      !$ser data phim=phim sfcflg=sfcflg sflux=sflux theta=theta ustar=ustar vpert=vpert zi=zi
-      !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke
 
       do i=1,im
          flg(i) = .false.
@@ -699,16 +649,6 @@
            rbup(i) = rbsoil(i)
          endif
       enddo
-      !$ser savepoint MRF-Out
-      !$ser data crb=crb flg=flg kpblx=kpblx rbdn=rbdn rbup=rbup rbsoil=rbsoil thermal=thermal
-      !$ser data thlvx=thlvx u1=u1 v1=v1 zl=zl evap=evap fh=fh fm=fm gotvx=gotvx zol=zol
-      !$ser data heat=heat hpbl=hpbl hpblx=hpblx kpbl=kpbl pblflg=pblflg pcnvflg=pcnvflg phih=phih
-      !$ser data phim=phim sfcflg=sfcflg sflux=sflux theta=theta ustar=ustar vpert=vpert zi=zi
-
-      !$ser savepoint ThermalPBL-In
-      !$ser data crb=crb flg=flg kpbl=kpbl rbdn=rbdn rbup=rbup thermal=thermal thlvx=thlvx
-      !$ser data u1=u1 v1=v1 zl=zl hpbl=hpbl pblflg=pblflg pcnvflg=pcnvflg zi=zi
-      !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke
 
       do k = 2, kmpbl
       do i = 1, im
@@ -742,16 +682,10 @@
            endif
         endif
       enddo
-      !$ser savepoint ThermalPBL-Out
-      !$ser data crb=crb flg=flg kpbl=kpbl rbdn=rbdn rbup=rbup thermal=thermal thlvx=thlvx
-      !$ser data u1=u1 v1=v1 zl=zl hpbl=hpbl pblflg=pblflg pcnvflg=pcnvflg zi=zi
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !  look for stratocumulus
 !
-      !$ser savepoint Stratocumulus-In
-      !$ser data flg=flg kcld=kcld krad=krad lcld=lcld radmin=radmin radx=radx qlx=qlx scuflg=scuflg zl=zl
-      !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke
       do i=1,im
          flg(i)  = scuflg(i)
       enddo
@@ -801,8 +735,6 @@
         if(scuflg(i) .and. krad(i) <= 1) scuflg(i)=.false.
         if(scuflg(i) .and. radmin(i)>=0.) scuflg(i)=.false.
       enddo
-      !$ser savepoint Stratocumulus-Out
-      !$ser data flg=flg kcld=kcld krad=krad lcld=lcld radmin=radmin radx=radx qlx=qlx scuflg=scuflg zl=zl
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !  compute components for mass flux mixing by large thermals
@@ -841,99 +773,24 @@
       else
          ntcw_new = ntcw-1
       endif
-          !$ser verbatim do i = 1,im
-        !$ser verbatim do k = 1,km
-          !$ser verbatim zldn_ser(i,k) = 0.0
-          !$ser verbatim zlup_ser(i,k) = 0.0
-          !$ser verbatim do kk = 1, ntrac1
-            !$ser verbatim is = (kk-1) * km
-            !$ser verbatim f2_ser(i, k, kk) = 0.0
-          !$ser verbatim enddo
-        !$ser verbatim enddo
-      !$ser verbatim enddo
-        
-    !$ser savepoint Half2-In
-    !$ser data ckz=ckz chz=chz hpbl=hpbl kpbl=kpbl pcnvflg=pcnvflg zi=zi phih=phih
-    !$ser data zldn=zldn_ser zlup=zlup_ser thvx=thvx tke=tke gotvx=gotvx zl=zl tsea=tsea q1=q1
-    !$ser data rlam=rlam ele=ele elm=elm zol=zol gdx=gdx phii=phii
-    !$ser data ntcw=ntcw_new ntiw=ntiw ntke=ntke phim=phim prn=prn
-    !$ser data bf=bf buod=buod buou=buou dku=dku dkt=dkt dkq=dkq
-    !$ser data mrad=mrad krad=krad pblflg=pblflg
-    !$ser data prod=prod radj=radj rdzt=rdzt scuflg=scuflg sflux=sflux
-    !$ser data shr2=shr2 stress=stress u1=u1 ucdo=ucdo ucko=ucko ustar=ustar
-    !$ser data v1=v1 vcdo=vcdo vcko=vcko xkzo=xkzo xkzmo=xkzmo xmf=xmf xmfd=xmfd
-    !$ser data rle=rle diss=diss prsl=prsl rtg=rtg delt=delt
-    !$ser data qcdo=qcdo qcko=qcko f2_ser=f2_ser spd1=spd1
-    !$ser data xlamue=xlamue xlamde=xlamde evap=evap
-    !$ser data ad=ad al=al au=au delta=del f1=f1 hpblx=hpblx kpblx=kpblx
-    !$ser data tcdo=tcdo tcko=tcko t1=t1 dtdz1=dtdz1 heat=heat
-    !$ser data dtsfc=dtsfc dqsfc=dqsfc tdt=tdt
-    !$ser data du=du dv=dv dusfc=dusfc dvsfc=dvsfc
-    !$ser data kmpbl=kmpbl ntrac1=ntrac1
-    !$ser data zm=zm plyr=plyr pix=pix thlx=thlx vpert=vpert
-    !$ser data kmscu=kmscu
-    !$ser data thlvx=thlvx thetae=thetae
-    !$ser data radmin=radmin
 
       ! EDMF parameterization Siebesma et al.(2007)
-      !$ser savepoint MFPBLT-In
-      !$ser data kmpbl=kmpbl ntcw=ntcw_new ntrac1=ntrac1 dt2=dt2 pcnvflg=pcnvflg zl=zl
-      !$ser data zm=zm q1=q1 t1=t1 u1=u1 v1=v1 plyr=plyr pix=pix thlx=thlx thvx=thvx
-      !$ser data gdx=gdx hpbl=hpbl kpbl=kpbl vpert=vpert buou=buou xmf=xmf tcko=tcko
-      !$ser data qcko=qcko ucko=ucko vcko=vcko xlamue=xlamue
       call mfpblt(im,ix,km,kmpbl,ntcw_new,ntrac1,dt2, &
           pcnvflg,zl,zm,q1,t1,u1,v1,plyr,pix,thlx,thvx, &
           gdx,hpbl,kpbl,vpert,buou,xmf, &
           tcko,qcko,ucko,vcko,xlamue)
-      !$ser savepoint MFPBLT-Out
-      !$ser data hpbl=hpbl kpbl=kpbl buou=buou xmf=xmf tcko=tcko qcko=qcko ucko=ucko
-      !$ser data vcko=vcko xlamue=xlamue
 
-    !$ser savepoint SCUEnd-In
-    !$ser data ckz=ckz chz=chz hpbl=hpbl kpbl=kpbl pcnvflg=pcnvflg zi=zi phih=phih
-    !$ser data zldn=zldn_ser zlup=zlup_ser thvx=thvx tke=tke gotvx=gotvx zl=zl tsea=tsea q1=q1
-    !$ser data rlam=rlam ele=ele elm=elm zol=zol gdx=gdx phii=phii
-    !$ser data ntcw=ntcw_new ntiw=ntiw ntke=ntke phim=phim prn=prn
-    !$ser data bf=bf buod=buod buou=buou dku=dku dkt=dkt dkq=dkq
-    !$ser data mrad=mrad krad=krad pblflg=pblflg
-    !$ser data prod=prod radj=radj rdzt=rdzt scuflg=scuflg sflux=sflux
-    !$ser data shr2=shr2 stress=stress u1=u1 ucdo=ucdo ucko=ucko ustar=ustar
-    !$ser data v1=v1 vcdo=vcdo vcko=vcko xkzo=xkzo xkzmo=xkzmo xmf=xmf xmfd=xmfd
-    !$ser data rle=rle diss=diss prsl=prsl rtg=rtg delt=delt
-    !$ser data qcdo=qcdo qcko=qcko f2_ser=f2_ser spd1=spd1
-    !$ser data xlamue=xlamue xlamde=xlamde evap=evap
-    !$ser data ad=ad al=al au=au delta=del f1=f1 hpblx=hpblx kpblx=kpblx
-    !$ser data tcdo=tcdo tcko=tcko t1=t1 dtdz1=dtdz1 heat=heat
-    !$ser data dtsfc=dtsfc dqsfc=dqsfc tdt=tdt
-    !$ser data du=du dv=dv dusfc=dusfc dvsfc=dvsfc
-    !$ser data kmpbl=kmpbl ntrac1=ntrac1
-    !$ser data zm=zm plyr=plyr pix=pix thlx=thlx vpert=vpert
-    !$ser data kmscu=kmscu
-    !$ser data thlvx=thlvx thetae=thetae
-    !$ser data radmin=radmin
 ! mass-flux parameterization for stratocumulus-top-induced turbulence mixing
-      !$ser savepoint MFSCU-In
-      !$ser data kmscu=kmscu ntcw=ntcw_new ntrac1=ntrac1 dt2=dt2 scuflg=scuflg zl=zl
-      !$ser data zm=zm q1=q1 t1=t1 u1=u1 v1=v1 plyr=plyr pix=pix thlx=thlx thvx=thvx
-      !$ser data thlvx=thlvx gdx=gdx thetae=thetae radj=radj krad=krad mrad=mrad
-      !$ser data radmin=radmin buod=buod xmfd=xmfd tcdo=tcdo qcdo=qcdo ucdo=ucdo
-      !$ser data vcdo=vcdo xlamde=xlamde ntke=ntke
       call mfscu(im,ix,km,kmscu,ntcw_new,ntrac1,dt2, &
           scuflg,zl,zm,q1,t1,u1,v1,plyr,pix, &
           thlx,thvx,thlvx,gdx,thetae,radj, &
           krad,mrad,radmin,buod,xmfd, &
           tcdo,qcdo,ucdo,vcdo,xlamde)
-      !$ser savepoint MFSCU-Out
-      !$ser data radj=radj krad=krad mrad=mrad buod=buod xmfd=xmfd tcdo=tcdo qcdo=qcdo
-      !$ser data ucdo=ucdo vcdo=vcdo xlamde=xlamde
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
           !   compute prandtl number and exchange coefficient varying with height
 !
-    !$ser savepoint Prandtl-In
-    !$ser data ckz=ckz chz=chz hpbl=hpbl kpbl=kpbl pcnvflg=pcnvflg zi=zi phih=phih
-    !$ser data phim=phim prn=prn
       do k = 1, kmpbl
         do i = 1, im
           if(k < kpbl(i)) then
@@ -955,22 +812,13 @@
             chz(i,k) = min(chz(i,k),ch0)
             chz(i,k) = max(chz(i,k),ch1)
           endif
-        !$ser verbatim zldn_ser(i,k) = 0.0
-        !$ser verbatim zlup_ser(i,k) = 0.0
         enddo
       enddo
-    !$ser savepoint Prandtl-Out
-    !$ser data ckz=ckz chz=chz hpbl=hpbl kpbl=kpbl pcnvflg=pcnvflg zi=zi phih=phih
-    !$ser data phim=phim prn=prn
 
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !  compute an asymtotic mixing length
 !
-      !$ser savepoint PBLAML-In
-      !$ser data zldn=zldn_ser zlup=zlup_ser thvx=thvx tke=tke gotvx=gotvx zl=zl tsea=tsea q1=q1
-      !$ser data zi=zi rlam=rlam ele=ele elm=elm zol=zol gdx=gdx phii=phii
-      !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke
       do k = 1, km1
         do i = 1, im
           zlup = 0.0
@@ -1038,8 +886,6 @@
           ele(i,k) = elefac * ptem2
           ele(i,k) = max(ele(i,k), tem1)
           ele(i,k) = min(ele(i,k), elmx)
-          !$ser verbatim zldn_ser(i,k) = zldn
-          !$ser verbatim zlup_ser(i,k) = zlup
 !
         enddo
       enddo
@@ -1070,20 +916,11 @@
         elm(i,km) = elm(i,km1)
         ele(i,km) = ele(i,km1)
       enddo
-      !$ser savepoint PBLAML-Out
-      !$ser data zldn=zldn_ser zlup=zlup_ser thvx=thvx tke=tke gotvx=gotvx zl=zl tsea=tsea q1=q1
-      !$ser data zi=zi rlam=rlam ele=ele elm=elm zol=zol gdx=gdx phii=phii
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !  compute eddy diffusivities
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !
-      !$ser savepoint EdDiffShear-In
-      !$ser data bf=bf buod=buod buou=buou chz=chz ckz=ckz dku=dku dkt=dkt dkq=dkq elm=elm
-      !$ser data gotvx=gotvx kpbl=kpbl mrad=mrad krad=krad pblflg=pblflg pcnvflg=pcnvflg
-      !$ser data phim=phim prn=prn prod=prod radj=radj rdzt=rdzt scuflg=scuflg sflux=sflux
-      !$ser data shr2=shr2 stress=stress tke=tke u1=u1 ucdo=ucdo ucko=ucko ustar=ustar
-      !$ser data v1=v1 vcdo=vcdo vcko=vcko xkzo=xkzo xkzmo=xkzmo xmf=xmf xmfd=xmfd zl=zl
       do k = 1, km1
         do i = 1, im
            tem = 0.5 * (elm(i,k) + elm(i,k+1))
@@ -1273,18 +1110,10 @@
           prod(i,k) = buop + shrp
         enddo
       enddo
-      !$ser savepoint EdDiffShear-Out
-      !$ser data bf=bf buod=buod buou=buou chz=chz ckz=ckz dku=dku dkt=dkt dkq=dkq elm=elm
-      !$ser data gotvx=gotvx kpbl=kpbl mrad=mrad krad=krad pblflg=pblflg pcnvflg=pcnvflg
-      !$ser data phim=phim prn=prn prod=prod radj=radj rdzt=rdzt scuflg=scuflg sflux=sflux
-      !$ser data shr2=shr2 stress=stress tke=tke u1=u1 ucdo=ucdo ucko=ucko ustar=ustar
-      !$ser data v1=v1 vcdo=vcdo vcko=vcko xkzo=xkzo xkzmo=xkzmo xmf=xmf xmfd=xmfd zl=zl
 !
 !----------------------------------------------------------------------
 !     first predict tke due to tke production & dissipation(diss) 
 !
-      !$ser savepoint TKEPredict-In
-      !$ser data rle=rle ele=ele tke=tke diss=diss prod=prod
       do k = 1,km1
         do i=1,im
            rle(i,k) = ce0 / ele(i,k)
@@ -1304,14 +1133,9 @@
         enddo
       enddo
       enddo
-      !$ser savepoint TKEPredict-Out
-      !$ser data rle=rle ele=ele tke=tke diss=diss prod=prod
 !
 !     compute updraft & downdraft properties for tke
 !
-      !$ser savepoint UpDownTKE-In
-      !$ser data pcnvflg=pcnvflg qcdo=qcdo qcko=qcko scuflg=scuflg tke=tke kpbl=kpbl
-      !$ser data xlamue=xlamue zl=zl krad=krad mrad=mrad xlamde=xlamde
       do k = 1, km
         do i = 1, im
           if(pcnvflg(i)) then
@@ -1357,24 +1181,11 @@
           endif
         enddo
       enddo
-      !$ser savepoint UpDownTKE-Out
-      !$ser data pcnvflg=pcnvflg qcdo=qcdo qcko=qcko scuflg=scuflg tke=tke kpbl=kpbl
-      !$ser data xlamue=xlamue zl=zl krad=krad mrad=mrad xlamde=xlamde
 !
 !----------------------------------------------------------------------
 !     compute tridiagonal matrix elements for turbulent kinetic energy
 !
-      !$ser savepoint TKETendencyCalc-In
-      !$ser data ad=ad al=al au=au delta=del dkq=dkq f1=f1 kpbl=kpbl krad=krad mrad=mrad
-      !$ser data pcnvflg=pcnvflg prsl=prsl qcdo=qcdo qcko=qcko rdzt=rdzt scuflg=scuflg
-      !$ser data tke=tke xmf=xmf xmfd=xmfd q1=q1
-      !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke rtg=rtg
 
-      !$ser savepoint TKETridiagEle-In
-      !$ser data ad=ad al=al au=au delta=del dkq=dkq f1=f1 kpbl=kpbl krad=krad mrad=mrad
-      !$ser data pcnvflg=pcnvflg prsl=prsl qcdo=qcdo qcko=qcko rdzt=rdzt scuflg=scuflg
-      !$ser data tke=tke xmf=xmf xmfd=xmfd
-      !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke
       do i=1,im
          ad(i,1) = 1.0
          f1(i,1) = tke(i,1)
@@ -1424,18 +1235,10 @@
 !
         enddo
       enddo
-      !$ser savepoint TKETridiagEle-Out
-      !$ser data ad=ad al=al au=au delta=del dkq=dkq f1=f1 kpbl=kpbl krad=krad mrad=mrad
-      !$ser data pcnvflg=pcnvflg prsl=prsl qcdo=qcdo qcko=qcko rdzt=rdzt scuflg=scuflg
-      !$ser data tke=tke xmf=xmf xmfd=xmfd
 !
 !     solve tridiagonal problem for tke
 !
-      !$ser savepoint Tridit-In
-      !$ser data al=al ad=ad au=au f1=f1
       call tridit(im,km,1,al,ad,au,f1,au,f1)
-      !$ser savepoint Tridit-Out
-      !$ser data al=al ad=ad au=au f1=f1
 !
 !     recover tendency of tke
 !
@@ -1450,21 +1253,9 @@
             rtg(i,k,ntrac) = rtg(i,k,ntrac)+qtend
          enddo
       enddo
-      !$ser savepoint TKETendencyCalc-Out
-      !$ser data al=al ad=ad au=au f1=f1 rtg=rtg
 !
 !     compute tridiagonal matrix elements for heat and moisture (and other tracers, except tke)
 !
-      !$ser savepoint HeatTracerTendencyCalc-In
-      !$ser data ad=ad al=al au=au delta=del dkt=dkt f1=f1 f2_ser=f2_ser kpbl=kpbl krad=krad mrad=mrad
-      !$ser data pcnvflg=pcnvflg prsl=prsl qcdo=qcdo qcko=qcko rdzt=rdzt scuflg=scuflg evap=evap
-      !$ser data tcdo=tcdo tcko=tcko xmf=xmf xmfd=xmfd t1=t1 q1=q1 dtdz1=dtdz1 heat=heat
-      !$ser data rtg=rtg dtsfc=dtsfc dqsfc=dqsfc tdt=tdt
-
-      !$ser savepoint HeatTracerTridiagEle-In
-      !$ser data ad=ad al=al au=au delta=del dkt=dkt f1=f1 f2_ser=f2_ser kpbl=kpbl krad=krad mrad=mrad
-      !$ser data pcnvflg=pcnvflg prsl=prsl qcdo=qcdo qcko=qcko rdzt=rdzt scuflg=scuflg evap=evap
-      !$ser data tcdo=tcdo tcko=tcko xmf=xmf xmfd=xmfd t1=t1 q1=q1 dtdz1=dtdz1 heat=heat
       do i=1,im
          ad(i,1) = 1.
          f1(i,1) = t1(i,1)   + dtdz1(i) * heat(i)
@@ -1573,34 +1364,10 @@
           enddo
         enddo
       endif
-      !$ser verbatim do i = 1,im
-        !$ser verbatim do k = 1,km
-          !$ser verbatim do kk = 1, ntrac1
-            !$ser verbatim is = (kk-1) * km
-            !$ser verbatim f2_ser(i, k, kk) = f2(i, k + is)
-          !$ser verbatim enddo
-        !$ser verbatim enddo
-      !$ser verbatim enddo
-      !$ser savepoint HeatTracerTridiagEle-Out
-      !$ser data ad=ad al=al au=au delta=del f1=f1 f2_ser=f2_ser kpbl=kpbl krad=krad mrad=mrad
-      !$ser data pcnvflg=pcnvflg prsl=prsl qcdo=qcdo qcko=qcko rdzt=rdzt scuflg=scuflg
-      !$ser data tcdo=tcdo tcko=tcko xmf=xmf xmfd=xmfd t1=t1 q1=q1
 !
 !     solve tridiagonal problem for heat and moisture
 !
-      !$ser savepoint Tridin-In
-      !$ser data nt1=ntrac1 al=al ad=ad au=au f1=f1 f2_ser=f2_ser
       call tridin(im,km,ntrac1,al,ad,au,f1,f2,au,f1,f2)
-      !$ser verbatim do i = 1,im
-        !$ser verbatim do k = 1,km
-          !$ser verbatim do kk = 1, ntrac1
-            !$ser verbatim is = (kk-1) * km
-            !$ser verbatim f2_ser(i, k, kk) = f2(i, k + is)
-          !$ser verbatim enddo
-        !$ser verbatim enddo
-      !$ser verbatim enddo
-      !$ser savepoint Tridin-Out
-      !$ser data al=al ad=ad au=au f1=f1 f2_ser=f2_ser
 !
 !     recover tendencies of heat and moisture
 !
@@ -1627,8 +1394,6 @@
         enddo
       endif
 
-      !$ser savepoint HeatTracerTendencyCalc-Out
-      !$ser data rtg=rtg tdt=tdt dtsfc=dtsfc dqsfc=dqsfc al=al ad=ad au=au f1=f1 f2_ser=f2_ser
 !
 ! kgao note - rearrange tracer tendencies 
 !
@@ -1646,26 +1411,6 @@
         endif
       !endif
 
-        !$ser verbatim do i = 1,im
-        !$ser verbatim do k = 1,km
-          !$ser verbatim do kk = 1, ntrac1
-            !$ser verbatim is = (kk-1) * km
-            !$ser verbatim f2_ser(i, k, kk) = f2(i, k + is)
-          !$ser verbatim enddo
-        !$ser verbatim enddo
-      !$ser verbatim enddo
-      !$ser savepoint MomentTendencyCalc-In
-      !$ser data delta=del diss=diss dku=dku dtdz1=dtdz1 vcko=vcko xmf=xmf xmfd=xmfd delt=delt
-      !$ser data du=du dv=dv dusfc=dusfc dvsfc=dvsfc f1=f1 f2_ser=f2_ser al=al ad=ad au=au
-      !$ser data krad=krad mrad=mrad pcnvflg=pcnvflg prsl=prsl rdzt=rdzt scuflg=scuflg
-      !$ser data spd1=spd1 stress=stress tdt=tdt u1=u1 ucdo=ucdo ucko=ucko v1=v1 vcdo=vcdo
-      !$ser data hpbl=hpbl hpblx=hpblx kpbl=kpbl kpblx=kpblx
-
-      !$ser savepoint MomentTridiagComp-In
-      !$ser data ad=ad al=al au=au delta=del diss=diss dku=dku dtdz1=dtdz1 f1=f1 f2_ser=f2_ser
-      !$ser data kpbl=kpbl krad=krad mrad=mrad pcnvflg=pcnvflg prsl=prsl rdzt=rdzt scuflg=scuflg
-      !$ser data spd1=spd1 stress=stress tdt=tdt u1=u1 ucdo=ucdo ucko=ucko v1=v1 vcdo=vcdo
-      !$ser data vcko=vcko xmf=xmf xmfd=xmfd
 !
 !     add tke dissipative heating to temperature tendency
 !
@@ -1737,37 +1482,10 @@
 !
         enddo
       enddo
-      !$ser verbatim do i = 1,im
-        !$ser verbatim do k = 1,km
-          !$ser verbatim do kk = 1, ntrac1
-            !$ser verbatim is = (kk-1) * km
-            !$ser verbatim f2_ser(i, k, kk) = f2(i, k + is)
-          !$ser verbatim enddo
-        !$ser verbatim enddo
-      !$ser verbatim enddo
-      !$ser savepoint MomentTridiagComp-Out
-      !$ser data ad=ad al=al au=au delta=del diss=diss dku=dku dtdz1=dtdz1 f1=f1 f2_ser=f2_ser
-      !$ser data kpbl=kpbl krad=krad mrad=mrad pcnvflg=pcnvflg prsl=prsl rdzt=rdzt scuflg=scuflg
-      !$ser data spd1=spd1 stress=stress tdt=tdt u1=u1 ucdo=ucdo ucko=ucko v1=v1 vcdo=vcdo
-      !$ser data vcko=vcko xmf=xmf xmfd=xmfd
 !
 !     solve tridiagonal problem for momentum
 !
-      !$ser verbatim do i = 1,im
-        !$ser verbatim do k = 1,km
-          !$ser verbatim f2_ser(i, k, 1) = f2(i, k)
-        !$ser verbatim enddo
-      !$ser verbatim enddo
-      !$ser savepoint Tridi2-In
-      !$ser data al=al ad=ad au=au f1=f1 f2_ser=f2_ser
       call tridi2(im,km,al,ad,au,f1,f2,au,f1,f2)
-      !$ser verbatim do i = 1,im
-        !$ser verbatim do k = 1,km
-          !$ser verbatim f2_ser(i, k, 1) = f2(i, k)
-        !$ser verbatim enddo
-      !$ser verbatim enddo
-      !$ser savepoint Tridi2-Out
-      !$ser data al=al ad=ad au=au f1=f1 f2_ser=f2_ser
 !
 !     recover tendencies of momentum
 !
@@ -1790,45 +1508,9 @@
          kpbl(i) = kpblx(i)
       enddo
 !
-      !$ser savepoint MomentTendencyCalc-Out
-      !$ser data du=du dv=dv dusfc=dusfc dvsfc=dvsfc f1=f1 f2_ser=f2_ser al=al ad=ad au=au hpbl=hpbl kpbl=kpbl
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       
-      !$ser savepoint Half2-Out
-      !$ser data ckz=ckz chz=chz hpbl=hpbl kpbl=kpbl pcnvflg=pcnvflg zi=zi phih=phih
-      !$ser data zldn=zldn_ser zlup=zlup_ser thvx=thvx tke=tke gotvx=gotvx zl=zl tsea=tsea q1=q1
-      !$ser data rlam=rlam ele=ele elm=elm zol=zol gdx=gdx phii=phii
-      !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke phim=phim prn=prn
-      !$ser data bf=bf buod=buod buou=buou dku=dku dkt=dkt dkq=dkq
-      !$ser data mrad=mrad krad=krad pblflg=pblflg
-      !$ser data prod=prod radj=radj rdzt=rdzt scuflg=scuflg sflux=sflux
-      !$ser data shr2=shr2 stress=stress u1=u1 ucdo=ucdo ucko=ucko ustar=ustar
-      !$ser data v1=v1 vcdo=vcdo vcko=vcko xkzo=xkzo xkzmo=xkzmo xmf=xmf xmfd=xmfd
-      !$ser data rle=rle diss=diss prsl=prsl rtg=rtg delt=delt
-      !$ser data qcdo=qcdo qcko=qcko f2_ser=f2_ser spd1=spd1
-      !$ser data xlamue=xlamue xlamde=xlamde evap=evap
-      !$ser data ad=ad al=al au=au delta=del f1=f1 hpblx=hpblx kpblx=kpblx
-      !$ser data tcdo=tcdo tcko=tcko t1=t1 dtdz1=dtdz1 heat=heat
-      !$ser data dtsfc=dtsfc dqsfc=dqsfc tdt=tdt
-      !$ser data du=du dv=dv dusfc=dusfc dvsfc=dvsfc
 
-      !$ser savepoint SCUEnd-Out
-      !$ser data ckz=ckz chz=chz hpbl=hpbl kpbl=kpbl pcnvflg=pcnvflg zi=zi phih=phih
-      !$ser data zldn=zldn_ser zlup=zlup_ser thvx=thvx tke=tke gotvx=gotvx zl=zl tsea=tsea q1=q1
-      !$ser data rlam=rlam ele=ele elm=elm zol=zol gdx=gdx phii=phii
-      !$ser data ntcw=ntcw ntiw=ntiw ntke=ntke phim=phim prn=prn
-      !$ser data bf=bf buod=buod buou=buou dku=dku dkt=dkt dkq=dkq
-      !$ser data mrad=mrad krad=krad pblflg=pblflg
-      !$ser data prod=prod radj=radj rdzt=rdzt scuflg=scuflg sflux=sflux
-      !$ser data shr2=shr2 stress=stress u1=u1 ucdo=ucdo ucko=ucko ustar=ustar
-      !$ser data v1=v1 vcdo=vcdo vcko=vcko xkzo=xkzo xkzmo=xkzmo xmf=xmf xmfd=xmfd
-      !$ser data rle=rle diss=diss prsl=prsl rtg=rtg delt=delt
-      !$ser data qcdo=qcdo qcko=qcko f2_ser=f2_ser spd1=spd1
-      !$ser data xlamue=xlamue xlamde=xlamde evap=evap
-      !$ser data ad=ad al=al au=au delta=del f1=f1 hpblx=hpblx kpblx=kpblx
-      !$ser data tcdo=tcdo tcko=tcko t1=t1 dtdz1=dtdz1 heat=heat
-      !$ser data dtsfc=dtsfc dqsfc=dqsfc tdt=tdt
-      !$ser data du=du dv=dv dusfc=dusfc dvsfc=dvsfc
       return
       end
 !
