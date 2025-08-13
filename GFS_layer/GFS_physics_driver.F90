@@ -3201,27 +3201,27 @@ module module_physics_driver
             else
                nsamftrac = tottracer
             endif
-            !$ser verbatim print *, 'INFO: shalconv'
-            !$ser verbatim print *, 'INFO: ntshalconv = ',nsamftrac
-            !$ser verbatim ntchm = Model%ntchm
-            !$ser verbatim ii = size(ser_fscav)
-            !$ser verbatim ser_fscav(:) = 0.0
-            !$ser verbatim ncld = Model%ncld
-            !$ser verbatim clam_shal = Model%clam_shal
-            !$ser verbatim c0s_shal = Model%c0s_shal
-            !$ser verbatim c1_shal = Model%c1_shal
-            !$ser verbatim pgcon_shal = Model%pgcon_shal
-            !$ser verbatim asolfac_shal = Model%asolfac_shal
-            !$ser savepoint ShalConv-In
-            !$ser data sc_dtp=dtp sc_itc=itc sc_ntchm=ntchm sc_ntk=ntk sc_nsamftrac=nsamftrac
-            !$ser data sc_delta=del sc_prsl=Statein%prsl sc_pgr=Statein%pgr sc_phil=Statein%phil sc_clw=clw(:,:,1:nsamftrac+2)
-            !$ser data sc_gq0=Stateout%gq0(:,:,1) sc_gt0=Stateout%gt0
-            !$ser data sc_gu0=Stateout%gu0 sc_gv0=Stateout%gv0 sc_ser_fscav=ser_fscav
-            !$ser data sc_rain1=rain1 sc_kbot=kbot sc_ktop=ktop sc_kcnv=kcnv sc_islmsk=islmsk sc_garea=garea
-            !$ser data sc_vvl=Statein%vvl sc_ncld=ncld sc_hpbl=Diag%hpbl sc_ud_mf=ud_mf
-            !$ser data sc_dt_mf=dt_mf sc_cnvw=cnvw sc_cnvc=cnvc
-            !$ser data sc_clam_shal=clam_shal sc_c0s_shal=c0s_shal sc_c1_shal=c1_shal
-            !$ser data sc_pgcon_shal=pgcon_shal sc_asolfac_shal=asolfac_shal
+            !!$ser verbatim print *, 'INFO: shalconv'
+            !!$ser verbatim print *, 'INFO: ntshalconv = ',nsamftrac
+            !!$ser verbatim ntchm = Model%ntchm
+            !!$ser verbatim ii = size(ser_fscav)
+            !!$ser verbatim ser_fscav(:) = 0.0
+            !!$ser verbatim ncld = Model%ncld
+            !!$ser verbatim clam_shal = Model%clam_shal
+            !!$ser verbatim c0s_shal = Model%c0s_shal
+            !!$ser verbatim c1_shal = Model%c1_shal
+            !!$ser verbatim pgcon_shal = Model%pgcon_shal
+            !!$ser verbatim asolfac_shal = Model%asolfac_shal
+            !!$ser savepoint ShalConv-In
+            !!$ser data sc_dtp=dtp sc_itc=itc sc_ntchm=ntchm sc_ntk=ntk sc_nsamftrac=nsamftrac
+            !!$ser data sc_delta=del sc_prsl=Statein%prsl sc_pgr=Statein%pgr sc_phil=Statein%phil sc_clw=clw(:,:,1:nsamftrac+2)
+            !!$ser data sc_gq0=Stateout%gq0(:,:,1) sc_gt0=Stateout%gt0
+            !!$ser data sc_gu0=Stateout%gu0 sc_gv0=Stateout%gv0 sc_ser_fscav=ser_fscav
+            !!$ser data sc_rain1=rain1 sc_kbot=kbot sc_ktop=ktop sc_kcnv=kcnv sc_islmsk=islmsk sc_garea=garea
+            !!$ser data sc_vvl=Statein%vvl sc_ncld=ncld sc_hpbl=Diag%hpbl sc_ud_mf=ud_mf
+            !!$ser data sc_dt_mf=dt_mf sc_cnvw=cnvw sc_cnvc=cnvc
+            !!$ser data sc_clam_shal=clam_shal sc_c0s_shal=c0s_shal sc_c1_shal=c1_shal
+            !!$ser data sc_pgcon_shal=pgcon_shal sc_asolfac_shal=asolfac_shal
             call samfshalcnv (im, ix, levs, dtp, itc, Model%ntchm, ntk, nsamftrac, &
                               del, Statein%prsl, Statein%pgr, Statein%phil, clw(:,:,1:nsamftrac+2),   &
                               Stateout%gq0(:,:,1), Stateout%gt0,                   &
@@ -3233,13 +3233,13 @@ module module_physics_driver
                               Model%pgcon_shal, Model%asolfac_shal)
 
 
-            !$ser savepoint ShalConv-Out
-            !$ser data sc_delta=del sc_prsl=Statein%prsl sc_pgr=Statein%pgr sc_phil=Statein%phil
-            !$ser data sc_gq0=Stateout%gq0(:,:,1) sc_gt0=Stateout%gt0
-            !$ser data sc_gu0=Stateout%gu0 sc_gv0=Stateout%gv0 sc_clw=clw(:,:,1:nsamftrac+2)
-            !$ser data sc_rain1=rain1 sc_kbot=kbot sc_ktop=ktop sc_kcnv=kcnv
-            !$ser data sc_vvl=Statein%vvl sc_hpbl=Diag%hpbl sc_ud_mf=ud_mf
-            !$ser data sc_dt_mf=dt_mf sc_cnvw=cnvw sc_cnvc=cnvc
+            !!$ser savepoint ShalConv-Out
+            !!$ser data sc_delta=del sc_prsl=Statein%prsl sc_pgr=Statein%pgr sc_phil=Statein%phil
+            !!$ser data sc_gq0=Stateout%gq0(:,:,1) sc_gt0=Stateout%gt0
+            !!$ser data sc_gu0=Stateout%gu0 sc_gv0=Stateout%gv0 sc_clw=clw(:,:,1:nsamftrac+2)
+            !!$ser data sc_rain1=rain1 sc_kbot=kbot sc_ktop=ktop sc_kcnv=kcnv
+            !!$ser data sc_vvl=Statein%vvl sc_hpbl=Diag%hpbl sc_ud_mf=ud_mf
+            !!$ser data sc_dt_mf=dt_mf sc_cnvw=cnvw sc_cnvc=cnvc
             raincs(:)     = frain * rain1(:)
             Diag%rainc(:) = Diag%rainc(:) + raincs(:)
 ! in  mfshalcnv,  'cnvw' and 'cnvc' are set to zero before computation starts:

@@ -305,8 +305,6 @@
       module module_radiation_driver        !
 !........................................!
 !
-      !$ser verbatim use mpi
-      !$ser verbatim USE m_serialize, ONLY: fs_is_serialization_on
       use physparam
       use physcons,                  only: eps   => con_eps,            &
      &                                     epsm1 => con_epsm1,          &
@@ -1203,22 +1201,14 @@
                  lla, llb, lya, lyb, kt, kb
       integer :: n
       integer, dimension(size(Grid%xlon,1)) :: idxday
-      !$ser verbatim integer, dimension(size(Grid%xlon,1)) :: icsdsw, icsdlw
       integer, dimension(size(Grid%xlon,1),3) :: mbota, mtopa
-      !$ser verbatim integer :: mpi_rank,ier
-      !$ser verbatim logical :: ser_on, lprnt
-
+      
       !--- REAL VARIABLES
       real(kind=kind_phys) :: raddt, es, qs, delt, tem0d 
-      !$ser verbatim real(kind=kind_phys) :: solcon
-
+      
       real(kind=kind_phys), dimension(size(Grid%xlon,1)) ::             &
            tsfa, cvt1, cvb1, tem1d, tsfg, tskn
-      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1)) :: coszen, semis
-      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1),2) :: topflw
-      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1),3) :: topfsw, sfcflw
-      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1),4) :: sfcfsw
-
+      
       real(kind=kind_phys), dimension(size(Grid%xlon,1),5)       :: cldsa
       real(kind=kind_phys), dimension(size(Grid%xlon,1),NSPC1)   :: aerodp
       real(kind=kind_phys), dimension(size(Grid%xlon,1),NF_ALBD) :: sfcalb
@@ -1239,16 +1229,10 @@
 
       !--- TYPED VARIABLES
       type (cmpfsw_type),    dimension(size(Grid%xlon,1)) :: scmpsw
-      !$ser verbatim real(kind=kind_phys), dimension(size(Grid%xlon,1),6) :: ser_scmpsw
 !
 !===> ...  begin here
-      !$ser verbatim call mpi_comm_rank(MPI_COMM_WORLD, mpi_rank,ier)
-      !!$ser verbatim print *, 'INFO: inside GFS_radiation_driver start rank=',mpi_rank,' SER is ',ser_on,' lsswr=',Model%lsswr
-!only call GFS_radiation_driver at radiation time step
       if (.not. (Model%lsswr .or. Model%lslwr )) return
-!
-      !!$ser verbatim print *, 'INFO: running GFS_radiation_driver, serialization is ', ser_on
-      
+!      
       !--- set commonly used integers
       me = Model%me
       LM = Model%levr
@@ -1707,32 +1691,6 @@
 !> -# Approximate mean surface albedo from vis- and nir-  diffuse values.
         Radtend%sfalb(:) = max(0.01, 0.5 * (sfcalb(:,2) + sfcalb(:,4)))
 
-        !$ser verbatim do i = 1, IM
-          !$ser verbatim icsdsw(i)=Tbd%icsdsw(i)
-          !$ser verbatim coszen(i)=Radtend%coszen(i)
-          !$ser verbatim topfsw(i,1)=Diag%topfsw(i)%upfxc
-          !$ser verbatim topfsw(i,2)=Diag%topfsw(i)%dnfxc
-          !$ser verbatim topfsw(i,3)=Diag%topfsw(i)%upfx0
-          !$ser verbatim sfcfsw(i,1)=Radtend%sfcfsw(i)%upfxc
-          !$ser verbatim sfcfsw(i,2)=Radtend%sfcfsw(i)%dnfxc
-          !$ser verbatim sfcfsw(i,3)=Radtend%sfcfsw(i)%upfx0
-          !$ser verbatim sfcfsw(i,4)=Radtend%sfcfsw(i)%dnfx0
-          !$ser verbatim ser_scmpsw(i,1)=scmpsw(i)%uvbfc
-          !$ser verbatim ser_scmpsw(i,2)=scmpsw(i)%uvbf0
-          !$ser verbatim ser_scmpsw(i,3)=scmpsw(i)%nirbm
-          !$ser verbatim ser_scmpsw(i,4)=scmpsw(i)%nirdf
-          !$ser verbatim ser_scmpsw(i,5)=scmpsw(i)%visbm
-          !$ser verbatim ser_scmpsw(i,6)=scmpsw(i)%visdf
-        !$ser verbatim enddo
-        !$ser verbatim solcon=Model%solcon
-        !$ser verbatim lprnt=Model%lprnt
-        !$ser savepoint SWRAD-In
-        !$ser data plyr=plyr plvl=plvl tlyr=tlyr tlvl=tlvl qlyr=qlyr olyr=olyr
-        !$ser data gasvmr=gasvmr clouds=clouds icsdsw=icsdsw faersw=faersw
-        !$ser data sfcalb=sfcalb coszen=coszen solcon=solcon
-        !$ser data nday=nday idxday=idxday im=im lmk=lmk lmp=lmp lprnt=lprnt
-        !$ser data htswc=htswc topfsw=topfsw sfcfsw=sfcfsw
-        !$ser data htsw0=htsw0 ser_scmpsw=ser_scmpsw tau067=tau067
         if (nday > 0) then
 
 !>  - Call module_radsw_main::swrad(), to compute SW heating rates and
@@ -1829,32 +1787,6 @@
           endif
 
         endif                  ! end_if_nday
-        !$ser verbatim do i = 1, IM
-          !$ser verbatim icsdsw(i)=Tbd%icsdsw(i)
-          !$ser verbatim coszen(i)=Radtend%coszen(i)
-          !$ser verbatim topfsw(i,1)=Diag%topfsw(i)%upfxc
-          !$ser verbatim topfsw(i,2)=Diag%topfsw(i)%dnfxc
-          !$ser verbatim topfsw(i,3)=Diag%topfsw(i)%upfx0
-          !$ser verbatim sfcfsw(i,1)=Radtend%sfcfsw(i)%upfxc
-          !$ser verbatim sfcfsw(i,2)=Radtend%sfcfsw(i)%dnfxc
-          !$ser verbatim sfcfsw(i,3)=Radtend%sfcfsw(i)%upfx0
-          !$ser verbatim sfcfsw(i,4)=Radtend%sfcfsw(i)%dnfx0
-          !$ser verbatim ser_scmpsw(i,1)=scmpsw(i)%uvbfc
-          !$ser verbatim ser_scmpsw(i,2)=scmpsw(i)%uvbf0
-          !$ser verbatim ser_scmpsw(i,3)=scmpsw(i)%nirbm
-          !$ser verbatim ser_scmpsw(i,4)=scmpsw(i)%nirdf
-          !$ser verbatim ser_scmpsw(i,5)=scmpsw(i)%visbm
-          !$ser verbatim ser_scmpsw(i,6)=scmpsw(i)%visdf
-        !$ser verbatim enddo
-        !$ser verbatim solcon=Model%solcon
-        !$ser verbatim lprnt=Model%lprnt
-        !$ser savepoint SWRAD-Out
-        !$ser data plyr=plyr plvl=plvl tlyr=tlyr tlvl=tlvl qlyr=qlyr olyr=olyr
-        !$ser data gasvmr=gasvmr clouds=clouds icsdsw=icsdsw faersw=faersw
-        !$ser data sfcalb=sfcalb coszen=coszen solcon=solcon
-        !$ser data nday=nday idxday=idxday im=im lmk=lmk lmp=lmp lprnt=lprnt
-        !$ser data htswc=htswc topfsw=topfsw sfcfsw=sfcfsw
-        !$ser data htsw0=htsw0 ser_scmpsw=ser_scmpsw tau067=tau067
 
 ! --- radiation fluxes for other physics processes
         Coupling%sfcnsw(:) = Radtend%sfcfsw(:)%dnfxc - Radtend%sfcfsw(:)%upfxc
@@ -1877,22 +1809,7 @@
 !>  - Call module_radlw_main::lwrad(), to compute LW heating rates and
 !!    fluxes.
 !     print *,' in grrad : calling lwrad'
-        !$ser verbatim do i = 1, IM
-          !$ser verbatim icsdlw(i)=Tbd%icsdlw(i)
-          !$ser verbatim semis(i)=Radtend%semis(i)
-          !$ser verbatim topflw(i,1)=Diag%topflw(i)%upfxc
-          !$ser verbatim topflw(i,2)=Diag%topflw(i)%upfx0
-          !$ser verbatim sfcflw(i,1)=Radtend%sfcflw(i)%upfxc
-          !$ser verbatim sfcflw(i,2)=Radtend%sfcflw(i)%dnfxc
-          !$ser verbatim sfcflw(i,3)=Radtend%sfcflw(i)%dnfx0
-        !$ser verbatim enddo
-        !$ser savepoint LWRAD-In
-        !$ser data plyr=plyr plvl=plvl tlyr=tlyr tlvl=tlvl qlyr=qlyr olyr=olyr
-        !$ser data gasvmr=gasvmr clouds=clouds icsdlw=icsdlw faerlw=faerlw
-        !$ser data semis=semis tsfg=tsfg
-        !$ser data idxday=idxday im=im lmk=lmk lmp=lmp lprnt=lprnt
-        !$ser data htlwc=htlwc topflw=topflw sfcflw=sfcflw
-        !$ser data htlw0=htlw0 tau110=tau110
+
         if (Model%lwhtr) then
           call lwrad (plyr, plvl, tlyr, tlvl, qlyr, olyr, gasvmr,  &        !  ---  inputs
                       clouds, Tbd%icsdlw, faerlw, Radtend%semis,   &
@@ -1906,22 +1823,6 @@
                       htlwc, Diag%topflw, Radtend%sfcflw,          &
                       tau110=tau110)                                        !  ---  outputs
         endif
-        !$ser verbatim do i = 1, IM
-          !$ser verbatim icsdlw(i)=Tbd%icsdlw(i)
-          !$ser verbatim semis(i)=Radtend%semis(i)
-          !$ser verbatim topflw(i,1)=Diag%topflw(i)%upfxc
-          !$ser verbatim topflw(i,2)=Diag%topflw(i)%upfx0
-          !$ser verbatim sfcflw(i,1)=Radtend%sfcflw(i)%upfxc
-          !$ser verbatim sfcflw(i,2)=Radtend%sfcflw(i)%dnfxc
-          !$ser verbatim sfcflw(i,3)=Radtend%sfcflw(i)%dnfx0
-        !$ser verbatim enddo
-        !$ser savepoint LWRAD-Out
-        !$ser data plyr=plyr plvl=plvl tlyr=tlyr tlvl=tlvl qlyr=qlyr olyr=olyr
-        !$ser data gasvmr=gasvmr clouds=clouds icsdlw=icsdlw faerlw=faerlw
-        !$ser data semis=semis tsfg=tsfg
-        !$ser data idxday=idxday im=im lmk=lmk lmp=lmp lprnt=lprnt
-        !$ser data htlwc=htlwc topflw=topflw sfcflw=sfcflw
-        !$ser data htlw0=htlw0 tau110=tau110
 
         if (Model%do_diagnostic_radiation_with_scaled_co2) then
            call diagnostic_longwave_radiation_with_scaled_co2(                &
