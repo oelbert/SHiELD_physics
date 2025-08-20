@@ -1342,6 +1342,7 @@ subroutine mpdrv (hydrostatic, ua, va, wa, delp, pt, qv, ql, qr, qi, qs, qg, &
 
     do i = is, ie
 
+        !$ser verbatim te_loss(i) = 0.
         !$ser verbatim do k = ks, ke
             !$ser verbatim ii = mod((k - 1) + ke * (i - 1), length) + 1
             !$ser verbatim tc_index (i, k) = ii
