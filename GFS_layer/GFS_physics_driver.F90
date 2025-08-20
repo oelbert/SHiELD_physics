@@ -987,6 +987,15 @@ module module_physics_driver
            )
         endif
 
+        !$ser savepoint SfcCalls-In
+        !$ser data u1=Statein%ugrs v1=Statein%vgrs t1=Statein%tgrs qvapor=Statein%qgrs(:,:,1)
+        !$ser data prsl1=Statein%prsl prsik=Statein%prsik prslk=Statein%prslk phil=Statein%phil
+        !$ser data rb=rb stress=stress ps=Statein%pgr hflx=hflx adjsfcdlw=adjsfcdlw 
+        !$ser data adjsfcdsw=adjsfcdsw adjsfcnsw=adjsfcnsw tsfc=Sfcprop%tsfc vfrac=Sfcprop%vfrac
+        !$ser data sfcemis=Radtend%semis zorl=Sfcprop%zorl shdmax=Sfcprop%shdmax weasd=Sfcprop%weasd
+        !$ser data uustar=Sfcprop%uustar snowd=Sfcprop%snowd ztrl=Sfcprop%ztrl ffmm=Sfcprop%ffmm
+        !$ser data ffhh=Sfcprop%ffhh slmsk=islmsk vegtype=vegtype stc=stsoil srflag=Sfcprop%srflag
+        !$ser data hice=Sfcprop%hice fice=Sfcprop%fice tisfc=Sfcprop%tisfc tprcp=Sfcprop%tprcp
 !
 ! save temp change due to radiation - need for sttp stochastic physics
 !---------------------------------------------------------------------
@@ -1695,6 +1704,16 @@ module module_physics_driver
 
 
       endif
+
+      !$ser savepoint SfcCalls-Out
+      !$ser data u1=Statein%ugrs v1=Statein%vgrs t1=Statein%tgrs qvapor=Statein%qgrs(:,:,1)
+      !$ser data prsl1=Statein%prsl prsik=Statein%prsik prslk=Statein%prslk phil=Statein%phil
+      !$ser data rb=rb stress=stress ps=Statein%pgr hflx=hflx adjsfcdlw=adjsfcdlw 
+      !$ser data adjsfcdsw=adjsfcdsw adjsfcnsw=adjsfcnsw tsfc=Sfcprop%tsfc vfrac=Sfcprop%vfrac
+      !$ser data sfcemis=Radtend%semis zorl=Sfcprop%zorl shdmax=Sfcprop%shdmax weasd=Sfcprop%weasd
+      !$ser data uustar=Sfcprop%uustar snowd=Sfcprop%snowd ztrl=Sfcprop%ztrl ffmm=Sfcprop%ffmm
+      !$ser data ffhh=Sfcprop%ffhh slmsk=islmsk vegtype=vegtype stc=stsoil srflag=Sfcprop%srflag
+      !$ser data hice=Sfcprop%hice fice=Sfcprop%fice tisfc=Sfcprop%tisfc tprcp=Sfcprop%tprcp
 
 !!!!!!!!!!!!!!!!!Commented by Moorthi on July 18, 2012 !!!!!!!!!!!!!!!!!!!
 !     do i = 1, im
