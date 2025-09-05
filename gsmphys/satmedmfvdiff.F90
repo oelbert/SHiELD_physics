@@ -925,7 +925,7 @@
           tcdo,qcdo,ucdo,vcdo,xlamde)
       !$ser savepoint MFSCU-Out
       !$ser data radj=radj krad=krad mrad=mrad buod=buod xmfd=xmfd tcdo=tcdo qcdo=qcdo
-      !$ser data ucdo=ucdo vcdo=vcdo xlamde=xlamde
+      !$ser data ucdo=ucdo vcdo=vcdo xlamde=xlamde scuflg=scuflg=scuflg=scuflg
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
