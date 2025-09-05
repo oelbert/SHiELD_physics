@@ -427,7 +427,7 @@ module module_physics_driver
       integer :: kflip
       integer :: ntsd ! for myj
       !$ser verbatim integer :: ivegsrc, lsm, lsoil, isot, ntcw, ntiw
-      !$ser verbatim integer :: ntke, nxpvs, nt, ii, ntchm, ncld
+      !$ser verbatim integer :: ntke, ii, ntchm, ncld
       
       integer, dimension(size(Grid%xlon,1)) ::                          &
            kbot, ktop, kcnv, soiltyp, vegtype, kpbl, slopetyp, kinver,  &
@@ -437,9 +437,8 @@ module module_physics_driver
 
       !--- LOGICAL VARIABLES
       logical :: lprnt, revap, do_awdd, trans_aero
-      !$ser verbatim logical :: mp_consv_te, mp_last_step, rad_daily_mean
       !$ser verbatim logical :: redrag, do_z0_moon, do_z0_hwrf15, do_z0_hwrf17, do_dk_hb19
-      !$ser verbatim logical :: do_z0_hwrf17_hwonly, mom4ice, lheatstrg, dspheat, cap_k0_land
+      !$ser verbatim logical :: do_z0_hwrf17_hwonly, mom4ice, lheatstrg
       
       logical, dimension(size(Grid%xlon,1)) ::                          &
            flag_iter, flag_guess, invrsn, skip_macro,                   &
@@ -934,28 +933,6 @@ module module_physics_driver
            )
 
       else
-        !!$ser verbatim print *, 'INFO: serialize rad'
-        !$ser verbatim rad_solhr = Model%solhr
-        !$ser verbatim rad_slag = Model%slag
-        !$ser verbatim rad_sdec = Model%sdec
-        !$ser verbatim rad_cdec = Model%cdec
-        !$ser verbatim rad_daily_mean = Model%daily_mean
-        !$ser verbatim do i = 1, im
-          !$ser verbatim rad_t_surface(i) = Statein%tgrs(i, 1)
-        !$ser verbatim enddo
-        !$ser savepoint RadInterp-In
-        !$ser data solhr=rad_solhr slag=rad_slag sdec=rad_sdec cdec=rad_cdec sinlat=Grid%sinlat
-        !$ser data coslat=Grid%coslat xlon=Grid%xlon coszen=Radtend%coszen tsurf=Sfcprop%tsfc
-        !$ser data tgrs=rad_t_surface tsflw=Radtend%tsflw semis=Radtend%semis
-        !$ser data sfcdsw=Coupling%sfcdsw sfcnsw=Coupling%sfcnsw sfcdlw=Coupling%sfcdlw
-        !$ser data htrsw=Radtend%htrsw swhc=Radtend%swhc htrlw=Radtend%htrlw lwhc=Radtend%lwhc
-        !$ser data nirbmui=Coupling%nirbmui nirdfui=Coupling%nirdfui visbmui=Coupling%visbmui
-        !$ser data visdfui=Coupling%visdfui nirbmdi=Coupling%nirbmdi nirdfdi=Coupling%nirdfdi
-        !$ser data visbmdi=Coupling%visbmdi visdfdi=Coupling%visdfdi daily_mean=rad_daily_mean
-        !$ser data dtdt=dtdt dtdtc=dtdtc xmu=xmu xcosz=xcosz
-        !$ser data adjsfcdsw=adjsfcdsw adjsfcnsw=adjsfcnsw adjsfcdlw=adjsfcdlw adjsfculw=adjsfculw
-        !$ser data adjnirbmu=adjnirbmu adjnirdfu=adjnirdfu adjvisbmu=adjvisbmu adjvisdfu=adjvisdfu
-        !$ser data adjnirbmd=adjnirbmd adjnirdfd=adjnirdfd adjvisbmd=adjvisbmd adjvisdfd=adjvisdfd
         call dcyc2t3                                                        &
 !  ---  inputs:
            ( Model%solhr, Model%slag, Model%sdec, Model%cdec, Grid%sinlat,  &
@@ -974,11 +951,6 @@ module module_physics_driver
              adjnirbmu, adjnirdfu, adjvisbmu, adjvisdfu,                    &
              adjnirbmd, adjnirdfd, adjvisbmd, adjvisdfd                     &
            )
-        !$ser savepoint RadInterp-Out
-        !$ser data dtdt=dtdt dtdtc=dtdtc xmu=xmu xcosz=xcosz
-        !$ser data adjsfcdsw=adjsfcdsw adjsfcnsw=adjsfcnsw adjsfcdlw=adjsfcdlw adjsfculw=adjsfculw
-        !$ser data adjnirbmu=adjnirbmu adjnirdfu=adjnirdfu adjvisbmu=adjvisbmu adjvisdfu=adjvisdfu
-        !$ser data adjnirbmd=adjnirbmd adjnirdfd=adjnirdfd adjvisbmd=adjvisbmd adjvisdfd=adjvisdfd
 
         if (Model%do_diagnostic_radiation_with_scaled_co2) then
            call compute_diagnostics_with_scaled_co2(                        &
