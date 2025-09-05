@@ -1902,7 +1902,7 @@ module module_physics_driver
                    Model%xkzm_lim, Model%xkgdx,                                 &
                    Model%rlmn, Model%rlmx, Model%cap_k0_land, dkt)
              !$ser savepoint PBL-Out
-             !$ser data pbl_du=dudt pbl_dv=dvdt pbl_tdt=dtdt pbl_rtg=dqdt pbl_kpbl=kpbl pbl_dkt=dkt
+             !$ser data pbl_du=dudt pbl_dv=dvdt pbl_tdt=dtdt pbl_rtg=dqdt pbl_kpbl=kpbl pbl_dkt=dkt pbl_kinver=kinver
              !$ser data pbl_dusfc=dusfc1 pbl_dvsfc=dvsfc1 pbl_dtsfc=dtsfc1 pbl_dqsfc=dqsfc1 pbl_hpbl=Diag%hpbl
              elseif (Model%isatmedmf == 1) then   
                 do i=1,im
