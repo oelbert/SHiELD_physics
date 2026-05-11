@@ -2,13 +2,13 @@
 FV3-202604-public --- April 2026
 Lucas Harris, GFDL lucas.harris@noaa.gov
 
-This version has been tested with:
-FV3 Dynamical Core release FV3-202604-public from https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere
-FMS release 2026.01 from https://github.com/NOAA-GFDL/FMS
-FMS Coupler release 2026.01 from https://github.com/NOAA-GFDL/FMScoupler
-Atmos Drivers release FV3-202604-public from https://github.com/NOAA-GFDL/atmos_drivers
+This version has been tested with:  
+FV3 Dynamical Core release FV3-202604-public from https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere  
+FMS release 2026.01 from https://github.com/NOAA-GFDL/FMS  
+FMS Coupler release 2026.01 from https://github.com/NOAA-GFDL/FMScoupler  
+Atmos Drivers release FV3-202604-public from https://github.com/NOAA-GFDL/atmos_drivers  
 
-This release includes the following:  
+This release includes the following:    
 Coupling support:  
 - Refactor physics driver for implicit coupling to surface (@JosephMouallem)
 - Option to allow surface fluxes to be fully specified from the FMSCoupler, bypassing internal SHiELD flux calculation (@JosephMouallem)
