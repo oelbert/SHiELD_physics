@@ -11,10 +11,13 @@ Atmos Drivers release FV3-202604-public from https://github.com/NOAA-GFDL/atmos_
 This release includes the following:    
 
 - Coupling support:  
-  - Refactor physics driver for implicit coupling to surface (@JosephMouallem)
-  - Option to allow surface fluxes to be fully specified from the FMSCoupler, bypassing internal SHiELD flux calculation (@JosephMouallem)
+  - Refactor physics driver for implicit coupling to surface (@JosephMouallem)    
+  - Refactor vertical diffusion for atmosphere-land implicit coupling by (@JosephMouallem)
+  - Option to allow surface fluxes to be fully specified from the FMSCoupler, bypassing internal SHiELD flux calculation (@JosephMouallem)  
+  - Introduce intermediate state Statemid between the down and up drivers, and eliminate `Tbd` (@JosephMouallem)  
   - Pass adjusted surface radiative fluxes to coupler (@gaokun227)
   - Fixes for radiative flux variables (@Biao-Zhao) 
+  - Updates for handling inconsistent SHiELD and MOM6 land-sea masks (@gaokun227)  
 - New Diagnostics:  
   - 3D heating rates for radiation multi-calls (@spencerkclark)
   - Add zenith-angle-adjusted TOA shortwave flux diagnostics (@spencerkclark)
