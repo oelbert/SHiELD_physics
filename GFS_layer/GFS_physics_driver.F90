@@ -1,5 +1,7 @@
 module module_physics_driver
 
+  !$ser verbatim use mpi
+  !$ser verbatim USE m_serialize ONLE: fs_is_serialization_on
   use machine,               only: kind_phys
   use physcons,              only: con_cp, con_fvirt, con_g, con_rd, &
                                    con_rv, con_hvap, con_hfus,       &
@@ -467,6 +469,12 @@ module module_physics_driver
          z01d, zt1d, bexp1d, xlai1d, vegf1d
 
       real(kind=kind_phys), pointer :: adjsfcdlw_for_coupling(:), adjsfcdsw_for_coupling(:), adjsfcnsw_for_coupling(:)
+
+      !$ser verbatim integer :: mpi_rank,ier
+      !$ser verbatim logical :: ser_on
+      !$ser verbatim ser_on = fs_is_serialization_on()
+      !$ser verbatim call mpi_comm_rank(MPI_COMM_WORLD, mpi_rank, ier)
+
 !
 !===> ...  begin here
 
