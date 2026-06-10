@@ -1,7 +1,7 @@
 module module_physics_driver
 
   !$ser verbatim use mpi
-  !$ser verbatim USE m_serialize ONLE: fs_is_serialization_on
+  !$ser verbatim USE m_serialize, ONLY: fs_is_serialization_on
   use machine,               only: kind_phys
   use physcons,              only: con_cp, con_fvirt, con_g, con_rd, &
                                    con_rv, con_hvap, con_hfus,       &
